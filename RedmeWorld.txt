@@ -1,0 +1,78 @@
+🚀 КАК ИСПОЛЬЗОВАТЬ:
+1. Запуск проекта:
+bash
+# Создай проект
+mkdir EchoesBackend
+cd EchoesBackend
+dotnet new webapi -n Echoes.API
+cd Echoes.API
+
+# Добавь пакеты
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package System.IdentityModel.Tokens.Jwt
+dotnet add package Swashbuckle.AspNetCore
+
+# Скопируй все файлы выше в соответствующие папки
+
+# Запусти
+dotnet run
+2. Доступные API эндпоинты:
+text
+# Управление вселенной
+GET    /api/universe/systems                 # Все системы
+GET    /api/universe/systems/{id}           # Конкретная система
+POST   /api/stargate/jump                   # Прыжок через врата
+
+# Кастомизация и конфигурация
+GET    /api/universecustomization/current   # Текущая конфигурация
+GET    /api/universecustomization/presets   # Все пресеты
+POST   /api/universecustomization/generate-with-preset/{preset} # Создать с пресетом
+GET    /api/universecustomization/export-config # Экспорт конфигурации
+POST   /api/universecustomization/update-names  # Обновить названия
+POST   /api/universecustomization/update-resources # Обновить ресурсы
+
+# Авторизация
+POST   /api/auth/register                   # Регистрация
+POST   /api/auth/login                      # Вход
+
+# Персонажи
+GET    /api/character/me                    # Текущий персонаж (JWT required)
+POST   /api/character/create                # Создать персонажа (JWT required)
+
+# Swagger UI
+GET    /api-docs                            # Документация API
+3. Как кастомизировать названия:
+1. Через appsettings.json:
+
+json
+"NamingConfig": {
+  "RegionNameWords": ["ТВОИ", "НАЗВАНИЯ", "ЗДЕСЬ"],
+  "SystemNameWords": ["ТВОИ", "СИСТЕМЫ", "ЗДЕСЬ"],
+  "StationNameWords": ["ТВОИ", "СТАНЦИИ", "ЗДЕСЬ"]
+}
+2. Через API:
+
+bash
+# Получить текущие названия
+curl -X GET "http://localhost:5116/api/universecustomization/current"
+
+# Обновить названия
+curl -X POST "http://localhost:5116/api/universecustomization/update-names" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "RegionNameWords": ["Великая Пустошь", "Имперский Рубеж", "Пограничье"],
+    "SystemNameWords": ["Новая Надежда", "Последний Рубеж", "Цитадель"],
+    "StationNameWords": ["Торговая Гавань", "Военная База", "Научный Центр"]
+  }'
+4. Как создать свою вселенную:
+bash
+# Создать маленькую вселенную для тестов
+curl -X POST "http://localhost:5116/api/universecustomization/generate-with-preset/UltraSmall"
+
+# Создать среднюю вселенную
+curl -X POST "http://localhost:5116/api/universecustomization/generate-with-preset/Medium"
+
+# Создать огромную вселенную
+curl -X POST "http://localhost:5116/api/universecustomization/generate-with-preset/Massive"
