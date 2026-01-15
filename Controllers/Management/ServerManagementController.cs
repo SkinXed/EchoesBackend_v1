@@ -71,7 +71,7 @@ namespace Echoes.API.Controllers.Management
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error registering server {InstanceId}", request.InstanceId);
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
 
@@ -110,7 +110,7 @@ namespace Echoes.API.Controllers.Management
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing heartbeat from {InstanceId}", request.InstanceId);
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
 
@@ -150,7 +150,7 @@ namespace Echoes.API.Controllers.Management
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error unregistering server {InstanceId}", instanceId);
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
 
@@ -198,7 +198,7 @@ namespace Echoes.API.Controllers.Management
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting server stats");
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
 
@@ -294,7 +294,7 @@ namespace Echoes.API.Controllers.Management
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting server list");
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
     }

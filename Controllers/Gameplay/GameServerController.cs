@@ -106,7 +106,7 @@ namespace Echoes.API.Controllers.Gameplay
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting system data for {SystemId}", systemId);
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
 
@@ -154,8 +154,7 @@ namespace Echoes.API.Controllers.Gameplay
                 return StatusCode(500, new
                 {
                     success = false,
-                    error = "Internal server error",
-                    message = ex.Message
+                    error = "Internal server error"
                 });
             }
         }
@@ -211,7 +210,7 @@ namespace Echoes.API.Controllers.Gameplay
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in RequestConnection for player {PlayerId}", request.PlayerId);
-                return StatusCode(500, new { success = false, error = "Internal server error", message = ex.Message });
+                return StatusCode(500, new { success = false, error = "Internal server error" });
             }
         }
 
