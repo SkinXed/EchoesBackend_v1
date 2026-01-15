@@ -1,8 +1,7 @@
 ﻿// Исправленная строка 406 (и другие мелкие исправления)
 using Microsoft.EntityFrameworkCore;
 using Echoes.API.Data;
-using Echoes.API.DTOs.ServerRequests;
-using Echoes.API.DTOs.ServerResponses;
+using Echoes.API.Models.DTOs.Server;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Models.Entities.Universe;
 using System.Net;

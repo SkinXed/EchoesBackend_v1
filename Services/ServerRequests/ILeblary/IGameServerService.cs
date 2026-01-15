@@ -1,5 +1,4 @@
-﻿using Echoes.API.DTOs.ServerRequests;
-using Echoes.API.DTOs.ServerResponses;
+﻿using Echoes.API.Models.DTOs.Server;
 using Echoes.API.Models.Entities.GameServer;
 
 namespace Echoes.API.Services
