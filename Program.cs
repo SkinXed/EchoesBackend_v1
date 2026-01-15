@@ -265,6 +265,16 @@ app.MapGet("/api/handshake", async (DatabaseContext db) =>
     });
 });
 
+app.MapGet("/api/greet", () =>
+{
+    return Results.Ok(new
+    {
+        message = "привет",
+        greeting = "Hello from Echoes Universe API!",
+        timestamp = DateTime.UtcNow
+    });
+});
+
 
 app.MapGet("/health", async (DatabaseContext dbContext) =>
 {
