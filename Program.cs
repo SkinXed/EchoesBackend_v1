@@ -6,10 +6,12 @@ using Echoes.API.Services;
 using Echoes.API.Services.Auth;
 using Echoes.API.Services.UniverseGeneration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -132,7 +134,22 @@ services.AddCors(options =>
     });
 });
 
-// 3.7. Swagger/OpenAPI
+// 3.7. Response Caching
+services.AddResponseCaching();
+
+// 3.8. Rate Limiting
+services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("search-limit", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 30;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 5;
+    });
+});
+
+// 3.9. Swagger/OpenAPI
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen(c =>
 {
@@ -188,7 +205,7 @@ services.AddSwaggerGen(c =>
     }
 });
 
-// 3.8. Health Checks
+// 3.10. Health Checks
 services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("Database");
 
@@ -229,9 +246,11 @@ else
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseResponseCaching(); // Должен быть до UseAuthorization
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter(); // Должен быть после UseAuthorization
 
 // 4.3. Health check endpoint
 app.MapGet("/", () => Results.Json(new

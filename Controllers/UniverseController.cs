@@ -32,6 +32,7 @@ namespace Echoes.API.Controllers
         /// Получить данные карты вселенной (системы и звездные врата)
         /// </summary>
         [HttpGet("map-data")]
+        [ResponseCache(Duration = 300)] // Кэшировать на 5 минут
         [ProducesResponseType(typeof(MapDataResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMapData()
@@ -286,7 +287,10 @@ namespace Echoes.API.Controllers
                     .FirstOrDefaultAsync(s => s.Id == systemId);
 
                 if (system == null)
+                {
+                    _logger.LogWarning("System {SystemId} not found in database", systemId);
                     return NotFound(ErrorResponse.NotFound($"System {systemId} not found"));
+                }
 
                 var response = new ClientSystemObjectsResponse
                 {
@@ -346,10 +350,20 @@ namespace Echoes.API.Controllers
             {
                 _logger.LogDebug("Getting systems for region {RegionId}", regionId);
 
+                // Валидация Guid
+                if (regionId == Guid.Empty)
+                {
+                    _logger.LogWarning("Invalid region ID format: {RegionId}", regionId);
+                    return BadRequest(ErrorResponse.BadRequest("Invalid region ID format"));
+                }
+
                 // Проверяем существует ли регион
                 var regionExists = await _context.Regions.AnyAsync(r => r.Id == regionId);
                 if (!regionExists)
+                {
+                    _logger.LogWarning("Region {RegionId} not found in database", regionId);
                     return NotFound(ErrorResponse.NotFound($"Region {regionId} not found"));
+                }
 
                 // Получаем все системы региона
                 var systems = await _context.SolarSystems
@@ -422,6 +436,7 @@ namespace Echoes.API.Controllers
         /// Поиск по вселенной (системы, планеты)
         /// </summary>
         [HttpGet("search")]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("search-limit")]
         [ProducesResponseType(typeof(SearchResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
@@ -638,6 +653,7 @@ namespace Echoes.API.Controllers
         /// Получить статистику вселенной
         /// </summary>
         [HttpGet("stats")]
+        [ResponseCache(Duration = 300)] // Кэшировать на 5 минут
         [ProducesResponseType(typeof(UniverseStatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUniverseStats()
