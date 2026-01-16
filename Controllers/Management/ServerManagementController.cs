@@ -288,5 +288,72 @@ namespace Echoes.API.Controllers.Management
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Provides configuration for a game server instance (system data, stargates, etc.)
+        /// </summary>
+        /// <param name="request">Configuration request including instance ID and solar system ID.</param>
+        /// <returns>Configuration data for the requested solar system.</returns>
+        [HttpPost("config")]
+        public async Task<ActionResult<ServerConfigResponseDto>> GetServerConfig([FromBody] ServerConfigRequestDto request)
+        {
+            try
+            {
+                _logger.LogInformation("Config requested by {InstanceId} for System: {SystemId}", request.InstanceId, request.SolarSystemId);
+
+                if (string.IsNullOrEmpty(request.SolarSystemId) || !Guid.TryParse(request.SolarSystemId, out var systemGuid))
+                {
+                    return BadRequest(new { error = "Valid SolarSystemId is required for DedicatedSystem mode" });
+                }
+
+                var system = await _context.SolarSystems
+                    .Include(s => s.Planets)
+                    .Include(s => s.Stargates)
+                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                    .FirstOrDefaultAsync(s => s.Id == systemGuid);
+
+                if (system == null)
+                {
+                    return NotFound(new { error = $"Solar System {systemGuid} not found" });
+                }
+
+                // Map data to format expected by UE5
+                var configDto = new ServerSystemConfigDto
+                {
+                    SystemId = system.Id,
+                    SystemName = system.Name,
+                    SolarRadius = system.SolarRadius,
+                    SolarMass = system.SolarMass,
+                    Temperature = system.Temperature,
+                    
+                    Planets = system.Planets.Select(p => new PlanetConfigDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Type = p.Type,
+                        OrbitDistance = p.OrbitDistance,
+                        Radius = p.Radius
+                    }).ToList(),
+
+                    Stargates = system.Stargates.Select(sg => new StargateConfigDto
+                    {
+                        Id = sg.Id,
+                        Name = sg.Name,
+                        TargetSystemId = sg.DestinationSolarSystemId,
+                        TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
+                        PositionX = sg.PositionX,
+                        PositionY = sg.PositionY,
+                        PositionZ = sg.PositionZ
+                    }).ToList()
+                };
+
+                return Ok(new ServerConfigResponseDto { Config = configDto });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating server config");
+                return StatusCode(500, new { error = "Internal server error" });
+            }
+        }
     }
 }
