@@ -1,13 +1,9 @@
-﻿using Echoes.API.Data;
-using Echoes.API.Models.Config;
-using Echoes.API.Models.DTOs;
-using Echoes.API.Models.Entities.Universe;
+using Echoes.API.Data;
+using Echoes.API.Models.DTOs.Game;
 using Echoes.API.Services.UniverseGeneration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Echoes.API.Controllers
 {
@@ -17,282 +13,28 @@ namespace Echoes.API.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly ILogger<UniverseController> _logger;
-        private readonly ILogger<UniverseGenerator> _universeGeneratorLogger;
+        private readonly IUniverseGenerationService _universeService;
+        private readonly IBackgroundGenerationService _backgroundGenerationService;
 
         public UniverseController(
             DatabaseContext context,
             ILogger<UniverseController> logger,
-            ILogger<UniverseGenerator> universeGeneratorLogger)
+            IUniverseGenerationService universeService,
+            IBackgroundGenerationService backgroundGenerationService)
         {
             _context = context;
             _logger = logger;
-            _universeGeneratorLogger = universeGeneratorLogger;
-        }
-
-        // GET: api/universe/systems
-        [HttpGet("systems")]
-        public async Task<IActionResult> GetAllSystems()
-        {
-            try
-            {
-                var systems = await _context.SolarSystems
-                    .Include(s => s.Constellation)
-                    .ThenInclude(c => c.Region)
-                    .Select(s => new
-                    {
-                        s.Id,
-                        s.Name,
-                        Security = s.SecurityStatus,
-                        Constellation = s.Constellation.Name,
-                        Region = s.Constellation.Region.Name,
-                        s.PositionX,
-                        s.PositionY,
-                        s.PositionZ
-                    })
-                    .ToListAsync();
-
-                return Ok(systems);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting all systems");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
-        }
-
-        // GET: api/universe/region/{regionId}/systems
-        [HttpGet("region/{regionId}/systems")]
-        public async Task<IActionResult> GetSystemsByRegion(Guid regionId)
-        {
-            try
-            {
-                _logger.LogInformation("Getting systems for region {RegionId}", regionId);
-
-                // Проверяем существует ли регион
-                var regionExists = await _context.Regions.AnyAsync(r => r.Id == regionId);
-                if (!regionExists)
-                    return NotFound(new { message = $"Region {regionId} not found" });
-
-                // Получаем все системы региона
-                var systems = await _context.SolarSystems
-                    .Where(s => s.Constellation.RegionId == regionId)
-                    .Include(s => s.Planets)
-                    .Include(s => s.Stargates)
-                    .ThenInclude(sg => sg.DestinationSolarSystem)
-                    .Select(s => new
-                    {
-                        s.Id,
-                        s.Name,
-                        s.SecurityStatus,
-                        s.PositionX,
-                        s.PositionY,
-                        s.PositionZ,
-                        Planets = s.Planets.Select(p => new
-                        {
-                            p.Id,
-                            p.Name,
-                            p.Type,
-                            p.Radius,
-                            p.OrbitDistance,
-                            p.PositionX,
-                            p.PositionY,
-                            p.PositionZ
-                        }),
-                        Stargates = s.Stargates.Select(sg => new
-                        {
-                            sg.Id,
-                            sg.Name,
-                            sg.DestinationSolarSystemId,
-                            sg.PositionX,
-                            sg.PositionY,
-                            sg.PositionZ,
-                            TargetSystemName = sg.DestinationSolarSystem != null
-                                ? sg.DestinationSolarSystem.Name
-                                : "Unknown"
-                        })
-                    })
-                    .ToListAsync();
-
-                if (!systems.Any())
-                    return NotFound(new { message = $"No systems found for region {regionId}" });
-
-                return Ok(new
-                {
-                    RegionId = regionId,
-                    Systems = systems,
-                    TotalSystems = systems.Count,
-                    Timestamp = DateTime.UtcNow
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting region systems for region {RegionId}", regionId);
-                return StatusCode(500, new { message = "Internal server error" });
-            }
-        }
-
-        // GET: api/universe/systems/{id}
-        [HttpGet("systems/{id}")]
-        public async Task<IActionResult> GetSystem(Guid id)
-        {
-            try
-            {
-                var system = await _context.SolarSystems
-                    .Include(s => s.Constellation)
-                    .ThenInclude(c => c.Region)
-                    .Include(s => s.Planets)
-                    .Include(s => s.Stations)
-                    .Include(s => s.Stargates)
-                    .ThenInclude(sg => sg.DestinationSolarSystem)
-                    .FirstOrDefaultAsync(s => s.Id == id);
-
-                if (system == null)
-                {
-                    return NotFound(new { message = "Solar system not found" });
-                }
-
-                var result = new
-                {
-                    system.Id,
-                    system.Name,
-                    system.SecurityStatus,
-                    system.Description,
-                    Constellation = new
-                    {
-                        system.Constellation.Id,
-                        system.Constellation.Name
-                    },
-                    Region = new
-                    {
-                        system.Constellation.Region.Id,
-                        system.Constellation.Region.Name,
-                        system.Constellation.Region.Type
-                    },
-                    StarInfo = new
-                    {
-                        system.StarClass,
-                        system.LuminosityClass,
-                        system.Temperature,
-                        system.SolarRadius,
-                        system.SolarMass,
-                        system.Luminosity
-                    },
-                    Position = new
-                    {
-                        system.PositionX,
-                        system.PositionY,
-                        system.PositionZ
-                    },
-                    Planets = system.Planets.Select(p => new
-                    {
-                        p.Id,
-                        p.Name,
-                        p.Type,
-                        p.Radius,
-                        p.OrbitDistance,
-                        // ДОБАВЛЯЕМ КООРДИНАТЫ
-                        p.PositionX,
-                        p.PositionY,
-                        p.PositionZ
-                    }),
-                    Stations = system.Stations.Select(st => new
-                    {
-                        st.Id,
-                        st.Name,
-                        st.Type,
-                        st.DockingCapacity,
-                        st.Services
-                    }),
-                    Stargates = system.Stargates.Select(sg => new
-                    {
-                        sg.Id,
-                        sg.Name,
-                        // ДОБАВЛЯЕМ КООРДИНАТЫ
-                        Position = new { X = sg.PositionX, Y = sg.PositionY, Z = sg.PositionZ },
-                        DestinationSystem = sg.DestinationSolarSystem != null ? new
-                        {
-                            sg.DestinationSolarSystem.Id,
-                            sg.DestinationSolarSystem.Name
-                        } : null,
-                        sg.IsOperational,
-                        sg.JumpCost
-                    })
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting system");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
+            _universeService = universeService;
+            _backgroundGenerationService = backgroundGenerationService;
         }
 
         /// <summary>
-        /// Get system objects (planets and stargates) for UE5 game servers.
-        /// Returns system configuration in format expected by C++ client.
+        /// Получить данные карты вселенной (системы и звездные врата)
         /// </summary>
-        /// <param name="systemId">Solar system ID</param>
-        /// <returns>System objects with success status</returns>
-        [HttpGet("system/{systemId}/objects")]
-        public async Task<IActionResult> GetSystemObjects(Guid systemId)
-        {
-            try
-            {
-                // Load system with planets and stargates (including destination system names)
-                var system = await _context.SolarSystems
-                    .Include(s => s.Planets)
-                    .Include(s => s.Stargates)
-                    .ThenInclude(sg => sg.DestinationSolarSystem)
-                    .FirstOrDefaultAsync(s => s.Id == systemId);
-
-                if (system == null)
-                    return NotFound(new { success = false, message = "System not found" });
-
-                // Format response identical to ServerSystemConfigDto structure,
-                // but wrapped in { success: true, system: ... } as required by C++ client
-                var response = new
-                {
-                    success = true,
-                    system = new
-                    {
-                        SystemId = system.Id,
-                        SystemName = system.Name,
-                        SolarRadius = system.SolarRadius,
-                        SolarMass = system.SolarMass,
-                        Temperature = system.Temperature,
-                        Planets = system.Planets.Select(p => new
-                        {
-                            Id = p.Id,
-                            Name = p.Name,
-                            Type = p.Type,
-                            OrbitDistance = p.OrbitDistance,
-                            Radius = p.Radius
-                        }),
-                        Stargates = system.Stargates.Select(sg => new
-                        {
-                            Id = sg.Id,
-                            Name = sg.Name,
-                            TargetSystemId = sg.DestinationSolarSystemId,
-                            TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
-                            PositionX = sg.PositionX,
-                            PositionY = sg.PositionY,
-                            PositionZ = sg.PositionZ
-                        })
-                    }
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting system objects for {SystemId}", systemId);
-                return StatusCode(500, new { success = false, error = "Internal server error" });
-            }
-        }
-
-        // GET: api/universe/map-data
         [HttpGet("map-data")]
+        [ResponseCache(Duration = 300)] // Кэшировать на 5 минут
+        [ProducesResponseType(typeof(MapDataResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetMapData()
         {
             try
@@ -300,7 +42,7 @@ namespace Echoes.API.Controllers
                 var mapData = await _context.SolarSystems
                     .Include(s => s.Constellation)
                     .ThenInclude(c => c.Region)
-                    .Select(s => new
+                    .Select(s => new MapDataDto
                     {
                         Id = s.Id,
                         Name = s.Name,
@@ -320,7 +62,7 @@ namespace Echoes.API.Controllers
 
                 var stargates = await _context.Stargates
                     .Where(sg => sg.IsOperational)
-                    .Select(sg => new
+                    .Select(sg => new StargateConnectionDto
                     {
                         SourceSystemId = sg.SourceSolarSystemId,
                         DestinationSystemId = sg.DestinationSolarSystemId,
@@ -328,212 +70,640 @@ namespace Echoes.API.Controllers
                     })
                     .ToListAsync();
 
-                return Ok(new
+                var response = new MapDataResponse
                 {
                     Systems = mapData,
                     Stargates = stargates,
-                    GeneratedAt = DateTime.UtcNow
-                });
+                    GeneratedAt = DateTime.UtcNow,
+                    TotalSystems = mapData.Count
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting map data");
-                return StatusCode(500, new { message = "Internal server error" });
+                return StatusCode(500, ErrorResponse.InternalServerError());
             }
         }
 
-        // POST: api/universe/generate-test
-        [HttpPost("generate-test")]
-        public async Task<IActionResult> GenerateTestUniverse()
+        /// <summary>
+        /// Получить список всех солнечных систем с пагинацией
+        /// </summary>
+        [HttpGet("systems")]
+        [ProducesResponseType(typeof(PaginatedResponse<SystemOverviewDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllSystems([FromQuery] int page = 1, [FromQuery] int pageSize = 50)
         {
             try
             {
-                var generator = new UniverseGenerator(
-                    _context,
-                    _universeGeneratorLogger,
-                    Microsoft.Extensions.Options.Options.Create(new Models.Config.UniverseConfig())
-                );
+                // Валидация параметров
+                if (page < 1) page = 1;
+                if (pageSize < 1 || pageSize > 100) pageSize = 50;
 
-                await generator.GenerateTestUniverseAsync();
+                var totalCount = await _context.SolarSystems.CountAsync();
+                
+                var systems = await _context.SolarSystems
+                    .Include(s => s.Constellation)
+                    .ThenInclude(c => c.Region)
+                    .OrderBy(s => s.Name)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(s => new SystemOverviewDto
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Security = s.SecurityStatus,
+                        Constellation = s.Constellation.Name,
+                        Region = s.Constellation.Region.Name,
+                        PositionX = s.PositionX,
+                        PositionY = s.PositionY,
+                        PositionZ = s.PositionZ,
+                        PlanetCount = s.Planets.Count,
+                        HasStations = s.HasStations,
+                        HasAsteroidBelts = s.HasAsteroidBelts
+                    })
+                    .ToListAsync();
 
-                return Ok(new { message = "Test universe generated successfully" });
+                var response = new PaginatedResponse<SystemOverviewDto>
+                {
+                    Items = systems,
+                    Page = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating test universe");
-                return StatusCode(500, new { message = ex.Message });
+                _logger.LogError(ex, "Error getting all systems");
+                return StatusCode(500, ErrorResponse.InternalServerError());
             }
         }
-        // Запуск генерации вселенной в фоне
-        // POST: api/universe/Generate-Echoes
-        [HttpPost("Generate-Echoes")]
-        public IActionResult GenerateUniverse(
-    // Получаем scope factory для создания нового скоупа
-    [FromServices] IServiceScopeFactory scopeFactory,
-    // Query параметр force для принудительной перегенерации
-    [FromQuery] bool force = false,
-    
-    [FromQuery] bool clearFirst = true)
+
+        /// <summary>
+        /// Получить детальную информацию о солнечной системе
+        /// </summary>
+        [HttpGet("systems/{id:guid}")]
+        [ProducesResponseType(typeof(SystemDetailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetSystem(Guid id)
         {
-            // Проверяем, существует ли уже вселенная
-            var hasExistingUniverse = _context.SolarSystems.Any();
-
-            if (hasExistingUniverse && !force)
+            try
             {
-                return Conflict(new
+                var system = await _context.SolarSystems
+                    .Include(s => s.Constellation)
+                    .ThenInclude(c => c.Region)
+                    .Include(s => s.Planets)
+                    .Include(s => s.Stations)
+                    .Include(s => s.Stargates)
+                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+
+                if (system == null)
                 {
-                    message = "Вселенная уже существует. Используйте ?force=true для принудительной перегенерации.",
-                    stats = new
-                    {
-                        Systems = _context.SolarSystems.Count(),
-                        Planets = _context.Planets.Count()
-                    }
-                });
-            }
-
-            Task.Run(async () =>
-            {
-                using (var scope = scopeFactory.CreateScope())
-                {
-                    var scopedContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                    var universeGeneratorLogger = scope.ServiceProvider.GetRequiredService<ILogger<UniverseGenerator>>();
-                    var universeConfig = scope.ServiceProvider.GetRequiredService<IOptions<UniverseConfig>>();
-
-                    try
-                    {
-                        universeGeneratorLogger.LogInformation("🏁 Запуск фоновой генерации вселенной...");
-
-                        var generator = new UniverseGenerator(scopedContext, universeGeneratorLogger, universeConfig);
-
-                        if (clearFirst)
-                        {
-                            universeGeneratorLogger.LogInformation("🧹 Очистка существующей вселенной...");
-                            await generator.ClearUniverseAsync();
-                        }
-
-                        universeGeneratorLogger.LogInformation("🌌 Генерация новой вселенной...");
-                        await generator.GenerateUniverseAsync();
-
-                        // Получаем статистику
-                        var stats = await generator.GetUniverseStatsAsync();
-
-                        universeGeneratorLogger.LogInformation($"✅ Фоновая генерация завершена успешно! Сгенерировано: {stats.SolarSystems} систем, {stats.Planets} планет");
-                    }
-                    catch (Exception ex)
-                    {
-                        universeGeneratorLogger.LogError(ex, "❌ Ошибка в фоновой генерации");
-                    }
+                    return NotFound(ErrorResponse.NotFound("Solar system not found"));
                 }
-            });
 
-            return Accepted(new
+                var systemDetail = new SystemDetailDto
+                {
+                    Id = system.Id,
+                    Name = system.Name,
+                    SecurityStatus = system.SecurityStatus,
+                    Description = system.Description,
+                    Constellation = new ConstellationDto
+                    {
+                        Id = system.Constellation.Id,
+                        Name = system.Constellation.Name
+                    },
+                    Region = new RegionDto
+                    {
+                        Id = system.Constellation.Region.Id,
+                        Name = system.Constellation.Region.Name,
+                        Type = system.Constellation.Region.Type.ToString()
+                    },
+                    StarInfo = new StarInfoDto
+                    {
+                        StarClass = system.StarClass.ToString(),
+                        LuminosityClass = system.LuminosityClass.ToString(),
+                        Temperature = system.Temperature,
+                        SolarRadius = system.SolarRadius,
+                        SolarMass = system.SolarMass,
+                        Luminosity = system.Luminosity
+                    },
+                    Position = new PositionDto
+                    {
+                        X = system.PositionX,
+                        Y = system.PositionY,
+                        Z = system.PositionZ
+                    },
+                    Planets = system.Planets.Select(p => new PlanetOverviewDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Type = p.Type.ToString(),
+                        Radius = p.Radius,
+                        OrbitDistance = p.OrbitDistance,
+                        Position = new PositionDto
+                        {
+                            X = p.PositionX,
+                            Y = p.PositionY,
+                            Z = p.PositionZ
+                        }
+                    }).ToList(),
+                    Stations = system.Stations.Select(st => new StationOverviewDto
+                    {
+                        Id = st.Id,
+                        Name = st.Name,
+                        Type = st.Type.ToString(),
+                        DockingCapacity = st.DockingCapacity,
+                        Services = st.Services.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList()
+                    }).ToList(),
+                    Stargates = system.Stargates.Select(sg => new StargateDto
+                    {
+                        Id = sg.Id,
+                        Name = sg.Name,
+                        Position = new PositionDto
+                        {
+                            X = sg.PositionX,
+                            Y = sg.PositionY,
+                            Z = sg.PositionZ
+                        },
+                        DestinationSystem = sg.DestinationSolarSystem != null 
+                            ? new StargateDestinationDto
+                            {
+                                Id = sg.DestinationSolarSystem.Id,
+                                Name = sg.DestinationSolarSystem.Name
+                            }
+                            : null,
+                        IsOperational = sg.IsOperational,
+                        JumpCost = sg.JumpCost
+                    }).ToList()
+                };
+
+                var response = new SystemDetailResponse
+                {
+                    Success = true,
+                    System = systemDetail,
+                    ObjectCounts = new SystemObjectCountsDto
+                    {
+                        Planets = systemDetail.Planets.Count,
+                        Stations = systemDetail.Stations.Count,
+                        Stargates = systemDetail.Stargates.Count
+                    },
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
             {
-                message = "Генерация запущена в фоне.",
-                forceRegeneration = force,
-                clearExisting = clearFirst
-            });
+                _logger.LogError(ex, "Error getting system with id {SystemId}", id);
+                return StatusCode(500, ErrorResponse.InternalServerError());
+            }
         }
 
-        // GET: api/universe/stats
+        /// <summary>
+        /// Получить объекты системы для клиента UE5 (оптимизированный формат)
+        /// </summary>
+        [HttpGet("system/{systemId:guid}/objects")]
+        [ProducesResponseType(typeof(ClientSystemObjectsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetSystemObjects(Guid systemId)
+        {
+            try
+            {
+                _logger.LogDebug("Requesting UE5 system objects for system {SystemId}", systemId);
+
+                var system = await _context.SolarSystems
+                    .Include(s => s.Planets)
+                    .Include(s => s.Stargates)
+                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                    .FirstOrDefaultAsync(s => s.Id == systemId);
+
+                if (system == null)
+                {
+                    _logger.LogWarning("System {SystemId} not found in database", systemId);
+                    return NotFound(ErrorResponse.NotFound($"System {systemId} not found"));
+                }
+
+                var response = new ClientSystemObjectsResponse
+                {
+                    Success = true,
+                    System = new ClientSystemDto
+                    {
+                        SystemId = system.Id,
+                        SystemName = system.Name,
+                        SolarRadius = system.SolarRadius,
+                        SolarMass = system.SolarMass,
+                        Temperature = system.Temperature,
+                        SecurityStatus = system.SecurityStatus,
+                        Planets = system.Planets.Select(p => new ClientPlanetDto
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            Type = p.Type.ToString(),
+                            OrbitDistance = p.OrbitDistance,
+                            Radius = p.Radius,
+                            PositionX = p.PositionX,
+                            PositionY = p.PositionY,
+                            PositionZ = p.PositionZ
+                        }).ToList(),
+                        Stargates = system.Stargates.Select(sg => new ClientStargateDto
+                        {
+                            Id = sg.Id,
+                            Name = sg.Name,
+                            TargetSystemId = sg.DestinationSolarSystemId,
+                            TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
+                            PositionX = sg.PositionX,
+                            PositionY = sg.PositionY,
+                            PositionZ = sg.PositionZ
+                        }).ToList()
+                    },
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting UE5 system objects for {SystemId}", systemId);
+                return StatusCode(500, ErrorResponse.InternalServerError());
+            }
+        }
+
+        /// <summary>
+        /// Получить все системы региона
+        /// </summary>
+        [HttpGet("region/{regionId:guid}/systems")]
+        [ProducesResponseType(typeof(RegionSystemsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetSystemsByRegion(Guid regionId)
+        {
+            try
+            {
+                _logger.LogDebug("Getting systems for region {RegionId}", regionId);
+
+                // Валидация Guid
+                if (regionId == Guid.Empty)
+                {
+                    _logger.LogWarning("Invalid region ID format: {RegionId}", regionId);
+                    return BadRequest(ErrorResponse.BadRequest("Invalid region ID format"));
+                }
+
+                // Проверяем существует ли регион
+                var regionExists = await _context.Regions.AnyAsync(r => r.Id == regionId);
+                if (!regionExists)
+                {
+                    _logger.LogWarning("Region {RegionId} not found in database", regionId);
+                    return NotFound(ErrorResponse.NotFound($"Region {regionId} not found"));
+                }
+
+                // Получаем все системы региона
+                var systems = await _context.SolarSystems
+                    .Where(s => s.Constellation.RegionId == regionId)
+                    .Include(s => s.Planets)
+                    .Include(s => s.Stargates)
+                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                    .Select(s => new RegionSystemDto
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        SecurityStatus = s.SecurityStatus,
+                        PositionX = s.PositionX,
+                        PositionY = s.PositionY,
+                        PositionZ = s.PositionZ,
+                        Planets = s.Planets.Select(p => new PlanetOverviewDto
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            Type = p.Type.ToString(),
+                            Radius = p.Radius,
+                            OrbitDistance = p.OrbitDistance,
+                            Position = new PositionDto
+                            {
+                                X = p.PositionX,
+                                Y = p.PositionY,
+                                Z = p.PositionZ
+                            }
+                        }).ToList(),
+                        Stargates = s.Stargates.Select(sg => new StargateOverviewDto
+                        {
+                            Id = sg.Id,
+                            Name = sg.Name,
+                            DestinationSystemId = sg.DestinationSolarSystemId,
+                            Position = new PositionDto
+                            {
+                                X = sg.PositionX,
+                                Y = sg.PositionY,
+                                Z = sg.PositionZ
+                            },
+                            TargetSystemName = sg.DestinationSolarSystem != null
+                                ? sg.DestinationSolarSystem.Name
+                                : "Unknown"
+                        }).ToList()
+                    })
+                    .ToListAsync();
+
+                if (!systems.Any())
+                    return NotFound(ErrorResponse.NotFound($"No systems found for region {regionId}"));
+
+                var response = new RegionSystemsResponse
+                {
+                    Success = true,
+                    RegionId = regionId,
+                    Systems = systems,
+                    TotalSystems = systems.Count,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting region systems for region {RegionId}", regionId);
+                return StatusCode(500, ErrorResponse.InternalServerError());
+            }
+        }
+
+        /// <summary>
+        /// Поиск по вселенной (системы, планеты)
+        /// </summary>
+        [HttpGet("search")]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("search-limit")]
+        [ProducesResponseType(typeof(SearchResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] int limit = 20)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+                {
+                    return BadRequest(ErrorResponse.BadRequest("Search query must be at least 2 characters"));
+                }
+
+                if (limit < 1 || limit > 100)
+                {
+                    limit = 20;
+                }
+
+                var searchTerm = query.ToLower();
+
+                var systems = await _context.SolarSystems
+                    .Where(s => s.Name.ToLower().Contains(searchTerm))
+                    .Take(limit)
+                    .Select(s => new SearchResultDto
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Type = "System",
+                        SecurityStatus = s.SecurityStatus,
+                        Region = s.Constellation.Region.Name,
+                        Constellation = s.Constellation.Name
+                    })
+                    .ToListAsync();
+
+                var planets = await _context.Planets
+                    .Where(p => p.Name.ToLower().Contains(searchTerm))
+                    .Include(p => p.SolarSystem)
+                    .ThenInclude(s => s.Constellation)
+                    .ThenInclude(c => c.Region)
+                    .Take(limit)
+                    .Select(p => new SearchResultDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Type = "Planet",
+                        ParentSystem = p.SolarSystem.Name,
+                        SecurityStatus = p.SolarSystem.SecurityStatus,
+                        Region = p.SolarSystem.Constellation.Region.Name,
+                        Constellation = p.SolarSystem.Constellation.Name
+                    })
+                    .ToListAsync();
+
+                var results = systems.Concat(planets)
+                    .OrderBy(r => r.Name)
+                    .Take(limit)
+                    .ToList();
+
+                var response = new SearchResponse
+                {
+                    Success = true,
+                    Query = query,
+                    Results = results,
+                    TotalResults = results.Count,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching universe for query: {Query}", query);
+                return StatusCode(500, ErrorResponse.InternalServerError());
+            }
+        }
+
+        /// <summary>
+        /// Получить соседние системы (до N прыжков)
+        /// </summary>
+        [HttpGet("nearby/{systemId:guid}")]
+        [ProducesResponseType(typeof(NearbySystemsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetNearbySystems(Guid systemId, [FromQuery] int maxJumps = 3)
+        {
+            try
+            {
+                if (maxJumps < 1 || maxJumps > 10)
+                {
+                    maxJumps = 3;
+                }
+
+                var centralSystem = await _context.SolarSystems
+                    .Include(s => s.Stargates)
+                    .FirstOrDefaultAsync(s => s.Id == systemId);
+
+                if (centralSystem == null)
+                    return NotFound(ErrorResponse.NotFound("System not found"));
+
+                var visited = new HashSet<Guid> { systemId };
+                var currentLevel = new List<Echoes.API.Models.Entities.Universe.SolarSystem> { centralSystem };
+                var allNearby = new List<NearbySystemDto>();
+
+                for (int jump = 1; jump <= maxJumps; jump++)
+                {
+                    var nextLevel = new List<Echoes.API.Models.Entities.Universe.SolarSystem>();
+
+                    foreach (var system in currentLevel)
+                    {
+                        var connectedSystems = await _context.Stargates
+                            .Where(sg => sg.SourceSolarSystemId == system.Id && sg.IsOperational)
+                            .Select(sg => sg.DestinationSolarSystem)
+                            .Where(s => s != null)
+                            .ToListAsync();
+
+                        foreach (var connectedSystem in connectedSystems)
+                        {
+                            if (connectedSystem != null && !visited.Contains(connectedSystem.Id))
+                            {
+                                visited.Add(connectedSystem.Id);
+                                nextLevel.Add(connectedSystem);
+
+                                allNearby.Add(new NearbySystemDto
+                                {
+                                    Id = connectedSystem.Id,
+                                    Name = connectedSystem.Name,
+                                    DistanceInJumps = jump,
+                                    SecurityStatus = connectedSystem.SecurityStatus,
+                                    HasStations = connectedSystem.HasStations,
+                                    HasAsteroidBelts = connectedSystem.HasAsteroidBelts
+                                });
+                            }
+                        }
+                    }
+
+                    currentLevel = nextLevel;
+                }
+
+                var response = new NearbySystemsResponse
+                {
+                    Success = true,
+                    CentralSystem = new CentralSystemDto
+                    {
+                        Id = centralSystem.Id,
+                        Name = centralSystem.Name,
+                        SecurityStatus = centralSystem.SecurityStatus
+                    },
+                    NearbySystems = allNearby.OrderBy(s => s.DistanceInJumps).ThenBy(s => s.Name),
+                    MaxJumps = maxJumps,
+                    TotalNearby = allNearby.Count,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting nearby systems for {SystemId}", systemId);
+                return StatusCode(500, ErrorResponse.InternalServerError());
+            }
+        }
+
+        /// <summary>
+        /// Запустить генерацию вселенной в фоновом режиме
+        /// </summary>
+        [HttpPost("generate")]
+        [ProducesResponseType(typeof(GenerationResponse), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GenerateUniverse(
+            [FromQuery] bool force = false,
+            [FromQuery] bool clearFirst = true)
+        {
+            try
+            {
+                // Проверяем, существует ли уже вселенная
+                var hasExistingUniverse = await _context.SolarSystems.AnyAsync();
+
+                if (hasExistingUniverse && !force)
+                {
+                    var stats = await _universeService.GetUniverseStatsAsync();
+                    return Conflict(new GenerationResponse
+                    {
+                        Success = false,
+                        Message = "Universe already exists. Use ?force=true to force regeneration.",
+                        Stats = stats,
+                        Timestamp = DateTime.UtcNow
+                    });
+                }
+
+                // Запускаем генерацию в фоне
+                var generationId = await _backgroundGenerationService.StartUniverseGenerationAsync(
+                    clearFirst, 
+                    force);
+
+                var response = new GenerationResponse
+                {
+                    Success = true,
+                    Message = "Universe generation started in background",
+                    GenerationId = generationId,
+                    ForceRegeneration = force,
+                    ClearExisting = clearFirst,
+                    Timestamp = DateTime.UtcNow
+                };
+
+                return Accepted(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error starting universe generation");
+                return StatusCode(500, ErrorResponse.InternalServerError());
+            }
+        }
+
+        /// <summary>
+        /// Получить статистику вселенной
+        /// </summary>
         [HttpGet("stats")]
+        [ResponseCache(Duration = 300)] // Кэшировать на 5 минут
+        [ProducesResponseType(typeof(UniverseStatsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUniverseStats()
         {
             try
             {
-                var stats = new
+                var stats = await _universeService.GetUniverseStatsAsync();
+                var response = new UniverseStatsResponse
                 {
-                    Regions = await _context.Regions.CountAsync(),
-                    Constellations = await _context.Constellations.CountAsync(),
-                    SolarSystems = await _context.SolarSystems.CountAsync(),
-                    Planets = await _context.Planets.CountAsync(),
-                    Moons = await _context.Moons.CountAsync(),
-                    Stations = await _context.Stations.CountAsync(),
-                    Stargates = await _context.Stargates.CountAsync(),
-                    AsteroidBelts = await _context.AsteroidBelts.CountAsync()
+                    Success = true,
+                    Stats = stats,
+                    Timestamp = DateTime.UtcNow
                 };
 
-                return Ok(stats);
+                return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting universe stats");
-                return StatusCode(500, new { message = "Internal server error" });
+                return StatusCode(500, ErrorResponse.InternalServerError());
             }
         }
 
-
-        [HttpPost("test-wormholes")]
-        public async Task<IActionResult> TestWormholes()
+        /// <summary>
+        /// Проверить статус генерации вселенной
+        /// </summary>
+        [HttpGet("generation-status/{generationId:guid}")]
+        [ProducesResponseType(typeof(GenerationStatusResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetGenerationStatus(Guid generationId)
         {
             try
             {
-                _logger.LogInformation("🧪 ТЕСТОВЫЙ МЕТОД ДЛЯ ЧЕРВОТОЧИН");
+                var status = await _backgroundGenerationService.GetGenerationStatusAsync(generationId);
+                
+                if (status == null)
+                    return NotFound(ErrorResponse.NotFound($"Generation with id {generationId} not found"));
 
-                // 1. Очищаем только червоточины
-                await _context.Wormholes.ExecuteDeleteAsync();
-                _logger.LogInformation("🧪 Очищены существующие червоточины");
-
-                // 2. Проверяем, есть ли системы
-                var systemCount = await _context.SolarSystems.CountAsync();
-                _logger.LogInformation($"🧪 Систем в базе: {systemCount}");
-
-                if (systemCount == 0)
+                return Ok(new GenerationStatusResponse
                 {
-                    return BadRequest(new { error = "Нет систем в базе. Сначала сгенерируйте вселенную." });
-                }
-
-                // 3. Создаем простую тестовую конфигурацию
-                var testConfig = new UniverseConfig
-                {
-                    WormholeConfig = new Models.Config.WormholeConfig
-                    {
-                        EnableWormholes = true,
-                        ChancePerSystem = 1.0,
-                        MinDistanceLightYears = 1,
-                        MaxDistanceLightYears = 100
-                    }
-                };
-
-                var generator = new UniverseGenerator(
-                    _context,
-                    _universeGeneratorLogger,
-                    Microsoft.Extensions.Options.Options.Create(testConfig)
-                );
-
-                // 4. Запускаем тестовую генерацию
-                var count = await generator.GenerateWormholesAsync(testConfig);
-
-                // 5. Проверяем результат
-                var actualCount = await _context.Wormholes.CountAsync();
-                var sample = await _context.Wormholes
-                    .Include(w => w.SourceSystem)
-                    .Include(w => w.TargetSystem)
-                    .FirstOrDefaultAsync();
-
-                return Ok(new
-                {
-                    message = "Тест завершен",
-                    expectedCount = count,
-                    actualCount = actualCount,
-                    sample = sample != null ? new
-                    {
-                        id = sample.Id,
-                        name = sample.Name,
-                        signature = sample.Signature,
-                        sourceSystem = sample.SourceSystem?.Name,
-                        targetSystem = sample.TargetSystem?.Name
-                    } : null
+                    Success = true,
+                    Status = status,
+                    Timestamp = DateTime.UtcNow
                 });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Ошибка тестирования червоточин");
-                return BadRequest(new
-                {
-                    error = ex.Message,
-                    inner = ex.InnerException?.Message,
-                    stackTrace = ex.StackTrace
-                });
+                _logger.LogError(ex, "Error getting generation status for {GenerationId}", generationId);
+                return StatusCode(500, ErrorResponse.InternalServerError());
             }
         }
     }
