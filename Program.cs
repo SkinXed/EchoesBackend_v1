@@ -94,6 +94,8 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // 3.4. Register services
 services.AddScoped<IUniverseGenerator, UniverseGenerator>();
+services.AddScoped<IUniverseGenerationService, UniverseGenerationService>();
+services.AddSingleton<IBackgroundGenerationService, BackgroundGenerationService>();
 services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 // 3.5. Controllers
