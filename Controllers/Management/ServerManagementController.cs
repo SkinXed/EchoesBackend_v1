@@ -299,12 +299,40 @@ namespace Echoes.API.Controllers.Management
         {
             try
             {
-                _logger.LogInformation("Config requested by {InstanceId} for System: {SystemId}", request.InstanceId, request.SolarSystemId);
-
-                if (string.IsNullOrEmpty(request.SolarSystemId) || !Guid.TryParse(request.SolarSystemId, out var systemGuid))
+                // Validate required fields
+                if (string.IsNullOrEmpty(request.InstanceId))
                 {
-                    return BadRequest(new { error = "Valid SolarSystemId is required for DedicatedSystem mode" });
+                    return BadRequest(new { error = "InstanceId is required" });
                 }
+
+                if (string.IsNullOrEmpty(request.ServerType))
+                {
+                    return BadRequest(new { error = "ServerType is required" });
+                }
+
+                _logger.LogInformation("Config requested by {InstanceId} (Type: {ServerType}) for System: {SystemId}", 
+                    request.InstanceId, request.ServerType, request.SolarSystemId);
+
+                // For DedicatedSystem mode, SolarSystemId is required
+                if (request.ServerType == "DedicatedSystem")
+                {
+                    if (string.IsNullOrEmpty(request.SolarSystemId) || !Guid.TryParse(request.SolarSystemId, out _))
+                    {
+                        return BadRequest(new { error = "Valid SolarSystemId is required for DedicatedSystem mode" });
+                    }
+                }
+                else if (request.ServerType == "RegionalCluster")
+                {
+                    // For RegionalCluster mode, implement when needed
+                    return BadRequest(new { error = "RegionalCluster mode is not yet implemented" });
+                }
+                else
+                {
+                    return BadRequest(new { error = "ServerType must be 'DedicatedSystem' or 'RegionalCluster'" });
+                }
+
+                // Parse system GUID (we know it's valid from validation above)
+                var systemGuid = Guid.Parse(request.SolarSystemId!);
 
                 var system = await _context.SolarSystems
                     .Include(s => s.Planets)
