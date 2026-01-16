@@ -228,6 +228,69 @@ namespace Echoes.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get system objects (planets and stargates) for UE5 game servers.
+        /// Returns system configuration in format expected by C++ client.
+        /// </summary>
+        /// <param name="systemId">Solar system ID</param>
+        /// <returns>System objects with success status</returns>
+        [HttpGet("system/{systemId}/objects")]
+        public async Task<IActionResult> GetSystemObjects(Guid systemId)
+        {
+            try
+            {
+                // Load system with planets and stargates (including destination system names)
+                var system = await _context.SolarSystems
+                    .Include(s => s.Planets)
+                    .Include(s => s.Stargates)
+                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                    .FirstOrDefaultAsync(s => s.Id == systemId);
+
+                if (system == null)
+                    return NotFound(new { success = false, message = "System not found" });
+
+                // Format response identical to ServerSystemConfigDto structure,
+                // but wrapped in { success: true, system: ... } as required by C++ client
+                var response = new
+                {
+                    success = true,
+                    system = new
+                    {
+                        SystemId = system.Id,
+                        SystemName = system.Name,
+                        SolarRadius = system.SolarRadius,
+                        SolarMass = system.SolarMass,
+                        Temperature = system.Temperature,
+                        Planets = system.Planets.Select(p => new
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            Type = p.Type,
+                            OrbitDistance = p.OrbitDistance,
+                            Radius = p.Radius
+                        }),
+                        Stargates = system.Stargates.Select(sg => new
+                        {
+                            Id = sg.Id,
+                            Name = sg.Name,
+                            TargetSystemId = sg.DestinationSolarSystemId,
+                            TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
+                            PositionX = sg.PositionX,
+                            PositionY = sg.PositionY,
+                            PositionZ = sg.PositionZ
+                        })
+                    }
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting system objects for {SystemId}", systemId);
+                return StatusCode(500, new { success = false, error = "Internal server error" });
+            }
+        }
+
         // GET: api/universe/map-data
         [HttpGet("map-data")]
         public async Task<IActionResult> GetMapData()
