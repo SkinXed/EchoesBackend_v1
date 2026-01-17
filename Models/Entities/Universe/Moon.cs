@@ -20,6 +20,11 @@ namespace Echoes.API.Models.Entities.Universe
         public long OrbitPeriod { get; set; } // Часы
         public bool HasResources { get; set; } = false;
 
+        // Position coordinates
+        public long PositionX { get; set; }
+        public long PositionY { get; set; }
+        public long PositionZ { get; set; }
+
         // Навигационные свойства
         public virtual Planet Planet { get; set; }
         public virtual ICollection<PlanetResource> Resources { get; set; } = new List<PlanetResource>();
