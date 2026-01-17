@@ -521,6 +521,9 @@ namespace Echoes.API.Controllers.Management
             var region = await _context.Regions
                 .Include(r => r.Constellations)
                     .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.Constellation)
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
                         .ThenInclude(s => s.Planets)
                             .ThenInclude(p => p.Moons)
                 .Include(r => r.Constellations)
