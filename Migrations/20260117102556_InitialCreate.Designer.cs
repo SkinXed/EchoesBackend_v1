@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Echoes.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260104054034_Initial_Refactored")]
-    partial class Initial_Refactored
+    [Migration("20260117102556_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -468,6 +468,10 @@ namespace Echoes.API.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)");
 
+                    b.Property<string>("Hostname")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("InstanceId")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -502,8 +506,15 @@ namespace Echoes.API.Migrations
                     b.Property<Guid?>("RegionId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ServerTags")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<Guid?>("SolarSystemId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("StartupArguments")
+                        .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -665,6 +676,15 @@ namespace Echoes.API.Migrations
                     b.Property<Guid>("PlanetId")
                         .HasColumnType("uuid");
 
+                    b.Property<long>("PositionX")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PositionY")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PositionZ")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("Radius")
                         .HasColumnType("bigint");
 
@@ -680,6 +700,9 @@ namespace Echoes.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("AtmosphereType")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -701,8 +724,17 @@ namespace Echoes.API.Migrations
                     b.Property<bool>("HasMoons")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("HasRings")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsColonizable")
                         .HasColumnType("boolean");
+
+                    b.Property<double>("Mass")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("MoonCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
