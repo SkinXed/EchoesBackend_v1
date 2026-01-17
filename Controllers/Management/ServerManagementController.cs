@@ -10,6 +10,7 @@ namespace Echoes.API.Controllers.Management
     /// <summary>
     /// Controller for game server management operations.
     /// Handles server registration, heartbeat, monitoring, and cluster management.
+    /// Supports both DedicatedSystem and RegionalCluster deployment modes.
     /// </summary>
     [ApiController]
     [Route("api/server-management")]
@@ -67,10 +68,15 @@ namespace Echoes.API.Controllers.Management
                     Message = "Server registered successfully"
                 };
 
+                _logger.LogInformation(
+                    "Server {InstanceId} registered successfully. Type: {NodeType}, Players: {MaxPlayers}",
+                    server.InstanceId, response.NodeType, server.MaxPlayers);
+
                 return Ok(response);
             }
             catch (ArgumentException ex)
             {
+                _logger.LogWarning(ex, "Validation error registering server");
                 return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)
@@ -91,6 +97,12 @@ namespace Echoes.API.Controllers.Management
         {
             try
             {
+                // Validate instance ID
+                if (string.IsNullOrEmpty(request.InstanceId))
+                {
+                    return BadRequest(new { error = "InstanceId is required" });
+                }
+
                 // Map DTO to existing service model
                 var serviceRequest = new Echoes.API.DTOs.ServerRequests.HeartbeatRequest
                 {
@@ -106,7 +118,10 @@ namespace Echoes.API.Controllers.Management
                 var success = await _gameServerService.UpdateHeartbeatAsync(serviceRequest);
 
                 if (!success)
+                {
+                    _logger.LogWarning("Heartbeat received from unregistered server: {InstanceId}", request.InstanceId);
                     return NotFound(new { error = "Server not found" });
+                }
 
                 var response = new HeartbeatResponseDto
                 {
@@ -119,7 +134,7 @@ namespace Echoes.API.Controllers.Management
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error processing heartbeat");
+                _logger.LogError(ex, "Error processing heartbeat from {InstanceId}", request?.InstanceId);
                 return StatusCode(500, new { error = "Internal server error" });
             }
         }
@@ -135,10 +150,20 @@ namespace Echoes.API.Controllers.Management
         {
             try
             {
+                if (string.IsNullOrEmpty(instanceId))
+                {
+                    return BadRequest(new { error = "InstanceId is required" });
+                }
+
                 var success = await _gameServerService.UnregisterServerAsync(instanceId);
 
                 if (!success)
+                {
+                    _logger.LogWarning("Unregister request for non-existent server: {InstanceId}", instanceId);
                     return NotFound(new { error = "Server not found" });
+                }
+
+                _logger.LogInformation("Server {InstanceId} unregistered successfully", instanceId);
 
                 return Ok(new
                 {
@@ -236,6 +261,10 @@ namespace Echoes.API.Controllers.Management
                     Timestamp = DateTime.UtcNow
                 };
 
+                _logger.LogInformation(
+                    "Server list retrieved: Total={Total}, Online={Online}, Type={Type}",
+                    response.Total, response.Online, type ?? "all");
+
                 return Ok(response);
             }
             catch (Exception ex)
@@ -259,6 +288,22 @@ namespace Echoes.API.Controllers.Management
                     .Where(s => s.LastHeartbeat > DateTime.UtcNow.AddMinutes(-5))
                     .ToListAsync();
 
+                if (servers.Count == 0)
+                {
+                    return Ok(new ServerStatsDto
+                    {
+                        TotalServers = 0,
+                        OnlineServers = 0,
+                        StartingServers = 0,
+                        TotalPlayers = 0,
+                        MaxCapacity = 0,
+                        Utilization = 0,
+                        ByType = new ServerTypeBreakdown { Dedicated = 0, Regional = 0 },
+                        AverageLoad = 0,
+                        LastUpdated = DateTime.UtcNow
+                    });
+                }
+
                 var stats = new ServerStatsDto
                 {
                     TotalServers = servers.Count,
@@ -280,6 +325,10 @@ namespace Echoes.API.Controllers.Management
                     LastUpdated = DateTime.UtcNow
                 };
 
+                _logger.LogInformation(
+                    "Server stats calculated: Total={Total}, Online={Online}, Players={Players}/{Capacity}",
+                    stats.TotalServers, stats.OnlineServers, stats.TotalPlayers, stats.MaxCapacity);
+
                 return Ok(stats);
             }
             catch (Exception ex)
@@ -291,11 +340,12 @@ namespace Echoes.API.Controllers.Management
 
         /// <summary>
         /// Provides configuration for a game server instance (system data, stargates, etc.)
+        /// Supports both DedicatedSystem and RegionalCluster modes.
         /// </summary>
-        /// <param name="request">Configuration request including instance ID and solar system ID.</param>
-        /// <returns>Configuration data for the requested solar system.</returns>
+        /// <param name="request">Configuration request including instance ID and solar system ID or region ID.</param>
+        /// <returns>Configuration data for the requested solar system or region.</returns>
         [HttpPost("config")]
-        public async Task<ActionResult<ServerConfigResponseDto>> GetServerConfig([FromBody] ServerConfigRequestDto request)
+        public async Task<ActionResult> GetServerConfig([FromBody] ServerConfigRequestDto request)
         {
             try
             {
@@ -310,78 +360,311 @@ namespace Echoes.API.Controllers.Management
                     return BadRequest(new { error = "ServerType is required" });
                 }
 
-                _logger.LogInformation("Config requested by {InstanceId} (Type: {ServerType}) for System: {SystemId}", 
-                    request.InstanceId, request.ServerType, request.SolarSystemId);
+                _logger.LogInformation(
+                    "Config requested by {InstanceId} (Type: {ServerType}) for System/Region: {LocationId}",
+                    request.InstanceId, request.ServerType, request.SolarSystemId ?? request.RegionId?.ToString());
 
-                // For DedicatedSystem mode, SolarSystemId is required
-                if (request.ServerType == "DedicatedSystem")
+                if (string.Equals(request.ServerType, "DedicatedSystem", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (string.IsNullOrEmpty(request.SolarSystemId) || !Guid.TryParse(request.SolarSystemId, out _))
-                    {
-                        return BadRequest(new { error = "Valid SolarSystemId is required for DedicatedSystem mode" });
-                    }
+                    return await GetDedicatedSystemConfig(request);
                 }
-                else if (request.ServerType == "RegionalCluster")
+                else if (string.Equals(request.ServerType, "RegionalCluster", StringComparison.OrdinalIgnoreCase))
                 {
-                    // For RegionalCluster mode, implement when needed
-                    return BadRequest(new { error = "RegionalCluster mode is not yet implemented" });
+                    return await GetRegionalClusterConfig(request);
                 }
                 else
                 {
                     return BadRequest(new { error = "ServerType must be 'DedicatedSystem' or 'RegionalCluster'" });
                 }
-
-                // Parse system GUID (we know it's valid from validation above)
-                var systemGuid = Guid.Parse(request.SolarSystemId!);
-
-                var system = await _context.SolarSystems
-                    .Include(s => s.Planets)
-                    .Include(s => s.Stargates)
-                    .ThenInclude(sg => sg.DestinationSolarSystem)
-                    .FirstOrDefaultAsync(s => s.Id == systemGuid);
-
-                if (system == null)
-                {
-                    return NotFound(new { error = $"Solar System {systemGuid} not found" });
-                }
-
-                // Map data to format expected by UE5
-                var configDto = new ServerSystemConfigDto
-                {
-                    SystemId = system.Id,
-                    SystemName = system.Name,
-                    SolarRadius = system.SolarRadius,
-                    SolarMass = system.SolarMass,
-                    Temperature = system.Temperature,
-                    
-                    Planets = system.Planets.Select(p => new PlanetConfigDto
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Type = p.Type,
-                        OrbitDistance = p.OrbitDistance,
-                        Radius = p.Radius
-                    }).ToList(),
-
-                    Stargates = system.Stargates.Select(sg => new StargateConfigDto
-                    {
-                        Id = sg.Id,
-                        Name = sg.Name,
-                        TargetSystemId = sg.DestinationSolarSystemId,
-                        TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
-                        PositionX = sg.PositionX,
-                        PositionY = sg.PositionY,
-                        PositionZ = sg.PositionZ
-                    }).ToList()
-                };
-
-                return Ok(new ServerConfigResponseDto { Config = configDto });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error generating server config");
                 return StatusCode(500, new { error = "Internal server error" });
             }
+        }
+
+        /// <summary>
+        /// Get configuration for a single solar system (DedicatedSystem mode).
+        /// Each server hosts one complete solar system.
+        /// </summary>
+        private async Task<ActionResult> GetDedicatedSystemConfig(ServerConfigRequestDto request)
+        {
+            // Validate SolarSystemId
+            if (string.IsNullOrEmpty(request.SolarSystemId) || !Guid.TryParse(request.SolarSystemId, out var systemGuid))
+            {
+                return BadRequest(new { error = "Valid SolarSystemId is required for DedicatedSystem mode" });
+            }
+
+            var system = await _context.SolarSystems
+                .Include(s => s.Constellation)
+                    .ThenInclude(c => c.Region)
+                .Include(s => s.Planets)
+                    .ThenInclude(p => p.Moons)
+                .Include(s => s.Planets)
+                    .ThenInclude(p => p.Resources)
+                .Include(s => s.Stargates)
+                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                .Include(s => s.Stations)
+                .Include(s => s.AsteroidBelts)
+                    .ThenInclude(ab => ab.Resources)
+                .FirstOrDefaultAsync(s => s.Id == systemGuid);
+
+            if (system == null)
+            {
+                return NotFound(new { error = $"Solar System {systemGuid} not found" });
+            }
+
+            var configDto = new ServerSystemConfigDto
+            {
+                SystemId = system.Id,
+                SystemName = system.Name,
+                SolarRadius = system.SolarRadius,
+                SolarMass = system.SolarMass,
+                Temperature = system.Temperature,
+                Luminosity = system.Luminosity,
+                SecurityStatus = system.SecurityStatus,
+                ConstellationId = system.ConstellationId,
+                ConstellationName = system.Constellation?.Name ?? "Unknown",
+                RegionId = system.Constellation?.RegionId,
+                RegionName = system.Constellation?.Region?.Name ?? "Unknown",
+                PositionX = system.PositionX,
+                PositionY = system.PositionY,
+                PositionZ = system.PositionZ,
+
+                Planets = system.Planets.Select(p => new PlanetConfigDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Type = p.Type,
+                    OrbitDistance = p.OrbitDistance,
+                    Radius = p.Radius,
+                    PositionX = p.PositionX,
+                    PositionY = p.PositionY,
+                    PositionZ = p.PositionZ,
+                    Moons = p.Moons.Select(m => new MoonConfigDto
+                    {
+                        Id = m.Id,
+                        Name = m.Name,
+                        Radius = m.Radius,
+                        PositionX = m.PositionX,
+                        PositionY = m.PositionY,
+                        PositionZ = m.PositionZ
+                    }).ToList(),
+                    Resources = p.Resources.Select(r => new ResourceConfigDto
+                    {
+                        Id = r.Id,
+                        ResourceType = r.ResourceType,
+                        Quantity = r.Quantity,
+                        Richness = r.Quality
+                    }).ToList()
+                }).ToList(),
+
+                Stargates = system.Stargates.Select(sg => new StargateConfigDto
+                {
+                    Id = sg.Id,
+                    Name = sg.Name,
+                    TargetSystemId = sg.DestinationSolarSystemId,
+                    TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
+                    PositionX = sg.PositionX,
+                    PositionY = sg.PositionY,
+                    PositionZ = sg.PositionZ,
+                    IsOperational = sg.IsOperational
+                }).ToList(),
+
+                Stations = system.Stations.Select(st => new StationConfigDto
+                {
+                    Id = st.Id,
+                    Name = st.Name,
+                    PositionX = st.PositionX,
+                    PositionY = st.PositionY,
+                    PositionZ = st.PositionZ,
+                    StationType = st.Type.ToString()
+                }).ToList(),
+
+                AsteroidBelts = system.AsteroidBelts.Select(ab => new AsteroidBeltConfigDto
+                {
+                    Id = ab.Id,
+                    Name = ab.Name,
+                    PositionX = ab.PositionX,
+                    PositionY = ab.PositionY,
+                    PositionZ = ab.PositionZ,
+                    Resources = ab.Resources.Select(r => new ResourceConfigDto
+                    {
+                        Id = r.Id,
+                        ResourceType = r.ResourceType,
+                        Quantity = r.Quantity,
+                        Richness = r.Quality
+                    }).ToList()
+                }).ToList()
+            };
+
+            _logger.LogInformation(
+                "Sending DedicatedSystem config for {SystemName}: {PlanetCount} planets, {StargateCount} stargates, {StationCount} stations",
+                system.Name, system.Planets.Count, system.Stargates.Count, system.Stations.Count);
+
+            return Ok(new ServerConfigResponseDto { Config = configDto });
+        }
+
+        /// <summary>
+        /// Get configuration for a region (RegionalCluster mode).
+        /// Server hosts all systems within a region for load balancing.
+        /// This is optimized for multi-system server instances.
+        /// </summary>
+        private async Task<ActionResult> GetRegionalClusterConfig(ServerConfigRequestDto request)
+        {
+            // Validate RegionId
+            if (!request.RegionId.HasValue)
+            {
+                return BadRequest(new { error = "RegionId is required for RegionalCluster mode" });
+            }
+
+            var region = await _context.Regions
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.Constellation)
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.Planets)
+                            .ThenInclude(p => p.Moons)
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.Planets)
+                            .ThenInclude(p => p.Resources)
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.Stargates)
+                            .ThenInclude(sg => sg.DestinationSolarSystem)
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.Stations)
+                .Include(r => r.Constellations)
+                    .ThenInclude(c => c.SolarSystems)
+                        .ThenInclude(s => s.AsteroidBelts)
+                            .ThenInclude(ab => ab.Resources)
+                .FirstOrDefaultAsync(r => r.Id == request.RegionId);
+
+            if (region == null)
+            {
+                return NotFound(new { error = $"Region {request.RegionId} not found" });
+            }
+
+            // Flatten all systems from all constellations in the region
+            var allSystems = region.Constellations
+                .SelectMany(c => c.SolarSystems)
+                .ToList();
+
+            if (allSystems.Count == 0)
+            {
+                return BadRequest(new { error = $"Region {region.Name} contains no solar systems" });
+            }
+
+            // Build regional cluster configuration
+            var systemConfigs = allSystems.Select(system => new ServerSystemConfigDto
+            {
+                SystemId = system.Id,
+                SystemName = system.Name,
+                SolarRadius = system.SolarRadius,
+                SolarMass = system.SolarMass,
+                Temperature = system.Temperature,
+                Luminosity = system.Luminosity,
+                SecurityStatus = system.SecurityStatus,
+                ConstellationId = system.ConstellationId,
+                ConstellationName = system.Constellation?.Name ?? "Unknown",
+                RegionId = region.Id,
+                RegionName = region.Name,
+                PositionX = system.PositionX,
+                PositionY = system.PositionY,
+                PositionZ = system.PositionZ,
+
+                Planets = system.Planets.Select(p => new PlanetConfigDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Type = p.Type,
+                    OrbitDistance = p.OrbitDistance,
+                    Radius = p.Radius,
+                    PositionX = p.PositionX,
+                    PositionY = p.PositionY,
+                    PositionZ = p.PositionZ,
+                    Moons = p.Moons.Select(m => new MoonConfigDto
+                    {
+                        Id = m.Id,
+                        Name = m.Name,
+                        Radius = m.Radius,
+                        PositionX = m.PositionX,
+                        PositionY = m.PositionY,
+                        PositionZ = m.PositionZ
+                    }).ToList(),
+                    Resources = p.Resources.Select(r => new ResourceConfigDto
+                    {
+                        Id = r.Id,
+                        ResourceType = r.ResourceType,
+                        Quantity = r.Quantity,
+                        Richness = r.Quality
+                    }).ToList()
+                }).ToList(),
+
+                Stargates = system.Stargates.Select(sg => new StargateConfigDto
+                {
+                    Id = sg.Id,
+                    Name = sg.Name,
+                    TargetSystemId = sg.DestinationSolarSystemId,
+                    TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
+                    PositionX = sg.PositionX,
+                    PositionY = sg.PositionY,
+                    PositionZ = sg.PositionZ,
+                    IsOperational = sg.IsOperational
+                }).ToList(),
+
+                Stations = system.Stations.Select(st => new StationConfigDto
+                {
+                    Id = st.Id,
+                    Name = st.Name,
+                    PositionX = st.PositionX,
+                    PositionY = st.PositionY,
+                    PositionZ = st.PositionZ,
+                    StationType = st.Type.ToString()
+                }).ToList(),
+
+                AsteroidBelts = system.AsteroidBelts.Select(ab => new AsteroidBeltConfigDto
+                {
+                    Id = ab.Id,
+                    Name = ab.Name,
+                    PositionX = ab.PositionX,
+                    PositionY = ab.PositionY,
+                    PositionZ = ab.PositionZ,
+                    Resources = ab.Resources.Select(r => new ResourceConfigDto
+                    {
+                        Id = r.Id,
+                        ResourceType = r.ResourceType,
+                        Quantity = r.Quantity,
+                        Richness = r.Quality
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            var regionalConfig = new ServerRegionalClusterConfigDto
+            {
+                RegionId = region.Id,
+                RegionName = region.Name,
+                RegionCode = region.RegionCode,
+                AverageSecurity = region.AverageSecurity,
+                ConstellationCount = region.Constellations.Count,
+                SystemCount = allSystems.Count,
+                TotalPlanets = allSystems.Sum(s => s.Planets.Count),
+                TotalStargates = allSystems.Sum(s => s.Stargates.Count),
+                TotalStations = allSystems.Sum(s => s.Stations.Count),
+                Systems = systemConfigs
+            };
+
+            _logger.LogInformation(
+                "Sending RegionalCluster config for {RegionName}: {ConstellationCount} constellations, " +
+                "{SystemCount} systems, {PlanetCount} planets, {StargateCount} stargates, {StationCount} stations",
+                region.Name, region.Constellations.Count, allSystems.Count,
+                regionalConfig.TotalPlanets, regionalConfig.TotalStargates, regionalConfig.TotalStations);
+
+            return Ok(new ServerRegionalClusterConfigResponseDto { Config = regionalConfig });
         }
     }
 }
