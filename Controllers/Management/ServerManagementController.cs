@@ -1,4 +1,4 @@
-using Echoes.API.Data;
+﻿using Echoes.API.Data;
 using Echoes.API.Models.DTOs.Server;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Services;
@@ -390,24 +390,22 @@ namespace Echoes.API.Controllers.Management
         /// </summary>
         private async Task<ActionResult> GetDedicatedSystemConfig(ServerConfigRequestDto request)
         {
-            // Validate SolarSystemId
             if (string.IsNullOrEmpty(request.SolarSystemId) || !Guid.TryParse(request.SolarSystemId, out var systemGuid))
             {
-                return BadRequest(new { error = "Valid SolarSystemId is required for DedicatedSystem mode" });
+                return BadRequest(new { error = "Valid SolarSystemId is required" });
             }
 
             var system = await _context.SolarSystems
-                .Include(s => s.Constellation)
-                    .ThenInclude(c => c.Region)
-                .Include(s => s.Planets)
-                    .ThenInclude(p => p.Moons)
-                .Include(s => s.Planets)
-                    .ThenInclude(p => p.Resources)
-                .Include(s => s.Stargates)
-                    .ThenInclude(sg => sg.DestinationSolarSystem)
+                .Include(s => s.Constellation).ThenInclude(c => c.Region)
+                .Include(s => s.Planets).ThenInclude(p => p.Moons)
+                .Include(s => s.Planets).ThenInclude(p => p.Resources)
+                .Include(s => s.Stargates).ThenInclude(sg => sg.DestinationSolarSystem)
                 .Include(s => s.Stations)
-                .Include(s => s.AsteroidBelts)
-                    .ThenInclude(ab => ab.Resources)
+                .Include(s => s.AsteroidBelts).ThenInclude(ab => ab.Resources)
+                // --- ВАЖНО: Загружаем аномалии и червоточины ---
+                .Include(s => s.Anomalies)
+                .Include(s => s.SourceWormholes)
+                .Include(s => s.TargetWormholes)
                 .FirstOrDefaultAsync(s => s.Id == systemGuid);
 
             if (system == null)
@@ -424,6 +422,9 @@ namespace Echoes.API.Controllers.Management
                 Temperature = system.Temperature,
                 Luminosity = system.Luminosity,
                 SecurityStatus = system.SecurityStatus,
+                // --- ВАЖНО: Заполняем StarClass ---
+                StarClass = system.StarClass.ToString(),
+
                 ConstellationId = system.ConstellationId,
                 ConstellationName = system.Constellation?.Name ?? "Unknown",
                 RegionId = system.Constellation?.RegionId,
@@ -436,7 +437,7 @@ namespace Echoes.API.Controllers.Management
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Type = p.Type,
+                    Type = p.Type.ToString(),
                     OrbitDistance = p.OrbitDistance,
                     Radius = p.Radius,
                     PositionX = p.PositionX,
@@ -454,7 +455,7 @@ namespace Echoes.API.Controllers.Management
                     Resources = p.Resources.Select(r => new ResourceConfigDto
                     {
                         Id = r.Id,
-                        ResourceType = r.ResourceType,
+                        ResourceType = r.ResourceType.ToString(),
                         Quantity = r.Quantity,
                         Richness = r.Quality
                     }).ToList()
@@ -469,7 +470,10 @@ namespace Echoes.API.Controllers.Management
                     PositionX = sg.PositionX,
                     PositionY = sg.PositionY,
                     PositionZ = sg.PositionZ,
-                    IsOperational = sg.IsOperational
+                    IsOperational = sg.IsOperational,
+                   
+                    JumpCost = sg.JumpCost,
+                    Model = sg.Model ?? "DefaultGate"
                 }).ToList(),
 
                 Stations = system.Stations.Select(st => new StationConfigDto
@@ -492,10 +496,32 @@ namespace Echoes.API.Controllers.Management
                     Resources = ab.Resources.Select(r => new ResourceConfigDto
                     {
                         Id = r.Id,
-                        ResourceType = r.ResourceType,
+                        ResourceType = r.ResourceType.ToString(),
                         Quantity = r.Quantity,
                         Richness = r.Quality
                     }).ToList()
+                }).ToList(),
+
+                // --- ВАЖНО: Заполняем Аномалии и Червоточины ---
+                Anomalies = system.Anomalies.Select(a => new AnomalyConfigDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Type = a.Type.ToString(),
+                    Difficulty = a.Difficulty.ToString(),
+                    PositionX = a.PositionX,
+                    PositionY = a.PositionY,
+                    PositionZ = a.PositionZ
+                }).ToList(),
+
+                Wormholes = system.TargetWormholes.Select(w => new WormholeConfigDto
+                {
+                    Id = w.Id,
+                    Name = w.Name,
+                    TargetSystemId = w.TargetSystemId,
+                    PositionX = w.PositionX,
+                    PositionY = w.PositionY,
+                    PositionZ = w.PositionZ
                 }).ToList()
             };
 
@@ -505,6 +531,7 @@ namespace Echoes.API.Controllers.Management
 
             return Ok(new ServerConfigResponseDto { Config = configDto });
         }
+
 
         /// <summary>
         /// Get configuration for a region (RegionalCluster mode).

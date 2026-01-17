@@ -95,7 +95,10 @@ namespace Echoes.API.Models.DTOs.Server
         /// Security status of the solar system (-1.0 to 1.0).
         /// </summary>
         public float SecurityStatus { get; set; }
-
+        /// <summary>
+        /// Star classification (e.g., "G2V", "M1III").
+        /// </summary>
+        public string StarClass { get; set; } = string.Empty;
         /// <summary>
         /// Constellation ID this system belongs to.
         /// </summary>
@@ -150,6 +153,16 @@ namespace Echoes.API.Models.DTOs.Server
         /// List of asteroid belts in this solar system.
         /// </summary>
         public List<AsteroidBeltConfigDto> AsteroidBelts { get; set; } = new List<AsteroidBeltConfigDto>();
+
+        /// <summary>
+        /// List of anomalies in this solar system.
+        /// </summary>
+        public List<AnomalyConfigDto> Anomalies { get; set; } = new List<AnomalyConfigDto>();
+
+        /// <summary>
+        /// List of wormholes in this solar system.
+        /// </summary>
+        public List<WormholeConfigDto> Wormholes { get; set; } = new List<WormholeConfigDto>();
     }
 
     /// <summary>
@@ -252,6 +265,14 @@ namespace Echoes.API.Models.DTOs.Server
         /// Indicates whether the stargate is operational.
         /// </summary>
         public bool IsOperational { get; set; }
+        /// <summary>
+        /// Cost in resources or currency to use the stargate for a jump.
+        /// </summary>
+        public int JumpCost { get; set; }
+        /// <summary>
+        /// Model identifier or name for the stargate.
+        /// </summary>
+        public string Model { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -386,6 +407,31 @@ namespace Echoes.API.Models.DTOs.Server
         /// List of resources available in this asteroid belt.
         /// </summary>
         public List<ResourceConfigDto> Resources { get; set; } = new List<ResourceConfigDto>();
+    }
+    /// <summary>
+    /// Configuration data for anomalies within a solar system.
+    /// </summary>
+    public class AnomalyConfigDto
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Difficulty { get; set; } = string.Empty;
+        public long PositionX { get; set; }
+        public long PositionY { get; set; }
+        public long PositionZ { get; set; }
+    }
+    /// <summary>
+    /// Configuration data for wormholes within a solar system.
+    /// </summary>
+    public class WormholeConfigDto
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public Guid? TargetSystemId { get; set; }
+        public long PositionX { get; set; }
+        public long PositionY { get; set; }
+        public long PositionZ { get; set; }
     }
 
     /// <summary>
