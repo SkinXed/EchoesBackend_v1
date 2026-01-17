@@ -660,7 +660,7 @@ namespace Echoes.API.Controllers.Management
                 region.Name, region.Constellations.Count, allSystems.Count,
                 regionalConfig.TotalPlanets, regionalConfig.TotalStargates, regionalConfig.TotalStations);
 
-            return Ok(new ServerRegionalClusterConfigDto { Config = regionalConfig });
+            return Ok(new ServerRegionalClusterConfigResponseDto { Config = regionalConfig });
         }
     }
 }

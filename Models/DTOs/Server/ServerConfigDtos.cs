@@ -443,10 +443,16 @@ namespace Echoes.API.Models.DTOs.Server
         /// List of all solar systems in this region.
         /// </summary>
         public List<ServerSystemConfigDto> Systems { get; set; } = new List<ServerSystemConfigDto>();
+    }
 
+    /// <summary>
+    /// Response wrapper for regional cluster configuration.
+    /// </summary>
+    public class ServerRegionalClusterConfigResponseDto
+    {
         /// <summary>
-        /// Configuration wrapper for serialization.
+        /// Configuration data for the regional cluster.
         /// </summary>
-        public ServerRegionalClusterConfigDto? Config { get; set; }
+        public ServerRegionalClusterConfigDto Config { get; set; } = new ServerRegionalClusterConfigDto();
     }
 }
