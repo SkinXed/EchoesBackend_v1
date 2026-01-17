@@ -364,16 +364,17 @@ namespace Echoes.API.Controllers.Management
                     "Config requested by {InstanceId} (Type: {ServerType}) for System/Region: {LocationId}",
                     request.InstanceId, request.ServerType, request.SolarSystemId ?? request.RegionId?.ToString());
 
-                switch (request.ServerType.ToLower())
+                if (string.Equals(request.ServerType, "DedicatedSystem", StringComparison.OrdinalIgnoreCase))
                 {
-                    case "dedicatedsystem":
-                        return await GetDedicatedSystemConfig(request);
-
-                    case "regionalcluster":
-                        return await GetRegionalClusterConfig(request);
-
-                    default:
-                        return BadRequest(new { error = "ServerType must be 'DedicatedSystem' or 'RegionalCluster'" });
+                    return await GetDedicatedSystemConfig(request);
+                }
+                else if (string.Equals(request.ServerType, "RegionalCluster", StringComparison.OrdinalIgnoreCase))
+                {
+                    return await GetRegionalClusterConfig(request);
+                }
+                else
+                {
+                    return BadRequest(new { error = "ServerType must be 'DedicatedSystem' or 'RegionalCluster'" });
                 }
             }
             catch (Exception ex)
