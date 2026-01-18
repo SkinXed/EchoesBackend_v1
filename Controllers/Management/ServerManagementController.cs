@@ -402,7 +402,6 @@ namespace Echoes.API.Controllers.Management
                 .Include(s => s.Stargates).ThenInclude(sg => sg.DestinationSolarSystem)
                 .Include(s => s.Stations)
                 .Include(s => s.AsteroidBelts).ThenInclude(ab => ab.Resources)
-                // --- ВАЖНО: Загружаем аномалии и червоточины ---
                 .Include(s => s.Anomalies)
                 .Include(s => s.SourceWormholes)
                 .Include(s => s.TargetWormholes)
