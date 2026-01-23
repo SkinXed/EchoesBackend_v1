@@ -100,6 +100,11 @@ services.AddScoped<IUniverseGenerationService, UniverseGenerationService>();
 services.AddSingleton<IBackgroundGenerationService, BackgroundGenerationService>();
 services.AddScoped<IJwtTokenService, JwtTokenService>();
 
+// 3.4.1. Inventory services
+services.AddScoped<Echoes.API.Services.Inventory.IInventoryService, Echoes.API.Services.Inventory.InventoryService>();
+services.AddScoped<Echoes.API.Services.Inventory.IContainerService, Echoes.API.Services.Inventory.ContainerService>();
+services.AddScoped<Echoes.API.Services.Inventory.IInventoryOperationsService, Echoes.API.Services.Inventory.InventoryOperationsService>();
+
 // 3.5. Controllers
 services.AddControllers()
     .AddJsonOptions(options =>
@@ -134,10 +139,16 @@ services.AddCors(options =>
     });
 });
 
-// 3.7. Response Caching
+// 3.7. Memory Caching for Inventory
+services.AddMemoryCache(options =>
+{
+    options.SizeLimit = 1024 * 1024 * 100; // 100 MB
+});
+
+// 3.8. Response Caching
 services.AddResponseCaching();
 
-// 3.8. Rate Limiting
+// 3.9. Rate Limiting
 services.AddRateLimiter(options =>
 {
     options.AddFixedWindowLimiter("search-limit", limiterOptions =>
@@ -149,7 +160,7 @@ services.AddRateLimiter(options =>
     });
 });
 
-// 3.9. Swagger/OpenAPI
+// 3.10. Swagger/OpenAPI
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen(c =>
 {
@@ -205,7 +216,7 @@ services.AddSwaggerGen(c =>
     }
 });
 
-// 3.10. Health Checks
+// 3.11. Health Checks
 services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("Database");
 
