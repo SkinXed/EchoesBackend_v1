@@ -70,7 +70,7 @@
         Standard = 0,      // Обычные навыки
         Fleet = 1,         // Флотские навыки
         Corporation = 2,   // Корпоративные
-        Specialization = 3,// Специализация
+        Specialization = 3, // Специализация
         Capital = 4,       // Капитальные корабли
         Subsystem = 5,     // Субсистемы
         Implant = 6        // Импланты
