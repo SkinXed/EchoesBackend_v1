@@ -103,6 +103,7 @@ services.AddScoped<IJwtTokenService, JwtTokenService>();
 // 3.4.1. Inventory services
 services.AddScoped<Echoes.API.Services.Inventory.IInventoryService, Echoes.API.Services.Inventory.InventoryService>();
 services.AddScoped<Echoes.API.Services.Inventory.IContainerService, Echoes.API.Services.Inventory.ContainerService>();
+services.AddScoped<Echoes.API.Services.Inventory.IInventoryOperationsService, Echoes.API.Services.Inventory.InventoryOperationsService>();
 
 // 3.5. Controllers
 services.AddControllers()
