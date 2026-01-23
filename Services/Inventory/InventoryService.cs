@@ -22,7 +22,7 @@ namespace Echoes.API.Services.Inventory
                 .Include(a => a.ItemType)
                 .FirstOrDefaultAsync(a => a.AssetId == assetId);
 
-            return asset == null ? null : MapToAssetDto(asset);
+            return asset == null ? null : InventoryMapper.MapToAssetDto(asset);
         }
 
         public async Task<AssetListResponse> GetAssetsInContainerAsync(Guid containerId, int? locationFlag = null)
@@ -41,7 +41,7 @@ namespace Echoes.API.Services.Inventory
 
             return new AssetListResponse
             {
-                Assets = assets.Select(a => MapToAssetDto(a)).ToList(),
+                Assets = assets.Select(a => InventoryMapper.MapToAssetDto(a)).ToList(),
                 TotalCount = assets.Count,
                 TotalVolume = totalVolume
             };
@@ -58,7 +58,7 @@ namespace Echoes.API.Services.Inventory
 
             return new AssetListResponse
             {
-                Assets = assets.Select(a => MapToAssetDto(a)).ToList(),
+                Assets = assets.Select(a => InventoryMapper.MapToAssetDto(a)).ToList(),
                 TotalCount = assets.Count,
                 TotalVolume = totalVolume
             };
@@ -98,13 +98,13 @@ namespace Echoes.API.Services.Inventory
             };
 
             _context.Assets.Add(asset);
-
-            // Log the creation
-            await LogAssetActionAsync(asset.AssetId, actorId, "CREATE", null, request.LocationId, null, request.Quantity);
-
             await _context.SaveChangesAsync();
 
-            return MapToAssetDto(asset, itemType);
+            // Log the creation after save to ensure asset ID is generated
+            await LogAssetActionAsync(asset.AssetId, actorId, "CREATE", null, request.LocationId, null, request.Quantity);
+            await _context.SaveChangesAsync();
+
+            return InventoryMapper.MapToAssetDto(asset, itemType);
         }
 
         public async Task<AssetDto> UpdateAssetAsync(Guid assetId, UpdateAssetRequest request, Guid actorId)
@@ -153,7 +153,7 @@ namespace Echoes.API.Services.Inventory
 
             await _context.SaveChangesAsync();
 
-            return MapToAssetDto(asset);
+            return InventoryMapper.MapToAssetDto(asset);
         }
 
         public async Task<bool> DeleteAssetAsync(Guid assetId, Guid actorId)
@@ -292,24 +292,5 @@ namespace Echoes.API.Services.Inventory
             _context.AssetLogs.Add(log);
         }
 
-        private static AssetDto MapToAssetDto(Asset asset, ItemTypeEntity? itemType = null)
-        {
-            return new AssetDto
-            {
-                AssetId = asset.AssetId,
-                TypeId = asset.TypeId,
-                TypeName = itemType?.Name ?? asset.ItemType?.Name,
-                OwnerId = asset.OwnerId,
-                LocationId = asset.LocationId,
-                LocationFlag = asset.LocationFlag,
-                Quantity = asset.Quantity,
-                IsSingleton = asset.IsSingleton,
-                IsOnline = asset.IsOnline,
-                IsBpc = asset.IsBpc,
-                Damage = asset.Damage,
-                CreatedAt = asset.CreatedAt,
-                UpdatedAt = asset.UpdatedAt
-            };
-        }
     }
 }

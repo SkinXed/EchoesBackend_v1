@@ -19,7 +19,7 @@ namespace Echoes.API.Services.Inventory
         public async Task<ContainerDto?> GetContainerAsync(Guid containerId)
         {
             var container = await _context.Containers.FindAsync(containerId);
-            return container == null ? null : MapToContainerDto(container);
+            return container == null ? null : InventoryMapper.MapToContainerDto(container);
         }
 
         public async Task<ContainerContentsDto?> GetContainerContentsAsync(Guid containerId)
@@ -41,24 +41,9 @@ namespace Echoes.API.Services.Inventory
 
             return new ContainerContentsDto
             {
-                Container = MapToContainerDto(container),
-                Assets = assets.Select(a => new AssetDto
-                {
-                    AssetId = a.AssetId,
-                    TypeId = a.TypeId,
-                    TypeName = a.ItemType?.Name,
-                    OwnerId = a.OwnerId,
-                    LocationId = a.LocationId,
-                    LocationFlag = a.LocationFlag,
-                    Quantity = a.Quantity,
-                    IsSingleton = a.IsSingleton,
-                    IsOnline = a.IsOnline,
-                    IsBpc = a.IsBpc,
-                    Damage = a.Damage,
-                    CreatedAt = a.CreatedAt,
-                    UpdatedAt = a.UpdatedAt
-                }).ToList(),
-                ChildContainers = childContainers.Select(MapToContainerDto).ToList()
+                Container = InventoryMapper.MapToContainerDto(container),
+                Assets = assets.Select(a => InventoryMapper.MapToAssetDto(a)).ToList(),
+                ChildContainers = childContainers.Select(c => InventoryMapper.MapToContainerDto(c)).ToList()
             };
         }
 
@@ -68,7 +53,7 @@ namespace Echoes.API.Services.Inventory
                 .Where(c => c.OwnerId == ownerId)
                 .ToListAsync();
 
-            return containers.Select(MapToContainerDto).ToList();
+            return containers.Select(c => InventoryMapper.MapToContainerDto(c)).ToList();
         }
 
         public async Task<ContainerDto> CreateContainerAsync(CreateContainerRequest request)
@@ -87,7 +72,7 @@ namespace Echoes.API.Services.Inventory
             _context.Containers.Add(container);
             await _context.SaveChangesAsync();
 
-            return MapToContainerDto(container);
+            return InventoryMapper.MapToContainerDto(container);
         }
 
         public async Task<ContainerDto> UpdateContainerAsync(Guid containerId, UpdateContainerRequest request)
@@ -117,7 +102,7 @@ namespace Echoes.API.Services.Inventory
 
             await _context.SaveChangesAsync();
 
-            return MapToContainerDto(container);
+            return InventoryMapper.MapToContainerDto(container);
         }
 
         public async Task<bool> DeleteContainerAsync(Guid containerId)
@@ -141,21 +126,5 @@ namespace Echoes.API.Services.Inventory
             return true;
         }
 
-        private static ContainerDto MapToContainerDto(Container container)
-        {
-            return new ContainerDto
-            {
-                ContainerId = container.ContainerId,
-                ParentContainerId = container.ParentContainerId,
-                OwnerId = container.OwnerId,
-                ContainerType = container.ContainerType,
-                Name = container.Name,
-                MaxVolume = container.MaxVolume,
-                UsedVolume = container.UsedVolume,
-                IsAccessible = container.IsAccessible,
-                AccessLevel = container.AccessLevel,
-                CreatedAt = container.CreatedAt
-            };
-        }
     }
 }

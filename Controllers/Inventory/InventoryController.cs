@@ -164,15 +164,15 @@ namespace Echoes.API.Controllers.Inventory
 
         private Guid GetActorId()
         {
-            // In a real implementation, extract from JWT claims
-            // For now, return a default actor ID
-            var userIdClaim = User.FindFirst("sub") ?? User.FindFirst("userId");
+            // Extract actor ID from JWT claims
+            var userIdClaim = User.FindFirst("sub") ?? User.FindFirst("userId") ?? User.FindFirst("id");
             if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
             {
                 return userId;
             }
 
-            return Guid.Empty;
+            // If no valid user claim, throw unauthorized exception
+            throw new UnauthorizedAccessException("Unable to determine actor ID from authentication token");
         }
     }
 }
