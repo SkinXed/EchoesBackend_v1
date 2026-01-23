@@ -41,7 +41,7 @@ namespace Echoes.API.Services.Inventory
 
             return new AssetListResponse
             {
-                Assets = assets.Select(MapToAssetDto).ToList(),
+                Assets = assets.Select(a => MapToAssetDto(a)).ToList(),
                 TotalCount = assets.Count,
                 TotalVolume = totalVolume
             };
@@ -58,7 +58,7 @@ namespace Echoes.API.Services.Inventory
 
             return new AssetListResponse
             {
-                Assets = assets.Select(MapToAssetDto).ToList(),
+                Assets = assets.Select(a => MapToAssetDto(a)).ToList(),
                 TotalCount = assets.Count,
                 TotalVolume = totalVolume
             };
