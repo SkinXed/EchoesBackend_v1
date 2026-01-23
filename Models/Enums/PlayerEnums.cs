@@ -1,4 +1,4 @@
-﻿namespace Echoes.API.Models.Enums
+﻿namespace Nebula.Inventory.API.Models.Enums
 {
     /// <summary>
     /// Расы персонажей
