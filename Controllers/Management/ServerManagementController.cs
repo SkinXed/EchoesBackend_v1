@@ -685,8 +685,8 @@ namespace Echoes.API.Controllers.Management
             };
 
             _logger.LogInformation(
-                "Sending RegionalCluster config for {RegionName}: {ConstellationCount} constellations, " +
-                "{SystemCount} systems, {PlanetCount} planets, {StargateCount} stargates, {StationCount} stations",
+                "Sending RegionalCluster config for {RegionName}: {ConstellationCount} constелляций, " +
+                "{SystemCount} систем, {PlanetCount} планет, {StargateCount} старательных врат, {StationCount} станций",
                 region.Name, region.Constellations.Count, allSystems.Count,
                 regionalConfig.TotalPlanets, regionalConfig.TotalStargates, regionalConfig.TotalStations);
 
