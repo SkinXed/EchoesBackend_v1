@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Echoes.Models.Enums;
+using Echoes.API.Models.Enums;
 
-namespace Echoes.Models.Entities
+namespace Echoes.API.Models.Entities.Character
 {
     /// <summary>
     /// Основная информация об аккаунте
@@ -152,10 +152,19 @@ namespace Echoes.Models.Entities
         
         // Навигационные свойства
         public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+        public virtual ICollection<AccountSession> Sessions { get; set; } = new List<AccountSession>();
         public virtual ICollection<AccountActivity> Activities { get; set; } = new List<AccountActivity>();
         public virtual ICollection<AccountBan> Bans { get; set; } = new List<AccountBan>();
         public virtual ICollection<ApiKey> ApiKeys { get; set; } = new List<ApiKey>();
         public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
+        
+        // Дополнительное свойство для совместимости с кодом
+        [NotMapped]
+        public Guid Id
+        {
+            get => AccountId;
+            set => AccountId = value;
+        }
         
         // Методы
         [NotMapped]
@@ -702,5 +711,66 @@ namespace Echoes.Models.Entities
         
         [ForeignKey("MessageId")]
         public virtual TicketMessage? Message { get; set; }
+    }
+
+    /// <summary>
+    /// Сессии аккаунта для аутентификации
+    /// </summary>
+    [Table("account_sessions")]
+    public class AccountSession
+    {
+        [Key]
+        [Column("id")]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        
+        [Required]
+        [Column("account_id")]
+        public Guid AccountId { get; set; }
+        
+        [Column("character_id")]
+        public Guid? CharacterId { get; set; }
+        
+        [Required]
+        [Column("session_token")]
+        public string SessionToken { get; set; } = string.Empty;
+        
+        [Required]
+        [Column("refresh_token")]
+        public string RefreshToken { get; set; } = string.Empty;
+        
+        [Column("ip_address")]
+        public string? IPAddress { get; set; }
+        
+        [Column("user_agent")]
+        public string? UserAgent { get; set; }
+        
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        [Column("expires_at")]
+        public DateTime ExpiresAt { get; set; }
+        
+        [Column("refresh_token_expires_at")]
+        public DateTime RefreshTokenExpiresAt { get; set; }
+        
+        [Column("last_activity")]
+        public DateTime? LastActivity { get; set; }
+        
+        [Column("is_revoked")]
+        public bool IsRevoked { get; set; } = false;
+        
+        // Навигационные свойства
+        [ForeignKey("AccountId")]
+        public virtual Account Account { get; set; } = null!;
+        
+        public bool IsExpired()
+        {
+            return ExpiresAt < DateTime.UtcNow || IsRevoked;
+        }
+        
+        public bool IsRefreshTokenExpired()
+        {
+            return RefreshTokenExpiresAt < DateTime.UtcNow || IsRevoked;
+        }
     }
 }
