@@ -453,7 +453,7 @@ namespace Echoes.API.Data
 
 // Все таблицы будут в схеме "public" по умолчанию
 // Можно сгруппировать по модулям
-// Account table name is defined by [Table("accounts")] attribute on the entity
+// Account table name is defined by the [Table("accounts")] attribute on the entity.
             modelBuilder.Entity<Character>().ToTable("Characters");
             modelBuilder.Entity<CharacterLocation>().ToTable("CharacterLocations");
             modelBuilder.Entity<AccountSession>().ToTable("AccountSessions");
