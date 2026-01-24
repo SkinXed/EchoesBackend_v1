@@ -1,4 +1,4 @@
-﻿namespace Nebula.Inventory.API.Models.Enums
+﻿namespace Echoes.API.Models.Enums
 {
     /// <summary>
     /// Расы персонажей
@@ -190,5 +190,56 @@
         Paused = 2,
         Completed = 3,
         Cancelled = 4
+    }
+    
+    /// <summary>
+    /// Типы транзакций кошелька
+    /// </summary>
+    public enum WalletTransactionType : int
+    {
+        Deposit = 0,
+        Withdrawal = 1,
+        MarketBuy = 2,
+        MarketSell = 3,
+        Contract = 4,
+        Bounty = 5,
+        Mission = 6,
+        Corporation = 7,
+        Insurance = 8,
+        Manufacturing = 9,
+        Research = 10,
+        PlayerTrade = 11,
+        Duel = 12,
+        KillRight = 13
+    }
+    
+    /// <summary>
+    /// Типы контрактов
+    /// </summary>
+    public enum ContractType : int
+    {
+        ItemExchange = 0,
+        Auction = 1,
+        Courier = 2,
+        Loan = 3,
+        Manufacturing = 4,
+        Research = 5
+    }
+    
+    /// <summary>
+    /// Статусы контрактов
+    /// </summary>
+    public enum ContractStatus : int
+    {
+        Outstanding = 0,
+        InProgress = 1,
+        FinishedIssuer = 2,
+        FinishedContractor = 3,
+        Finished = 4,
+        Cancelled = 5,
+        Rejected = 6,
+        Failed = 7,
+        Deleted = 8,
+        Reversed = 9
     }
 }
