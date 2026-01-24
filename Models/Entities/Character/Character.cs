@@ -1,5 +1,6 @@
 ﻿using Echoes.API.Models.Entities.Inventory;
 using Echoes.API.Models.Entities.Universe;
+using Echoes.API.Models.Enums;
 //using Echoes.API.Models.Entities.Corporation; // Добавьте эту строку
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -54,6 +55,31 @@ namespace Echoes.API.Models.Entities.Character
         public bool IsOnline { get; set; } = false;
         public bool IsDocked { get; set; } = true;
         public bool InWarp { get; set; } = false;
+        
+        // Дополнительные атрибуты персонажа (EVE Online)
+        public int Perception { get; set; } = 20;
+        public int Memory { get; set; } = 20;
+        public int Willpower { get; set; } = 20;
+        public int Intelligence { get; set; } = 20;
+        public int Charisma { get; set; } = 20;
+        
+        // Статистика
+        public decimal TotalISKEarned { get; set; } = 0;
+        public decimal TotalISKLost { get; set; } = 0;
+        public int TotalShipsDestroyed { get; set; } = 0;
+        public int TotalShipsLost { get; set; } = 0;
+        public int TotalKills { get; set; } = 0;
+        public int TotalDeaths { get; set; } = 0;
+        
+        // Клоны
+        public Guid? ActiveCloneId { get; set; }
+        public int JumpCloneCount { get; set; } = 0;
+        public int MaxJumpClones { get; set; } = 1;
+        
+        // Статус
+        public DateTime? LastLogin { get; set; }
+        public DateTime? LastLogout { get; set; }
+        public long TotalPlayTimeSeconds { get; set; } = 0;
 
         // Навигационные свойства
         public virtual Account Account { get; set; } = null!;
@@ -63,9 +89,68 @@ namespace Echoes.API.Models.Entities.Character
         public virtual ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
         public virtual ICollection<CharacterImplant> Implants { get; set; } = new List<CharacterImplant>();
         public virtual ICollection<CharacterStanding> Standings { get; set; } = new List<CharacterStanding>();
+        
+        // Новые навигационные свойства для расширенных функций
+        public virtual ICollection<CharacterWallet> Wallets { get; set; } = new List<CharacterWallet>();
+        public virtual ICollection<CharacterSkillEnhanced> SkillsEnhanced { get; set; } = new List<CharacterSkillEnhanced>();
+        public virtual ICollection<CharacterImplantEnhanced> ImplantsEnhanced { get; set; } = new List<CharacterImplantEnhanced>();
+        public virtual ICollection<CharacterClone> Clones { get; set; } = new List<CharacterClone>();
+        public virtual ICollection<TrainingQueue> TrainingQueues { get; set; } = new List<TrainingQueue>();
+        public virtual ICollection<CharacterContract> IssuedContracts { get; set; } = new List<CharacterContract>();
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime LastLogin { get; internal set; }
         //public virtual ICollection<Corporation.Corporation>? Corporations { get; set; } // Если CEO
+        
+        // Методы
+        public int GetAttribute(CharacterAttribute attribute)
+        {
+            return attribute switch
+            {
+                CharacterAttribute.Perception => Perception,
+                CharacterAttribute.Memory => Memory,
+                CharacterAttribute.Willpower => Willpower,
+                CharacterAttribute.Intelligence => Intelligence,
+                CharacterAttribute.Charisma => Charisma,
+                _ => 0
+            };
+        }
+        
+        public void SetAttribute(CharacterAttribute attribute, int value)
+        {
+            switch (attribute)
+            {
+                case CharacterAttribute.Perception:
+                    Perception = Math.Clamp(value, 1, 50);
+                    break;
+                case CharacterAttribute.Memory:
+                    Memory = Math.Clamp(value, 1, 50);
+                    break;
+                case CharacterAttribute.Willpower:
+                    Willpower = Math.Clamp(value, 1, 50);
+                    break;
+                case CharacterAttribute.Intelligence:
+                    Intelligence = Math.Clamp(value, 1, 50);
+                    break;
+                case CharacterAttribute.Charisma:
+                    Charisma = Math.Clamp(value, 1, 50);
+                    break;
+            }
+        }
+        
+        public decimal GetTotalWalletBalance()
+        {
+            return Wallets?.Sum(w => w.Balance) ?? 0;
+        }
+        
+        public decimal GetWalletBalance(CurrencyType currencyType)
+        {
+            return Wallets?.FirstOrDefault(w => w.CurrencyType == currencyType)?.Balance ?? 0;
+        }
+        
+        public bool CanAfford(decimal amount, CurrencyType currencyType = CurrencyType.ISK)
+        {
+            return GetWalletBalance(currencyType) >= amount;
+        }
     }
 
     [Table("character_skills")]
