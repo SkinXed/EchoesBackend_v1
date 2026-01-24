@@ -672,42 +672,45 @@ async Task PrintDetailedStatsAsync(IUniverseGenerator universeGenerator)
         var method = universeGenerator.GetType().GetMethod("GetDetailedUniverseStatsAsync");
         if (method != null)
         {
-            var detailedStatsTask = (Task)method.Invoke(universeGenerator, null);
-            await detailedStatsTask;
-
-            // Получаем результат через отражение
-            var detailedStats = detailedStatsTask.GetType().GetProperty("Result")?.GetValue(detailedStatsTask);
-
-            if (detailedStats != null)
+            var detailedStatsTask = (Task?)method.Invoke(universeGenerator, null);
+            if (detailedStatsTask != null)
             {
-                // Проверяем свойства через отражение
-                var anomalyTypesProp = detailedStats.GetType().GetProperty("AnomalyTypes");
-                if (anomalyTypesProp != null)
-                {
-                    var anomalyTypes = anomalyTypesProp.GetValue(detailedStats) as System.Collections.IEnumerable;
-                    if (anomalyTypes != null && anomalyTypes.Cast<object>().Any())
-                    {
-                        Console.WriteLine("📈 ANOMALY TYPES:");
-                        foreach (dynamic type in anomalyTypes)
-                        {
-                            Console.WriteLine($"   • {type.Type}: {type.Count}");
-                        }
-                        Console.WriteLine();
-                    }
-                }
+                await detailedStatsTask;
 
-                var wormholeClassesProp = detailedStats.GetType().GetProperty("WormholeClasses");
-                if (wormholeClassesProp != null)
+                // Получаем результат через отражение
+                var detailedStats = detailedStatsTask.GetType().GetProperty("Result")?.GetValue(detailedStatsTask);
+
+                if (detailedStats != null)
                 {
-                    var wormholeClasses = wormholeClassesProp.GetValue(detailedStats) as System.Collections.IEnumerable;
-                    if (wormholeClasses != null && wormholeClasses.Cast<object>().Any())
+                    // Проверяем свойства через отражение
+                    var anomalyTypesProp = detailedStats.GetType().GetProperty("AnomalyTypes");
+                    if (anomalyTypesProp != null)
                     {
-                        Console.WriteLine("🌀 WORMHOLE CLASSES:");
-                        foreach (dynamic whClass in wormholeClasses)
+                        var anomalyTypes = anomalyTypesProp.GetValue(detailedStats) as System.Collections.IEnumerable;
+                        if (anomalyTypes != null && anomalyTypes.Cast<object>().Any())
                         {
-                            Console.WriteLine($"   • {whClass.Type}: {whClass.Count}");
+                            Console.WriteLine("📈 ANOMALY TYPES:");
+                            foreach (dynamic type in anomalyTypes)
+                            {
+                                Console.WriteLine($"   • {type.Type}: {type.Count}");
+                            }
+                            Console.WriteLine();
                         }
-                        Console.WriteLine();
+                    }
+
+                    var wormholeClassesProp = detailedStats.GetType().GetProperty("WormholeClasses");
+                    if (wormholeClassesProp != null)
+                    {
+                        var wormholeClasses = wormholeClassesProp.GetValue(detailedStats) as System.Collections.IEnumerable;
+                        if (wormholeClasses != null && wormholeClasses.Cast<object>().Any())
+                        {
+                            Console.WriteLine("🌀 WORMHOLE CLASSES:");
+                            foreach (dynamic whClass in wormholeClasses)
+                            {
+                                Console.WriteLine($"   • {whClass.Type}: {whClass.Count}");
+                            }
+                            Console.WriteLine();
+                        }
                     }
                 }
             }

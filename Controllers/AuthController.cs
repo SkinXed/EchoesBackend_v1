@@ -277,6 +277,9 @@ namespace Echoes.API.Controllers
 
                 if (session == null)
                     return Unauthorized(new { error = "Недействительный refresh token" });
+                
+                if (session.Character == null)
+                    return Unauthorized(new { error = "Персонаж не найден" });
 
                 // Создаем новую сессию
                 var newSession = new AccountSession

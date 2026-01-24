@@ -2232,7 +2232,7 @@ namespace Echoes.API.Services.UniverseGeneration
         private StationType GetRandomStationType()
         {
             var types = Enum.GetValues(typeof(StationType));
-            return (StationType)types.GetValue(_random.Next(types.Length));
+            return (StationType)(types.GetValue(_random.Next(types.Length)) ?? StationType.TradingHub);
         }
 
         private string GetStationServices(float security)

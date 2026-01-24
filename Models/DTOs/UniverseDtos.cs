@@ -18,25 +18,25 @@ namespace Echoes.Server.Models.DTOs
         public Guid SolarSystemId { get; set; }
         public AnomalyType Type { get; set; }
         public AnomalyDifficulty Difficulty { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public long PositionX { get; set; }
         public long PositionY { get; set; }
         public long PositionZ { get; set; }
         public double Radius { get; set; }
-        public string Signature { get; set; }
+        public string Signature { get; set; } = string.Empty;
         public double Durability { get; set; }
         public double CurrentDurability { get; set; }
         public int ScanStrength { get; set; }
         public DateTime ExpiresAt { get; set; }
-        public string RewardData { get; set; }
+        public string RewardData { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
 
         /// <summary>
         /// Создать DTO из сущности
         /// </summary>
-        public static AnomalyDto FromEntity(Models.Entities.Universe.Anomaly entity)
+        public static AnomalyDto? FromEntity(Models.Entities.Universe.Anomaly? entity)
         {
             if (entity == null) return null;
 
@@ -72,9 +72,9 @@ namespace Echoes.Server.Models.DTOs
         public Guid Id { get; set; }
         public Guid SourceSystemId { get; set; }
         public Guid TargetSystemId { get; set; }
-        public string SourceSystemName { get; set; }
-        public string TargetSystemName { get; set; }
-        public string Name { get; set; }
+        public string SourceSystemName { get; set; } = string.Empty;
+        public string TargetSystemName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public WormholeClass Class { get; set; }
         public double MaxMass { get; set; }
         public double RemainingMass { get; set; }
@@ -85,7 +85,7 @@ namespace Echoes.Server.Models.DTOs
         public long PositionZ { get; set; }
         public double Radius { get; set; }
         public double Stability { get; set; }
-        public string Signature { get; set; }
+        public string Signature { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? LastUsedAt { get; set; }
         public int TotalPasses { get; set; }
@@ -106,8 +106,8 @@ namespace Echoes.Server.Models.DTOs
                 Id = entity.Id,
                 SourceSystemId = entity.SourceSystemId,
                 TargetSystemId = entity.TargetSystemId,
-                SourceSystemName = sourceSystemName,
-                TargetSystemName = targetSystemName,
+                SourceSystemName = sourceSystemName ?? string.Empty,
+                TargetSystemName = targetSystemName ?? string.Empty,
                 Name = entity.Name,
                 Class = entity.Class,
                 MaxMass = entity.MaxMass,
@@ -136,12 +136,12 @@ namespace Echoes.Server.Models.DTOs
     public class SolarSystemDto
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public long PositionX { get; set; }
         public long PositionY { get; set; }
         public long PositionZ { get; set; }
         public float SecurityStatus { get; set; }
-        public string StarClass { get; set; }
+        public string StarClass { get; set; } = string.Empty;
         public double StarRadius { get; set; } // Оставляем это свойство в DTO
         public List<PlanetDto> Planets { get; set; } = new();
         public List<StargateDto> Stargates { get; set; } = new();
@@ -163,7 +163,7 @@ namespace Echoes.Server.Models.DTOs
         /// <summary>
         /// Создать DTO из сущности
         /// </summary>
-        public static SolarSystemDto FromEntity(Echoes.API.Models.Entities.Universe.SolarSystem entity)
+        public static SolarSystemDto? FromEntity(Echoes.API.Models.Entities.Universe.SolarSystem? entity)
         {
             if (entity == null) return null;
 
@@ -184,7 +184,11 @@ namespace Echoes.Server.Models.DTOs
             {
                 foreach (var planet in entity.Planets)
                 {
-                    dto.Planets.Add(PlanetDto.FromEntity(planet));
+                    var planetDto = PlanetDto.FromEntity(planet);
+                    if (planetDto != null)
+                    {
+                        dto.Planets.Add(planetDto);
+                    }
                 }
             }
 
@@ -193,7 +197,11 @@ namespace Echoes.Server.Models.DTOs
             {
                 foreach (var gate in entity.Stargates)
                 {
-                    dto.Stargates.Add(StargateDto.FromEntity(gate));
+                    var gateDto = StargateDto.FromEntity(gate);
+                    if (gateDto != null)
+                    {
+                        dto.Stargates.Add(gateDto);
+                    }
                 }
             }
 
@@ -202,7 +210,11 @@ namespace Echoes.Server.Models.DTOs
             {
                 foreach (var anomaly in entity.Anomalies)
                 {
-                    dto.Anomalies.Add(AnomalyDto.FromEntity(anomaly));
+                    var anomalyDto = AnomalyDto.FromEntity(anomaly);
+                    if (anomalyDto != null)
+                    {
+                        dto.Anomalies.Add(anomalyDto);
+                    }
                 }
                 dto.ActiveAnomaliesCount = entity.Anomalies.Count(a => a.IsActive);
             }
@@ -212,7 +224,11 @@ namespace Echoes.Server.Models.DTOs
             {
                 foreach (var wormhole in entity.SourceWormholes)
                 {
-                    dto.Wormholes.Add(WormholeDto.FromEntity(wormhole, entity.Name, null));
+                    var wormholeDto = WormholeDto.FromEntity(wormhole, entity.Name, null);
+                    if (wormholeDto != null)
+                    {
+                        dto.Wormholes.Add(wormholeDto);
+                    }
                 }
                 dto.ActiveWormholesCount = entity.SourceWormholes.Count(w => w.IsActive);
             }
@@ -225,12 +241,12 @@ namespace Echoes.Server.Models.DTOs
     public class PlanetDto
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
         public double Radius { get; set; }
         public long OrbitDistance { get; set; }
 
-        public static PlanetDto FromEntity(Planet entity)
+        public static PlanetDto? FromEntity(Planet? entity)
         {
             return entity == null ? null : new PlanetDto
             {
@@ -248,19 +264,19 @@ namespace Echoes.Server.Models.DTOs
         public Guid Id { get; set; }
         public Guid SolarSystemId { get; set; }
         public Guid TargetSystemId { get; set; }
-        public string TargetSystemName { get; set; }
+        public string TargetSystemName { get; set; } = string.Empty;
         public long PositionX { get; set; }
         public long PositionY { get; set; }
         public long PositionZ { get; set; }
 
-        public static StargateDto FromEntity(Echoes.API.Models.Entities.Universe.Stargate entity)
+        public static StargateDto? FromEntity(Echoes.API.Models.Entities.Universe.Stargate? entity)
         {
             return entity == null ? null : new StargateDto
             {
                 Id = entity.Id,
                 SolarSystemId = entity.SourceSolarSystemId,
                 TargetSystemId = entity.DestinationSolarSystemId,
-                TargetSystemName = entity.DestinationSolarSystem?.Name,
+                TargetSystemName = entity.DestinationSolarSystem?.Name ?? string.Empty,
                 PositionX = entity.PositionX,
                 PositionY = entity.PositionY,
                 PositionZ = entity.PositionZ
