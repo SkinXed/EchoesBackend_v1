@@ -1,9 +1,9 @@
 namespace EchoesOfImperial.Shared.DTOs;
 
 /// <summary>
-/// Inventory item DTO for web inventory display
+/// Web inventory item DTO for shop purchases and redemptions display
 /// </summary>
-public class InventoryItemDTO
+public class WebInventoryItemDTO
 {
     public Guid Id { get; set; } // Inventory record ID (not shop item ID!)
     public string ItemName { get; set; } = string.Empty;

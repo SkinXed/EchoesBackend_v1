@@ -32,7 +32,7 @@ public class InventoryController : ControllerBase
     /// <param name="includeRedeemed">Include already redeemed items (default: false)</param>
     /// <returns>List of inventory items</returns>
     [HttpGet]
-    public async Task<ActionResult<List<InventoryItemDTO>>> GetMyInventory([FromQuery] bool includeRedeemed = false)
+    public async Task<ActionResult<List<WebInventoryItemDTO>>> GetMyInventory([FromQuery] bool includeRedeemed = false)
     {
         try
         {
@@ -64,7 +64,7 @@ public class InventoryController : ControllerBase
 
             var items = await query
                 .OrderByDescending(i => i.AcquiredDate)
-                .Select(i => new InventoryItemDTO
+                .Select(i => new WebInventoryItemDTO
                 {
                     Id = i.Id,
                     ItemName = i.ShopItem != null ? i.ShopItem.Name : "Unknown Item",
