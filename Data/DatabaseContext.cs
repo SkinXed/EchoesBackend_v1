@@ -52,6 +52,7 @@ namespace Echoes.API.Data
         public DbSet<ShipFitting> ShipFittings { get; set; }
         public DbSet<FittedModule> FittedModules { get; set; }
         public DbSet<AssetLog> AssetLogs { get; set; }
+        public DbSet<PlayerInventoryItem> PlayerInventoryItems { get; set; }
         
         // Shop entities
         public DbSet<ShopItem> ShopItems { get; set; }
