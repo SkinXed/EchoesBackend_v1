@@ -205,6 +205,9 @@ services.AddSwaggerGen(c =>
         }
     });
 
+    // Fix duplicate schema names by using full type names
+    c.CustomSchemaIds(type => type.ToString());
+
     // Add JWT support to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
