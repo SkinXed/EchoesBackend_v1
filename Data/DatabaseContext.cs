@@ -4,6 +4,7 @@ using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Models.Entities.Universe;
 using Echoes.API.Models.Entities.Inventory;
+using Echoes.API.Models.Enums;
 using Echoes.Server.Models.Entities.Universe;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +42,7 @@ namespace Echoes.API.Data
 
         // Inventory entities
         public DbSet<ItemCategory> ItemCategories { get; set; }
-        public DbSet<ItemGroup> ItemGroups { get; set; }
+        public DbSet<Echoes.API.Models.Entities.Inventory.ItemGroup> ItemGroups { get; set; }
         public DbSet<ItemTypeEntity> ItemTypesInventory { get; set; }
         public DbSet<Ship> Ships { get; set; }
         public DbSet<Module> Modules { get; set; }
@@ -449,8 +450,8 @@ modelBuilder.Entity<Account>().ToTable("Accounts");
                 .HasDefaultValueSql("NOW()");
 
             modelBuilder.Entity<Account>()
-                .Property(a => a.IsActive)
-                .HasDefaultValue(true);
+                .Property(a => a.AccountStatus)
+                .HasDefaultValue(AccountStatus.Active);
 
             modelBuilder.Entity<Character>()
                 .Property(c => c.CreatedAt)
@@ -489,7 +490,7 @@ modelBuilder.Entity<Account>().ToTable("Accounts");
             });
 
             // ItemGroup configuration
-            modelBuilder.Entity<ItemGroup>(entity =>
+            modelBuilder.Entity<Echoes.API.Models.Entities.Inventory.ItemGroup>(entity =>
             {
                 entity.HasKey(e => e.GroupId);
                 entity.HasIndex(e => e.Name).IsUnique();

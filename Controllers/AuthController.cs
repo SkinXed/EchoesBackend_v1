@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Echoes.API.Data;
 using Echoes.API.Models.DTOs;
 using Echoes.API.Models.Entities.Character;
+using Echoes.API.Models.Enums;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -51,14 +52,14 @@ namespace Echoes.API.Controllers
                     Id = Guid.NewGuid(),
                     Username = request.Username,
                     Email = request.Email,
-                    //CreatedAt = DateTime.UtcNow,
-                    IsActive = true
+                    AccountStatus = AccountStatus.Active,
+                    IsEmailVerified = true // Set to true for now, or implement email verification
                 };
 
                 // Хэширование пароля
                 CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                account.PasswordHash = passwordHash;
-                account.PasswordSalt = passwordSalt;
+                account.PasswordHash = Convert.ToBase64String(passwordHash);
+                account.PasswordSalt = Convert.ToBase64String(passwordSalt);
 
                 // Создание персонажа
                 var character = new Character
@@ -128,10 +129,10 @@ namespace Echoes.API.Controllers
                     .FirstOrDefaultAsync(a => a.Email == request.EmailOrUsername ||
                                              a.Username == request.EmailOrUsername);
 
-                if (account == null || !VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
+                if (account == null || !VerifyPasswordHash(request.Password, Convert.FromBase64String(account.PasswordHash), Convert.FromBase64String(account.PasswordSalt)))
                     return Unauthorized(new { error = "Неверные учетные данные" });
 
-                if (!account.IsActive)
+                if (!account.IsActive())
                     return Unauthorized(new { error = "Аккаунт деактивирован" });
 
                 // Получение персонажа

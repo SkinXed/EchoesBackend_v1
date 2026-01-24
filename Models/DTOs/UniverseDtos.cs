@@ -96,8 +96,8 @@ namespace Echoes.Server.Models.DTOs
         /// <summary>
         /// Создать DTO из сущности
         /// </summary>
-        public static WormholeDto FromEntity(Models.Entities.Universe.Wormhole entity,
-            string sourceSystemName = null, string targetSystemName = null)
+        public static WormholeDto? FromEntity(Models.Entities.Universe.Wormhole? entity,
+            string? sourceSystemName = null, string? targetSystemName = null)
         {
             if (entity == null) return null;
 
