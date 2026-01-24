@@ -32,22 +32,20 @@ var httpPort = builder.Configuration.GetValue<int?>("Server:Port")
     ?? GetPortFromEnvironment("HTTP_PORT", 5116);
 
 var httpsPort = builder.Configuration.GetValue<int?>("Server:HttpsPort")
-    ?? GetPortFromEnvironment("HTTPS_PORT", httpPort - 1);
+    ?? GetPortFromEnvironment("HTTPS_PORT", 5115);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
     // Configure HTTP endpoint
-    options.Listen(IPAddress.Loopback, httpPort, listenOptions =>
-    {
-        Console.WriteLine($"🌐 Configuring HTTP on port {httpPort}");
-    });
+    options.Listen(IPAddress.Loopback, httpPort);
+    Console.WriteLine($"🌐 Configuring HTTP on port {httpPort}");
     
     // Configure HTTPS endpoint
     options.Listen(IPAddress.Loopback, httpsPort, listenOptions =>
     {
-        Console.WriteLine($"🔒 Configuring HTTPS on port {httpsPort}");
         listenOptions.UseHttps(); // Use appropriate certificate if needed
     });
+    Console.WriteLine($"🔒 Configuring HTTPS on port {httpsPort}");
 });
 
 // ==============================================
