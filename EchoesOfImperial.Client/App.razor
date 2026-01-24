@@ -1,0 +1,16 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>404 - Not Found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="not-found">
+                <h1>404 - Lost in the Void</h1>
+                <p>The coordinates you seek do not exist in this sector.</p>
+                <a href="/">Return to Command Center</a>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>

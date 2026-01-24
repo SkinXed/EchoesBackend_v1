@@ -1,0 +1,131 @@
+@page "/register"
+@using EchoesOfImperial.Shared.DTOs
+@using EchoesOfImperial.Client.Services
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Register - Echoes of Imperial</PageTitle>
+
+<div class="auth-container">
+    <div class="auth-panel">
+        <div class="auth-header">
+            <h1>JOIN THE EMPIRE</h1>
+            <p>Create your pilot account</p>
+        </div>
+
+        <EditForm Model="@registerModel" OnValidSubmit="@HandleRegister" class="auth-form">
+            <DataAnnotationsValidator />
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert-error">
+                    <span class="error-icon">⚠</span>
+                    @errorMessage
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert-success">
+                    <span class="success-icon">✓</span>
+                    @successMessage
+                </div>
+            }
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <InputText id="username" @bind-Value="registerModel.Username" 
+                          class="form-control" placeholder="Choose a username (3-50 characters)" />
+                <ValidationMessage For="@(() => registerModel.Username)" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText id="email" type="email" @bind-Value="registerModel.Email" 
+                          class="form-control" placeholder="Enter your email address" />
+                <ValidationMessage For="@(() => registerModel.Email)" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <InputText id="password" type="password" @bind-Value="registerModel.Password" 
+                          class="form-control" placeholder="Choose a strong password (min. 8 characters)" />
+                <ValidationMessage For="@(() => registerModel.Password)" />
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <InputText id="confirmPassword" type="password" @bind-Value="registerModel.ConfirmPassword" 
+                          class="form-control" placeholder="Re-enter your password" />
+                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+            </div>
+
+            <button type="submit" class="btn-primary" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner"></span>
+                    <span>Creating account...</span>
+                }
+                else
+                {
+                    <span>Create Account</span>
+                }
+            </button>
+        </EditForm>
+
+        <div class="auth-footer">
+            <span>Already have an account?</span>
+            <a href="/login" class="link-gold">Sign in</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterRequestDto registerModel = new();
+    private string? errorMessage;
+    private string? successMessage;
+    private bool isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if already authenticated
+        if (await AuthService.IsAuthenticatedAsync())
+        {
+            Navigation.NavigateTo("/dashboard");
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        isLoading = true;
+        errorMessage = null;
+        successMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            var (success, error) = await AuthService.RegisterAsync(registerModel);
+
+            if (success)
+            {
+                successMessage = "Account created successfully! Redirecting...";
+                StateHasChanged();
+                await Task.Delay(1500);
+                Navigation.NavigateTo("/dashboard");
+            }
+            else
+            {
+                errorMessage = error ?? "Registration failed. Please try again.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}
