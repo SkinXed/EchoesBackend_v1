@@ -1,4 +1,4 @@
-namespace Nebula.Inventory.API.Models.Enums
+namespace Echoes.API.Models.Enums
 {
     /// <summary>
     /// Тип аккаунта
