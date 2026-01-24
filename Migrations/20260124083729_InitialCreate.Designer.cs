@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Echoes.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260123214023_AddInventorySystem")]
-    partial class AddInventorySystem
+    [Migration("20260124083729_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,67 +27,202 @@ namespace Echoes.API.Migrations
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Account", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("AccountId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
+
+                    b.Property<int>("AccountStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1)
+                        .HasColumnName("account_status");
+
+                    b.Property<int>("AccountType")
+                        .HasColumnType("integer")
+                        .HasColumnName("account_type");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("text")
+                        .HasColumnName("country_code");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("text")
+                        .HasColumnName("display_name");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("EmailVerificationToken")
+                        .HasColumnType("text")
+                        .HasColumnName("email_verification_token");
+
+                    b.Property<DateTime?>("EmailVerifiedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("email_verified_at");
 
                     b.Property<int>("FailedLoginAttempts")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("failed_login_attempts");
+
+                    b.Property<string>("GoogleId")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("google_id");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasColumnName("is_active");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("boolean");
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_email_verified");
 
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeveloper")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LastIP")
+                    b.Property<string>("Language")
                         .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)");
+                        .HasColumnType("text")
+                        .HasColumnName("language");
+
+                    b.Property<DateTime?>("LastActive")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_active");
 
                     b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_login");
 
-                    b.Property<DateTime?>("LastLogout")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("LastLoginIp")
+                        .HasColumnType("text")
+                        .HasColumnName("last_login_ip");
 
                     b.Property<DateTime?>("LockedUntil")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("locked_until");
+
+                    b.Property<string>("MetadataJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("metadata");
+
+                    b.Property<string>("Nickname")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nickname");
+
+                    b.Property<long>("NotificationSettings")
+                        .HasColumnType("bigint")
+                        .HasColumnName("notification_settings");
+
+                    b.Property<DateTime>("PasswordChangedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("password_changed_at");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("bytea");
+                        .HasColumnType("bytea")
+                        .HasColumnName("password_hash");
+
+                    b.Property<DateTime?>("PasswordResetExpires")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("password_reset_expires");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("text")
+                        .HasColumnName("password_reset_token");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("bytea");
+                        .HasColumnType("bytea")
+                        .HasColumnName("password_salt");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
+
+                    b.Property<DateTime?>("PhoneVerifiedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("phone_verified_at");
+
+                    b.Property<string>("ReferralCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("referral_code");
+
+                    b.Property<string>("ReferredBy")
+                        .HasColumnType("text")
+                        .HasColumnName("referred_by");
+
+                    b.Property<long>("Roles")
+                        .HasColumnType("bigint")
+                        .HasColumnName("roles");
+
+                    b.Property<DateTime?>("SubscriptionEnd")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("subscription_end");
+
+                    b.Property<DateTime?>("SubscriptionStart")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("subscription_start");
+
+                    b.Property<int>("SubscriptionType")
+                        .HasColumnType("integer")
+                        .HasColumnName("subscription_type");
+
+                    b.Property<string>("Timezone")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("timezone");
+
+                    b.Property<int>("TotalCharacters")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_characters");
+
+                    b.Property<long>("TotalPlayTimeSeconds")
+                        .HasColumnType("bigint")
+                        .HasColumnName("total_play_time");
+
+                    b.Property<int>("TotalReferrals")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_referrals");
+
+                    b.Property<decimal>("TotalSpent")
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_spent");
+
+                    b.Property<DateTime?>("TrialEndsAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("trial_ends_at");
+
+                    b.Property<string>("TwoFactorRecoveryCodesJson")
+                        .HasColumnType("text")
+                        .HasColumnName("two_factor_recovery_codes");
+
+                    b.Property<string>("TwoFactorSecret")
+                        .HasColumnType("text")
+                        .HasColumnName("two_factor_secret");
+
+                    b.Property<int>("TwoFactorType")
+                        .HasColumnType("integer")
+                        .HasColumnName("two_factor_type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text")
+                        .HasColumnName("username");
 
-                    b.HasKey("Id");
+                    b.HasKey("AccountId");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -95,42 +230,132 @@ namespace Echoes.API.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("accounts");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.AccountActivity", b =>
+                {
+                    b.Property<long>("ActivityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("activity_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ActivityId"));
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
+
+                    b.Property<int>("ActivityType")
+                        .HasColumnType("integer")
+                        .HasColumnName("activity_type");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("DetailsJson")
+                        .HasColumnType("text")
+                        .HasColumnName("details");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text")
+                        .HasColumnName("ip_address");
+
+                    b.Property<bool>("IsSuspicious")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_suspicious");
+
+                    b.Property<string>("LocationJson")
+                        .HasColumnType("text")
+                        .HasColumnName("location");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text")
+                        .HasColumnName("user_agent");
+
+                    b.HasKey("ActivityId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("account_activities");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.AccountBan", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("BanId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("ban_id");
 
                     b.Property<Guid>("AccountId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
 
-                    b.Property<DateTime>("BannedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("AppealAllowed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("appeal_allowed");
 
-                    b.Property<Guid?>("BannedById")
-                        .HasColumnType("uuid");
+                    b.Property<string>("AppealResponse")
+                        .HasColumnType("text")
+                        .HasColumnName("appeal_response");
 
-                    b.Property<DateTime?>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("AppealReviewedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("appeal_reviewed_at");
 
-                    b.Property<string>("IPAddress")
+                    b.Property<Guid?>("AppealReviewedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("appeal_reviewed_by");
+
+                    b.Property<int>("AppealStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("appeal_status");
+
+                    b.Property<string>("AppealText")
+                        .HasColumnType("text")
+                        .HasColumnName("appeal_text");
+
+                    b.Property<Guid?>("BannedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("banned_by");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_date");
+
+                    b.Property<string>("EvidenceJson")
+                        .HasColumnType("text")
+                        .HasColumnName("evidence");
+
+                    b.Property<bool>("IsPermanent")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_permanent");
+
+                    b.Property<int>("Reason")
+                        .HasColumnType("integer")
+                        .HasColumnName("reason");
+
+                    b.Property<string>("ReasonText")
                         .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)");
+                        .HasColumnType("text")
+                        .HasColumnName("reason_text");
 
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_date");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("BanId");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("BannedById");
 
                     b.ToTable("account_bans");
                 });
@@ -139,48 +364,58 @@ namespace Echoes.API.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<Guid>("AccountId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
 
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("uuid");
+                    b.Property<Guid?>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
 
                     b.Property<string>("IPAddress")
-                        .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)");
+                        .HasColumnType("text")
+                        .HasColumnName("ip_address");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_revoked");
 
                     b.Property<DateTime?>("LastActivity")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_activity");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("text")
+                        .HasColumnName("refresh_token");
 
-                    b.Property<DateTime?>("RefreshTokenExpiresAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("RefreshTokenExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("refresh_token_expires_at");
 
                     b.Property<string>("SessionToken")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("text")
+                        .HasColumnName("session_token");
 
                     b.Property<string>("UserAgent")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("text")
+                        .HasColumnName("user_agent");
 
                     b.HasKey("Id");
 
@@ -189,6 +424,71 @@ namespace Echoes.API.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("AccountSessions", (string)null);
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.ApiKey", b =>
+                {
+                    b.Property<Guid>("ApiKeyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("api_key_id");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
+
+                    b.Property<Guid?>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<Guid?>("CorporationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("corporation_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<string>("KeyName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("key_name");
+
+                    b.Property<int>("KeyStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("key_status");
+
+                    b.Property<int>("KeyType")
+                        .HasColumnType("integer")
+                        .HasColumnName("key_type");
+
+                    b.Property<string>("KeyValue")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("api_key");
+
+                    b.Property<DateTime?>("LastUsed")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_used");
+
+                    b.Property<string>("PermissionsJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("permissions");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("ApiKeyId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("api_keys");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Character", b =>
@@ -200,6 +500,9 @@ namespace Echoes.API.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ActiveCloneId")
+                        .HasColumnType("uuid");
+
                     b.Property<long?>("ActiveShipItemId")
                         .HasColumnType("bigint");
 
@@ -207,6 +510,9 @@ namespace Echoes.API.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("BloodlineId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Charisma")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CloneExpiration")
@@ -226,6 +532,9 @@ namespace Echoes.API.Migrations
                     b.Property<bool>("InWarp")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("Intelligence")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsDocked")
                         .HasColumnType("boolean");
 
@@ -235,15 +544,30 @@ namespace Echoes.API.Migrations
                     b.Property<bool>("IsOnline")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastLogin")
+                    b.Property<int>("JumpCloneCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("LastLogin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<DateTime?>("LastLogout")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MaxJumpClones")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Memory")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int>("Perception")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RaceId")
                         .HasColumnType("integer");
@@ -258,6 +582,27 @@ namespace Echoes.API.Migrations
                     b.Property<DateTime?>("SkillTrainingEnd")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("TotalDeaths")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalISKEarned")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TotalISKLost")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("TotalKills")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("TotalPlayTimeSeconds")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TotalShipsDestroyed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalShipsLost")
+                        .HasColumnType("integer");
+
                     b.Property<int>("TotalSkillPoints")
                         .HasColumnType("integer");
 
@@ -266,6 +611,9 @@ namespace Echoes.API.Migrations
 
                     b.Property<long>("WalletBalance")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Willpower")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -277,6 +625,182 @@ namespace Echoes.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Characters", (string)null);
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterClone", b =>
+                {
+                    b.Property<Guid>("CloneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("clone_id");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<int>("CloneType")
+                        .HasColumnType("integer")
+                        .HasColumnName("clone_type");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("ImplantsJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("implants");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool>("IsJumpClone")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_jump_clone");
+
+                    b.Property<DateTime?>("JumpCooldownUntil")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("jump_cooldown_until");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("location_id");
+
+                    b.Property<long>("MaxSkillPoints")
+                        .HasColumnType("bigint")
+                        .HasColumnName("max_skill_points");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<long>("SkillPoints")
+                        .HasColumnType("bigint")
+                        .HasColumnName("skill_points");
+
+                    b.Property<int?>("SolarSystemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("solar_system_id");
+
+                    b.Property<int?>("StationId")
+                        .HasColumnType("integer")
+                        .HasColumnName("station_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("CloneId");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("character_clones");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterContract", b =>
+                {
+                    b.Property<Guid>("ContractId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("contract_id");
+
+                    b.Property<Guid?>("AcceptorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("acceptor_id");
+
+                    b.Property<Guid?>("AssigneeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("assignee_id");
+
+                    b.Property<decimal?>("Collateral")
+                        .HasColumnType("numeric")
+                        .HasColumnName("collateral");
+
+                    b.Property<int>("ContractType")
+                        .HasColumnType("integer")
+                        .HasColumnName("contract_type");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("DateAccepted")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_accepted");
+
+                    b.Property<DateTime?>("DateCompleted")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_completed");
+
+                    b.Property<DateTime>("DateExpired")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_expired");
+
+                    b.Property<DateTime>("DateIssued")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_issued");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<Guid?>("EndLocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("end_location_id");
+
+                    b.Property<Guid>("IssuerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("issuer_id");
+
+                    b.Property<string>("ItemsJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("items");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price");
+
+                    b.Property<decimal?>("Reward")
+                        .HasColumnType("numeric")
+                        .HasColumnName("reward");
+
+                    b.Property<Guid?>("StartLocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("start_location_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<decimal>("Volume")
+                        .HasColumnType("numeric")
+                        .HasColumnName("volume");
+
+                    b.HasKey("ContractId");
+
+                    b.HasIndex("AcceptorId");
+
+                    b.HasIndex("AssigneeId");
+
+                    b.HasIndex("IssuerId");
+
+                    b.ToTable("character_contracts");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterImplant", b =>
@@ -299,6 +823,59 @@ namespace Echoes.API.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("character_implants");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterImplantEnhanced", b =>
+                {
+                    b.Property<Guid>("ImplantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("implant_id");
+
+                    b.Property<Guid>("AssetId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("asset_id");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("EffectsJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("effects");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<int>("ImplantType")
+                        .HasColumnType("integer")
+                        .HasColumnName("implant_type");
+
+                    b.Property<DateTime>("InstalledAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("installed_at");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<int>("Slot")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot");
+
+                    b.HasKey("ImplantId");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("character_implants_enhanced");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterLocation", b =>
@@ -417,6 +994,66 @@ namespace Echoes.API.Migrations
                     b.ToTable("character_skills");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterSkillEnhanced", b =>
+                {
+                    b.Property<Guid>("CharacterSkillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_skill_id");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<int>("SkillId")
+                        .HasColumnType("integer")
+                        .HasColumnName("skill_id");
+
+                    b.Property<int>("SkillLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("skill_level");
+
+                    b.Property<long>("SkillPoints")
+                        .HasColumnType("bigint")
+                        .HasColumnName("skill_points");
+
+                    b.Property<long>("SkillPointsToNextLevel")
+                        .HasColumnType("bigint")
+                        .HasColumnName("skill_points_to_next_level");
+
+                    b.Property<int?>("TrainedLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("trained_level");
+
+                    b.Property<DateTime?>("TrainingFinishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("training_finished_at");
+
+                    b.Property<DateTime?>("TrainingStartedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("training_started_at");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("CharacterSkillId");
+
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("character_skills_enhanced");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterStanding", b =>
                 {
                     b.Property<Guid>("Id")
@@ -441,6 +1078,404 @@ namespace Echoes.API.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("character_standings");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterWallet", b =>
+                {
+                    b.Property<Guid>("WalletId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("wallet_id");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric")
+                        .HasColumnName("balance");
+
+                    b.Property<DateTime>("BalanceUpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("balance_updated_at");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("CurrencyType")
+                        .HasColumnType("integer")
+                        .HasColumnName("currency_type");
+
+                    b.Property<int?>("Division")
+                        .HasColumnType("integer")
+                        .HasColumnName("division");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_primary");
+
+                    b.Property<string>("WalletName")
+                        .HasColumnType("text")
+                        .HasColumnName("wallet_name");
+
+                    b.HasKey("WalletId");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("character_wallets");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.Skill", b =>
+                {
+                    b.Property<int>("SkillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("skill_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SkillId"));
+
+                    b.Property<string>("BonusEffectsJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bonus_effects");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("IconId")
+                        .HasColumnType("text")
+                        .HasColumnName("icon_id");
+
+                    b.Property<int?>("MarketGroupId")
+                        .HasColumnType("integer")
+                        .HasColumnName("market_group_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int>("PrimaryAttribute")
+                        .HasColumnType("integer")
+                        .HasColumnName("primary_attribute");
+
+                    b.Property<decimal>("Rank")
+                        .HasColumnType("numeric")
+                        .HasColumnName("rank");
+
+                    b.Property<string>("RequiredSkillsJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("required_skills");
+
+                    b.Property<int>("SecondaryAttribute")
+                        .HasColumnType("integer")
+                        .HasColumnName("secondary_attribute");
+
+                    b.Property<int>("SkillGroup")
+                        .HasColumnType("integer")
+                        .HasColumnName("skill_group");
+
+                    b.Property<int>("SkillType")
+                        .HasColumnType("integer")
+                        .HasColumnName("skill_type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("SkillId");
+
+                    b.ToTable("skills");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.SupportTicket", b =>
+                {
+                    b.Property<Guid>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("ticket_id");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
+
+                    b.Property<Guid?>("AssignedTo")
+                        .HasColumnType("uuid")
+                        .HasColumnName("assigned_to");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("category");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("closed_at");
+
+                    b.Property<Guid?>("ClosedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("closed_by");
+
+                    b.Property<string>("ClosureReason")
+                        .HasColumnType("text")
+                        .HasColumnName("closure_reason");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("MetadataJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("metadata");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer")
+                        .HasColumnName("priority");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("subject");
+
+                    b.Property<int>("TicketType")
+                        .HasColumnType("integer")
+                        .HasColumnName("ticket_type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("support_tickets");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.TicketAttachment", b =>
+                {
+                    b.Property<Guid>("AttachmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("attachment_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("file_name");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("file_path");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint")
+                        .HasColumnName("file_size");
+
+                    b.Property<Guid?>("MessageId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("message_id");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("mime_type");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ticket_id");
+
+                    b.Property<Guid>("UploadedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("uploaded_by");
+
+                    b.HasKey("AttachmentId");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("ticket_attachments");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.TicketMessage", b =>
+                {
+                    b.Property<Guid>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("message_id");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsInternal")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_internal");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("message");
+
+                    b.Property<bool>("ReadBySupport")
+                        .HasColumnType("boolean")
+                        .HasColumnName("read_by_support");
+
+                    b.Property<bool>("ReadByUser")
+                        .HasColumnType("boolean")
+                        .HasColumnName("read_by_user");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ticket_id");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("ticket_messages");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.TrainingQueue", b =>
+                {
+                    b.Property<Guid>("QueueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("queue_id");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<Guid>("CharacterSkillId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_skill_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("EstimatedFinishAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("estimated_finish_at");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("finished_at");
+
+                    b.Property<DateTime?>("PausedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("paused_at");
+
+                    b.Property<long>("PausedDurationSeconds")
+                        .HasColumnType("bigint")
+                        .HasColumnName("paused_duration");
+
+                    b.Property<int>("QueuePosition")
+                        .HasColumnType("integer")
+                        .HasColumnName("queue_position");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("TargetLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("target_level");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("QueueId");
+
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("CharacterSkillId");
+
+                    b.ToTable("training_queues");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.WalletTransaction", b =>
+                {
+                    b.Property<long>("TransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("transaction_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("TransactionId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<decimal>("NewBalance")
+                        .HasColumnType("numeric")
+                        .HasColumnName("new_balance");
+
+                    b.Property<Guid?>("ReferenceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reference_id");
+
+                    b.Property<string>("ReferenceType")
+                        .HasColumnType("text")
+                        .HasColumnName("reference_type");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer")
+                        .HasColumnName("transaction_type");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("wallet_id");
+
+                    b.HasKey("TransactionId");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("wallet_transactions");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.GameServer.GameServerNode", b =>
@@ -1149,6 +2184,49 @@ namespace Echoes.API.Migrations
                     b.ToTable("modules");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.PlayerInventoryItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("AcquiredDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("acquired_date");
+
+                    b.Property<bool>("IsRedeemed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_redeemed");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("player_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<DateTime?>("RedeemedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("redeemed_date");
+
+                    b.Property<Guid>("ShopItemId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("shop_item_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopItemId");
+
+                    b.ToTable("player_inventory_items");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Ship", b =>
                 {
                     b.Property<int>("ShipTypeId")
@@ -1384,6 +2462,51 @@ namespace Echoes.API.Migrations
                     b.HasIndex("ShipAssetId");
 
                     b.ToTable("ship_fittings");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Shop.ShopItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("integer")
+                        .HasColumnName("category");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("image_url");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint")
+                        .HasColumnName("price");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("shop_items");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Universe.AsteroidBelt", b =>
@@ -2194,6 +3317,17 @@ namespace Echoes.API.Migrations
                     b.ToTable("wormholes");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.AccountActivity", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Account", "Account")
+                        .WithMany("Activities")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.AccountBan", b =>
                 {
                     b.HasOne("Echoes.API.Models.Entities.Character.Account", "Account")
@@ -2202,13 +3336,7 @@ namespace Echoes.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "BannedBy")
-                        .WithMany()
-                        .HasForeignKey("BannedById");
-
                     b.Navigation("Account");
-
-                    b.Navigation("BannedBy");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.AccountSession", b =>
@@ -2221,13 +3349,22 @@ namespace Echoes.API.Migrations
 
                     b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
                         .WithMany()
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CharacterId");
 
                     b.Navigation("Account");
 
                     b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.ApiKey", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Account", "Account")
+                        .WithMany("ApiKeys")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Character", b =>
@@ -2247,6 +3384,42 @@ namespace Echoes.API.Migrations
                     b.Navigation("ActiveShip");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterClone", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
+                        .WithMany("Clones")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterContract", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Acceptor")
+                        .WithMany()
+                        .HasForeignKey("AcceptorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Assignee")
+                        .WithMany()
+                        .HasForeignKey("AssigneeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Issuer")
+                        .WithMany("IssuedContracts")
+                        .HasForeignKey("IssuerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Acceptor");
+
+                    b.Navigation("Assignee");
+
+                    b.Navigation("Issuer");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterImplant", b =>
                 {
                     b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
@@ -2254,6 +3427,25 @@ namespace Echoes.API.Migrations
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterImplantEnhanced", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
+                        .WithMany("ImplantsEnhanced")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
 
                     b.Navigation("Character");
                 });
@@ -2300,6 +3492,25 @@ namespace Echoes.API.Migrations
                     b.Navigation("Character");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterSkillEnhanced", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
+                        .WithMany("SkillsEnhanced")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.Skill", "Skill")
+                        .WithMany("CharacterSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+
+                    b.Navigation("Skill");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterStanding", b =>
                 {
                     b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
@@ -2309,6 +3520,94 @@ namespace Echoes.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterWallet", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
+                        .WithMany("Wallets")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.SupportTicket", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Account", "Account")
+                        .WithMany("SupportTickets")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.TicketAttachment", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.TicketMessage", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId");
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.SupportTicket", "Ticket")
+                        .WithMany("Attachments")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
+
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.TicketMessage", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.SupportTicket", "Ticket")
+                        .WithMany("Messages")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Ticket");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.TrainingQueue", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
+                        .WithMany("TrainingQueues")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Character.CharacterSkillEnhanced", "CharacterSkill")
+                        .WithMany()
+                        .HasForeignKey("CharacterSkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+
+                    b.Navigation("CharacterSkill");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.WalletTransaction", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.CharacterWallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.GameServer.GameServerNode", b =>
@@ -2427,6 +3726,17 @@ namespace Echoes.API.Migrations
                         .IsRequired();
 
                     b.Navigation("ItemType");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.PlayerInventoryItem", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Shop.ShopItem", "ShopItem")
+                        .WithMany()
+                        .HasForeignKey("ShopItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShopItem");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Ship", b =>
@@ -2606,24 +3916,59 @@ namespace Echoes.API.Migrations
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Account", b =>
                 {
+                    b.Navigation("Activities");
+
+                    b.Navigation("ApiKeys");
+
                     b.Navigation("Bans");
 
                     b.Navigation("Characters");
 
                     b.Navigation("Sessions");
+
+                    b.Navigation("SupportTickets");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Character", b =>
                 {
+                    b.Navigation("Clones");
+
                     b.Navigation("CurrentLocation");
 
                     b.Navigation("Implants");
 
+                    b.Navigation("ImplantsEnhanced");
+
                     b.Navigation("InventoryItems");
+
+                    b.Navigation("IssuedContracts");
 
                     b.Navigation("Skills");
 
+                    b.Navigation("SkillsEnhanced");
+
                     b.Navigation("Standings");
+
+                    b.Navigation("TrainingQueues");
+
+                    b.Navigation("Wallets");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterWallet", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.Skill", b =>
+                {
+                    b.Navigation("CharacterSkills");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.SupportTicket", b =>
+                {
+                    b.Navigation("Attachments");
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Asset", b =>

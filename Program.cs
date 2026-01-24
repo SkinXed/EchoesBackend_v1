@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
 using System.Text;
 using System.Threading.RateLimiting;
 
@@ -737,3 +738,14 @@ async Task PrintDetailedStatsAsync(IUniverseGenerator universeGenerator)
         Console.WriteLine($"⚠️ Detailed statistics unavailable: {ex.Message}");
     }
 }
+
+var port = builder.Configuration.GetValue<int>("Server:Port", 5116);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(IPAddress.Loopback, port); // HTTP
+    options.Listen(IPAddress.Loopback, port - 1, listenOptions => // HTTPS, например порт-1 = 5115
+    {
+        listenOptions.UseHttps(); // используйте нужный сертификат, если необходимо
+    });
+});

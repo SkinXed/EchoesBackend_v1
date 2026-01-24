@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36804.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echoes.API", "Echoes.API.csproj", "{AEF566C9-4C75-5D3D-6942-9F279A99C3BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{480781AD-765F-42AD-825D-44D6C249BCDB} = {480781AD-765F-42AD-825D-44D6C249BCDB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EchoesOfImperial.Shared", "EchoesOfImperial.Shared\EchoesOfImperial.Shared.csproj", "{69D0DF83-AAD5-4B84-907C-BCF495D16E5D}"
 EndProject

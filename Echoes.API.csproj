@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Echoes.API</RootNamespace>
+    <UserSecretsId>447b4c90-d181-49b9-9225-a3fb4d7cc782</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
