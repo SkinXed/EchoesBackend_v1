@@ -9,6 +9,7 @@ using Echoes.API.Data;
 using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Enums;
 using Echoes.API.Models.DTOs;
+using Echoes.API.Services.Email;
 
 namespace Echoes.API.Services.Auth
 {
@@ -23,7 +24,7 @@ namespace Echoes.API.Services.Auth
         Task RequestPasswordResetAsync(string email);
         Task ResetPasswordAsync(ResetPasswordDto dto);
         Task ChangePasswordAsync(Guid accountId, ChangePasswordDto dto);
-        Task EnableTwoFactorAsync(Guid accountId, TwoFactorType type);
+        Task<string> EnableTwoFactorAsync(Guid accountId, TwoFactorType type);
         Task DisableTwoFactorAsync(Guid accountId);
         Task<bool> VerifyTwoFactorAsync(Guid accountId, string code);
     }
@@ -32,11 +33,19 @@ namespace Echoes.API.Services.Auth
     {
         private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
+        private readonly ITwoFactorAuthService _twoFactorAuthService;
 
-        public AuthService(DatabaseContext context, IConfiguration configuration)
+        public AuthService(
+            DatabaseContext context, 
+            IConfiguration configuration,
+            IEmailService emailService,
+            ITwoFactorAuthService twoFactorAuthService)
         {
             _context = context;
             _configuration = configuration;
+            _emailService = emailService;
+            _twoFactorAuthService = twoFactorAuthService;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
@@ -98,6 +107,9 @@ namespace Echoes.API.Services.Auth
 
             _context.AccountSessions.Add(session);
             await _context.SaveChangesAsync();
+
+            // Send verification email
+            await _emailService.SendEmailVerificationAsync(account.Email, account.Username, account.EmailVerificationToken);
 
             // Generate JWT token
             var token = GenerateJwtToken(account, character, session);
@@ -269,6 +281,9 @@ namespace Echoes.API.Services.Auth
             account.EmailVerificationToken = null;
 
             await _context.SaveChangesAsync();
+
+            // Send welcome email
+            await _emailService.SendWelcomeEmailAsync(account.Email, account.Username);
         }
 
         public async Task ResendVerificationEmailAsync(string email)
@@ -289,7 +304,8 @@ namespace Echoes.API.Services.Auth
             account.EmailVerificationToken = GenerateRandomToken();
             await _context.SaveChangesAsync();
 
-            // TODO: Send verification email
+            // Send verification email
+            await _emailService.SendEmailVerificationAsync(account.Email, account.Username, account.EmailVerificationToken);
         }
 
         public async Task RequestPasswordResetAsync(string email)
@@ -308,7 +324,8 @@ namespace Echoes.API.Services.Auth
 
             await _context.SaveChangesAsync();
 
-            // TODO: Send password reset email
+            // Send password reset email
+            await _emailService.SendPasswordResetAsync(account.Email, account.Username, account.PasswordResetToken);
         }
 
         public async Task ResetPasswordAsync(ResetPasswordDto dto)
@@ -355,7 +372,7 @@ namespace Echoes.API.Services.Auth
             await _context.SaveChangesAsync();
         }
 
-        public async Task EnableTwoFactorAsync(Guid accountId, TwoFactorType type)
+        public async Task<string> EnableTwoFactorAsync(Guid accountId, TwoFactorType type)
         {
             var account = await _context.Accounts.FindAsync(accountId);
 
@@ -364,12 +381,25 @@ namespace Echoes.API.Services.Auth
                 throw new InvalidOperationException("Account not found");
             }
 
+            // Generate a new 2FA secret
+            var secret = _twoFactorAuthService.GenerateSecret();
             account.TwoFactorType = type;
-            account.TwoFactorSecret = GenerateRandomToken();
+            account.TwoFactorSecret = secret;
 
             await _context.SaveChangesAsync();
 
-            // TODO: Send 2FA setup instructions
+            // Generate QR code URL for easy setup
+            var qrCodeUrl = _twoFactorAuthService.GenerateQrCodeUrl(
+                account.Email,
+                "Echoes",
+                secret
+            );
+
+            // Send 2FA setup instructions via email
+            await _emailService.SendTwoFactorSetupAsync(account.Email, account.Username, secret, qrCodeUrl);
+
+            // Return the secret so it can be displayed to the user
+            return secret;
         }
 
         public async Task DisableTwoFactorAsync(Guid accountId)
@@ -396,9 +426,14 @@ namespace Echoes.API.Services.Auth
                 return false;
             }
 
-            // TODO: Implement actual 2FA verification logic
-            // For now, just return true if 2FA is enabled
-            return account.TwoFactorType != TwoFactorType.None;
+            // Check if 2FA is enabled
+            if (account.TwoFactorType == TwoFactorType.None || string.IsNullOrEmpty(account.TwoFactorSecret))
+            {
+                return false;
+            }
+
+            // Validate the TOTP code
+            return _twoFactorAuthService.ValidateCode(account.TwoFactorSecret, code);
         }
 
         // Helper methods
