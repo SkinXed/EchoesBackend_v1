@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Nebula.Inventory.API.Models.Enums;
+using Echoes.Models.Enums;
 
-namespace Nebula.Inventory.API.Models.Entities
+namespace Echoes.Models.Entities
 {
     /// <summary>
     /// Основная информация об аккаунте
