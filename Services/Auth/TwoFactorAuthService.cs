@@ -29,9 +29,9 @@ namespace Echoes.API.Services.Auth
             var encodedAccount = Uri.EscapeDataString(accountName);
             var otpauthUrl = $"otpauth://totp/{encodedIssuer}:{encodedAccount}?secret={secret}&issuer={encodedIssuer}";
             
-            // Return a URL that can be used to generate QR code
-            // Using a QR code generator service
-            return $"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={Uri.EscapeDataString(otpauthUrl)}";
+            // Return the otpauth URL directly - client should generate QR code locally
+            // Do NOT use external QR code services as they expose the secret
+            return otpauthUrl;
         }
 
         public bool ValidateCode(string secret, string code)

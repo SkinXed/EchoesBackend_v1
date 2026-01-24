@@ -59,7 +59,7 @@ namespace Echoes.API.Services.Email
         public async Task SendPasswordResetAsync(string email, string username, string resetToken)
         {
             var subject = "Reset your Echoes password";
-            var resetUrl = $"{_configuration["AppUrl"]}/reset-password?token={resetToken}&email={Uri.EscapeDataString(email)}";
+            var resetUrl = $"{_configuration["AppUrl"]}/reset-password?token={resetToken}";
             var body = $@"
                 <html>
                 <body>
@@ -89,10 +89,10 @@ namespace Echoes.API.Services.Email
                     <h2>Two-Factor Authentication Setup</h2>
                     <p>Hello {username},</p>
                     <p>You have enabled two-factor authentication for your Echoes account.</p>
-                    <p>To complete the setup, scan the QR code below with your authenticator app (such as Google Authenticator, Authy, or Microsoft Authenticator):</p>
-                    <p><img src='{qrCodeUrl}' alt='QR Code' /></p>
-                    <p>Or manually enter this secret key:</p>
-                    <p><strong>{secret}</strong></p>
+                    <p>To complete the setup, manually enter this secret key in your authenticator app (such as Google Authenticator, Authy, or Microsoft Authenticator):</p>
+                    <p style='font-size: 18px; font-weight: bold; letter-spacing: 2px; background-color: #f0f0f0; padding: 10px; border-radius: 5px;'>{secret}</p>
+                    <p>Or scan the QR code using your authenticator app by entering this URL:</p>
+                    <p style='word-break: break-all; font-size: 12px; background-color: #f0f0f0; padding: 10px; border-radius: 5px;'>{qrCodeUrl}</p>
                     <p>After adding the account to your authenticator app, you will need to enter a 6-digit code from the app when logging in.</p>
                     <br>
                     <p>Best regards,<br>The Echoes Team</p>
