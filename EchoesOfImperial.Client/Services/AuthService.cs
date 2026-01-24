@@ -24,7 +24,7 @@ public class AuthService
         _navigationManager = navigationManager;
     }
 
-    public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request)
+    public async Task<(bool Success, string? Error)> RegisterAsync(RegisterRequestDto request)
     {
         try
         {
@@ -36,28 +36,24 @@ public class AuthService
                 if (result != null && result.Success)
                 {
                     await SetAuthDataAsync(result);
-                    return result;
+                    return (true, null);
                 }
             }
             
             var errorContent = await response.Content.ReadAsStringAsync();
-            return new AuthResponseDto 
-            { 
-                Success = false, 
-                Error = ParseError(errorContent) 
-            };
+            return (false, ParseError(errorContent));
+        }
+        catch (HttpRequestException ex)
+        {
+            return (false, $"Network error: {ex.Message}");
         }
         catch (Exception ex)
         {
-            return new AuthResponseDto 
-            { 
-                Success = false, 
-                Error = $"Registration failed: {ex.Message}" 
-            };
+            return (false, $"Unexpected error: {ex.Message}");
         }
     }
 
-    public async Task<AuthResponseDto> LoginAsync(LoginRequestDto request)
+    public async Task<(bool Success, string? Error)> LoginAsync(LoginRequestDto request)
     {
         try
         {
@@ -69,24 +65,20 @@ public class AuthService
                 if (result != null && result.Success)
                 {
                     await SetAuthDataAsync(result);
-                    return result;
+                    return (true, null);
                 }
             }
             
             var errorContent = await response.Content.ReadAsStringAsync();
-            return new AuthResponseDto 
-            { 
-                Success = false, 
-                Error = ParseError(errorContent) 
-            };
+            return (false, ParseError(errorContent));
+        }
+        catch (HttpRequestException ex)
+        {
+            return (false, $"Network error: {ex.Message}");
         }
         catch (Exception ex)
         {
-            return new AuthResponseDto 
-            { 
-                Success = false, 
-                Error = $"Login failed: {ex.Message}" 
-            };
+            return (false, $"Unexpected error: {ex.Message}");
         }
     }
 
@@ -102,9 +94,9 @@ public class AuthService
                 await _httpClient.PostAsync("api/auth/logout", null);
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Ignore logout errors
+            Console.WriteLine($"Logout error: {ex.Message}");
         }
         finally
         {
@@ -116,7 +108,21 @@ public class AuthService
     public async Task<bool> IsAuthenticatedAsync()
     {
         var token = await GetTokenAsync();
-        return !string.IsNullOrEmpty(token);
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var user = await GetCurrentUserAsync();
+        if (user == null)
+            return false;
+
+        // Check if token is expired
+        if (user.ExpiresAt <= DateTime.UtcNow)
+        {
+            await ClearAuthDataAsync();
+            return false;
+        }
+
+        return true;
     }
 
     public async Task<string?> GetTokenAsync()
@@ -150,16 +156,17 @@ public class AuthService
     {
         try
         {
-            var errorObj = JsonSerializer.Deserialize<JsonElement>(errorContent);
-            if (errorObj.TryGetProperty("error", out var errorProp))
+            var errorObj = JsonSerializer.Deserialize<ErrorResponseDto>(errorContent);
+            if (errorObj != null && !string.IsNullOrEmpty(errorObj.Error))
             {
-                return errorProp.GetString() ?? "Unknown error";
+                return errorObj.Error;
             }
         }
-        catch
+        catch (JsonException ex)
         {
-            // Ignore parsing errors
+            Console.WriteLine($"Error parsing error response: {ex.Message}");
         }
-        return "An error occurred";
+        return "An error occurred. Please try again.";
     }
 }
+

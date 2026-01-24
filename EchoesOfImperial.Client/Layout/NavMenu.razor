@@ -1,5 +1,6 @@
 @using EchoesOfImperial.Client.Services
 @inject AuthService AuthService
+@implements IDisposable
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -57,7 +58,12 @@
     protected override async Task OnInitializedAsync()
     {
         await UpdateAuthState();
-        AuthService.OnAuthStateChanged += async () => await UpdateAuthState();
+        AuthService.OnAuthStateChanged += OnAuthStateChangedHandler;
+    }
+
+    private async void OnAuthStateChangedHandler()
+    {
+        await UpdateAuthState();
     }
 
     private async Task UpdateAuthState()
@@ -78,5 +84,10 @@
     private async Task HandleLogout()
     {
         await AuthService.LogoutAsync();
+    }
+
+    public void Dispose()
+    {
+        AuthService.OnAuthStateChanged -= OnAuthStateChangedHandler;
     }
 }

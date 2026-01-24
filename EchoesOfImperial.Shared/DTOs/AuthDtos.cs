@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EchoesOfImperial.Shared.DTOs;
 
-// DTO для регистрации
 public class RegisterRequestDto
 {
     [Required(ErrorMessage = "Username is required")]
@@ -22,7 +21,6 @@ public class RegisterRequestDto
     public string ConfirmPassword { get; set; } = string.Empty;
 }
 
-// DTO для логина
 public class LoginRequestDto
 {
     [Required(ErrorMessage = "Email or Username is required")]
@@ -34,7 +32,6 @@ public class LoginRequestDto
     public bool RememberMe { get; set; }
 }
 
-// DTO для ответа авторизации
 public class AuthResponseDto
 {
     public bool Success { get; set; }
@@ -43,10 +40,8 @@ public class AuthResponseDto
     public string CharacterName { get; set; } = string.Empty;
     public Guid SessionId { get; set; }
     public DateTime ExpiresAt { get; set; }
-    public string? Error { get; set; }
 }
 
-// DTO для восстановления пароля
 public class ForgotPasswordDto
 {
     [Required(ErrorMessage = "Email is required")]
@@ -54,7 +49,6 @@ public class ForgotPasswordDto
     public string Email { get; set; } = string.Empty;
 }
 
-// DTO для сброса пароля
 public class ResetPasswordDto
 {
     [Required]
@@ -71,4 +65,9 @@ public class ResetPasswordDto
     [Required(ErrorMessage = "Password confirmation is required")]
     [Compare("Password", ErrorMessage = "Passwords do not match")]
     public string ConfirmPassword { get; set; } = string.Empty;
+}
+
+public class ErrorResponseDto
+{
+    public string Error { get; set; } = string.Empty;
 }

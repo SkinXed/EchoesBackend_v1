@@ -104,9 +104,9 @@
 
         try
         {
-            var result = await AuthService.RegisterAsync(registerModel);
+            var (success, error) = await AuthService.RegisterAsync(registerModel);
 
-            if (result.Success)
+            if (success)
             {
                 successMessage = "Account created successfully! Redirecting...";
                 StateHasChanged();
@@ -115,7 +115,7 @@
             }
             else
             {
-                errorMessage = result.Error ?? "Registration failed. Please try again.";
+                errorMessage = error ?? "Registration failed. Please try again.";
             }
         }
         catch (Exception ex)
