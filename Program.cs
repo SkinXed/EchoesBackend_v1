@@ -99,6 +99,7 @@ services.AddScoped<IUniverseGenerator, UniverseGenerator>();
 services.AddScoped<IUniverseGenerationService, UniverseGenerationService>();
 services.AddSingleton<IBackgroundGenerationService, BackgroundGenerationService>();
 services.AddScoped<IJwtTokenService, JwtTokenService>();
+services.AddScoped<IAuthService, AuthService>();
 
 // 3.4.1. Inventory services
 services.AddScoped<Echoes.API.Services.Inventory.IInventoryService, Echoes.API.Services.Inventory.InventoryService>();
