@@ -23,6 +23,7 @@ namespace Echoes.API.Data
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterLocation> CharacterLocations { get; set; }
         public DbSet<AccountSession> AccountSessions { get; set; }
+        public DbSet<CharacterContract> CharacterContracts { get; set; }
 
         // Universe entities
         public DbSet<Region> Regions { get; set; }
@@ -136,6 +137,27 @@ namespace Echoes.API.Data
                 .HasOne(cl => cl.Station)
                 .WithMany()
                 .HasForeignKey(cl => cl.StationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Character -> CharacterContracts (one-to-many for issued contracts)
+            modelBuilder.Entity<Character>()
+                .HasMany(c => c.IssuedContracts)
+                .WithOne(cc => cc.Issuer)
+                .HasForeignKey(cc => cc.IssuerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // CharacterContract -> Assignee (many-to-one, optional)
+            modelBuilder.Entity<CharacterContract>()
+                .HasOne(cc => cc.Assignee)
+                .WithMany()
+                .HasForeignKey(cc => cc.AssigneeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // CharacterContract -> Acceptor (many-to-one, optional)
+            modelBuilder.Entity<CharacterContract>()
+                .HasOne(cc => cc.Acceptor)
+                .WithMany()
+                .HasForeignKey(cc => cc.AcceptorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ==============================================
