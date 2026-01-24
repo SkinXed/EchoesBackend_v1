@@ -1,0 +1,366 @@
+@page "/dashboard"
+@using EchoesOfImperial.Shared.DTOs
+@using EchoesOfImperial.Client.Services
+@inject HttpClient Http
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Pilot Dashboard - Echoes of Imperial</PageTitle>
+
+<div class="dashboard-container">
+    @if (isLoading)
+    {
+        <div class="loading-screen">
+            <div class="neural-link">
+                <div class="pulse-ring"></div>
+                <div class="scanning-text">SCANNING NEURAL LINK...</div>
+            </div>
+        </div>
+    }
+    else if (pilotData != null)
+    {
+        <div class="hud-display">
+            <div class="hud-header">
+                <div class="pilot-info">
+                    <div class="pilot-name">@pilotData.PilotName</div>
+                    <div class="corp-name">@pilotData.CorpName</div>
+                </div>
+                <div class="credits-display">
+                    <div class="credits-label">CREDITS</div>
+                    <div class="credits-value">@pilotData.Credits.ToString("N0")</div>
+                </div>
+            </div>
+
+            <div class="hud-body">
+                <div class="info-panel">
+                    <div class="panel-label">CURRENT LOCATION</div>
+                    <div class="panel-value">@pilotData.CurrentSystem</div>
+                </div>
+
+                <div class="info-panel">
+                    <div class="panel-label">ACTIVE SHIP</div>
+                    <div class="panel-value">@pilotData.CurrentShip</div>
+                </div>
+            </div>
+
+            <div class="hud-footer">
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">NEURAL LINK STABLE</span>
+                </div>
+            </div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="error-display">
+            <div class="error-icon">⚠️</div>
+            <div class="error-text">@errorMessage</div>
+            <button class="retry-button" @onclick="LoadDashboard">RETRY CONNECTION</button>
+        </div>
+    }
+</div>
+
+@code {
+    private PilotDashboardDTO? pilotData;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDashboard();
+    }
+
+    private async Task LoadDashboard()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            // Check if user is authenticated
+            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            if (!isAuthenticated)
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            // Fetch pilot dashboard data
+            var response = await Http.GetAsync("api/pilot/dashboard");
+
+            if (response.IsSuccessStatusCode)
+            {
+                pilotData = await response.Content.ReadFromJsonAsync<PilotDashboardDTO>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                errorMessage = "Session expired. Please login again.";
+                await Task.Delay(2000);
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                errorMessage = $"Failed to load dashboard data. Status: {response.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Connection error: {ex.Message}";
+            Console.WriteLine($"Dashboard error: {ex}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
+
+<style>
+    .dashboard-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1520 50%, #0a0a0a 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        font-family: 'Courier New', monospace;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+        text-align: center;
+    }
+
+    .neural-link {
+        position: relative;
+        display: inline-block;
+    }
+
+    .pulse-ring {
+        width: 150px;
+        height: 150px;
+        border: 3px solid #d4af37;
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+        margin: 0 auto;
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.6;
+        }
+    }
+
+    .scanning-text {
+        margin-top: 2rem;
+        font-size: 1.5rem;
+        color: #d4af37;
+        letter-spacing: 0.2rem;
+        animation: blink 1.5s step-start infinite;
+    }
+
+    @@keyframes blink {
+        50% {
+            opacity: 0.3;
+        }
+    }
+
+    /* HUD Display */
+    .hud-display {
+        max-width: 900px;
+        width: 100%;
+        background: rgba(20, 20, 30, 0.95);
+        border: 2px solid #d4af37;
+        border-radius: 8px;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(212, 175, 55, 0.1);
+        padding: 2rem;
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hud-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .pilot-info {
+        text-align: left;
+    }
+
+    .pilot-name {
+        font-size: 2.5rem;
+        color: #d4af37;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+
+    .corp-name {
+        font-size: 1.2rem;
+        color: #b8962d;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+    }
+
+    .credits-display {
+        text-align: right;
+    }
+
+    .credits-label {
+        font-size: 0.9rem;
+        color: #8a7b3a;
+        letter-spacing: 0.15rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .credits-value {
+        font-size: 2.5rem;
+        color: #d4af37;
+        font-weight: bold;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+
+    .hud-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+
+    .info-panel {
+        background: rgba(212, 175, 55, 0.05);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 4px;
+        padding: 1.5rem;
+    }
+
+    .panel-label {
+        font-size: 0.9rem;
+        color: #8a7b3a;
+        letter-spacing: 0.15rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .panel-value {
+        font-size: 1.8rem;
+        color: #d4af37;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .hud-footer {
+        padding-top: 2rem;
+        border-top: 1px solid rgba(212, 175, 55, 0.3);
+        display: flex;
+        justify-content: center;
+    }
+
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        background: #00ff00;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #00ff00;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse-dot {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .status-text {
+        color: #00ff00;
+        font-size: 1rem;
+        letter-spacing: 0.1rem;
+    }
+
+    /* Error Display */
+    .error-display {
+        text-align: center;
+        padding: 3rem;
+        background: rgba(139, 0, 0, 0.1);
+        border: 2px solid #8b0000;
+        border-radius: 8px;
+        max-width: 600px;
+    }
+
+    .error-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .error-text {
+        color: #ff6b6b;
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .retry-button {
+        background: linear-gradient(135deg, #8b0000 0%, #ff0000 100%);
+        color: white;
+        border: 1px solid #ff0000;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        letter-spacing: 0.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .retry-button:hover {
+        background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .hud-header,
+        .hud-body {
+            grid-template-columns: 1fr;
+        }
+
+        .pilot-name,
+        .credits-value {
+            font-size: 2rem;
+        }
+
+        .credits-display {
+            text-align: left;
+            margin-top: 1rem;
+        }
+    }
+</style>

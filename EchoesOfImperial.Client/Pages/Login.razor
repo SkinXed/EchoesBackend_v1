@@ -1,0 +1,110 @@
+@page "/login"
+@using EchoesOfImperial.Shared.DTOs
+@using EchoesOfImperial.Client.Services
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Login - Echoes of Imperial</PageTitle>
+
+<div class="auth-container">
+    <div class="auth-panel">
+        <div class="auth-header">
+            <h1>IMPERIAL ACCESS</h1>
+            <p>Access the Command Center</p>
+        </div>
+
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin" class="auth-form">
+            <DataAnnotationsValidator />
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert-error">
+                    <span class="error-icon">⚠</span>
+                    @errorMessage
+                </div>
+            }
+
+            <div class="form-group">
+                <label for="emailOrUsername">Username or Email</label>
+                <InputText id="emailOrUsername" @bind-Value="loginModel.EmailOrUsername" 
+                          class="form-control" placeholder="Enter your username or email" />
+                <ValidationMessage For="@(() => loginModel.EmailOrUsername)" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <InputText id="password" type="password" @bind-Value="loginModel.Password" 
+                          class="form-control" placeholder="Enter your password" />
+                <ValidationMessage For="@(() => loginModel.Password)" />
+            </div>
+
+            <div class="form-group-checkbox">
+                <InputCheckbox id="rememberMe" @bind-Value="loginModel.RememberMe" />
+                <label for="rememberMe">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn-primary" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner"></span>
+                    <span>Accessing...</span>
+                }
+                else
+                {
+                    <span>Enter Command Center</span>
+                }
+            </button>
+        </EditForm>
+
+        <div class="auth-footer">
+            <a href="/register" class="link-gold">Create new account</a>
+            <span class="separator">•</span>
+            <a href="/forgot-password" class="link-gold">Forgot password?</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginRequestDto loginModel = new();
+    private string? errorMessage;
+    private bool isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if already authenticated
+        if (await AuthService.IsAuthenticatedAsync())
+        {
+            Navigation.NavigateTo("/dashboard");
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            var (success, error) = await AuthService.LoginAsync(loginModel);
+
+            if (success)
+            {
+                Navigation.NavigateTo("/dashboard");
+            }
+            else
+            {
+                errorMessage = error ?? "Login failed. Please try again.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

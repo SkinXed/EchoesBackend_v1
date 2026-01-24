@@ -532,6 +532,319 @@ namespace Echoes.API.Migrations
                     b.ToTable("game_servers");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Asset", b =>
+                {
+                    b.Property<Guid>("AssetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("asset_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<decimal>("Damage")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)")
+                        .HasColumnName("damage");
+
+                    b.Property<bool>("IsBpc")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_bpc");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_online");
+
+                    b.Property<bool>("IsSingleton")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_singleton");
+
+                    b.Property<int>("LocationFlag")
+                        .HasColumnType("integer")
+                        .HasColumnName("location_flag");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("location_id");
+
+                    b.Property<int>("MaterialEfficiency")
+                        .HasColumnType("integer")
+                        .HasColumnName("material_efficiency");
+
+                    b.Property<string>("MetaData")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("meta_data");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("owner_id");
+
+                    b.Property<long>("Quantity")
+                        .HasColumnType("bigint")
+                        .HasColumnName("quantity");
+
+                    b.Property<int>("Runs")
+                        .HasColumnType("integer")
+                        .HasColumnName("runs");
+
+                    b.Property<int>("TimeEfficiency")
+                        .HasColumnType("integer")
+                        .HasColumnName("time_efficiency");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("type_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("AssetId");
+
+                    b.HasIndex("IsBpc")
+                        .HasFilter("is_bpc = true");
+
+                    b.HasIndex("IsOnline")
+                        .HasFilter("is_online = true");
+
+                    b.HasIndex("IsSingleton")
+                        .HasFilter("is_singleton = true");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("LocationId", "LocationFlag");
+
+                    b.HasIndex("OwnerId", "LocationId");
+
+                    b.ToTable("assets");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.AssetLog", b =>
+                {
+                    b.Property<long>("LogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("log_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("LogId"));
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("action_type");
+
+                    b.Property<Guid>("ActorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("actor_id");
+
+                    b.Property<Guid?>("AssetId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("asset_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text")
+                        .HasColumnName("ip_address");
+
+                    b.Property<int?>("NewFlag")
+                        .HasColumnType("integer")
+                        .HasColumnName("new_flag");
+
+                    b.Property<Guid?>("NewLocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("new_location_id");
+
+                    b.Property<long?>("NewQuantity")
+                        .HasColumnType("bigint")
+                        .HasColumnName("new_quantity");
+
+                    b.Property<int?>("OldFlag")
+                        .HasColumnType("integer")
+                        .HasColumnName("old_flag");
+
+                    b.Property<Guid?>("OldLocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("old_location_id");
+
+                    b.Property<long?>("OldQuantity")
+                        .HasColumnType("bigint")
+                        .HasColumnName("old_quantity");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text")
+                        .HasColumnName("reason");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text")
+                        .HasColumnName("user_agent");
+
+                    b.HasKey("LogId");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("CreatedAt")
+                        .IsDescending();
+
+                    b.ToTable("asset_logs");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Container", b =>
+                {
+                    b.Property<Guid>("ContainerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("container_id");
+
+                    b.Property<int>("AccessLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("access_level");
+
+                    b.Property<string>("ContainerType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("container_type");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<bool>("IsAccessible")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_accessible");
+
+                    b.Property<decimal?>("LocationX")
+                        .HasPrecision(20, 4)
+                        .HasColumnType("numeric(20,4)")
+                        .HasColumnName("location_x");
+
+                    b.Property<decimal?>("LocationY")
+                        .HasPrecision(20, 4)
+                        .HasColumnType("numeric(20,4)")
+                        .HasColumnName("location_y");
+
+                    b.Property<decimal?>("LocationZ")
+                        .HasPrecision(20, 4)
+                        .HasColumnType("numeric(20,4)")
+                        .HasColumnName("location_z");
+
+                    b.Property<decimal?>("MaxVolume")
+                        .HasPrecision(15, 4)
+                        .HasColumnType("numeric(15,4)")
+                        .HasColumnName("max_volume");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("owner_id");
+
+                    b.Property<Guid?>("ParentContainerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("parent_container_id");
+
+                    b.Property<int?>("SolarSystemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("solar_system_id");
+
+                    b.Property<int?>("StationId")
+                        .HasColumnType("integer")
+                        .HasColumnName("station_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<decimal>("UsedVolume")
+                        .HasPrecision(15, 4)
+                        .HasColumnType("numeric(15,4)")
+                        .HasColumnName("used_volume");
+
+                    b.HasKey("ContainerId");
+
+                    b.HasIndex("ContainerType");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("ParentContainerId");
+
+                    b.ToTable("containers");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.FittedModule", b =>
+                {
+                    b.Property<Guid>("FittedModuleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("fitted_module_id");
+
+                    b.Property<int>("AmmoQuantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("ammo_quantity");
+
+                    b.Property<int?>("AmmoTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ammo_type_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid>("FittingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("fitting_id");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_online");
+
+                    b.Property<Guid>("ModuleAssetId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("module_asset_id");
+
+                    b.Property<int>("SlotNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot_number");
+
+                    b.Property<int>("SlotType")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot_type");
+
+                    b.HasKey("FittedModuleId");
+
+                    b.HasIndex("AmmoTypeId");
+
+                    b.HasIndex("FittingId");
+
+                    b.HasIndex("ModuleAssetId");
+
+                    b.ToTable("fitted_modules");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.InventoryItem", b =>
                 {
                     b.Property<long>("ItemId")
@@ -560,6 +873,514 @@ namespace Echoes.API.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("inventory_items");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemCategory", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("IconName")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("icon_name");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.HasKey("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("item_categories");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemGroup", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("group_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GroupId"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("VolumeMultiplier")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)")
+                        .HasColumnName("volume_multiplier");
+
+                    b.HasKey("GroupId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("item_groups");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", b =>
+                {
+                    b.Property<int>("TypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("type_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TypeId"));
+
+                    b.Property<decimal>("BaseVolume")
+                        .HasPrecision(12, 4)
+                        .HasColumnType("numeric(12,4)")
+                        .HasColumnName("base_volume");
+
+                    b.Property<decimal?>("Capacity")
+                        .HasPrecision(12, 4)
+                        .HasColumnType("numeric(12,4)")
+                        .HasColumnName("capacity");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer")
+                        .HasColumnName("group_id");
+
+                    b.Property<string>("IconId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("icon_id");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_online");
+
+                    b.Property<bool>("IsStackable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_stackable");
+
+                    b.Property<int?>("MarketGroupId")
+                        .HasColumnType("integer")
+                        .HasColumnName("market_group_id");
+
+                    b.Property<decimal?>("Mass")
+                        .HasPrecision(12, 4)
+                        .HasColumnType("numeric(12,4)")
+                        .HasColumnName("mass");
+
+                    b.Property<int>("MaxStackSize")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_stack_size");
+
+                    b.Property<int>("MetaLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("meta_level");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("PackagedVolume")
+                        .HasPrecision(12, 4)
+                        .HasColumnType("numeric(12,4)")
+                        .HasColumnName("packaged_volume");
+
+                    b.Property<int>("TechLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("tech_level");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("TypeId");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("item_types");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Module", b =>
+                {
+                    b.Property<int>("ModuleTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("module_type_id");
+
+                    b.Property<decimal>("ActivationCost")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("activation_cost");
+
+                    b.Property<decimal>("ActivationDuration")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("activation_duration");
+
+                    b.Property<decimal>("CooldownTime")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("cooldown_time");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("MaxGroupFitted")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_group_fitted");
+
+                    b.Property<int>("MetaLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("meta_level");
+
+                    b.Property<int>("ModuleCategory")
+                        .HasColumnType("integer")
+                        .HasColumnName("module_category");
+
+                    b.Property<string>("ModuleEffects")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("module_effects");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Race")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("race");
+
+                    b.Property<decimal>("RequiredCapacitor")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("required_capacitor");
+
+                    b.Property<decimal>("RequiredCpu")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("required_cpu");
+
+                    b.Property<decimal>("RequiredPowergrid")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("required_powergrid");
+
+                    b.Property<string>("RequiredSkills")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("required_skills");
+
+                    b.Property<int>("SlotType")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot_type");
+
+                    b.Property<int>("TechLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("tech_level");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("ModuleTypeId");
+
+                    b.HasIndex("SlotType");
+
+                    b.ToTable("modules");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Ship", b =>
+                {
+                    b.Property<int>("ShipTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ship_type_id");
+
+                    b.Property<decimal>("ArmorResistanceEm")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("armor_resistance_em");
+
+                    b.Property<decimal>("ArmorResistanceExplosive")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("armor_resistance_explosive");
+
+                    b.Property<decimal>("ArmorResistanceKinetic")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("armor_resistance_kinetic");
+
+                    b.Property<decimal>("ArmorResistanceThermal")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("armor_resistance_thermal");
+
+                    b.Property<decimal>("BaseAgility")
+                        .HasPrecision(10, 4)
+                        .HasColumnType("numeric(10,4)")
+                        .HasColumnName("base_agility");
+
+                    b.Property<decimal>("BaseArmorHp")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("numeric(12,2)")
+                        .HasColumnName("base_armor_hp");
+
+                    b.Property<decimal>("BaseCapacitor")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("base_capacitor");
+
+                    b.Property<decimal>("BaseCargoCapacity")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("numeric(12,2)")
+                        .HasColumnName("base_cargo_capacity");
+
+                    b.Property<decimal>("BaseCpu")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("base_cpu");
+
+                    b.Property<decimal>("BasePowergrid")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("base_powergrid");
+
+                    b.Property<decimal>("BaseShieldHp")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("numeric(12,2)")
+                        .HasColumnName("base_shield_hp");
+
+                    b.Property<decimal>("BaseSignatureRadius")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("base_signature_radius");
+
+                    b.Property<decimal>("BaseSpeed")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("base_speed");
+
+                    b.Property<decimal>("BaseStructureHp")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("numeric(12,2)")
+                        .HasColumnName("base_structure_hp");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int>("DroneBandwidth")
+                        .HasColumnType("integer")
+                        .HasColumnName("drone_bandwidth");
+
+                    b.Property<int>("DroneCapacity")
+                        .HasColumnType("integer")
+                        .HasColumnName("drone_capacity");
+
+                    b.Property<int>("HighSlots")
+                        .HasColumnType("integer")
+                        .HasColumnName("high_slots");
+
+                    b.Property<int>("LowSlots")
+                        .HasColumnType("integer")
+                        .HasColumnName("low_slots");
+
+                    b.Property<int>("MediumSlots")
+                        .HasColumnType("integer")
+                        .HasColumnName("medium_slots");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Race")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("race");
+
+                    b.Property<int>("RigSlots")
+                        .HasColumnType("integer")
+                        .HasColumnName("rig_slots");
+
+                    b.Property<decimal>("ShieldResistanceEm")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("shield_resistance_em");
+
+                    b.Property<decimal>("ShieldResistanceExplosive")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("shield_resistance_explosive");
+
+                    b.Property<decimal>("ShieldResistanceKinetic")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("shield_resistance_kinetic");
+
+                    b.Property<decimal>("ShieldResistanceThermal")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("shield_resistance_thermal");
+
+                    b.Property<string>("ShipBonuses")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("ship_bonuses");
+
+                    b.Property<string>("ShipSize")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("ship_size");
+
+                    b.Property<decimal>("StructureResistanceEm")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("structure_resistance_em");
+
+                    b.Property<decimal>("StructureResistanceExplosive")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("structure_resistance_explosive");
+
+                    b.Property<decimal>("StructureResistanceKinetic")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("structure_resistance_kinetic");
+
+                    b.Property<decimal>("StructureResistanceThermal")
+                        .HasPrecision(5, 3)
+                        .HasColumnType("numeric(5,3)")
+                        .HasColumnName("structure_resistance_thermal");
+
+                    b.Property<int>("SubsystemSlots")
+                        .HasColumnType("integer")
+                        .HasColumnName("subsystem_slots");
+
+                    b.Property<int>("TechLevel")
+                        .HasColumnType("integer")
+                        .HasColumnName("tech_level");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("ShipTypeId");
+
+                    b.HasIndex("Race");
+
+                    b.ToTable("ships");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipFitting", b =>
+                {
+                    b.Property<Guid>("FittingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("fitting_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("ShipAssetId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ship_asset_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("FittingId");
+
+                    b.HasIndex("ShipAssetId");
+
+                    b.ToTable("ship_fittings");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Universe.AsteroidBelt", b =>
@@ -1502,11 +2323,129 @@ namespace Echoes.API.Migrations
                     b.Navigation("SolarSystem");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Asset", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Container", "Location")
+                        .WithMany("Assets")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", "ItemType")
+                        .WithMany("Assets")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ItemType");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.AssetLog", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Asset", "Asset")
+                        .WithMany("AssetLogs")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Asset");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Container", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Container", "ParentContainer")
+                        .WithMany("ChildContainers")
+                        .HasForeignKey("ParentContainerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentContainer");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.FittedModule", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", "AmmoType")
+                        .WithMany()
+                        .HasForeignKey("AmmoTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ShipFitting", "Fitting")
+                        .WithMany("FittedModules")
+                        .HasForeignKey("FittingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Asset", "ModuleAsset")
+                        .WithMany()
+                        .HasForeignKey("ModuleAssetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AmmoType");
+
+                    b.Navigation("Fitting");
+
+                    b.Navigation("ModuleAsset");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.InventoryItem", b =>
                 {
                     b.HasOne("Echoes.API.Models.Entities.Character.Character", null)
                         .WithMany("InventoryItems")
                         .HasForeignKey("CharacterId");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemGroup", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ItemCategory", "Category")
+                        .WithMany("ItemGroups")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ItemGroup", "Group")
+                        .WithMany("ItemTypes")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Module", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", "ItemType")
+                        .WithOne("Module")
+                        .HasForeignKey("Echoes.API.Models.Entities.Inventory.Module", "ModuleTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemType");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Ship", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", "ItemType")
+                        .WithOne("Ship")
+                        .HasForeignKey("Echoes.API.Models.Entities.Inventory.Ship", "ShipTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemType");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipFitting", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Asset", "ShipAsset")
+                        .WithMany()
+                        .HasForeignKey("ShipAssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShipAsset");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Universe.AsteroidBelt", b =>
@@ -1682,6 +2621,42 @@ namespace Echoes.API.Migrations
                     b.Navigation("Skills");
 
                     b.Navigation("Standings");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Asset", b =>
+                {
+                    b.Navigation("AssetLogs");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.Container", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("ChildContainers");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemCategory", b =>
+                {
+                    b.Navigation("ItemGroups");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemGroup", b =>
+                {
+                    b.Navigation("ItemTypes");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ItemTypeEntity", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("Module");
+
+                    b.Navigation("Ship");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipFitting", b =>
+                {
+                    b.Navigation("FittedModules");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Universe.AsteroidBelt", b =>

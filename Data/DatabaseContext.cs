@@ -3,6 +3,9 @@ using System.Text.Json;
 using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Models.Entities.Universe;
+using Echoes.API.Models.Entities.Inventory;
+using Echoes.API.Models.Entities.Shop;
+using Echoes.API.Models.Enums;
 using Echoes.Server.Models.Entities.Universe;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +40,22 @@ namespace Echoes.API.Data
         public DbSet<GameServerNode> GameServers { get; set; }
         // Universe generation configuration
         public DbSet<UniverseGenerationConfig> UniverseGenerationConfigs { get; set; }
+
+        // Inventory entities
+        public DbSet<ItemCategory> ItemCategories { get; set; }
+        public DbSet<Echoes.API.Models.Entities.Inventory.ItemGroup> ItemGroups { get; set; }
+        public DbSet<ItemTypeEntity> ItemTypesInventory { get; set; }
+        public DbSet<Ship> Ships { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Container> Containers { get; set; }
+        public DbSet<Asset> Assets { get; set; }
+        public DbSet<ShipFitting> ShipFittings { get; set; }
+        public DbSet<FittedModule> FittedModules { get; set; }
+        public DbSet<AssetLog> AssetLogs { get; set; }
+        public DbSet<PlayerInventoryItem> PlayerInventoryItems { get; set; }
+        
+        // Shop entities
+        public DbSet<ShopItem> ShopItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -436,8 +455,8 @@ modelBuilder.Entity<Account>().ToTable("Accounts");
                 .HasDefaultValueSql("NOW()");
 
             modelBuilder.Entity<Account>()
-                .Property(a => a.IsActive)
-                .HasDefaultValue(true);
+                .Property(a => a.AccountStatus)
+                .HasDefaultValue(AccountStatus.Active);
 
             modelBuilder.Entity<Character>()
                 .Property(c => c.CreatedAt)
@@ -462,6 +481,207 @@ modelBuilder.Entity<Account>().ToTable("Accounts");
             modelBuilder.Entity<Stargate>()
                 .Property(sg => sg.IsOperational)
                 .HasDefaultValue(true);
+
+            // ==============================================
+            // INVENTORY ENTITIES
+            // ==============================================
+
+            // ItemCategory configuration
+            modelBuilder.Entity<ItemCategory>(entity =>
+            {
+                entity.HasKey(e => e.CategoryId);
+                entity.HasIndex(e => e.Name).IsUnique();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+            });
+
+            // ItemGroup configuration
+            modelBuilder.Entity<Echoes.API.Models.Entities.Inventory.ItemGroup>(entity =>
+            {
+                entity.HasKey(e => e.GroupId);
+                entity.HasIndex(e => e.Name).IsUnique();
+                entity.HasIndex(e => e.CategoryId);
+                entity.Property(e => e.VolumeMultiplier).HasPrecision(5, 2);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Category)
+                    .WithMany(c => c.ItemGroups)
+                    .HasForeignKey(e => e.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ItemTypeEntity configuration
+            modelBuilder.Entity<ItemTypeEntity>(entity =>
+            {
+                entity.HasKey(e => e.TypeId);
+                entity.HasIndex(e => e.GroupId);
+                entity.HasIndex(e => e.Name);
+                entity.Property(e => e.BaseVolume).HasPrecision(12, 4);
+                entity.Property(e => e.PackagedVolume).HasPrecision(12, 4);
+                entity.Property(e => e.Mass).HasPrecision(12, 4);
+                entity.Property(e => e.Capacity).HasPrecision(12, 4);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Group)
+                    .WithMany(g => g.ItemTypes)
+                    .HasForeignKey(e => e.GroupId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Ship configuration
+            modelBuilder.Entity<Ship>(entity =>
+            {
+                entity.HasKey(e => e.ShipTypeId);
+                entity.HasIndex(e => e.Race);
+                entity.Property(e => e.BaseCpu).HasPrecision(10, 2);
+                entity.Property(e => e.BasePowergrid).HasPrecision(10, 2);
+                entity.Property(e => e.BaseCapacitor).HasPrecision(10, 2);
+                entity.Property(e => e.BaseShieldHp).HasPrecision(12, 2);
+                entity.Property(e => e.BaseArmorHp).HasPrecision(12, 2);
+                entity.Property(e => e.BaseStructureHp).HasPrecision(12, 2);
+                entity.Property(e => e.BaseSpeed).HasPrecision(10, 2);
+                entity.Property(e => e.BaseAgility).HasPrecision(10, 4);
+                entity.Property(e => e.BaseSignatureRadius).HasPrecision(10, 2);
+                entity.Property(e => e.BaseCargoCapacity).HasPrecision(12, 2);
+                entity.Property(e => e.ShieldResistanceEm).HasPrecision(5, 3);
+                entity.Property(e => e.ShieldResistanceThermal).HasPrecision(5, 3);
+                entity.Property(e => e.ShieldResistanceKinetic).HasPrecision(5, 3);
+                entity.Property(e => e.ShieldResistanceExplosive).HasPrecision(5, 3);
+                entity.Property(e => e.ArmorResistanceEm).HasPrecision(5, 3);
+                entity.Property(e => e.ArmorResistanceThermal).HasPrecision(5, 3);
+                entity.Property(e => e.ArmorResistanceKinetic).HasPrecision(5, 3);
+                entity.Property(e => e.ArmorResistanceExplosive).HasPrecision(5, 3);
+                entity.Property(e => e.StructureResistanceEm).HasPrecision(5, 3);
+                entity.Property(e => e.StructureResistanceThermal).HasPrecision(5, 3);
+                entity.Property(e => e.StructureResistanceKinetic).HasPrecision(5, 3);
+                entity.Property(e => e.StructureResistanceExplosive).HasPrecision(5, 3);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.ItemType)
+                    .WithOne(it => it.Ship)
+                    .HasForeignKey<Ship>(e => e.ShipTypeId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Module configuration
+            modelBuilder.Entity<Module>(entity =>
+            {
+                entity.HasKey(e => e.ModuleTypeId);
+                entity.HasIndex(e => e.SlotType);
+                entity.Property(e => e.RequiredCpu).HasPrecision(10, 2);
+                entity.Property(e => e.RequiredPowergrid).HasPrecision(10, 2);
+                entity.Property(e => e.RequiredCapacitor).HasPrecision(10, 2);
+                entity.Property(e => e.ActivationCost).HasPrecision(10, 2);
+                entity.Property(e => e.ActivationDuration).HasPrecision(10, 2);
+                entity.Property(e => e.CooldownTime).HasPrecision(10, 2);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.ItemType)
+                    .WithOne(it => it.Module)
+                    .HasForeignKey<Module>(e => e.ModuleTypeId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Container configuration
+            modelBuilder.Entity<Container>(entity =>
+            {
+                entity.HasKey(e => e.ContainerId);
+                entity.HasIndex(e => e.OwnerId);
+                entity.HasIndex(e => e.ParentContainerId);
+                entity.HasIndex(e => e.ContainerType);
+                entity.Property(e => e.MaxVolume).HasPrecision(15, 4);
+                entity.Property(e => e.UsedVolume).HasPrecision(15, 4);
+                entity.Property(e => e.LocationX).HasPrecision(20, 4);
+                entity.Property(e => e.LocationY).HasPrecision(20, 4);
+                entity.Property(e => e.LocationZ).HasPrecision(20, 4);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.ParentContainer)
+                    .WithMany(c => c.ChildContainers)
+                    .HasForeignKey(e => e.ParentContainerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Asset configuration
+            modelBuilder.Entity<Asset>(entity =>
+            {
+                entity.HasKey(e => e.AssetId);
+                entity.HasIndex(e => e.LocationId);
+                entity.HasIndex(e => e.OwnerId);
+                entity.HasIndex(e => new { e.LocationId, e.LocationFlag });
+                entity.HasIndex(e => e.TypeId);
+                entity.HasIndex(e => new { e.OwnerId, e.LocationId });
+                entity.HasIndex(e => e.IsOnline).HasFilter("is_online = true");
+                entity.HasIndex(e => e.IsSingleton).HasFilter("is_singleton = true");
+                entity.HasIndex(e => e.IsBpc).HasFilter("is_bpc = true");
+                entity.Property(e => e.Damage).HasPrecision(5, 2);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.ItemType)
+                    .WithMany(it => it.Assets)
+                    .HasForeignKey(e => e.TypeId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Location)
+                    .WithMany(c => c.Assets)
+                    .HasForeignKey(e => e.LocationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ShipFitting configuration
+            modelBuilder.Entity<ShipFitting>(entity =>
+            {
+                entity.HasKey(e => e.FittingId);
+                entity.HasIndex(e => e.ShipAssetId);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.ShipAsset)
+                    .WithMany()
+                    .HasForeignKey(e => e.ShipAssetId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // FittedModule configuration
+            modelBuilder.Entity<FittedModule>(entity =>
+            {
+                entity.HasKey(e => e.FittedModuleId);
+                entity.HasIndex(e => e.FittingId);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Fitting)
+                    .WithMany(f => f.FittedModules)
+                    .HasForeignKey(e => e.FittingId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.ModuleAsset)
+                    .WithMany()
+                    .HasForeignKey(e => e.ModuleAssetId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.AmmoType)
+                    .WithMany()
+                    .HasForeignKey(e => e.AmmoTypeId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // AssetLog configuration
+            modelBuilder.Entity<AssetLog>(entity =>
+            {
+                entity.HasKey(e => e.LogId);
+                entity.HasIndex(e => e.AssetId);
+                entity.HasIndex(e => e.CreatedAt).IsDescending();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Asset)
+                    .WithMany(a => a.AssetLogs)
+                    .HasForeignKey(e => e.AssetId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
         }
     }
 }

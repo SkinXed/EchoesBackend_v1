@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Echoes.API.Data;
 using Echoes.API.Models.DTOs;
 using Echoes.API.Models.Entities.Character;
+using Echoes.API.Models.Enums;
+using Echoes.API.Services.Auth;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,12 +20,18 @@ namespace Echoes.API.Controllers
         private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthController> _logger;
+        private readonly IGoogleAuthService _googleAuthService;
 
-        public AuthController(DatabaseContext context, IConfiguration configuration, ILogger<AuthController> logger)
+        public AuthController(
+            DatabaseContext context, 
+            IConfiguration configuration, 
+            ILogger<AuthController> logger,
+            IGoogleAuthService googleAuthService)
         {
             _context = context;
             _configuration = configuration;
             _logger = logger;
+            _googleAuthService = googleAuthService;
         }
 
         // POST: api/auth/register
@@ -51,14 +59,14 @@ namespace Echoes.API.Controllers
                     Id = Guid.NewGuid(),
                     Username = request.Username,
                     Email = request.Email,
-                    //CreatedAt = DateTime.UtcNow,
-                    IsActive = true
+                    AccountStatus = AccountStatus.Active,
+                    IsEmailVerified = true // Set to true for now, or implement email verification
                 };
 
                 // Хэширование пароля
                 CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                account.PasswordHash = passwordHash;
-                account.PasswordSalt = passwordSalt;
+                account.PasswordHash = Convert.ToBase64String(passwordHash);
+                account.PasswordSalt = Convert.ToBase64String(passwordSalt);
 
                 // Создание персонажа
                 var character = new Character
@@ -128,10 +136,10 @@ namespace Echoes.API.Controllers
                     .FirstOrDefaultAsync(a => a.Email == request.EmailOrUsername ||
                                              a.Username == request.EmailOrUsername);
 
-                if (account == null || !VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
+                if (account == null || !VerifyPasswordHash(request.Password, Convert.FromBase64String(account.PasswordHash), Convert.FromBase64String(account.PasswordSalt)))
                     return Unauthorized(new { error = "Неверные учетные данные" });
 
-                if (!account.IsActive)
+                if (!account.IsActive())
                     return Unauthorized(new { error = "Аккаунт деактивирован" });
 
                 // Получение персонажа
@@ -243,7 +251,7 @@ namespace Echoes.API.Controllers
                 return Ok(new SessionValidationDto
                 {
                     IsValid = true,
-                    CharacterId = session.CharacterId
+                    CharacterId = request.CharacterId // Use the validated CharacterId from request
                 });
             }
             catch (Exception ex)
@@ -300,7 +308,7 @@ namespace Echoes.API.Controllers
                 {
                     Success = true,
                     Token = token,
-                    CharacterId = session.CharacterId,
+                    CharacterId = request.CharacterId, // Use the validated CharacterId from request
                     CharacterName = session.Character.Name,
                     SessionId = newSession.Id,
                     ExpiresAt = newSession.ExpiresAt
@@ -340,14 +348,19 @@ namespace Echoes.API.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, account.AccountId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, account.Email),
                 new Claim("CharacterId", character.Id.ToString()),
                 new Claim("SessionId", session.Id.ToString()),
+                new Claim("Roles", ((long)account.Roles).ToString()), // Store roles as long
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            if (account.IsAdmin) claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            // Add individual role claims for easier checking
+            if (account.Roles.HasFlag(AccountRole.Admin))
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            if (account.Roles.HasFlag(AccountRole.Player))
+                claims.Add(new Claim(ClaimTypes.Role, "Pilot"));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -362,6 +375,210 @@ namespace Echoes.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        // POST: api/auth/google-login
+        [HttpPost("google-login")]
+        public async Task<ActionResult<GoogleAuthResponseDto>> GoogleLogin([FromBody] GoogleLoginRequestDto request)
+        {
+            try
+            {
+                // Validate Google token
+                var payload = await _googleAuthService.ValidateGoogleTokenAsync(request.GoogleIdToken);
+                if (payload == null)
+                {
+                    return BadRequest(new GoogleAuthResponseDto 
+                    { 
+                        Success = false, 
+                        Error = "Invalid Google token" 
+                    });
+                }
+
+                // Check if user exists
+                var account = await _context.Accounts
+                    .FirstOrDefaultAsync(a => a.Email == payload.Email || a.GoogleId == payload.Subject);
+
+                if (account == null)
+                {
+                    // User doesn't exist - registration needed
+                    return Ok(new GoogleAuthResponseDto
+                    {
+                        Success = false,
+                        RegistrationNeeded = true,
+                        Email = payload.Email,
+                        Error = "User not found. Registration required."
+                    });
+                }
+
+                // Check account status
+                if (!account.IsActive())
+                {
+                    return Unauthorized(new GoogleAuthResponseDto 
+                    { 
+                        Success = false, 
+                        Error = "Account is deactivated" 
+                    });
+                }
+
+                // Get character
+                var character = await _context.Characters
+                    .FirstOrDefaultAsync(c => c.AccountId == account.AccountId && c.IsMain);
+
+                if (character == null)
+                {
+                    return NotFound(new GoogleAuthResponseDto 
+                    { 
+                        Success = false, 
+                        Error = "Character not found" 
+                    });
+                }
+
+                // Update last login
+                account.LastLogin = DateTime.UtcNow;
+
+                // Create session
+                var session = new AccountSession
+                {
+                    Id = Guid.NewGuid(),
+                    AccountId = account.AccountId,
+                    CharacterId = character.Id,
+                    SessionToken = GenerateRandomToken(),
+                    RefreshToken = GenerateRandomToken(),
+                    CreatedAt = DateTime.UtcNow,
+                    ExpiresAt = DateTime.UtcNow.AddDays(7),
+                    RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(30),
+                    IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+                    UserAgent = Request.Headers.UserAgent.ToString(),
+                    IsActive = true,
+                    LastActivity = DateTime.UtcNow
+                };
+
+                _context.AccountSessions.Add(session);
+                await _context.SaveChangesAsync();
+
+                // Generate JWT
+                var token = GenerateJwtToken(account, character, session);
+
+                return Ok(new GoogleAuthResponseDto
+                {
+                    Success = true,
+                    Token = token,
+                    CharacterId = character.Id,
+                    CharacterName = character.Name
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Google login");
+                return StatusCode(500, new GoogleAuthResponseDto 
+                { 
+                    Success = false, 
+                    Error = "Internal server error" 
+                });
+            }
+        }
+
+        // POST: api/auth/google-register
+        [HttpPost("google-register")]
+        public async Task<ActionResult<GoogleAuthResponseDto>> GoogleRegister([FromBody] GoogleRegisterRequestDto request)
+        {
+            try
+            {
+                // Validate Google token
+                var payload = await _googleAuthService.ValidateGoogleTokenAsync(request.GoogleIdToken);
+                if (payload == null)
+                {
+                    return BadRequest(new GoogleAuthResponseDto 
+                    { 
+                        Success = false, 
+                        Error = "Invalid Google token" 
+                    });
+                }
+
+                // Check if user already exists
+                if (await _context.Accounts.AnyAsync(a => a.Email == payload.Email || a.GoogleId == payload.Subject))
+                {
+                    return Conflict(new GoogleAuthResponseDto 
+                    { 
+                        Success = false, 
+                        Error = "User already exists. Please use login." 
+                    });
+                }
+
+                // Create account
+                var account = new Account
+                {
+                    AccountId = Guid.NewGuid(),
+                    Email = payload.Email,
+                    Username = payload.Email.Split('@')[0], // Use email prefix as username
+                    DisplayName = payload.Name,
+                    Nickname = request.Nickname,
+                    GoogleId = payload.Subject,
+                    PasswordHash = string.Empty, // No password for Google auth
+                    PasswordSalt = string.Empty,
+                    AccountStatus = AccountStatus.Active,
+                    AccountType = AccountType.Free,
+                    Roles = AccountRole.Player, // Assign "Pilot" role
+                    IsEmailVerified = true, // Google already verified the email
+                    EmailVerifiedAt = DateTime.UtcNow
+                };
+
+                _context.Accounts.Add(account);
+
+                // Create character
+                var character = new Character
+                {
+                    Id = Guid.NewGuid(),
+                    AccountId = account.AccountId,
+                    Name = $"{request.Nickname}'s Pilot",
+                    IsMain = true,
+                    WalletBalance = 1000000, // Starting credits
+                    SecurityStatus = 0.0f,
+                    CloneExpiration = DateTime.UtcNow.AddDays(30)
+                };
+
+                _context.Characters.Add(character);
+
+                // Create session
+                var session = new AccountSession
+                {
+                    Id = Guid.NewGuid(),
+                    AccountId = account.AccountId,
+                    CharacterId = character.Id,
+                    SessionToken = GenerateRandomToken(),
+                    RefreshToken = GenerateRandomToken(),
+                    CreatedAt = DateTime.UtcNow,
+                    ExpiresAt = DateTime.UtcNow.AddDays(7),
+                    RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(30),
+                    IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+                    UserAgent = Request.Headers.UserAgent.ToString(),
+                    IsActive = true,
+                    LastActivity = DateTime.UtcNow
+                };
+
+                _context.AccountSessions.Add(session);
+                await _context.SaveChangesAsync();
+
+                // Generate JWT
+                var token = GenerateJwtToken(account, character, session);
+
+                return Ok(new GoogleAuthResponseDto
+                {
+                    Success = true,
+                    Token = token,
+                    CharacterId = character.Id,
+                    CharacterName = character.Name
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Google registration");
+                return StatusCode(500, new GoogleAuthResponseDto 
+                { 
+                    Success = false, 
+                    Error = "Internal server error" 
+                });
+            }
         }
     }
 }
