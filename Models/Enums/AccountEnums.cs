@@ -60,9 +60,11 @@ namespace Echoes.API.Models.Enums
         None = 0,
         Player = 1L << 0,              // Базовые права игрока
         Verified = 1L << 1,            // Верифицированный аккаунт
-        Premium = 1L << 2,             // Премиум аккаунт
-        Creator = 1L << 3,             // Создатель контента
-        Streamer = 1L << 4,            // Стример
+        Premium = 1L << 2,             // Премиум статус
+        BetaTester = 1L << 3,          // Бета-тестер
+        ContentCreator = 1L << 4,      // Создатель контента
+        Streamer = 1L << 5,            // Стример
+        Moderator = 1L << 6,           // Модератор чата
         
         // Корпоративные роли
         CorporationMember = 1L << 10,  // Член корпорации
@@ -74,18 +76,18 @@ namespace Echoes.API.Models.Enums
         AllianceMember = 1L << 20,     // Член альянса
         AllianceExecutor = 1L << 21,   // Исполнитель альянса
         
-        // Модерация
-        Moderator = 1L << 30,          // Модератор
-        GameMaster = 1L << 31,         // Гейм-мастер
-        Developer = 1L << 32,          // Разработчик
-        Administrator = 1L << 33,      // Администратор
+        // Административные роли
+        GameMaster = 1L << 30,         // Гейм-мастер
+        Developer = 1L << 31,          // Разработчик
+        Administrator = 1L << 32,      // Администратор
+        SuperAdmin = 1L << 33,         // Супер-администратор
         
         // Специальные
-        Beta = 1L << 40,               // Бета-тестер
-        EventOrganizer = 1L << 41,     // Организатор событий
-        Translator = 1L << 42,         // Переводчик
+        EventOrganizer = 1L << 40,     // Организатор событий
+        Translator = 1L << 41,         // Переводчик
+        Tester = 1L << 42,             // Тестер
         
-        // Бан
+        // Ограничения
         Banned = 1L << 50,             // Забанен
         Muted = 1L << 51,              // Заглушен в чате
         Restricted = 1L << 52          // Ограничен в правах
