@@ -9,7 +9,7 @@ namespace Echoes.API.Models.Entities.Universe
     {
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [ForeignKey("SolarSystem")]
         public Guid SolarSystemId { get; set; }
@@ -31,6 +31,6 @@ namespace Echoes.API.Models.Entities.Universe
         public string Services { get; set; } = "Docking,Repair,Refuel";
 
         // Навигационные свойства
-        public virtual SolarSystem SolarSystem { get; set; }
+        public virtual SolarSystem SolarSystem { get; set; } = null!;
     }
 }

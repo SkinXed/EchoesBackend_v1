@@ -31,7 +31,7 @@ namespace Echoes.Server.Models.Entities.Universe
         /// Навигационное свойство к системе
         /// </summary>
         [ForeignKey("SolarSystemId")]
-        public virtual SolarSystem SolarSystem { get; set; }
+        public virtual SolarSystem SolarSystem { get; set; } = null!;
 
         /// <summary>
         /// Тип аномалии
@@ -50,14 +50,14 @@ namespace Echoes.Server.Models.Entities.Universe
         /// </summary>
         [Column("name")]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Описание аномалии (для UI)
         /// </summary>
         [Column("description")]
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Позиция X в системе (в метрах, int64 для масштаба космоса)
@@ -94,7 +94,7 @@ namespace Echoes.Server.Models.Entities.Universe
         /// </summary>
         [Column("signature")]
         [MaxLength(20)]
-        public string Signature { get; set; }
+        public string Signature { get; set; } = string.Empty;
 
         /// <summary>
         /// Прочность аномалии (HP для боевых, ресурсы для добычи)
@@ -118,7 +118,7 @@ namespace Echoes.Server.Models.Entities.Universe
         /// Награда за прохождение аномалии (JSON с предметами)
         /// </summary>
         [Column("reward_data")]
-        public string RewardData { get; set; }
+        public string RewardData { get; set; } = string.Empty;
 
         /// <summary>
         /// Время создания аномалии

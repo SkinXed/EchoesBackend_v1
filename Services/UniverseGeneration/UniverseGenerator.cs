@@ -716,13 +716,24 @@ namespace Echoes.API.Services.UniverseGeneration
 
         private (long X, long Y, long Z) GenerateWormholePosition(SolarSystem system)
         {
-            // Позиция в пределах 5-50 тыс. км от центра
-            var radius = _random.Next(5_000_000, 50_000_000);
-            var angle = _random.NextDouble() * 2 * Math.PI;
-
-            var x = system.PositionX + (long)(radius * Math.Cos(angle));
-            var y = system.PositionY + (long)(radius * Math.Sin(angle));
-            var z = system.PositionZ + _random.Next(-10_000_000, 10_000_000);
+            // Генерируем позицию в 3D пространстве (сферическая оболочка 5-50 млн км от центра)
+            var minRadius = 5_000_000;
+            var maxRadius = 50_000_000;
+            
+            // Генерируем случайную точку на сфере (3D сферическое распределение)
+            var u = _random.NextDouble();
+            var v = _random.NextDouble();
+            
+            var theta = u * 2.0 * Math.PI; // Азимутальный угол (0-2π)
+            var phi = Math.Acos(2.0 * v - 1.0); // Полярный угол (0-π)
+            
+            // Радиус в пределах оболочки
+            var radius = minRadius + _random.NextDouble() * (maxRadius - minRadius);
+            
+            // Преобразование сферических координат в декартовы
+            var x = system.PositionX + (long)(radius * Math.Sin(phi) * Math.Cos(theta));
+            var y = system.PositionY + (long)(radius * Math.Sin(phi) * Math.Sin(theta));
+            var z = system.PositionZ + (long)(radius * Math.Cos(phi));
 
             return (x, y, z);
         }
@@ -1662,18 +1673,29 @@ namespace Echoes.API.Services.UniverseGeneration
             foreach (var system in systems)
             {
                 int stationCount = GetStationCountBySecurity(system.SecurityStatus, config.StationConfig);
+                var systemPositions = new List<(long X, long Y, long Z)>();
 
                 for (int i = 0; i < stationCount; i++)
                 {
+                    // Генерируем безопасную позицию с проверкой коллизий
+                    var position = GenerateSafePosition(
+                        system,
+                        systemPositions,
+                        minDistance: 5_000_000, // Минимум 5 млн км между станциями
+                        maxOffset: 10_000_000   // Максимум 10 млн км от центра
+                    );
+                    
+                    systemPositions.Add(position);
+
                     var station = new Station
                     {
                         Id = Guid.NewGuid(),
                         Name = GenerateStationName(config.NamingConfig, system.Name, i + 1),
                         SolarSystemId = system.Id,
                         Type = GetRandomStationType(),
-                        PositionX = system.PositionX + _random.NextLong(-10_000_000, 10_000_000),
-                        PositionY = system.PositionY + _random.NextLong(-10_000_000, 10_000_000),
-                        PositionZ = system.PositionZ + _random.NextLong(-1_000_000, 1_000_000),
+                        PositionX = position.X,
+                        PositionY = position.Y,
+                        PositionZ = position.Z,
                         DockingCapacity = _random.Next(config.StationConfig.MinDockingCapacity, config.StationConfig.MaxDockingCapacity),
                         IsOperational = _random.Chance(0.95f),
                         FactionId = system.FactionId,
@@ -1929,16 +1951,28 @@ namespace Echoes.API.Services.UniverseGeneration
                     config.ResourcesConfig.MaxAsteroidBeltsPerSystem + 1
                 );
 
+                var systemPositions = new List<(long X, long Y, long Z)>();
+
                 for (int i = 0; i < beltCount; i++)
                 {
+                    // Генерируем безопасную позицию с проверкой коллизий
+                    var position = GenerateSafePosition(
+                        system,
+                        systemPositions,
+                        minDistance: 10_000_000, // Минимум 10 млн км между поясами
+                        maxOffset: system.Radius / 2
+                    );
+                    
+                    systemPositions.Add(position);
+
                     var belt = new AsteroidBelt
                     {
                         Id = Guid.NewGuid(),
                         Name = $"{config.ResourcesConfig.AsteroidBeltNames[_random.Next(config.ResourcesConfig.AsteroidBeltNames.Count)]} {i + 1}",
                         SolarSystemId = system.Id,
-                        PositionX = system.PositionX + _random.NextLong(-system.Radius / 2, system.Radius / 2),
-                        PositionY = system.PositionY + _random.NextLong(-system.Radius / 2, system.Radius / 2),
-                        PositionZ = system.PositionZ + _random.NextLong(-system.Radius / 10, system.Radius / 10),
+                        PositionX = position.X,
+                        PositionY = position.Y,
+                        PositionZ = position.Z,
                         Radius = _random.Next(10_000, 1_000_000),
                         Density = (float)_random.NextDouble(),
                         AsteroidCount = _random.Next(100, 10000),
@@ -2232,7 +2266,7 @@ namespace Echoes.API.Services.UniverseGeneration
         private StationType GetRandomStationType()
         {
             var types = Enum.GetValues(typeof(StationType));
-            return (StationType)types.GetValue(_random.Next(types.Length));
+            return (StationType)(types.GetValue(_random.Next(types.Length)) ?? StationType.TradingHub);
         }
 
         private string GetStationServices(float security)
@@ -2255,6 +2289,63 @@ namespace Echoes.API.Services.UniverseGeneration
             long dy = a.PositionY - b.PositionY;
             long dz = a.PositionZ - b.PositionZ;
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        /// <summary>
+        /// Проверяет, что позиция не пересекается с уже существующими объектами
+        /// </summary>
+        private bool IsPositionValidWithMinDistance(
+            (long X, long Y, long Z) position,
+            List<(long X, long Y, long Z)> existingPositions,
+            long minDistance)
+        {
+            var minDistanceSquared = (double)minDistance * minDistance;
+            
+            foreach (var existingPos in existingPositions)
+            {
+                var dx = (double)(position.X - existingPos.X);
+                var dy = (double)(position.Y - existingPos.Y);
+                var dz = (double)(position.Z - existingPos.Z);
+                var distanceSquared = dx * dx + dy * dy + dz * dz;
+
+                if (distanceSquared < minDistanceSquared)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Генерирует позицию с проверкой на коллизии
+        /// </summary>
+        private (long X, long Y, long Z) GenerateSafePosition(
+            SolarSystem system,
+            List<(long X, long Y, long Z)> existingPositions,
+            long minDistance,
+            long maxOffset)
+        {
+            const int maxAttempts = 100;
+            
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
+            {
+                var position = (
+                    X: system.PositionX + _random.NextLong(-maxOffset, maxOffset),
+                    Y: system.PositionY + _random.NextLong(-maxOffset, maxOffset),
+                    Z: system.PositionZ + _random.NextLong(-maxOffset / 10, maxOffset / 10)
+                );
+
+                if (existingPositions.Count == 0 || IsPositionValidWithMinDistance(position, existingPositions, minDistance))
+                {
+                    return position;
+                }
+            }
+
+            // Если не нашли свободную позицию, возвращаем случайную с большим смещением
+            return (
+                X: system.PositionX + _random.NextLong(-maxOffset * 2, maxOffset * 2),
+                Y: system.PositionY + _random.NextLong(-maxOffset * 2, maxOffset * 2),
+                Z: system.PositionZ + _random.NextLong(-maxOffset / 5, maxOffset / 5)
+            );
         }
 
         private async Task SaveInBatchesAsync<T>(List<T> entities, int batchSize) where T : class

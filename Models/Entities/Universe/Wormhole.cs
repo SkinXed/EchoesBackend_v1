@@ -32,7 +32,7 @@ namespace Echoes.Server.Models.Entities.Universe
         /// Навигационное свойство к системе-источнику
         /// </summary>
         [ForeignKey("SourceSystemId")]
-        public virtual SolarSystem SourceSystem { get; set; }
+        public virtual SolarSystem SourceSystem { get; set; } = null!;
 
         /// <summary>
         /// ID системы-назначения (выход)
@@ -44,14 +44,14 @@ namespace Echoes.Server.Models.Entities.Universe
         /// Навигационное свойство к системе-назначению
         /// </summary>
         [ForeignKey("TargetSystemId")]
-        public virtual SolarSystem TargetSystem { get; set; }
+        public virtual SolarSystem TargetSystem { get; set; } = null!;
 
         /// <summary>
         /// Название вормхола (например: "K162", "R051", "X702")
         /// </summary>
         [Column("name")]
         [MaxLength(50)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Класс вормхола
@@ -118,7 +118,7 @@ namespace Echoes.Server.Models.Entities.Universe
         /// </summary>
         [Column("signature")]
         [MaxLength(20)]
-        public string Signature { get; set; }
+        public string Signature { get; set; } = string.Empty;
 
         /// <summary>
         /// Время создания вормхола
@@ -202,7 +202,8 @@ namespace Echoes.Server.Models.Entities.Universe
         /// </summary>
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
+        
         [ForeignKey("PairedWormholeId")]
-        public virtual Wormhole PairedWormhole { get; set; }
+        public virtual Wormhole? PairedWormhole { get; set; }
     }
 }

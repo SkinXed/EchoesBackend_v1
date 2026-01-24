@@ -11,10 +11,10 @@ namespace Echoes.API.Models.Entities.Universe
 
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [MaxLength(50)]
-        public string RegionCode { get; set; }
+        public string RegionCode { get; set; } = string.Empty;
 
         public RegionType Type { get; set; }
 
@@ -29,7 +29,7 @@ namespace Echoes.API.Models.Entities.Universe
         public int? FactionId { get; set; }
 
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

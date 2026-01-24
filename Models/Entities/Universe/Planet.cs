@@ -12,13 +12,13 @@ namespace Echoes.API.Models.Entities.Universe
 
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [ForeignKey("SolarSystem")]
         public Guid SolarSystemId { get; set; }
 
         [MaxLength(50)]
-        public string Type { get; set; } // Можно переделать на Enum PlanetType, но пока пусть строка
+        public string Type { get; set; } = string.Empty; // Можно переделать на Enum PlanetType, но пока пусть строка
 
         public long Radius { get; set; } = 1000; // км
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -44,7 +44,7 @@ namespace Echoes.API.Models.Entities.Universe
         public int? FactionId { get; set; }
 
         [MaxLength(1000)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         // Координаты (Internal set можно оставить, если ты их задаешь только при генерации)
         public long PositionX { get; set; }
@@ -58,7 +58,7 @@ namespace Echoes.API.Models.Entities.Universe
         public bool HasRings { get; set; }
 
         // Навигационные свойства
-        public virtual SolarSystem SolarSystem { get; set; }
+        public virtual SolarSystem SolarSystem { get; set; } = null!;
         public virtual ICollection<Moon> Moons { get; set; } = new List<Moon>();
         public virtual ICollection<PlanetResource> Resources { get; set; } = new List<PlanetResource>();
     }
