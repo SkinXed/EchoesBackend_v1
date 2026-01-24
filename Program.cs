@@ -341,7 +341,7 @@ app.Use(async (context, next) =>
 app.UseRateLimiter(); // Должен быть после UseAuthorization
 
 // 4.3. Health check endpoint
-app.MapGet("/", () => Results.Json(new
+app.MapGet("/api/status", () => Results.Json(new
 {
     status = "online",
     service = "Echoes Universe API",
@@ -416,6 +416,9 @@ app.Map("/error", () => Results.Problem("An error occurred on the server"));
 
 // 4.5. Main routes
 app.MapControllers();
+
+// 4.6. Fallback to Blazor app for client-side routing
+app.MapFallbackToFile("index.html");
 
 // ==============================================
 // 5. DATABASE AND UNIVERSE INITIALIZATION
