@@ -4,6 +4,7 @@ using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Models.Entities.Universe;
 using Echoes.API.Models.Entities.Inventory;
+using Echoes.API.Models.Entities.Shop;
 using Echoes.API.Models.Enums;
 using Echoes.Server.Models.Entities.Universe;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +52,10 @@ namespace Echoes.API.Data
         public DbSet<ShipFitting> ShipFittings { get; set; }
         public DbSet<FittedModule> FittedModules { get; set; }
         public DbSet<AssetLog> AssetLogs { get; set; }
+        public DbSet<PlayerInventoryItem> PlayerInventoryItems { get; set; }
+        
+        // Shop entities
+        public DbSet<ShopItem> ShopItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

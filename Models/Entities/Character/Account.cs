@@ -26,6 +26,14 @@ namespace Echoes.API.Models.Entities.Character
         [Column("display_name")]
         public string? DisplayName { get; set; }
         
+        [Column("nickname")]
+        [MaxLength(50)]
+        public string? Nickname { get; set; }
+        
+        [Column("google_id")]
+        [MaxLength(255)]
+        public string? GoogleId { get; set; }
+        
         [Required]
         [Column("password_hash")]
         public byte[] PasswordHash { get; set; } = Array.Empty<byte>();

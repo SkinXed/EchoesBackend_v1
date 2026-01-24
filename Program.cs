@@ -6,6 +6,7 @@ using Echoes.API.Services;
 using Echoes.API.Services.Auth;
 using Echoes.API.Services.UniverseGeneration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -92,6 +93,11 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
             ClockSkew = TimeSpan.Zero
         };
+    })
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Google:ClientId"] ?? "";
+        options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
     });
 
 // 3.4. Register services
@@ -102,6 +108,8 @@ services.AddScoped<IJwtTokenService, JwtTokenService>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<Echoes.API.Services.Email.IEmailService, Echoes.API.Services.Email.EmailService>();
 services.AddScoped<ITwoFactorAuthService, TwoFactorAuthService>();
+services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+services.AddScoped<IDbInitializer, DbInitializer>();
 
 // 3.4.1. Inventory services
 services.AddScoped<Echoes.API.Services.Inventory.IInventoryService, Echoes.API.Services.Inventory.InventoryService>();
@@ -254,6 +262,15 @@ else
     // Production
     app.UseExceptionHandler("/error");
     app.UseHsts();
+    
+    // In production, also enable Swagger but protect it
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Echoes Universe API v1");
+        c.RoutePrefix = "swagger";
+        c.DocumentTitle = "Echoes Universe API Documentation";
+    });
 }
 
 // 4.2. Middleware pipeline
@@ -264,6 +281,51 @@ app.UseResponseCaching(); // Должен быть до UseAuthorization
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
+
+// 4.2.1. Swagger security middleware - Admin only
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/swagger"))
+    {
+        // Check if user is authenticated
+        if (!context.User.Identity?.IsAuthenticated ?? true)
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("Forbidden: Authentication required to access Swagger");
+            return;
+        }
+
+        // Check if user has Admin role
+        var rolesClaimValue = context.User.FindFirst("Roles")?.Value;
+        if (string.IsNullOrEmpty(rolesClaimValue))
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("Forbidden: Admin role required to access Swagger");
+            return;
+        }
+
+        // Parse roles (AccountRole is a Flags enum stored as long)
+        if (long.TryParse(rolesClaimValue, out long roles))
+        {
+            var accountRole = (Echoes.API.Models.Enums.AccountRole)roles;
+            if (!accountRole.HasFlag(Echoes.API.Models.Enums.AccountRole.Admin))
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Forbidden: Admin role required to access Swagger");
+                return;
+            }
+        }
+        else
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("Forbidden: Invalid role information");
+            return;
+        }
+    }
+
+    await next();
+});
+
 app.UseRateLimiter(); // Должен быть после UseAuthorization
 
 // 4.3. Health check endpoint
@@ -353,6 +415,7 @@ using (var scope = app.Services.CreateScope())
     var config = scope.ServiceProvider.GetRequiredService<Microsoft.Extensions.Options.IOptions<UniverseConfig>>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
 
     try
     {
@@ -384,6 +447,9 @@ using (var scope = app.Services.CreateScope())
             throw new Exception("Failed to connect to database");
         }
         Console.WriteLine("✅ Database connection established");
+
+        // Initialize roles and admin user
+        await dbInitializer.InitializeAsync();
 
         // Check if data already exists
         var hasData = await context.SolarSystems.AnyAsync();
