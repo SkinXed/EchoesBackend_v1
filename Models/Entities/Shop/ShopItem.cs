@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Echoes.API.Models.Enums;
 
 namespace Echoes.API.Models.Entities.Shop;
 
@@ -22,6 +23,9 @@ public class ShopItem
     [Required]
     [Column("price")]
     public long Price { get; set; }
+    
+    [Column("category")]
+    public ShopItemCategory Category { get; set; } = ShopItemCategory.Equipment;
     
     [Column("image_url")]
     [MaxLength(500)]

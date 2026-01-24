@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Echoes.API.Data;
 using Echoes.API.Models.Entities.Shop;
+using Echoes.API.Models.Enums;
 
 namespace Echoes.API.Controllers;
 
@@ -21,17 +22,25 @@ public class ShopController : ControllerBase
     }
 
     /// <summary>
-    /// Get all active shop items
+    /// Get all active shop items, optionally filtered by category
     /// </summary>
+    /// <param name="category">Optional category filter (Equipment, Credits, VipStatus, Consumables, Cosmetic)</param>
     /// <returns>List of shop items</returns>
     [HttpGet]
-    public async Task<ActionResult<List<ShopItem>>> GetShopItems()
+    public async Task<ActionResult<List<ShopItem>>> GetShopItems([FromQuery] ShopItemCategory? category = null)
     {
         try
         {
-            var items = await _context.ShopItems
-                .Where(item => item.IsActive)
-                .OrderBy(item => item.Name)
+            var query = _context.ShopItems.Where(item => item.IsActive);
+
+            if (category.HasValue)
+            {
+                query = query.Where(item => item.Category == category.Value);
+            }
+
+            var items = await query
+                .OrderBy(item => item.Category)
+                .ThenBy(item => item.Price)
                 .ToListAsync();
 
             return Ok(items);
@@ -39,6 +48,36 @@ public class ShopController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving shop items");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Get all available shop categories with item counts
+    /// </summary>
+    /// <returns>List of categories with counts</returns>
+    [HttpGet("categories")]
+    public async Task<ActionResult> GetCategories()
+    {
+        try
+        {
+            var categories = await _context.ShopItems
+                .Where(item => item.IsActive)
+                .GroupBy(item => item.Category)
+                .Select(g => new
+                {
+                    Category = g.Key,
+                    CategoryName = g.Key.ToString(),
+                    ItemCount = g.Count()
+                })
+                .OrderBy(c => c.Category)
+                .ToListAsync();
+
+            return Ok(categories);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving shop categories");
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
