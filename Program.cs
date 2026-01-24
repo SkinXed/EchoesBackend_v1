@@ -7,6 +7,7 @@ using Echoes.API.Services.Auth;
 using Echoes.API.Services.UniverseGeneration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -326,6 +327,7 @@ else
 
 // 4.2. Middleware pipeline
 //app.UseHttpsRedirection();
+app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseResponseCaching(); // Должен быть до UseAuthorization
