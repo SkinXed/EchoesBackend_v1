@@ -730,7 +730,7 @@ namespace Echoes.API.Models.Entities.Character
     /// <summary>
     /// Сессии аккаунта для аутентификации
     /// </summary>
-    [Table("account_sessions")]
+    [Table("AccountSessions")]
     public class AccountSession
     {
         [Key]
