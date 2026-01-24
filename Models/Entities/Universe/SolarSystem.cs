@@ -9,7 +9,7 @@ namespace Echoes.API.Models.Entities.Universe
     [Table("SolarSystems")]
     public class SolarSystem : BaseEntity
     {
-        public Guid Id { get; set; } // Добавьте это свойство
+        public new Guid Id { get; set; } // Добавьте это свойство
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
@@ -19,7 +19,7 @@ namespace Echoes.API.Models.Entities.Universe
 
         [Range(-1.0f, 1.0f)]
         public float SecurityStatus { get; set; }
-        public bool IsActive { get; set; } = true;
+        public new bool IsActive { get; set; } = true;
         public long PositionX { get; set; }
         public long PositionY { get; set; }
         public long PositionZ { get; set; }
