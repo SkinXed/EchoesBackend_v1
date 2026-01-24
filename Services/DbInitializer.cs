@@ -53,8 +53,8 @@ public class DbInitializer : IDbInitializer
                     Username = adminUsername,
                     DisplayName = "System Administrator",
                     Nickname = "Admin",
-                    PasswordHash = Convert.ToBase64String(passwordHash),
-                    PasswordSalt = Convert.ToBase64String(passwordSalt),
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
                     AccountStatus = AccountStatus.Active,
                     AccountType = AccountType.Admin,
                     Roles = AccountRole.Admin | AccountRole.Player, // Admin + Player roles

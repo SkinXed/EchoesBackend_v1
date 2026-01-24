@@ -65,8 +65,8 @@ namespace Echoes.API.Controllers
 
                 // Хэширование пароля
                 CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                account.PasswordHash = Convert.ToBase64String(passwordHash);
-                account.PasswordSalt = Convert.ToBase64String(passwordSalt);
+                account.PasswordHash = passwordHash;
+                account.PasswordSalt = passwordSalt;
 
                 // Создание персонажа
                 var character = new Character
@@ -136,10 +136,10 @@ namespace Echoes.API.Controllers
                     .FirstOrDefaultAsync(a => a.Email == request.EmailOrUsername ||
                                              a.Username == request.EmailOrUsername);
 
-                if (account == null || !VerifyPasswordHash(request.Password, Convert.FromBase64String(account.PasswordHash), Convert.FromBase64String(account.PasswordSalt)))
+                if (account == null || !VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
                     return Unauthorized(new { error = "Неверные учетные данные" });
 
-                if (!account.IsActive())
+                if (!account.IsActive)
                     return Unauthorized(new { error = "Аккаунт деактивирован" });
 
                 // Получение персонажа
@@ -411,7 +411,7 @@ namespace Echoes.API.Controllers
                 }
 
                 // Check account status
-                if (!account.IsActive())
+                if (!account.IsActive)
                 {
                     return Unauthorized(new GoogleAuthResponseDto 
                     { 
@@ -514,8 +514,8 @@ namespace Echoes.API.Controllers
                     DisplayName = payload.Name,
                     Nickname = request.Nickname,
                     GoogleId = payload.Subject,
-                    PasswordHash = string.Empty, // No password for Google auth
-                    PasswordSalt = string.Empty,
+                    PasswordHash = Array.Empty<byte>(), // No password for Google auth
+                    PasswordSalt = Array.Empty<byte>(),
                     AccountStatus = AccountStatus.Active,
                     AccountType = AccountType.Free,
                     Roles = AccountRole.Player, // Assign "Pilot" role
