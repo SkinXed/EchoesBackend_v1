@@ -28,11 +28,11 @@ namespace Echoes.API.Models.Entities.Character
         
         [Required]
         [Column("password_hash")]
-        public string PasswordHash { get; set; } = string.Empty;
+        public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
         
         [Required]
         [Column("password_salt")]
-        public string PasswordSalt { get; set; } = string.Empty;
+        public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
         
         [Column("phone_number")]
         public string? PhoneNumber { get; set; }
@@ -150,6 +150,9 @@ namespace Echoes.API.Models.Entities.Character
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
+        [Column("is_active")]
+        public bool IsActive { get; set; } = true;
+        
         // Навигационные свойства
         public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
         public virtual ICollection<AccountSession> Sessions { get; set; } = new List<AccountSession>();
@@ -158,7 +161,7 @@ namespace Echoes.API.Models.Entities.Character
         public virtual ICollection<ApiKey> ApiKeys { get; set; } = new List<ApiKey>();
         public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
         
-        // Alias для совместимости
+        // Дополнительное свойство для совместимости с кодом
         [NotMapped]
         public Guid Id
         {
@@ -214,7 +217,7 @@ namespace Echoes.API.Models.Entities.Character
             return TrialEndsAt.HasValue && TrialEndsAt.Value > DateTime.UtcNow;
         }
         
-        public bool IsActive()
+        public bool IsAccountActive()
         {
             return AccountStatus == AccountStatus.Active && 
                    !IsLocked() && 
@@ -237,7 +240,7 @@ namespace Echoes.API.Models.Entities.Character
             // Требование 2FA для определенных ролей и подписок
             return HasRole(AccountRole.Admin) || 
                    HasRole(AccountRole.Moderator) || 
-                   AccountType == AccountType.Omega;
+                   SubscriptionType == SubscriptionType.Lifetime;
         }
         
         public void LockAccount(int minutes = 15)
@@ -714,5 +717,72 @@ namespace Echoes.API.Models.Entities.Character
         
         [ForeignKey("MessageId")]
         public virtual TicketMessage? Message { get; set; }
+    }
+
+    /// <summary>
+    /// Сессии аккаунта для аутентификации
+    /// </summary>
+    [Table("account_sessions")]
+    public class AccountSession
+    {
+        [Key]
+        [Column("id")]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        
+        [Required]
+        [Column("account_id")]
+        public Guid AccountId { get; set; }
+        
+        [Column("character_id")]
+        public Guid? CharacterId { get; set; }
+        
+        [Required]
+        [Column("session_token")]
+        public string SessionToken { get; set; } = string.Empty;
+        
+        [Required]
+        [Column("refresh_token")]
+        public string RefreshToken { get; set; } = string.Empty;
+        
+        [Column("ip_address")]
+        public string? IPAddress { get; set; }
+        
+        [Column("user_agent")]
+        public string? UserAgent { get; set; }
+        
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        [Column("expires_at")]
+        public DateTime ExpiresAt { get; set; }
+        
+        [Column("refresh_token_expires_at")]
+        public DateTime RefreshTokenExpiresAt { get; set; }
+        
+        [Column("last_activity")]
+        public DateTime? LastActivity { get; set; }
+        
+        [Column("is_revoked")]
+        public bool IsRevoked { get; set; } = false;
+        
+        [Column("is_active")]
+        public bool IsActive { get; set; } = true;
+        
+        // Навигационные свойства
+        [ForeignKey("AccountId")]
+        public virtual Account Account { get; set; } = null!;
+        
+        [ForeignKey("CharacterId")]
+        public virtual Character? Character { get; set; }
+        
+        public bool IsExpired()
+        {
+            return ExpiresAt < DateTime.UtcNow || IsRevoked;
+        }
+        
+        public bool IsRefreshTokenExpired()
+        {
+            return RefreshTokenExpiresAt < DateTime.UtcNow || IsRevoked;
+        }
     }
 }

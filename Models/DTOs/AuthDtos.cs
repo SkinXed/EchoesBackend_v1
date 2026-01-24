@@ -69,4 +69,93 @@ namespace Echoes.API.Models.DTOs
         public object? ShipSpawnData { get; set; }
         public object? CurrentLocation { get; set; }
     }
+
+    // DTO для регистрации (alias для совместимости)
+    public class RegisterDto
+    {
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        public string Username { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100, MinimumLength = 8)]
+        public string Password { get; set; } = string.Empty;
+    }
+
+    // DTO для логина (alias для совместимости)
+    public class LoginDto
+    {
+        [Required]
+        public string EmailOrUsername { get; set; } = string.Empty;
+
+        [Required]
+        public string Password { get; set; } = string.Empty;
+    }
+
+    // DTO для сброса пароля
+    public class ResetPasswordDto
+    {
+        [Required]
+        public string Token { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100, MinimumLength = 8)]
+        public string NewPassword { get; set; } = string.Empty;
+    }
+
+    // DTO для изменения пароля
+    public class ChangePasswordDto
+    {
+        [Required]
+        public string CurrentPassword { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100, MinimumLength = 8)]
+        public string NewPassword { get; set; } = string.Empty;
+    }
+
+    // DTO для подтверждения email
+    public class VerifyEmailDto
+    {
+        [Required]
+        public string Token { get; set; } = string.Empty;
+    }
+
+    // DTO для запроса отправки письма верификации
+    public class ResendVerificationDto
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+    }
+
+    // DTO для запроса сброса пароля
+    public class RequestPasswordResetDto
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+    }
+
+    // DTO для включения двухфакторной аутентификации
+    public class EnableTwoFactorDto
+    {
+        [Required]
+        public string TwoFactorType { get; set; } = string.Empty;
+    }
+
+    // DTO для проверки кода двухфакторной аутентификации
+    public class VerifyTwoFactorDto
+    {
+        [Required]
+        public string Code { get; set; } = string.Empty;
+    }
 }

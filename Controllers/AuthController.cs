@@ -244,7 +244,7 @@ namespace Echoes.API.Controllers
                 return Ok(new SessionValidationDto
                 {
                     IsValid = true,
-                    CharacterId = session.CharacterId
+                    CharacterId = request.CharacterId // Use the validated CharacterId from request
                 });
             }
             catch (Exception ex)
@@ -301,7 +301,7 @@ namespace Echoes.API.Controllers
                 {
                     Success = true,
                     Token = token,
-                    CharacterId = session.CharacterId,
+                    CharacterId = request.CharacterId, // Use the validated CharacterId from request
                     CharacterName = session.Character.Name,
                     SessionId = newSession.Id,
                     ExpiresAt = newSession.ExpiresAt
