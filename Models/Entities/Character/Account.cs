@@ -28,11 +28,11 @@ namespace Echoes.API.Models.Entities.Character
         
         [Required]
         [Column("password_hash")]
-        public string PasswordHash { get; set; } = string.Empty;
+        public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
         
         [Required]
         [Column("password_salt")]
-        public string PasswordSalt { get; set; } = string.Empty;
+        public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
         
         [Column("phone_number")]
         public string? PhoneNumber { get; set; }
@@ -150,6 +150,9 @@ namespace Echoes.API.Models.Entities.Character
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
+        [Column("is_active")]
+        public bool IsActive { get; set; } = true;
+        
         // Навигационные свойства
         public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
         public virtual ICollection<AccountSession> Sessions { get; set; } = new List<AccountSession>();
@@ -165,6 +168,9 @@ namespace Echoes.API.Models.Entities.Character
             get => AccountId;
             set => AccountId = value;
         }
+        
+        [NotMapped]
+        public bool IsAdmin => HasRole(AccountRole.Admin);
         
         // Методы
         [NotMapped]
@@ -211,7 +217,7 @@ namespace Echoes.API.Models.Entities.Character
             return TrialEndsAt.HasValue && TrialEndsAt.Value > DateTime.UtcNow;
         }
         
-        public bool IsActive()
+        public bool IsAccountActive()
         {
             return AccountStatus == AccountStatus.Active && 
                    !IsLocked() && 
@@ -234,7 +240,7 @@ namespace Echoes.API.Models.Entities.Character
             // Требование 2FA для определенных ролей и подписок
             return HasRole(AccountRole.Admin) || 
                    HasRole(AccountRole.Moderator) || 
-                   SubscriptionType == SubscriptionType.Omega;
+                   SubscriptionType == SubscriptionType.Lifetime;
         }
         
         public void LockAccount(int minutes = 15)
@@ -759,9 +765,15 @@ namespace Echoes.API.Models.Entities.Character
         [Column("is_revoked")]
         public bool IsRevoked { get; set; } = false;
         
+        [Column("is_active")]
+        public bool IsActive { get; set; } = true;
+        
         // Навигационные свойства
         [ForeignKey("AccountId")]
         public virtual Account Account { get; set; } = null!;
+        
+        [ForeignKey("CharacterId")]
+        public virtual Character? Character { get; set; }
         
         public bool IsExpired()
         {

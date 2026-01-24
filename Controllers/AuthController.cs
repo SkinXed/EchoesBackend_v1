@@ -243,7 +243,7 @@ namespace Echoes.API.Controllers
                 return Ok(new SessionValidationDto
                 {
                     IsValid = true,
-                    CharacterId = session.CharacterId
+                    CharacterId = session.CharacterId!.Value
                 });
             }
             catch (Exception ex)
@@ -300,7 +300,7 @@ namespace Echoes.API.Controllers
                 {
                     Success = true,
                     Token = token,
-                    CharacterId = session.CharacterId,
+                    CharacterId = session.CharacterId!.Value,
                     CharacterName = session.Character.Name,
                     SessionId = newSession.Id,
                     ExpiresAt = newSession.ExpiresAt
