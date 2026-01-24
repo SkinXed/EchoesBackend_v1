@@ -98,6 +98,10 @@ namespace Echoes.API.Models.Entities.Character
             if (amount <= 0 || amount > Balance || targetWallet == null)
                 return false;
                 
+            // Validate same currency type
+            if (CurrencyType != targetWallet.CurrencyType)
+                return false;
+                
             if (Withdraw(amount, $"Transfer to {targetWallet.WalletName}: {description}"))
             {
                 return targetWallet.Deposit(amount, $"Transfer from {WalletName}: {description}");

@@ -75,18 +75,19 @@ namespace Echoes.API.Models.Entities.Character
         
         public TimeSpan GetRemainingTime()
         {
-            if (!IsTraining() || !EstimatedFinishAt.HasValue)
+            if (!IsTraining() || !EstimatedFinishAt.HasValue || !StartedAt.HasValue)
                 return TimeSpan.Zero;
                 
             var now = DateTime.UtcNow;
             if (PausedAt.HasValue)
             {
-                // Добавляем время паузы к оставшемуся
-                var pausedTime = now - PausedAt.Value;
-                return (EstimatedFinishAt.Value - StartedAt!.Value) + pausedTime;
+                // Calculate remaining time at pause + time already paused
+                var remainingAtPause = EstimatedFinishAt.Value - PausedAt.Value;
+                return remainingAtPause;
             }
             
-            return EstimatedFinishAt.Value - now;
+            var remaining = EstimatedFinishAt.Value - now;
+            return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
         }
         
         public long GetTotalTrainingTimeSeconds()

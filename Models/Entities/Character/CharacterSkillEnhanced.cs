@@ -67,13 +67,21 @@ namespace Echoes.API.Models.Entities.Character
         
         public long GetSkillPointsForLevel(SkillLevel level)
         {
+            // Level 0 means no training
+            if (level == SkillLevel.Level0)
+                return 0;
+                
             // Формула из EVE: SP = 250 * (2.5^(level-1)) * Rank
             double basePoints = 250 * Math.Pow(2.5, (int)level - 1);
+            if (Skill == null)
+                return 0;
             return (long)(basePoints * (double)Skill.Rank);
         }
         
         public long GetSkillPointsRemaining()
         {
+            if (SkillPointsToNextLevel <= SkillPoints)
+                return 0;
             return SkillPointsToNextLevel - SkillPoints;
         }
         

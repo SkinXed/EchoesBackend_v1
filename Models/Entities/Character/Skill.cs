@@ -93,6 +93,10 @@ namespace Echoes.API.Models.Entities.Character
         
         public long GetSkillPointsForLevel(SkillLevel level)
         {
+            // Level 0 means no training
+            if (level == SkillLevel.Level0)
+                return 0;
+                
             double basePoints = 250 * Math.Pow(2.5, (int)level - 1);
             return (long)(basePoints * (double)Rank);
         }
