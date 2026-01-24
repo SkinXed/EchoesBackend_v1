@@ -12,7 +12,7 @@ namespace Echoes.API.Models.Entities.Universe
         public new Guid Id { get; set; } // Добавьте это свойство
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [ForeignKey("Constellation")]
         public Guid ConstellationId { get; set; }
@@ -51,12 +51,12 @@ namespace Echoes.API.Models.Entities.Universe
         public bool HasStations { get; set; } = true;
 
         [MaxLength(1000)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
        // public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Навигационные свойства
-        public virtual Constellation Constellation { get; set; }
+        public virtual Constellation Constellation { get; set; } = null!;
         public virtual ICollection<Planet> Planets { get; set; } = new List<Planet>();
         public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
         public virtual ICollection<Stargate> Stargates { get; set; } = new List<Stargate>();

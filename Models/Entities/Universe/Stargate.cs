@@ -8,7 +8,7 @@ namespace Echoes.API.Models.Entities.Universe
     {
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         // Новые поля
         [ForeignKey("SourceSolarSystem")]
@@ -30,8 +30,8 @@ namespace Echoes.API.Models.Entities.Universe
         public string Model { get; set; } = "Stargate_01";
 
         // Навигационные свойства
-        public virtual SolarSystem SourceSolarSystem { get; set; }
-        public virtual SolarSystem DestinationSolarSystem { get; set; }
+        public virtual SolarSystem SourceSolarSystem { get; set; } = null!;
+        public virtual SolarSystem DestinationSolarSystem { get; set; } = null!;
         //public object TargetSystemId { get; internal set; }
         //public object TargetSystem { get; internal set; }
         //public bool IsActive { get; internal set; }

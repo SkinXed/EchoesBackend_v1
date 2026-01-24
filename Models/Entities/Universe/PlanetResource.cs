@@ -18,15 +18,15 @@ namespace Echoes.API.Models.Entities.Universe
 
         [Required]
         [MaxLength(100)]
-        public string ResourceType { get; set; }
+        public string ResourceType { get; set; } = string.Empty;
 
         public int Quantity { get; set; } = 1000;
         public float Quality { get; set; } = 1.0f;
         public DateTime? LastHarvested { get; set; }
 
         // Навигационные свойства
-        public virtual Planet Planet { get; set; }
-        public virtual Moon Moon { get; set; }
-        public virtual AsteroidBelt AsteroidBelt { get; set; }
+        public virtual Planet? Planet { get; set; }
+        public virtual Moon? Moon { get; set; }
+        public virtual AsteroidBelt? AsteroidBelt { get; set; }
     }
 }

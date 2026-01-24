@@ -8,7 +8,7 @@ namespace Echoes.API.Models.Entities.Universe
     {
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [ForeignKey("SolarSystem")]
@@ -24,7 +24,7 @@ namespace Echoes.API.Models.Entities.Universe
         public int AsteroidCount { get; set; } = 1000;
 
         // Навигационные свойства
-        public virtual SolarSystem SolarSystem { get; set; }
+        public virtual SolarSystem SolarSystem { get; set; } = null!;
         public virtual ICollection<PlanetResource> Resources { get; set; } = new List<PlanetResource>();
     }
 }

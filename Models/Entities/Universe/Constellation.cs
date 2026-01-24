@@ -10,7 +10,7 @@ namespace Echoes.API.Models.Entities.Universe
 
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [ForeignKey("Region")]
         public Guid RegionId { get; set; }
@@ -28,7 +28,7 @@ namespace Echoes.API.Models.Entities.Universe
 
 
         // Навигационные свойства
-        public virtual Region Region { get; set; }
+        public virtual Region Region { get; set; } = null!;
         public virtual ICollection<SolarSystem> SolarSystems { get; set; } = new List<SolarSystem>();
     }
 }

@@ -11,7 +11,7 @@ namespace Echoes.API.Models.Entities.Universe
 
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [ForeignKey("Planet")]
         public Guid PlanetId { get; set; }
@@ -28,7 +28,7 @@ namespace Echoes.API.Models.Entities.Universe
         public long PositionZ { get; set; }
 
         // Навигационные свойства
-        public virtual Planet Planet { get; set; }
+        public virtual Planet Planet { get; set; } = null!;
         public virtual ICollection<PlanetResource> Resources { get; set; } = new List<PlanetResource>();
     }
 }
