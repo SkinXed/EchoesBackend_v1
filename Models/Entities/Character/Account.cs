@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Echoes.Models.Enums;
+using Echoes.API.Models.Enums;
 
-namespace Echoes.Models.Entities
+namespace Echoes.API.Models.Entities.Character
 {
     /// <summary>
     /// Основная информация об аккаунте
@@ -152,10 +152,22 @@ namespace Echoes.Models.Entities
         
         // Навигационные свойства
         public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+        public virtual ICollection<AccountSession> Sessions { get; set; } = new List<AccountSession>();
         public virtual ICollection<AccountActivity> Activities { get; set; } = new List<AccountActivity>();
         public virtual ICollection<AccountBan> Bans { get; set; } = new List<AccountBan>();
         public virtual ICollection<ApiKey> ApiKeys { get; set; } = new List<ApiKey>();
         public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
+        
+        // Alias для совместимости
+        [NotMapped]
+        public Guid Id
+        {
+            get => AccountId;
+            set => AccountId = value;
+        }
+        
+        [NotMapped]
+        public bool IsAdmin => HasRole(AccountRole.Admin);
         
         // Методы
         [NotMapped]
@@ -225,7 +237,7 @@ namespace Echoes.Models.Entities
             // Требование 2FA для определенных ролей и подписок
             return HasRole(AccountRole.Admin) || 
                    HasRole(AccountRole.Moderator) || 
-                   SubscriptionType == SubscriptionType.Omega;
+                   AccountType == AccountType.Omega;
         }
         
         public void LockAccount(int minutes = 15)
