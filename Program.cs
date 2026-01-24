@@ -206,7 +206,11 @@ services.AddSwaggerGen(c =>
     });
 
     // Fix duplicate schema names by using full type names
-    c.CustomSchemaIds(type => type.ToString());
+    // This is needed because we have multiple InventoryItemDTO classes in different namespaces:
+    // - Echoes.API.Models.DTOs.Inventory.InventoryItemDTO (in-game inventory)
+    // - EchoesOfImperial.Shared.DTOs.InventoryItemDTO (web shop inventory)
+    // Using FullName ensures Swagger can differentiate them
+    c.CustomSchemaIds(type => type.FullName);
 
     // Add JWT support to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
