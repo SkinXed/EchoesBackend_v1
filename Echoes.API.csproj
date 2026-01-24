@@ -12,6 +12,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.PostgreSQL.Storage" Version="8.0.1" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
@@ -46,5 +47,24 @@
     <EmbeddedResource Remove="EchoesOfImperial.Shared\**" />
     <None Remove="EchoesOfImperial.Shared\**" />
   </ItemGroup>
+
+  <!-- Build and publish Blazor client to API wwwroot -->
+  <Target Name="PublishBlazorClient" AfterTargets="Build">
+    <!-- Clean and create wwwroot directory -->
+    <RemoveDir Directories="$(MSBuildProjectDirectory)/wwwroot" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)/wwwroot" />
+    
+    <!-- Publish the Blazor client to a temp directory -->
+    <Exec Command="dotnet publish $(MSBuildProjectDirectory)/EchoesOfImperial.Client/EchoesOfImperial.Client.csproj -c $(Configuration) -o $(MSBuildProjectDirectory)/temp-blazor-publish" />
+    
+    <!-- Copy all files from temp publish wwwroot to API wwwroot -->
+    <ItemGroup>
+      <BlazorPublishedFiles Include="$(MSBuildProjectDirectory)/temp-blazor-publish/wwwroot/**/*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(BlazorPublishedFiles)" DestinationFolder="$(MSBuildProjectDirectory)/wwwroot/%(RecursiveDir)" />
+    
+    <!-- Clean up temp directory -->
+    <RemoveDir Directories="$(MSBuildProjectDirectory)/temp-blazor-publish" />
+  </Target>
 
 </Project>

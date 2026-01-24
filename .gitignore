@@ -43,3 +43,6 @@ artifacts/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
+
+# Blazor WebAssembly output (served from wwwroot in API)
+wwwroot/
