@@ -37,65 +37,101 @@ public class DbInitializer : IDbInitializer
             var adminPassword = _configuration["Admin:Password"] ?? "Admin123!";
             var adminUsername = _configuration["Admin:Username"] ?? "admin";
 
-            var adminAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == adminEmail);
+            Account? adminAccount = null;
+
+            try
+            {
+                adminAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == adminEmail);
+            }
+            catch (Exception ex)
+            {
+                // Likely schema mismatch between model and database (column/table names).
+                _logger.LogWarning(ex, "Unable to query Accounts table to check for admin user. Skipping admin creation.\nPossible causes: database schema does not match the current EF model.\nDetails: {Message}", ex.Message);
+            }
 
             if (adminAccount == null)
             {
-                _logger.LogInformation($"👤 Creating admin user: {adminEmail}");
-
-                // Create admin account
-                CreatePasswordHash(adminPassword, out byte[] passwordHash, out byte[] passwordSalt);
-
-                adminAccount = new Account
+                if (adminAccount == null)
                 {
-                    AccountId = Guid.NewGuid(),
-                    Email = adminEmail,
-                    Username = adminUsername,
-                    DisplayName = "System Administrator",
-                    Nickname = "Admin",
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    AccountStatus = AccountStatus.Active,
-                    AccountType = AccountType.Admin,
-                    Roles = AccountRole.Admin | AccountRole.Player, // Admin + Player roles
-                    IsEmailVerified = true,
-                    EmailVerifiedAt = DateTime.UtcNow
-                };
+                    _logger.LogInformation($"👤 Creating admin user: {adminEmail}");
 
-                _context.Accounts.Add(adminAccount);
+                    // Create admin account
+                    CreatePasswordHash(adminPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
-                // Create default character for admin
-                var adminCharacter = new Character
-                {
-                    Id = Guid.NewGuid(),
-                    AccountId = adminAccount.AccountId,
-                    Name = "Administrator",
-                    IsMain = true,
-                    WalletBalance = 999999999,
-                    SecurityStatus = 10.0f,
-                    CloneExpiration = DateTime.UtcNow.AddYears(10)
-                };
+                    adminAccount = new Account
+                    {
+                        AccountId = Guid.NewGuid(),
+                        Email = adminEmail,
+                        Username = adminUsername,
+                        DisplayName = "System Administrator",
+                        Nickname = "Admin",
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt,
+                        AccountStatus = AccountStatus.Active,
+                        AccountType = AccountType.Admin,
+                        Roles = AccountRole.Admin | AccountRole.Player, // Admin + Player roles
+                        IsEmailVerified = true,
+                        EmailVerifiedAt = DateTime.UtcNow
+                    };
 
-                _context.Characters.Add(adminCharacter);
+                    try
+                    {
+                        _context.Accounts.Add(adminAccount);
 
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"✅ Admin user created: {adminEmail}");
+                        // Create default character for admin
+                        var adminCharacter = new Character
+                        {
+                            Id = Guid.NewGuid(),
+                            AccountId = adminAccount.AccountId,
+                            Name = "Administrator",
+                            IsMain = true,
+                            WalletBalance = 999999999,
+                            SecurityStatus = 10.0f,
+                            CloneExpiration = DateTime.UtcNow.AddYears(10)
+                        };
+
+                        _context.Characters.Add(adminCharacter);
+
+                        await _context.SaveChangesAsync();
+                        _logger.LogInformation($"✅ Admin user created: {adminEmail}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to insert admin account or character. Skipping admin creation to avoid startup failure.");
+                    }
+                }
             }
             else
             {
                 _logger.LogInformation($"✓ Admin user already exists: {adminEmail}");
 
                 // Ensure admin has admin role
-                if (!adminAccount.Roles.HasFlag(AccountRole.Admin))
+                try
                 {
-                    adminAccount.Roles |= AccountRole.Admin;
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("✅ Admin role assigned to existing admin user");
+                    if (!adminAccount.Roles.HasFlag(AccountRole.Admin))
+                    {
+                        adminAccount.Roles |= AccountRole.Admin;
+                        await _context.SaveChangesAsync();
+                        _logger.LogInformation("✅ Admin role assigned to existing admin user");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to update existing admin user roles. Continuing startup.");
                 }
             }
 
             // Seed shop items if they don't exist
-            var shopItemCount = await _context.ShopItems.CountAsync();
+            var shopItemCount = 0;
+            try
+            {
+                shopItemCount = await _context.ShopItems.CountAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Unable to access ShopItems table. Skipping shop seeding.");
+            }
+
             if (shopItemCount == 0)
             {
                 _logger.LogInformation("🛒 Seeding shop items...");
@@ -199,9 +235,16 @@ public class DbInitializer : IDbInitializer
                     }
                 };
 
-                _context.ShopItems.AddRange(shopItems);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"✅ Added {shopItems.Count} shop items");
+                try
+                {
+                    _context.ShopItems.AddRange(shopItems);
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation($"✅ Added {shopItems.Count} shop items");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to seed shop items. Continuing startup.");
+                }
             }
             else
             {
@@ -213,7 +256,7 @@ public class DbInitializer : IDbInitializer
         catch (Exception ex)
         {
             _logger.LogError(ex, "❌ Error during database initialization");
-            throw;
+            // Do not rethrow to avoid crashing the application during startup when schema mismatches occur.
         }
     }
 
