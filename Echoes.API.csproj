@@ -28,4 +28,21 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="EchoesOfImperial.Shared\EchoesOfImperial.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude Client and Shared project folders from API project -->
+    <Compile Remove="EchoesOfImperial.Client\**" />
+    <Content Remove="EchoesOfImperial.Client\**" />
+    <EmbeddedResource Remove="EchoesOfImperial.Client\**" />
+    <None Remove="EchoesOfImperial.Client\**" />
+    
+    <Compile Remove="EchoesOfImperial.Shared\**" />
+    <Content Remove="EchoesOfImperial.Shared\**" />
+    <EmbeddedResource Remove="EchoesOfImperial.Shared\**" />
+    <None Remove="EchoesOfImperial.Shared\**" />
+  </ItemGroup>
+
 </Project>
