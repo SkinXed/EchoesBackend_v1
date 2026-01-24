@@ -18,6 +18,20 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 // ==============================================
+// 0. KESTREL CONFIGURATION (Must be before building app)
+// ==============================================
+var port = builder.Configuration.GetValue<int>("Server:Port", 5116);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(IPAddress.Loopback, port); // HTTP
+    options.Listen(IPAddress.Loopback, port - 1, listenOptions => // HTTPS, e.g., port-1 = 5115
+    {
+        listenOptions.UseHttps(); // Use appropriate certificate if needed
+    });
+});
+
+// ==============================================
 // 1. CONFIGURATION
 // ==============================================
 builder.Configuration
@@ -745,14 +759,3 @@ async Task PrintDetailedStatsAsync(IUniverseGenerator universeGenerator)
         Console.WriteLine($"⚠️ Detailed statistics unavailable: {ex.Message}");
     }
 }
-
-var port = builder.Configuration.GetValue<int>("Server:Port", 5116);
-
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(IPAddress.Loopback, port); // HTTP
-    options.Listen(IPAddress.Loopback, port - 1, listenOptions => // HTTPS, например порт-1 = 5115
-    {
-        listenOptions.UseHttps(); // используйте нужный сертификат, если необходимо
-    });
-});
