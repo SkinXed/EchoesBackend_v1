@@ -20,13 +20,32 @@ var builder = WebApplication.CreateBuilder(args);
 // ==============================================
 // 0. KESTREL CONFIGURATION (Must be before building app)
 // ==============================================
-var port = builder.Configuration.GetValue<int>("Server:Port", 5116);
+// Helper method to get port from environment or config
+static int GetPortFromEnvironment(string envVar, int defaultValue)
+{
+    var envValue = Environment.GetEnvironmentVariable(envVar);
+    return int.TryParse(envValue, out var port) ? port : defaultValue;
+}
+
+// Get port configuration with fallback to environment variables
+var httpPort = builder.Configuration.GetValue<int?>("Server:Port") 
+    ?? GetPortFromEnvironment("HTTP_PORT", 5116);
+
+var httpsPort = builder.Configuration.GetValue<int?>("Server:HttpsPort")
+    ?? GetPortFromEnvironment("HTTPS_PORT", httpPort - 1);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(IPAddress.Loopback, port); // HTTP
-    options.Listen(IPAddress.Loopback, port - 1, listenOptions => // HTTPS, e.g., port-1 = 5115
+    // Configure HTTP endpoint
+    options.Listen(IPAddress.Loopback, httpPort, listenOptions =>
     {
+        Console.WriteLine($"🌐 Configuring HTTP on port {httpPort}");
+    });
+    
+    // Configure HTTPS endpoint
+    options.Listen(IPAddress.Loopback, httpsPort, listenOptions =>
+    {
+        Console.WriteLine($"🔒 Configuring HTTPS on port {httpsPort}");
         listenOptions.UseHttps(); // Use appropriate certificate if needed
     });
 });
