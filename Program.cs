@@ -79,7 +79,7 @@ services.Configure<UniverseConfig>(
 
 // 3.3. JWT Authentication
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "YourSuperSecretKeyForJWTTokenGeneration1234567890!";
-services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+var authenticationBuilder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -93,12 +93,24 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
             ClockSkew = TimeSpan.Zero
         };
-    })
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Google:ClientId"] ?? "";
-        options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
     });
+
+// Add Google authentication only if credentials are configured
+var googleClientId = builder.Configuration["Google:ClientId"];
+var googleClientSecret = builder.Configuration["Google:ClientSecret"];
+if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
+{
+    authenticationBuilder.AddGoogle(options =>
+    {
+        options.ClientId = googleClientId;
+        options.ClientSecret = googleClientSecret;
+    });
+    Console.WriteLine("✅ Google OAuth authentication enabled");
+}
+else
+{
+    Console.WriteLine("⚠️ Google OAuth not configured - skipping Google authentication");
+}
 
 // 3.4. Register services
 services.AddScoped<IUniverseGenerator, UniverseGenerator>();
