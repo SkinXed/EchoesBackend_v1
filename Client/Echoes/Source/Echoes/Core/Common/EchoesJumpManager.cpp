@@ -129,9 +129,19 @@ bool UEchoesJumpManager::InitiateIntraServerJump(
 		FTimerHandle ArrivalTimer;
 		if (This->GetWorld())
 		{
+			// Use weak pointer for safe timer callback
+			TWeakObjectPtr<UEchoesJumpManager> WeakThisForTimer(This);
+			TWeakObjectPtr<APlayerController> WeakPCForTimer(PlayerController);
+			
 			This->GetWorld()->GetTimerManager().SetTimer(
 				ArrivalTimer,
-				FTimerDelegate::CreateUObject(This, &UEchoesJumpManager::OnArrivalTimerComplete, PlayerController, TargetSystemId),
+				FTimerDelegate::CreateLambda([WeakThisForTimer, WeakPCForTimer, TargetSystemId]()
+				{
+					if (WeakThisForTimer.IsValid() && WeakPCForTimer.IsValid())
+					{
+						WeakThisForTimer->OnArrivalTimerComplete(WeakPCForTimer.Get(), TargetSystemId);
+					}
+				}),
 				This->AssetLoadWaitTime,
 				false);
 
