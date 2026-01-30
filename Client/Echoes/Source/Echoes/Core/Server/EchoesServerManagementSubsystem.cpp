@@ -97,6 +97,14 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 		return;
 	}
 
+	// Validate server secret is configured
+	FString Secret = GetServerSecret();
+	if (Secret.IsEmpty())
+	{
+		UE_LOG(LogEchoesServer, Error, TEXT("Cannot register: ServerSecret not configured in DefaultGame.ini"));
+		return;
+	}
+
 	// Store parameters
 	ServerInstanceId = InstanceId;
 	this->GamePort = GamePort;
@@ -110,9 +118,14 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 	// Create registration request
 	FRegisterServerRequest Request;
 	Request.InstanceId = InstanceId;
-	Request.PublicIP = TEXT("127.0.0.1"); // TODO: Get actual public IP
+	
+	// Get public IP address
+	// TODO: Implement proper public IP detection (query external service or use UPnP)
+	// For now, use localhost for development/testing
+	Request.PublicIP = TEXT("127.0.0.1");
+	
 	Request.GamePort = GamePort;
-	Request.WebPort = GamePort + 1;
+	Request.WebPort = GamePort + 1; // TODO: Make WebPort independently configurable
 	Request.SolarSystemId = SolarSystemId;
 	Request.MaxPlayers = 100;
 	Request.GameVersion = TEXT("1.0.0");
@@ -130,7 +143,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		Auth_CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/register"));
+		CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/register"));
 	HttpRequest->SetContentAsString(JsonString);
 
 	// Bind response handler
@@ -166,7 +179,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Heartbeat()
 	float CPUUsage = 0.0f;
 	int64 MemoryUsageMB = 0;
 	int32 PlayersCount = 0;
-	Auth_CollectServerMetrics(CPUUsage, MemoryUsageMB, PlayersCount);
+	CollectServerMetrics(CPUUsage, MemoryUsageMB, PlayersCount);
 
 	// Create heartbeat request
 	FHeartbeatRequest Request;
@@ -188,7 +201,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Heartbeat()
 
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		Auth_CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/heartbeat"));
+		CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/heartbeat"));
 	HttpRequest->SetContentAsString(JsonString);
 
 	// Bind response handler
@@ -240,7 +253,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_GetConfig()
 
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		Auth_CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/config"));
+		CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/config"));
 	HttpRequest->SetContentAsString(JsonString);
 
 	// Bind response handler
@@ -277,7 +290,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Unregister()
 	// Create HTTP request
 	FString Endpoint = FString::Printf(TEXT("/api/server-management/unregister/%s"), *ServerInstanceId);
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		Auth_CreateAuthenticatedRequest(TEXT("DELETE"), Endpoint);
+		CreateAuthenticatedRequest(TEXT("DELETE"), Endpoint);
 
 	// Bind response handler
 	HttpRequest->OnProcessRequestComplete().BindUObject(
@@ -486,14 +499,15 @@ FString UEchoesServerManagementSubsystem::GetApiBaseUrl() const
 
 FString UEchoesServerManagementSubsystem::GetServerSecret() const
 {
-	// Try to get from config first
+	// Get from config
 	if (!ServerSecret.IsEmpty())
 	{
 		return ServerSecret;
 	}
 
-	// Default fallback (should be configured in production)
-	return TEXT("your-secure-server-secret-key");
+	// Error: No server secret configured
+	UE_LOG(LogEchoesServer, Error, TEXT("ServerSecret not configured in DefaultGame.ini! Server authentication will fail."));
+	return TEXT("");
 }
 
 bool UEchoesServerManagementSubsystem::IsDedicatedServer() const
@@ -513,7 +527,7 @@ bool UEchoesServerManagementSubsystem::IsDedicatedServer() const
 	return World->GetNetMode() == NM_DedicatedServer;
 }
 
-void UEchoesServerManagementSubsystem::Auth_CollectServerMetrics(
+void UEchoesServerManagementSubsystem::CollectServerMetrics(
 	float& OutCPUUsage,
 	int64& OutMemoryUsageMB,
 	int32& OutPlayersCount)
@@ -522,9 +536,11 @@ void UEchoesServerManagementSubsystem::Auth_CollectServerMetrics(
 	FPlatformMemoryStats MemStats = FPlatformMemory::GetStats();
 	OutMemoryUsageMB = MemStats.UsedPhysical / (1024 * 1024);
 
-	// CPU usage estimation (simplified)
-	// TODO: Implement proper CPU usage monitoring
-	OutCPUUsage = 50.0f;
+	// CPU usage: Not implemented - return 0 to indicate unknown
+	// TODO: Implement platform-specific CPU usage monitoring
+	// Windows: Use Performance Counters or GetSystemTimes()
+	// Linux: Parse /proc/stat
+	OutCPUUsage = 0.0f;
 
 	// Get player count
 	OutPlayersCount = 0;
@@ -586,7 +602,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_StopHeartbeat()
 	}
 }
 
-TSharedRef<IHttpRequest, ESPMode::ThreadSafe> UEchoesServerManagementSubsystem::Auth_CreateAuthenticatedRequest(
+TSharedRef<IHttpRequest, ESPMode::ThreadSafe> UEchoesServerManagementSubsystem::CreateAuthenticatedRequest(
 	const FString& Verb,
 	const FString& Endpoint)
 {

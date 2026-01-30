@@ -48,6 +48,12 @@
     <Content Remove="EchoesOfImperial.Shared\**" />
     <EmbeddedResource Remove="EchoesOfImperial.Shared\**" />
     <None Remove="EchoesOfImperial.Shared\**" />
+
+    <!-- Exclude Unreal Engine Client from compilation -->
+    <Compile Remove="Client\**" />
+    <Content Remove="Client\**" />
+    <EmbeddedResource Remove="Client\**" />
+    <None Remove="Client\**" />
   </ItemGroup>
 
   <!-- Build and publish Blazor client to API wwwroot -->

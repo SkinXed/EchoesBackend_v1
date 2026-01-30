@@ -172,7 +172,7 @@ protected:
 	/**
 	 * Collect current server metrics for heartbeat
 	 */
-	void Auth_CollectServerMetrics(
+	void CollectServerMetrics(
 		float& OutCPUUsage,
 		int64& OutMemoryUsageMB,
 		int32& OutPlayersCount);
@@ -190,7 +190,7 @@ protected:
 	/**
 	 * Create HTTP request with server secret header
 	 */
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Auth_CreateAuthenticatedRequest(
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> CreateAuthenticatedRequest(
 		const FString& Verb,
 		const FString& Endpoint);
 
