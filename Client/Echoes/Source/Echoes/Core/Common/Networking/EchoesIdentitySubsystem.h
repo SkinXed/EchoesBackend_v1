@@ -67,7 +67,7 @@ struct FEchoesCharacter
 	FString PortraitURL;
 };
 
-// Dynamic delegates for Blueprint support
+
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataReceived, const FEchoesCharacter&, CharacterData);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataFailure, const FString&, ErrorMessage);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterSelected);
