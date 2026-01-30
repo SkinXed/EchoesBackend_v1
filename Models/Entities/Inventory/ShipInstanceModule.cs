@@ -47,6 +47,32 @@ namespace Echoes.API.Models.Entities.Inventory
         [Column("is_online")]
         public bool IsOnline { get; set; } = true;
 
+        // Module bonuses/modifiers
+        
+        /// <summary>
+        /// Thrust bonus in Newtons (additive)
+        /// </summary>
+        [Column("thrust_bonus")]
+        public decimal ThrustBonus { get; set; } = 0;
+
+        /// <summary>
+        /// Inertia modifier (multiplicative, < 1.0 improves agility)
+        /// </summary>
+        [Column("inertia_modifier")]
+        public decimal InertiaModifier { get; set; } = 1.0m;
+
+        /// <summary>
+        /// Rotation torque bonus in degrees/sec (additive)
+        /// </summary>
+        [Column("rotation_bonus")]
+        public decimal RotationBonus { get; set; } = 0;
+
+        /// <summary>
+        /// Max velocity modifier (multiplicative)
+        /// </summary>
+        [Column("max_velocity_modifier")]
+        public decimal MaxVelocityModifier { get; set; } = 1.0m;
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

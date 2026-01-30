@@ -11,12 +11,12 @@ namespace Echoes.API.Controllers.Ship
     [Route("api/[controller]")]
     public class ShipController : ControllerBase
     {
-        private readonly ShipFittingService _fittingService;
+        private readonly IShipFittingService _fittingService;
         private readonly ILogger<ShipController> _logger;
         private readonly IConfiguration _configuration;
 
         public ShipController(
-            ShipFittingService fittingService,
+            IShipFittingService fittingService,
             ILogger<ShipController> logger,
             IConfiguration configuration)
         {
@@ -100,7 +100,12 @@ namespace Echoes.API.Controllers.Ship
                 id,
                 request.ModuleTypeId,
                 request.Mass,
-                request.Slot);
+                request.Slot,
+                request.SlotIndex,
+                request.ThrustBonus,
+                request.InertiaModifier,
+                request.RotationBonus,
+                request.MaxVelocityModifier);
 
             if (!success)
             {
@@ -108,6 +113,39 @@ namespace Echoes.API.Controllers.Ship
             }
 
             return Ok(new { message = "Module added successfully" });
+        }
+
+        /// <summary>
+        /// Update module bonuses
+        /// PUT /api/ship/modules/{moduleId}/bonuses
+        /// Requires X-Server-Secret header
+        /// </summary>
+        [HttpPut("modules/{moduleId}/bonuses")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateModuleBonuses(
+            Guid moduleId,
+            [FromBody] UpdateModuleBonusesRequest request)
+        {
+            if (!ValidateServerSecret())
+            {
+                return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
+            }
+
+            var success = await _fittingService.UpdateModuleBonusesAsync(
+                moduleId,
+                request.ThrustBonus,
+                request.InertiaModifier,
+                request.RotationBonus,
+                request.MaxVelocityModifier);
+
+            if (!success)
+            {
+                return NotFound(new { error = "Module not found" });
+            }
+
+            return Ok(new { message = "Module bonuses updated successfully" });
         }
 
         /// <summary>
@@ -145,5 +183,21 @@ namespace Echoes.API.Controllers.Ship
         public int ModuleTypeId { get; set; }
         public float Mass { get; set; }
         public string Slot { get; set; } = string.Empty;
+        public int SlotIndex { get; set; } = 0;
+        public float ThrustBonus { get; set; } = 0;
+        public float InertiaModifier { get; set; } = 1.0f;
+        public float RotationBonus { get; set; } = 0;
+        public float MaxVelocityModifier { get; set; } = 1.0f;
+    }
+
+    /// <summary>
+    /// Request model for updating module bonuses
+    /// </summary>
+    public class UpdateModuleBonusesRequest
+    {
+        public float ThrustBonus { get; set; }
+        public float InertiaModifier { get; set; }
+        public float RotationBonus { get; set; }
+        public float MaxVelocityModifier { get; set; }
     }
 }
