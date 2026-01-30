@@ -7,13 +7,13 @@
 #include "Http.h"
 #include "EchoesInventorySubsystem.generated.h"
 
-// Forward declarations
-DECLARE_DELEGATE_OneParam(FOnShipsReceived, const TArray<struct FEchoesShipInstance>&);
-DECLARE_DELEGATE_OneParam(FOnShipFittingReceived, const struct FEchoesShipFitting&);
-DECLARE_DELEGATE_OneParam(FOnInventoryFailure, const FString&);
-DECLARE_DELEGATE(FOnShipActivated);
-DECLARE_DELEGATE(FOnModuleFitted);
-DECLARE_DELEGATE(FOnModuleUnfitted);
+// Forward declarations - Dynamic delegates for Blueprint support
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipsReceived, const TArray<FEchoesShipInstance>&, Ships);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipFittingReceived, const FEchoesShipFitting&, Fitting);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_DELEGATE(FOnShipActivated);
+DECLARE_DYNAMIC_DELEGATE(FOnModuleFitted);
+DECLARE_DYNAMIC_DELEGATE(FOnModuleUnfitted);
 
 // Multicast delegates for UI updates
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnFittingChanged, const struct FEchoesShipFitting&);

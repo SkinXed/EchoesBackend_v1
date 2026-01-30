@@ -7,11 +7,11 @@
 #include "Http.h"
 #include "EchoesAuthSubsystem.generated.h"
 
-// Forward declarations
-DECLARE_DELEGATE_OneParam(FOnLoginSuccess, const struct FAuthResponse&);
-DECLARE_DELEGATE_OneParam(FOnLoginFailure, const FString&);
-DECLARE_DELEGATE_OneParam(FOnRegisterSuccess, const struct FAuthResponse&);
-DECLARE_DELEGATE_OneParam(FOnRegisterFailure, const FString&);
+// Forward declarations - Dynamic delegates for Blueprint support
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnLoginSuccess, const FAuthResponse&, AuthResponse);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnLoginFailure, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnRegisterSuccess, const FAuthResponse&, AuthResponse);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnRegisterFailure, const FString&, ErrorMessage);
 
 /**
  * Auth request structure (mirrors C# LoginRequestDto)
