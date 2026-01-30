@@ -232,11 +232,11 @@ struct Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSig
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Declare dynamic delegates after FEchoesCharacter so UHT can resolve the type\n// Use dynamic delegates so UHT can process them when used in UFUNCTION parameters or Blueprint\n" },
+		{ "Comment", "// Dynamic delegates for Blueprint support\n" },
 #endif
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesIdentitySubsystem.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Declare dynamic delegates after FEchoesCharacter so UHT can resolve the type\nUse dynamic delegates so UHT can process them when used in UFUNCTION parameters or Blueprint" },
+		{ "ToolTip", "Dynamic delegates for Blueprint support" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterData_MetaData[] = {
@@ -456,7 +456,7 @@ struct Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_FetchCharacter_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3247789117
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_FetchCharacter_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 1508324696
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_FetchCharacter_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 906501422
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnSuccess,
@@ -844,7 +844,7 @@ struct Z_Construct_UClass_UEchoesIdentitySubsystem_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_ClearSelection, "Identity_ClearSelection" }, // 3967232812
-		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter, "Identity_FetchCharacter" }, // 1466664899
+		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter, "Identity_FetchCharacter" }, // 3291510835
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter, "Identity_GetSelectedCharacter" }, // 3042683416
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacterId, "Identity_GetSelectedCharacterId" }, // 67363804
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_HasSelectedCharacter, "Identity_HasSelectedCharacter" }, // 97103536
@@ -904,10 +904,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FEchoesCharacter::StaticStruct, Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewStructOps, TEXT("EchoesCharacter"), &Z_Registration_Info_UScriptStruct_FEchoesCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesCharacter), 3920001638U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesIdentitySubsystem, UEchoesIdentitySubsystem::StaticClass, TEXT("UEchoesIdentitySubsystem"), &Z_Registration_Info_UClass_UEchoesIdentitySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesIdentitySubsystem), 971374496U) },
+		{ Z_Construct_UClass_UEchoesIdentitySubsystem, UEchoesIdentitySubsystem::StaticClass, TEXT("UEchoesIdentitySubsystem"), &Z_Registration_Info_UClass_UEchoesIdentitySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesIdentitySubsystem), 3401511975U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_3065723823(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_4044841097(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

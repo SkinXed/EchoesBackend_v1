@@ -16,7 +16,6 @@ void EmptyLinkFunctionForGeneratedCodeEchoesInventorySubsystem() {}
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventorySubsystem();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventorySubsystem_NoRegister();
-ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnModuleFitted__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnModuleUnfitted__DelegateSignature();
@@ -26,6 +25,7 @@ ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__Dele
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesModule();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipFitting();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipInstance();
+ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipList();
 ENGINE_API UClass* Z_Construct_UClass_UGameInstanceSubsystem();
 UPackage* Z_Construct_UPackage__Script_Echoes();
 // ********** End Cross Module References **********************************************************
@@ -166,6 +166,73 @@ UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipInstance()
 	return Z_Registration_Info_UScriptStruct_FEchoesShipInstance.InnerSingleton;
 }
 // ********** End ScriptStruct FEchoesShipInstance *************************************************
+
+// ********** Begin ScriptStruct FEchoesShipList ***************************************************
+static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FEchoesShipList;
+class UScriptStruct* FEchoesShipList::StaticStruct()
+{
+	if (!Z_Registration_Info_UScriptStruct_FEchoesShipList.OuterSingleton)
+	{
+		Z_Registration_Info_UScriptStruct_FEchoesShipList.OuterSingleton = GetStaticStruct(Z_Construct_UScriptStruct_FEchoesShipList, (UObject*)Z_Construct_UPackage__Script_Echoes(), TEXT("EchoesShipList"));
+	}
+	return Z_Registration_Info_UScriptStruct_FEchoesShipList.OuterSingleton;
+}
+struct Z_Construct_UScriptStruct_FEchoesShipList_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n * Ship list response structure\n * Wrapper for TArray to enable Blueprint support in delegates\n */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Ship list response structure\nWrapper for TArray to enable Blueprint support in delegates" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Ships_MetaData[] = {
+		{ "Category", "Ship" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Ships_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_Ships;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static void* NewStructOps()
+	{
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FEchoesShipList>();
+	}
+	static const UECodeGen_Private::FStructParams StructParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoesShipList_Statics::NewProp_Ships_Inner = { "Ships", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FEchoesShipInstance, METADATA_PARAMS(0, nullptr) }; // 219373969
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FEchoesShipList_Statics::NewProp_Ships = { "Ships", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesShipList, Ships), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Ships_MetaData), NewProp_Ships_MetaData) }; // 219373969
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FEchoesShipList_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesShipList_Statics::NewProp_Ships_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesShipList_Statics::NewProp_Ships,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FEchoesShipList_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FEchoesShipList_Statics::StructParams = {
+	(UObject* (*)())Z_Construct_UPackage__Script_Echoes,
+	nullptr,
+	&NewStructOps,
+	"EchoesShipList",
+	Z_Construct_UScriptStruct_FEchoesShipList_Statics::PropPointers,
+	UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FEchoesShipList_Statics::PropPointers),
+	sizeof(FEchoesShipList),
+	alignof(FEchoesShipList),
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	EStructFlags(0x00000001),
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FEchoesShipList_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FEchoesShipList_Statics::Struct_MetaDataParams)
+};
+UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipList()
+{
+	if (!Z_Registration_Info_UScriptStruct_FEchoesShipList.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUScriptStruct(Z_Registration_Info_UScriptStruct_FEchoesShipList.InnerSingleton, Z_Construct_UScriptStruct_FEchoesShipList_Statics::StructParams);
+	}
+	return Z_Registration_Info_UScriptStruct_FEchoesShipList.InnerSingleton;
+}
+// ********** End ScriptStruct FEchoesShipList *****************************************************
 
 // ********** Begin ScriptStruct FEchoesModule *****************************************************
 static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FEchoesModule;
@@ -448,32 +515,29 @@ struct Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_S
 {
 	struct _Script_Echoes_eventOnShipsReceived_Parms
 	{
-		TArray<FEchoesShipInstance> Ships;
+		FEchoesShipList ShipList;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Declare dynamic delegates after the USTRUCTs they reference\n" },
+		{ "Comment", "// Dynamic delegates for Blueprint support\n" },
 #endif
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Declare dynamic delegates after the USTRUCTs they reference" },
+		{ "ToolTip", "Dynamic delegates for Blueprint support" },
 #endif
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Ships_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ShipList_MetaData[] = {
 		{ "NativeConst", "" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FStructPropertyParams NewProp_Ships_Inner;
-	static const UECodeGen_Private::FArrayPropertyParams NewProp_Ships;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ShipList;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::NewProp_Ships_Inner = { "Ships", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FEchoesShipInstance, METADATA_PARAMS(0, nullptr) }; // 219373969
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::NewProp_Ships = { "Ships", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnShipsReceived_Parms, Ships), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Ships_MetaData), NewProp_Ships_MetaData) }; // 219373969
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::NewProp_ShipList = { "ShipList", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnShipsReceived_Parms, ShipList), Z_Construct_UScriptStruct_FEchoesShipList, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ShipList_MetaData), NewProp_ShipList_MetaData) }; // 2870318589
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::NewProp_Ships_Inner,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::NewProp_Ships,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::NewProp_ShipList,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_Echoes, nullptr, "OnShipsReceived__DelegateSignature", Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::_Script_Echoes_eventOnShipsReceived_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00520000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics::Function_MetaDataParams)},  };
@@ -487,14 +551,14 @@ UFunction* Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignatu
 	}
 	return ReturnFunction;
 }
-void FOnShipsReceived_DelegateWrapper(const FScriptDelegate& OnShipsReceived, TArray<FEchoesShipInstance> const& Ships)
+void FOnShipsReceived_DelegateWrapper(const FScriptDelegate& OnShipsReceived, FEchoesShipList const& ShipList)
 {
 	struct _Script_Echoes_eventOnShipsReceived_Parms
 	{
-		TArray<FEchoesShipInstance> Ships;
+		FEchoesShipList ShipList;
 	};
 	_Script_Echoes_eventOnShipsReceived_Parms Parms;
-	Parms.Ships=Ships;
+	Parms.ShipList=ShipList;
 	OnShipsReceived.ProcessDelegate<UObject>(&Parms);
 }
 // ********** End Delegate FOnShipsReceived ********************************************************
@@ -671,59 +735,6 @@ void FOnModuleUnfitted_DelegateWrapper(const FScriptDelegate& OnModuleUnfitted)
 }
 // ********** End Delegate FOnModuleUnfitted *******************************************************
 
-// ********** Begin Delegate FOnFittingChanged *****************************************************
-struct Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics
-{
-	struct _Script_Echoes_eventOnFittingChanged_Parms
-	{
-		FEchoesShipFitting Fitting;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// Multicast delegate for UI updates (BlueprintAssignable should use dynamic multicast)\n" },
-#endif
-		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Multicast delegate for UI updates (BlueprintAssignable should use dynamic multicast)" },
-#endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Fitting_MetaData[] = {
-		{ "NativeConst", "" },
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FStructPropertyParams NewProp_Fitting;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
-};
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::NewProp_Fitting = { "Fitting", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnFittingChanged_Parms, Fitting), Z_Construct_UScriptStruct_FEchoesShipFitting, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Fitting_MetaData), NewProp_Fitting_MetaData) }; // 2094547099
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::NewProp_Fitting,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_Echoes, nullptr, "OnFittingChanged__DelegateSignature", Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::_Script_Echoes_eventOnFittingChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00530000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::Function_MetaDataParams)},  };
-static_assert(sizeof(Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::_Script_Echoes_eventOnFittingChanged_Parms) < MAX_uint16);
-UFunction* Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-void FOnFittingChanged_DelegateWrapper(const FMulticastScriptDelegate& OnFittingChanged, FEchoesShipFitting const& Fitting)
-{
-	struct _Script_Echoes_eventOnFittingChanged_Parms
-	{
-		FEchoesShipFitting Fitting;
-	};
-	_Script_Echoes_eventOnFittingChanged_Parms Parms;
-	Parms.Fitting=Fitting;
-	OnFittingChanged.ProcessMulticastDelegate<UObject>(&Parms);
-}
-// ********** End Delegate FOnFittingChanged *******************************************************
-
 // ********** Begin Class UEchoesInventorySubsystem Function Inventory_ClearCache ******************
 struct Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_ClearCache_Statics
 {
@@ -847,7 +858,7 @@ struct Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Stat
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_FetchShips_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 494916203
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_FetchShips_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 1978592863
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_FetchShips_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3872701800
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnSuccess,
@@ -1324,7 +1335,7 @@ struct Z_Construct_UClass_UEchoesInventorySubsystem_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_ClearCache, "Inventory_ClearCache" }, // 529228144
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShipFitting, "Inventory_FetchShipFitting" }, // 2873828685
-		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips, "Inventory_FetchShips" }, // 791692451
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips, "Inventory_FetchShips" }, // 3813062759
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetActiveShip, "Inventory_GetActiveShip" }, // 3294980606
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetCachedFitting, "Inventory_GetCachedFitting" }, // 576491551
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetCachedShips, "Inventory_GetCachedShips" }, // 1205811476
@@ -1385,14 +1396,15 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
 		{ FEchoesShipInstance::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipInstance_Statics::NewStructOps, TEXT("EchoesShipInstance"), &Z_Registration_Info_UScriptStruct_FEchoesShipInstance, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipInstance), 219373969U) },
+		{ FEchoesShipList::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipList_Statics::NewStructOps, TEXT("EchoesShipList"), &Z_Registration_Info_UScriptStruct_FEchoesShipList, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipList), 2870318589U) },
 		{ FEchoesModule::StaticStruct, Z_Construct_UScriptStruct_FEchoesModule_Statics::NewStructOps, TEXT("EchoesModule"), &Z_Registration_Info_UScriptStruct_FEchoesModule, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesModule), 474672524U) },
 		{ FEchoesShipFitting::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipFitting_Statics::NewStructOps, TEXT("EchoesShipFitting"), &Z_Registration_Info_UScriptStruct_FEchoesShipFitting, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipFitting), 2094547099U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 3762170945U) },
+		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 1873413241U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_2713363945(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_2087096920(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

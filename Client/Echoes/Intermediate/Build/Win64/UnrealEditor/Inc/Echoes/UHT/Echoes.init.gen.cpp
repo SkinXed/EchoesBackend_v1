@@ -12,7 +12,6 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterSelected__DelegateSignature();
-	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnLoginFailure__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature();
@@ -36,7 +35,6 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterSelected__DelegateSignature,
-				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnFittingChanged__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnLoginFailure__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature,
@@ -55,13 +53,13 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x160A9D37,
-				0xE02D544C,
+				0xC7328D96,
+				0x3F034E64,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_Echoes.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_Echoes.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Echoes(Z_Construct_UPackage__Script_Echoes, TEXT("/Script/Echoes"), Z_Registration_Info_UPackage__Script_Echoes, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x160A9D37, 0xE02D544C));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Echoes(Z_Construct_UPackage__Script_Echoes, TEXT("/Script/Echoes"), Z_Registration_Info_UPackage__Script_Echoes, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xC7328D96, 0x3F034E64));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
