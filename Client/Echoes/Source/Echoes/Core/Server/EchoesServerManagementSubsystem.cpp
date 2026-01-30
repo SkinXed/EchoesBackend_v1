@@ -39,19 +39,63 @@ void UEchoesServerManagementSubsystem::Initialize(FSubsystemCollectionBase& Coll
 		UE_LOG(LogEchoesServer, Log, TEXT("Generated new InstanceId: %s"), *ServerInstanceId);
 	}
 
-	// Automatically trigger registration on startup
-	// Get solar system ID from command line or config
+	// ==================== Parse Command Line Parameters ====================
+	
+	// Get server type from command line (default: DedicatedSystem)
+	ServerType = TEXT("DedicatedSystem");
+	FString CommandLineServerType;
+	if (FParse::Value(FCommandLine::Get(), TEXT("ServerType="), CommandLineServerType))
+	{
+		ServerType = CommandLineServerType;
+		UE_LOG(LogEchoesServer, Log, TEXT("Using ServerType from command line: %s"), *ServerType);
+	}
+
+	// Get region ID from command line (for RegionalCluster mode)
+	FString RegionIdStr;
+	if (FParse::Value(FCommandLine::Get(), TEXT("RegionId="), RegionIdStr))
+	{
+		FGuid::Parse(RegionIdStr, CurrentRegionId);
+		UE_LOG(LogEchoesServer, Log, TEXT("Using RegionId from command line: %s"), *RegionIdStr);
+		
+		// If RegionId is provided, force RegionalCluster mode
+		if (CurrentRegionId.IsValid())
+		{
+			ServerType = TEXT("RegionalCluster");
+			UE_LOG(LogEchoesServer, Log, TEXT("Switching to RegionalCluster mode due to RegionId parameter"));
+		}
+	}
+
+	// Get solar system ID from command line (for DedicatedSystem mode)
 	FString SystemIdStr;
 	FGuid SystemId;
 	if (FParse::Value(FCommandLine::Get(), TEXT("SystemId="), SystemIdStr))
 	{
 		FGuid::Parse(SystemIdStr, SystemId);
+		CurrentSolarSystemId = SystemId;
 		UE_LOG(LogEchoesServer, Log, TEXT("Using SolarSystemId from command line: %s"), *SystemIdStr);
 	}
 
 	// Get game port from command line or use default
 	int32 Port = 7777;
 	FParse::Value(FCommandLine::Get(), TEXT("Port="), Port);
+	GamePort = Port;
+
+	// Log configuration
+	UE_LOG(LogEchoesServer, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogEchoesServer, Log, TEXT("║    SERVER CONFIGURATION                                  ║"));
+	UE_LOG(LogEchoesServer, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogEchoesServer, Log, TEXT("Server Type: %s"), *ServerType);
+	UE_LOG(LogEchoesServer, Log, TEXT("Instance ID: %s"), *ServerInstanceId);
+	UE_LOG(LogEchoesServer, Log, TEXT("Game Port: %d"), GamePort);
+	
+	if (IsRegionalCluster())
+	{
+		UE_LOG(LogEchoesServer, Log, TEXT("Region ID: %s"), *CurrentRegionId.ToString());
+	}
+	else
+	{
+		UE_LOG(LogEchoesServer, Log, TEXT("Solar System ID: %s"), *SystemId.ToString());
+	}
 
 	// Register with backend
 	ServerOnly_Register(ServerInstanceId, Port, SystemId);
@@ -113,7 +157,16 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 	UE_LOG(LogEchoesServer, Log, TEXT("Starting server registration handshake..."));
 	UE_LOG(LogEchoesServer, Log, TEXT("  InstanceId: %s"), *InstanceId);
 	UE_LOG(LogEchoesServer, Log, TEXT("  GamePort: %d"), GamePort);
-	UE_LOG(LogEchoesServer, Log, TEXT("  SolarSystemId: %s"), *SolarSystemId.ToString());
+	UE_LOG(LogEchoesServer, Log, TEXT("  ServerType: %s"), *ServerType);
+	
+	if (IsRegionalCluster())
+	{
+		UE_LOG(LogEchoesServer, Log, TEXT("  RegionId: %s"), *CurrentRegionId.ToString());
+	}
+	else
+	{
+		UE_LOG(LogEchoesServer, Log, TEXT("  SolarSystemId: %s"), *SolarSystemId.ToString());
+	}
 
 	// Create registration request
 	FRegisterServerRequest Request;
@@ -126,9 +179,20 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 	
 	Request.GamePort = GamePort;
 	Request.WebPort = GamePort + 1; // TODO: Make WebPort independently configurable
-	Request.SolarSystemId = SolarSystemId;
 	Request.MaxPlayers = 100;
 	Request.GameVersion = TEXT("1.0.0");
+
+	// Set mode-specific parameters
+	if (IsRegionalCluster())
+	{
+		Request.RegionId = CurrentRegionId;
+		Request.ServerType = TEXT("RegionalCluster");
+	}
+	else
+	{
+		Request.SolarSystemId = SolarSystemId;
+		Request.ServerType = TEXT("DedicatedSystem");
+	}
 
 	// Get hostname
 	Request.Hostname = FPlatformProcess::ComputerName();
@@ -427,27 +491,68 @@ void UEchoesServerManagementSubsystem::OnConfigResponseReceived(
 
 	if (ResponseCode == 200)
 	{
-		// Parse response wrapper
-		FServerConfigResponse ConfigResponse;
-		if (FJsonObjectConverter::JsonObjectStringToUStruct(ResponseBody, &ConfigResponse))
+		// Check server type and parse appropriate response
+		if (IsRegionalCluster())
 		{
-			// Cache configuration
-			CachedConfig = ConfigResponse.Config;
+			// Parse regional cluster response
+			FServerRegionalClusterConfigResponse RegionalResponse;
+			if (FJsonObjectConverter::JsonObjectStringToUStruct(ResponseBody, &RegionalResponse))
+			{
+				// Cache regional configuration
+				CachedRegionalConfig = RegionalResponse.Config;
 
-			UE_LOG(LogEchoesServer, Log, TEXT("✓ UNIVERSE CONFIGURATION RECEIVED"));
-			UE_LOG(LogEchoesServer, Log, TEXT("  System: %s"), *CachedConfig.SystemName);
-			UE_LOG(LogEchoesServer, Log, TEXT("  Planets: %d"), CachedConfig.Planets.Num());
-			UE_LOG(LogEchoesServer, Log, TEXT("  Stargates: %d"), CachedConfig.Stargates.Num());
-			UE_LOG(LogEchoesServer, Log, TEXT("  Stations: %d"), CachedConfig.Stations.Num());
-			UE_LOG(LogEchoesServer, Log, TEXT("  Anomalies: %d"), CachedConfig.Anomalies.Num());
-			UE_LOG(LogEchoesServer, Log, TEXT("  Wormholes: %d"), CachedConfig.Wormholes.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+				UE_LOG(LogEchoesServer, Log, TEXT("║    REGIONAL CLUSTER CONFIGURATION RECEIVED              ║"));
+				UE_LOG(LogEchoesServer, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+				UE_LOG(LogEchoesServer, Log, TEXT("  Region: %s (%s)"), *CachedRegionalConfig.RegionName, *CachedRegionalConfig.RegionCode);
+				UE_LOG(LogEchoesServer, Log, TEXT("  Systems: %d"), CachedRegionalConfig.Systems.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("  Total Planets: %d"), CachedRegionalConfig.TotalPlanets);
+				UE_LOG(LogEchoesServer, Log, TEXT("  Total Stargates: %d"), CachedRegionalConfig.TotalStargates);
+				UE_LOG(LogEchoesServer, Log, TEXT("  Total Stations: %d"), CachedRegionalConfig.TotalStations);
+				UE_LOG(LogEchoesServer, Log, TEXT("  Average Security: %.2f"), CachedRegionalConfig.AverageSecurity);
 
-			// Broadcast to listeners (e.g., WorldGenerator)
-			OnServerConfigReceived.Broadcast(CachedConfig);
+				// Log individual systems
+				for (const FServerSystemConfig& System : CachedRegionalConfig.Systems)
+				{
+					UE_LOG(LogEchoesServer, Log, TEXT("    - %s [%.0f, %.0f, %.0f]"), 
+						*System.SystemName,
+						(float)System.PositionX,
+						(float)System.PositionY,
+						(float)System.PositionZ);
+				}
+
+				// Broadcast to listeners (e.g., WorldGenerator)
+				OnRegionalClusterConfigReceived.Broadcast(CachedRegionalConfig);
+			}
+			else
+			{
+				UE_LOG(LogEchoesServer, Error, TEXT("Failed to parse regional cluster config response: %s"), *ResponseBody);
+			}
 		}
 		else
 		{
-			UE_LOG(LogEchoesServer, Error, TEXT("Failed to parse config response: %s"), *ResponseBody);
+			// Parse single system response (DedicatedSystem mode)
+			FServerConfigResponse ConfigResponse;
+			if (FJsonObjectConverter::JsonObjectStringToUStruct(ResponseBody, &ConfigResponse))
+			{
+				// Cache configuration
+				CachedConfig = ConfigResponse.Config;
+
+				UE_LOG(LogEchoesServer, Log, TEXT("✓ UNIVERSE CONFIGURATION RECEIVED"));
+				UE_LOG(LogEchoesServer, Log, TEXT("  System: %s"), *CachedConfig.SystemName);
+				UE_LOG(LogEchoesServer, Log, TEXT("  Planets: %d"), CachedConfig.Planets.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("  Stargates: %d"), CachedConfig.Stargates.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("  Stations: %d"), CachedConfig.Stations.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("  Anomalies: %d"), CachedConfig.Anomalies.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("  Wormholes: %d"), CachedConfig.Wormholes.Num());
+
+				// Broadcast to listeners (e.g., WorldGenerator)
+				OnServerConfigReceived.Broadcast(CachedConfig);
+			}
+			else
+			{
+				UE_LOG(LogEchoesServer, Error, TEXT("Failed to parse config response: %s"), *ResponseBody);
+			}
 		}
 	}
 	else

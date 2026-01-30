@@ -542,3 +542,15 @@ struct FServerConfigResponse
 	UPROPERTY(BlueprintReadWrite, Category = "Server")
 	FServerSystemConfig Config;
 };
+
+/**
+ * Regional cluster configuration response wrapper (mirrors C# ServerRegionalClusterConfigResponseDto)
+ */
+USTRUCT(BlueprintType)
+struct FServerRegionalClusterConfigResponse
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Server")
+	FServerRegionalClusterConfig Config;
+};

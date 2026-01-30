@@ -18,6 +18,12 @@ DECLARE_LOG_CATEGORY_EXTERN(LogEchoesServer, Log, All);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnServerConfigReceived, const FServerSystemConfig&, Config);
 
 /**
+ * Delegate for when regional cluster configuration is received from backend
+ * Used by WorldGenerator to spawn multiple systems with spatial offsets
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRegionalClusterConfigReceived, const FServerRegionalClusterConfig&, RegionalConfig);
+
+/**
  * UEchoesServerManagementSubsystem
  * 
  * Server Management Subsystem for Echoes Dedicated Server
@@ -55,6 +61,10 @@ public:
 	/** Broadcast when server configuration is received (WorldGenerator subscribes to this) */
 	UPROPERTY(BlueprintAssignable, Category = "Echoes|Server")
 	FOnServerConfigReceived OnServerConfigReceived;
+
+	/** Broadcast when regional cluster configuration is received (WorldGenerator subscribes to this) */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Server")
+	FOnRegionalClusterConfigReceived OnRegionalClusterConfigReceived;
 
 	// ==================== Server Registration ====================
 
@@ -115,6 +125,24 @@ public:
 	 */
 	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
 	FGuid GetServerId() const { return ServerId; }
+
+	/**
+	 * Get server type (DedicatedSystem or RegionalCluster)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	FString GetServerType() const { return ServerType; }
+
+	/**
+	 * Check if this is a regional cluster server
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	bool IsRegionalCluster() const { return ServerType.Equals(TEXT("RegionalCluster"), ESearchCase::IgnoreCase); }
+
+	/**
+	 * Get cached regional cluster configuration
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	const FServerRegionalClusterConfig& GetRegionalConfig() const { return CachedRegionalConfig; }
 
 protected:
 	// ==================== HTTP Response Handlers ====================
@@ -229,11 +257,19 @@ private:
 
 	/** Node type: "DedicatedSystem" or "RegionalCluster" */
 	UPROPERTY()
-	FString NodeType;
+	FString ServerType;
 
-	/** Cached server configuration received from backend */
+	/** Region ID this server hosts (for RegionalCluster mode) */
+	UPROPERTY()
+	FGuid CurrentRegionId;
+
+	/** Cached server configuration received from backend (DedicatedSystem mode) */
 	UPROPERTY()
 	FServerSystemConfig CachedConfig;
+
+	/** Cached regional cluster configuration received from backend (RegionalCluster mode) */
+	UPROPERTY()
+	FServerRegionalClusterConfig CachedRegionalConfig;
 
 	// ==================== Heartbeat Timer ====================
 
