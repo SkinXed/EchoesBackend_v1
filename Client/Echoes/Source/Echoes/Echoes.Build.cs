@@ -16,7 +16,8 @@ public class Echoes : ModuleRules
 			"EnhancedInput", // For Enhanced Input System
 			"HTTP", // For HTTP requests
 			"Json", // For JSON parsing
-			"JsonUtilities" // For JSON utilities
+			"JsonUtilities", // For JSON utilities
+			"Niagara" // For Niagara VFX system
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
