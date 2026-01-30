@@ -11,6 +11,7 @@
 DECLARE_DELEGATE_OneParam(FOnCharacterDataReceived, const struct FEchoesCharacter&);
 DECLARE_DELEGATE_OneParam(FOnCharacterDataFailure, const FString&);
 DECLARE_DELEGATE(FOnCharacterSelected);
+DECLARE_DELEGATE_OneParam(FOnCharacterCreated, const struct FEchoesCharacter&);
 
 /**
  * Character structure (mirrors C# CharacterDataDto)
@@ -153,6 +154,26 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Identity")
 	void Identity_ClearSelection();
 
+	// ==================== UI Wrapper Functions ====================
+
+	/**
+	 * UI wrapper: Create a new character
+	 * Sends HTTP POST to /api/character with JWT token
+	 * 
+	 * @param CharacterName - Name for new character
+	 * @param Race - Race selection (Caldari, Gallente, Amarr, Minmatar)
+	 * @param PortraitId - Portrait ID for character
+	 * @param OnSuccess - Callback with created character data
+	 * @param OnFailure - Callback on creation failure
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Identity|UI")
+	void UI_CreateCharacter(
+		const FString& CharacterName,
+		const FString& Race,
+		int32 PortraitId,
+		FOnCharacterCreated OnSuccess,
+		FOnCharacterDataFailure OnFailure);
+
 	/**
 	 * Server RPC: Notify server that character is ready to enter world
 	 * Used by UE Server to validate character before spawning
@@ -194,6 +215,16 @@ protected:
 		bool bWasSuccessful,
 		TFunction<void()> OnSuccess,
 		TFunction<void(const FString&)> OnFailure);
+
+	/**
+	 * Handle character creation response from backend
+	 */
+	void OnCharacterCreationReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		FOnCharacterCreated OnSuccess,
+		FOnCharacterDataFailure OnFailure);
 
 	// ==================== Helper Functions ====================
 

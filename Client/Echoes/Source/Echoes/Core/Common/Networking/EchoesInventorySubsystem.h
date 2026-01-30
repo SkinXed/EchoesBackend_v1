@@ -12,6 +12,11 @@ DECLARE_DELEGATE_OneParam(FOnShipsReceived, const TArray<struct FEchoesShipInsta
 DECLARE_DELEGATE_OneParam(FOnShipFittingReceived, const struct FEchoesShipFitting&);
 DECLARE_DELEGATE_OneParam(FOnInventoryFailure, const FString&);
 DECLARE_DELEGATE(FOnShipActivated);
+DECLARE_DELEGATE(FOnModuleFitted);
+DECLARE_DELEGATE(FOnModuleUnfitted);
+
+// Multicast delegates for UI updates
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFittingChanged, const struct FEchoesShipFitting&);
 
 /**
  * Ship instance structure (mirrors C# ShipInstanceDto)
@@ -239,6 +244,52 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory")
 	void Inventory_ClearCache();
 
+	// ==================== UI Wrapper Functions ====================
+
+	/**
+	 * UI wrapper: Fit a module to a ship
+	 * Sends HTTP PUT to /api/inventory/ship/{shipId}/module/{moduleId}/fit
+	 * Automatically refreshes fitting and triggers OnFittingChanged delegate
+	 * 
+	 * @param ShipId - Ship instance ID
+	 * @param ModuleId - Module instance ID to fit
+	 * @param SlotType - Slot type (High, Mid, Low, Rig)
+	 * @param SlotIndex - Slot index within type
+	 * @param OnSuccess - Callback on successful fit
+	 * @param OnFailure - Callback on fit failure
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|UI")
+	void UI_FitModule(
+		const FGuid& ShipId,
+		const FGuid& ModuleId,
+		const FString& SlotType,
+		int32 SlotIndex,
+		FOnModuleFitted OnSuccess,
+		FOnInventoryFailure OnFailure);
+
+	/**
+	 * UI wrapper: Unfit a module from a ship
+	 * Sends HTTP DELETE to /api/inventory/ship/{shipId}/module/{moduleId}/unfit
+	 * Automatically refreshes fitting and triggers OnFittingChanged delegate
+	 * 
+	 * @param ShipId - Ship instance ID
+	 * @param ModuleId - Module instance ID to unfit
+	 * @param OnSuccess - Callback on successful unfit
+	 * @param OnFailure - Callback on unfit failure
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|UI")
+	void UI_UnfitModule(
+		const FGuid& ShipId,
+		const FGuid& ModuleId,
+		FOnModuleUnfitted OnSuccess,
+		FOnInventoryFailure OnFailure);
+
+	/**
+	 * Multicast delegate triggered when ship fitting changes
+	 * UI widgets should bind to this for reactive updates
+	 */
+	FOnFittingChanged OnFittingChanged;
+
 protected:
 	// ==================== HTTP Request Handlers ====================
 
@@ -270,6 +321,28 @@ protected:
 		FHttpResponsePtr Response,
 		bool bWasSuccessful,
 		FOnShipActivated OnSuccess,
+		FOnInventoryFailure OnFailure);
+
+	/**
+	 * Handle module fit response from backend
+	 */
+	void OnModuleFitReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		const FGuid& ShipId,
+		FOnModuleFitted OnSuccess,
+		FOnInventoryFailure OnFailure);
+
+	/**
+	 * Handle module unfit response from backend
+	 */
+	void OnModuleUnfitReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		const FGuid& ShipId,
+		FOnModuleUnfitted OnSuccess,
 		FOnInventoryFailure OnFailure);
 
 	// ==================== Helper Functions ====================

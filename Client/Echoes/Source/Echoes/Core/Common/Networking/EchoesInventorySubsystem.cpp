@@ -568,3 +568,253 @@ FString UEchoesInventorySubsystem::GetApiBaseUrl() const
 
 	return ApiBaseUrl;
 }
+
+// ==================== UI Wrapper Functions ====================
+
+void UEchoesInventorySubsystem::UI_FitModule(
+	const FGuid& ShipId,
+	const FGuid& ModuleId,
+	const FString& SlotType,
+	int32 SlotIndex,
+	FOnModuleFitted OnSuccess,
+	FOnInventoryFailure OnFailure)
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: HTTP module not initialized"));
+		OnFailure.ExecuteIfBound(TEXT("HTTP module not initialized"));
+		return;
+	}
+
+	// Get JWT token from Auth subsystem
+	FString Token = GetAuthToken();
+	if (Token.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: No JWT token available"));
+		OnFailure.ExecuteIfBound(TEXT("Not authenticated"));
+		return;
+	}
+
+	// Prepare request URL
+	FString ApiUrl = GetApiBaseUrl();
+	FString Url = FString::Printf(TEXT("%s/inventory/ship/%s/module/%s/fit"), 
+		*ApiUrl, *ShipId.ToString(), *ModuleId.ToString());
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+	Request->SetVerb(TEXT("PUT"));
+	Request->SetURL(Url);
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	Request->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *Token));
+
+	// Prepare request body
+	FString RequestBody = FString::Printf(
+		TEXT("{\"slotType\":\"%s\",\"slotIndex\":%d}"),
+		*SlotType, SlotIndex);
+	Request->SetContentAsString(RequestBody);
+
+	// Bind response handler
+	Request->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesInventorySubsystem::OnModuleFitReceived,
+		ShipId,
+		OnSuccess,
+		OnFailure);
+
+	// Send request
+	if (Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Fitting module %s to ship %s in %s slot %d"),
+			*ModuleId.ToString(), *ShipId.ToString(), *SlotType, SlotIndex);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Failed to send fit module request"));
+		OnFailure.ExecuteIfBound(TEXT("Failed to send request"));
+	}
+}
+
+void UEchoesInventorySubsystem::UI_UnfitModule(
+	const FGuid& ShipId,
+	const FGuid& ModuleId,
+	FOnModuleUnfitted OnSuccess,
+	FOnInventoryFailure OnFailure)
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: HTTP module not initialized"));
+		OnFailure.ExecuteIfBound(TEXT("HTTP module not initialized"));
+		return;
+	}
+
+	// Get JWT token from Auth subsystem
+	FString Token = GetAuthToken();
+	if (Token.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: No JWT token available"));
+		OnFailure.ExecuteIfBound(TEXT("Not authenticated"));
+		return;
+	}
+
+	// Prepare request URL
+	FString ApiUrl = GetApiBaseUrl();
+	FString Url = FString::Printf(TEXT("%s/inventory/ship/%s/module/%s/unfit"),
+		*ApiUrl, *ShipId.ToString(), *ModuleId.ToString());
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+	Request->SetVerb(TEXT("DELETE"));
+	Request->SetURL(Url);
+	Request->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *Token));
+
+	// Bind response handler
+	Request->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesInventorySubsystem::OnModuleUnfitReceived,
+		ShipId,
+		OnSuccess,
+		OnFailure);
+
+	// Send request
+	if (Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Unfitting module %s from ship %s"),
+			*ModuleId.ToString(), *ShipId.ToString());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Failed to send unfit module request"));
+		OnFailure.ExecuteIfBound(TEXT("Failed to send request"));
+	}
+}
+
+void UEchoesInventorySubsystem::OnModuleFitReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	const FGuid ShipId,
+	FOnModuleFitted OnSuccess,
+	FOnInventoryFailure OnFailure)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Module fit request failed"));
+		OnFailure.ExecuteIfBound(TEXT("Request failed"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module fit response: %d - %s"),
+		ResponseCode, *ResponseContent);
+
+	if (ResponseCode == 200)
+	{
+		// Success! Now refresh the ship fitting to get updated stats
+		Inventory_FetchShipFitting(
+			ShipId,
+			FOnShipFittingReceived::CreateLambda([this, OnSuccess](const FEchoesShipFitting& Fitting)
+			{
+				// Cache updated fitting
+				CachedFitting = Fitting;
+				
+				// Trigger fitting changed delegate for UI updates
+				OnFittingChanged.Broadcast(Fitting);
+				
+				// Call success callback
+				OnSuccess.ExecuteIfBound();
+				
+				UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module fitted and fitting updated"));
+			}),
+			FOnInventoryFailure::CreateLambda([OnFailure](const FString& Error)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module fitted but failed to refresh fitting: %s"), *Error);
+				// Still call success since the fit operation succeeded
+				OnSuccess.ExecuteIfBound();
+			}));
+	}
+	else if (ResponseCode == 400)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Invalid fit request: %s"), *ResponseContent);
+		OnFailure.ExecuteIfBound(TEXT("Invalid fit request"));
+	}
+	else if (ResponseCode == 401)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Unauthorized - token may be expired"));
+		OnFailure.ExecuteIfBound(TEXT("Unauthorized"));
+	}
+	else if (ResponseCode == 404)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Ship or module not found"));
+		OnFailure.ExecuteIfBound(TEXT("Ship or module not found"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Unexpected response code: %d"), ResponseCode);
+		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+	}
+}
+
+void UEchoesInventorySubsystem::OnModuleUnfitReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	const FGuid ShipId,
+	FOnModuleUnfitted OnSuccess,
+	FOnInventoryFailure OnFailure)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Module unfit request failed"));
+		OnFailure.ExecuteIfBound(TEXT("Request failed"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module unfit response: %d - %s"),
+		ResponseCode, *ResponseContent);
+
+	if (ResponseCode == 200)
+	{
+		// Success! Now refresh the ship fitting to get updated stats
+		Inventory_FetchShipFitting(
+			ShipId,
+			FOnShipFittingReceived::CreateLambda([this, OnSuccess](const FEchoesShipFitting& Fitting)
+			{
+				// Cache updated fitting
+				CachedFitting = Fitting;
+				
+				// Trigger fitting changed delegate for UI updates
+				OnFittingChanged.Broadcast(Fitting);
+				
+				// Call success callback
+				OnSuccess.ExecuteIfBound();
+				
+				UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module unfitted and fitting updated"));
+			}),
+			FOnInventoryFailure::CreateLambda([OnSuccess](const FString& Error)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module unfitted but failed to refresh fitting: %s"), *Error);
+				// Still call success since the unfit operation succeeded
+				OnSuccess.ExecuteIfBound();
+			}));
+	}
+	else if (ResponseCode == 401)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Unauthorized - token may be expired"));
+		OnFailure.ExecuteIfBound(TEXT("Unauthorized"));
+	}
+	else if (ResponseCode == 404)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Ship or module not found"));
+		OnFailure.ExecuteIfBound(TEXT("Ship or module not found"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Unexpected response code: %d"), ResponseCode);
+		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+	}
+}
