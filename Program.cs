@@ -161,6 +161,9 @@ services.AddScoped<Echoes.API.Services.Inventory.IInventoryService, Echoes.API.S
 services.AddScoped<Echoes.API.Services.Inventory.IContainerService, Echoes.API.Services.Inventory.ContainerService>();
 services.AddScoped<Echoes.API.Services.Inventory.IInventoryOperationsService, Echoes.API.Services.Inventory.InventoryOperationsService>();
 
+// 3.4.2. Ship services
+services.AddScoped<Echoes.API.Services.Ship.ShipFittingService>();
+
 // 3.5. Controllers
 services.AddControllers()
     .AddJsonOptions(options =>
