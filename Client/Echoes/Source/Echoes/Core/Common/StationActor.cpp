@@ -255,10 +255,10 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 
 	// Get game state subsystem
 	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
-	if (GameInstance)
+	if (GameInstance && IsValid(GameInstance))
 	{
 		UEchoesGameStateSubsystem* GameStateSubsystem = GameInstance->GetSubsystem<UEchoesGameStateSubsystem>();
-		if (GameStateSubsystem)
+		if (GameStateSubsystem && IsValid(GameStateSubsystem))
 		{
 			// TODO: Get character ID from player state/controller
 			// For now, skip state transition if character ID not available
@@ -277,6 +277,10 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 		{
 			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get GameStateSubsystem"));
 		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to get GameInstance"));
 	}
 
 	// Notify backend about docking
@@ -298,8 +302,9 @@ void AStationActor::NotifyBackendDocking(APlayerController* PlayerController)
 		return;
 	}
 
-	if (!PlayerController)
+	if (!PlayerController || !IsValid(PlayerController))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid PlayerController in NotifyBackendDocking"));
 		return;
 	}
 

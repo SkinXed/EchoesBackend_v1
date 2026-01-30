@@ -87,30 +87,39 @@ bool UEchoesJumpManager::InitiateIntraServerJump(
 	// Wait for transition, then perform teleportation
 	FTimerHandle TransitionTimer;
 	FTimerDelegate TransitionDelegate;
-	TransitionDelegate.BindLambda([this, PlayerController, TargetLocation, TargetSystemId]()
+	
+	// Use weak pointer to avoid crashes if this component is destroyed
+	TWeakObjectPtr<UEchoesJumpManager> WeakThis(this);
+	TWeakObjectPtr<APlayerController> WeakPlayerController(PlayerController);
+	
+	TransitionDelegate.BindLambda([WeakThis, WeakPlayerController, TargetLocation, TargetSystemId]()
 	{
-		if (!PlayerController || !IsValid(PlayerController))
+		// Validate all pointers
+		if (!WeakThis.IsValid() || !WeakPlayerController.IsValid())
 		{
-			UE_LOG(LogTemp, Error, TEXT("PlayerController became invalid during jump"));
+			UE_LOG(LogTemp, Error, TEXT("JumpManager or PlayerController became invalid during jump"));
 			return;
 		}
+		
+		APlayerController* PlayerController = WeakPlayerController.Get();
+		UEchoesJumpManager* This = WeakThis.Get();
 
 		// ==================== PHASE 2: THE SHIFT ====================
 		UE_LOG(LogTemp, Log, TEXT("PHASE 2: The Shift - Performing teleportation"));
 
 		// Perform the actual teleportation
-		ServerOnly_PerformIntraServerJump(PlayerController, TargetLocation);
+		This->ServerOnly_PerformIntraServerJump(PlayerController, TargetLocation);
 
 		// Force replication flush
-		ForceReplicationFlush(PlayerController);
+		This->ForceReplicationFlush(PlayerController);
 
 		// Notify backend of location change
-		NotifyBackendLocationChange(PlayerController, TargetSystemId);
+		This->NotifyBackendLocationChange(PlayerController, TargetSystemId);
 
 		// Update jump state
-		if (JumpingPlayers.Contains(PlayerController))
+		if (This->JumpingPlayers.Contains(PlayerController))
 		{
-			JumpingPlayers[PlayerController] = EJumpState::Arriving;
+			This->JumpingPlayers[PlayerController] = EJumpState::Arriving;
 		}
 
 		// ==================== PHASE 3: ARRIVAL ====================
@@ -118,13 +127,16 @@ bool UEchoesJumpManager::InitiateIntraServerJump(
 
 		// Wait for assets to load, then complete jump
 		FTimerHandle ArrivalTimer;
-		GetWorld()->GetTimerManager().SetTimer(
-			ArrivalTimer,
-			FTimerDelegate::CreateUObject(this, &UEchoesJumpManager::OnArrivalTimerComplete, PlayerController, TargetSystemId),
-			AssetLoadWaitTime,
-			false);
+		if (This->GetWorld())
+		{
+			This->GetWorld()->GetTimerManager().SetTimer(
+				ArrivalTimer,
+				FTimerDelegate::CreateUObject(This, &UEchoesJumpManager::OnArrivalTimerComplete, PlayerController, TargetSystemId),
+				This->AssetLoadWaitTime,
+				false);
 
-		JumpTimerHandles.Add(PlayerController, ArrivalTimer);
+			This->JumpTimerHandles.Add(PlayerController, ArrivalTimer);
+		}
 	});
 
 	GetWorld()->GetTimerManager().SetTimer(TransitionTimer, TransitionDelegate, TransitionTime * 0.5f, false);
@@ -144,10 +156,16 @@ void UEchoesJumpManager::ServerOnly_PerformIntraServerJump(
 		return;
 	}
 
-	APawn* PlayerPawn = PlayerController->GetPawn();
-	if (!PlayerPawn)
+	if (!PlayerController || !IsValid(PlayerController))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to get player pawn for teleportation"));
+		UE_LOG(LogTemp, Error, TEXT("Invalid PlayerController in ServerOnly_PerformIntraServerJump"));
+		return;
+	}
+
+	APawn* PlayerPawn = PlayerController->GetPawn();
+	if (!PlayerPawn || !IsValid(PlayerPawn))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to get valid player pawn for teleportation"));
 		return;
 	}
 
@@ -239,8 +257,13 @@ void UEchoesJumpManager::ApplyJumpState(APlayerController* PlayerController, EJu
 		return;
 	}
 
+	if (!PlayerController || !IsValid(PlayerController))
+	{
+		return;
+	}
+
 	APawn* PlayerPawn = PlayerController->GetPawn();
-	if (!PlayerPawn)
+	if (!PlayerPawn || !IsValid(PlayerPawn))
 	{
 		return;
 	}
@@ -356,19 +379,20 @@ void UEchoesJumpManager::ForceReplicationFlush(APlayerController* PlayerControll
 		return;
 	}
 
+	if (!PlayerController || !IsValid(PlayerController))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid PlayerController in ForceReplicationFlush"));
+		return;
+	}
+
 	UE_LOG(LogTemp, Log, TEXT("Forcing replication flush for player at new location"));
 
 	// Force update of relevant actors list
 	// This ensures the client receives updates for actors in new system
-	if (PlayerController)
+	APawn* PlayerPawn = PlayerController->GetPawn();
+	if (PlayerPawn && IsValid(PlayerPawn))
 	{
-		// The engine will automatically update relevancy on next tick
-		// We can force it by calling ForceNetUpdate on the pawn
-		APawn* PlayerPawn = PlayerController->GetPawn();
-		if (PlayerPawn)
-		{
-			PlayerPawn->ForceNetUpdate();
-		}
+		PlayerPawn->ForceNetUpdate();
 	}
 }
 

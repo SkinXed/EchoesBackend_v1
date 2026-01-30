@@ -262,15 +262,16 @@ void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config, const F
 		StarRotation,
 		SpawnParams);
 
-	if (Star)
+	if (Star && IsValid(Star))
 	{
 		// Get visual data from data table
 		FStarVisualRow* VisualData = GetStarVisualData(Config.StarClass);
+		FStarVisualRow DefaultVisualData; // Stack allocation for default
+		
 		if (!VisualData)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No visual data found for star class: %s"), *Config.StarClass);
-			// Use default visual data
-			VisualData = new FStarVisualRow();
+			UE_LOG(LogTemp, Warning, TEXT("No visual data found for star class: %s, using defaults"), *Config.StarClass);
+			VisualData = &DefaultVisualData;
 		}
 
 		// Initialize star
@@ -323,14 +324,16 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 			PlanetRotation,
 			SpawnParams);
 
-		if (Planet)
+		if (Planet && IsValid(Planet))
 		{
 			// Get visual data from data table
 			FPlanetVisualRow* VisualData = GetPlanetVisualData(PlanetConfig.Type);
+			FPlanetVisualRow DefaultVisualData; // Stack allocation for default
+			
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for planet type: %s"), *PlanetConfig.Type);
-				VisualData = new FPlanetVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for planet type: %s, using defaults"), *PlanetConfig.Type);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed from planet ID for variation
@@ -389,14 +392,16 @@ void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations
 			StationRotation,
 			SpawnParams);
 
-		if (Station)
+		if (Station && IsValid(Station))
 		{
 			// Get visual data from data table
 			FStationVisualRow* VisualData = GetStationVisualData(StationConfig.StationType);
+			FStationVisualRow DefaultVisualData; // Stack allocation for default
+			
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for station type: %s"), *StationConfig.StationType);
-				VisualData = new FStationVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for station type: %s, using defaults"), *StationConfig.StationType);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed
@@ -454,14 +459,16 @@ void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Starga
 			GateRotation,
 			SpawnParams);
 
-		if (Stargate)
+		if (Stargate && IsValid(Stargate))
 		{
 			// Get visual data from data table
 			FStargateVisualRow* VisualData = GetStargateVisualData(GateConfig.Model);
+			FStargateVisualRow DefaultVisualData; // Stack allocation for default
+			
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for stargate model: %s"), *GateConfig.Model);
-				VisualData = new FStargateVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for stargate model: %s, using defaults"), *GateConfig.Model);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Initialize stargate
@@ -644,7 +651,7 @@ void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>
 			BeltRotation,
 			SpawnParams);
 
-		if (AsteroidBelt)
+		if (AsteroidBelt && IsValid(AsteroidBelt))
 		{
 			// Get visual data from data table
 			FAsteroidBeltVisualRow* VisualData = GetAsteroidBeltVisualData(TEXT("Default"));
@@ -715,7 +722,7 @@ void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomali
 			AnomalyRotation,
 			SpawnParams);
 
-		if (Anomaly)
+		if (Anomaly && IsValid(Anomaly))
 		{
 			// Get visual data from data table based on anomaly type
 			FAnomalyVisualRow* VisualData = GetAnomalyVisualData(AnomalyConfig.Type);
@@ -782,7 +789,7 @@ void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormho
 			WormholeRotation,
 			SpawnParams);
 
-		if (Wormhole)
+		if (Wormhole && IsValid(Wormhole))
 		{
 			// Get visual data from data table
 			FWormholeVisualRow* VisualData = GetWormholeVisualData(TEXT("Default"));

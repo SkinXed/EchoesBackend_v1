@@ -341,35 +341,43 @@ void AStargateActor::InitiateJumpToTarget(APlayerController* PlayerController)
 		AGameModeBase* GameMode = GetWorld()->GetAuthGameMode();
 		AEchoesServerGameMode* EchoesGameMode = Cast<AEchoesServerGameMode>(GameMode);
 		
-		if (EchoesGameMode && EchoesGameMode->GetJumpManager())
+		if (EchoesGameMode && IsValid(EchoesGameMode))
 		{
-			// Use JumpManager for seamless transition
-			bool bJumpInitiated = EchoesGameMode->GetJumpManager()->InitiateIntraServerJump(
-				PlayerController,
-				TargetGateLocation,
-				TargetSystemId
-			);
-
-			if (bJumpInitiated)
+			UEchoesJumpManager* JumpManager = EchoesGameMode->GetJumpManager();
+			if (JumpManager && IsValid(JumpManager))
 			{
-				UE_LOG(LogTemp, Log, TEXT("✓ Jump initiated via JumpManager"));
+				// Use JumpManager for seamless transition
+				bool bJumpInitiated = JumpManager->InitiateIntraServerJump(
+					PlayerController,
+					TargetGateLocation,
+					TargetSystemId
+				);
+
+				if (bJumpInitiated)
+				{
+					UE_LOG(LogTemp, Log, TEXT("✓ Jump initiated via JumpManager"));
+				}
+				else
+				{
+					UE_LOG(LogTemp, Error, TEXT("✗ Failed to initiate jump via JumpManager"));
+				}
 			}
 			else
 			{
-				UE_LOG(LogTemp, Error, TEXT("✗ Failed to initiate jump via JumpManager"));
+				// Fallback: Direct teleportation (old method)
+				UE_LOG(LogTemp, Warning, TEXT("⚠ JumpManager not available, using direct teleportation"));
+				
+				APawn* PlayerPawn = PlayerController->GetPawn();
+				if (PlayerPawn && IsValid(PlayerPawn))
+				{
+					PlayerPawn->SetActorLocation(TargetGateLocation);
+					UE_LOG(LogTemp, Log, TEXT("✓ Player teleported to target gate (fallback method)"));
+				}
 			}
 		}
 		else
 		{
-			// Fallback: Direct teleportation (old method)
-			UE_LOG(LogTemp, Warning, TEXT("⚠ JumpManager not available, using direct teleportation"));
-			
-			APawn* PlayerPawn = PlayerController->GetPawn();
-			if (PlayerPawn)
-			{
-				PlayerPawn->SetActorLocation(TargetGateLocation);
-				UE_LOG(LogTemp, Log, TEXT("✓ Player teleported to target gate (fallback method)"));
-			}
+			UE_LOG(LogTemp, Error, TEXT("✗ GameMode not available or invalid"));
 		}
 	}
 	else
