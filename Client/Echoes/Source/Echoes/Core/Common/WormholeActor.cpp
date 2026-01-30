@@ -12,7 +12,7 @@
 
 AWormholeActor::AWormholeActor()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	// Enable replication
 	bReplicates = true;
@@ -55,6 +55,13 @@ AWormholeActor::AWormholeActor()
 	TriggerSphere->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	TriggerSphere->SetGenerateOverlapEvents(true);
 
+	// Initialize instability properties
+	MassCapacity = 10000000.0f; // 10 million metric tons default
+	CurrentMassUsed = 0.0f;
+	InitialLifetime = 86400.0f; // 24 hours default
+	RemainingLifetime = InitialLifetime;
+	bIsCollapsing = false;
+
 	GenerationSeed = 0;
 	WormholeColor = FLinearColor::White;
 }
@@ -68,6 +75,34 @@ void AWormholeActor::BeginPlay()
 	{
 		TriggerSphere->OnComponentBeginOverlap.AddDynamic(this, &AWormholeActor::OnTriggerBeginOverlap);
 		UE_LOG(LogTemp, Log, TEXT("WormholeActor: Trigger overlap bound on server"));
+	}
+}
+
+void AWormholeActor::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Server-only degradation logic
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	// Decrease remaining lifetime
+	if (RemainingLifetime > 0.0f && !bIsCollapsing)
+	{
+		RemainingLifetime -= DeltaTime;
+
+		// Check if wormhole should collapse
+		if (RemainingLifetime <= 0.0f || CurrentMassUsed >= MassCapacity)
+		{
+			TriggerCollapse();
+		}
+		// Update instability effects as wormhole degrades
+		else if (GetStabilityPercentage() < 0.3f)
+		{
+			UpdateInstabilityEffects();
+		}
 	}
 }
 
@@ -244,19 +279,160 @@ void AWormholeActor::InitiateJump(AActor* Ship)
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Initiating wormhole jump for %s to system %s"),
-		*Ship->GetName(), *TargetSystemId.ToString());
-
-	// TODO: Implement actual jump logic
-	// This would typically:
-	// 1. Notify the server management subsystem
-	// 2. Trigger a travel to the target system server
-	// 3. Apply jump cooldown/costs
-	// 4. Play jump animation/effects
+	// Check if wormhole can accommodate the ship
+	float ShipMass = 1000.0f; // TODO: Get actual ship mass from ship actor
 	
-	// Placeholder for now
-	UE_LOG(LogTemp, Warning, TEXT("⚠ Jump logic not yet implemented - would jump to system: %s"),
-		*TargetSystemId.ToString());
+	if (!CanAccommodateShip(ShipMass))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Wormhole cannot accommodate ship (mass: %.0f, remaining capacity: %.0f)"),
+			ShipMass, MassCapacity - CurrentMassUsed);
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    INITIATING WORMHOLE JUMP                             ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Ship: %s"), *Ship->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Wormhole: %s"), *WormholeName);
+	UE_LOG(LogTemp, Log, TEXT("Target System: %s"), *TargetSystemId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Ship Mass: %.0f tons"), ShipMass);
+	UE_LOG(LogTemp, Log, TEXT("Remaining Capacity: %.0f / %.0f tons"), MassCapacity - CurrentMassUsed, MassCapacity);
+	UE_LOG(LogTemp, Log, TEXT("Remaining Lifetime: %.0f seconds"), RemainingLifetime);
+
+	// Process ship passage through wormhole
+	ProcessShipPassage(Ship, ShipMass);
+
+	// TODO: Add randomness element if configured in DB
+	// FRandomStream RandomStream(GenerationSeed);
+	// bool bRandomSuccess = RandomStream.FRand() > 0.1f; // 90% success rate
+
+	// TODO: Implement actual jump logic (similar to stargate)
+	UE_LOG(LogTemp, Warning, TEXT("⚠ Wormhole jump logic not fully implemented"));
+}
+
+void AWormholeActor::ProcessShipPassage(AActor* Ship, float ShipMass)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	// Reduce mass capacity
+	CurrentMassUsed += ShipMass;
+
+	// Reduce lifetime proportionally to mass used
+	float LifetimeReduction = (ShipMass / MassCapacity) * InitialLifetime * 0.1f; // 10% of proportional lifetime
+	RemainingLifetime -= LifetimeReduction;
+
+	UE_LOG(LogTemp, Log, TEXT("Wormhole degradation: Mass used: %.0f / %.0f, Lifetime remaining: %.0f seconds"),
+		CurrentMassUsed, MassCapacity, RemainingLifetime);
+
+	// Update instability effects
+	UpdateInstabilityEffects();
+
+	// Check if should collapse
+	if (CurrentMassUsed >= MassCapacity * 0.95f || RemainingLifetime <= 60.0f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Wormhole critically unstable!"));
+	}
+}
+
+bool AWormholeActor::CanAccommodateShip(float ShipMass) const
+{
+	// Check if wormhole is already collapsing
+	if (bIsCollapsing)
+	{
+		return false;
+	}
+
+	// Check if there's enough mass capacity
+	if (CurrentMassUsed + ShipMass > MassCapacity)
+	{
+		return false;
+	}
+
+	// Check if there's enough time
+	if (RemainingLifetime <= 0.0f)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+float AWormholeActor::GetStabilityPercentage() const
+{
+	// Calculate stability based on mass used and lifetime remaining
+	float MassStability = 1.0f - (CurrentMassUsed / MassCapacity);
+	float TimeStability = RemainingLifetime / InitialLifetime;
+
+	// Return the lower of the two (worst case)
+	return FMath::Min(MassStability, TimeStability);
+}
+
+void AWormholeActor::TriggerCollapse()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	if (bIsCollapsing)
+	{
+		return; // Already collapsing
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Warning, TEXT("║    WORMHOLE COLLAPSING                                  ║"));
+	UE_LOG(LogTemp, Warning, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Warning, TEXT("Wormhole: %s"), *WormholeName);
+	UE_LOG(LogTemp, Warning, TEXT("Mass Used: %.0f / %.0f"), CurrentMassUsed, MassCapacity);
+	UE_LOG(LogTemp, Warning, TEXT("Lifetime Remaining: %.0f seconds"), RemainingLifetime);
+
+	bIsCollapsing = true;
+
+	// Activate instability VFX
+	if (InstabilityVFXComponent)
+	{
+		InstabilityVFXComponent->Activate(true);
+	}
+
+	// Disable trigger zone to prevent new ships from entering
+	if (TriggerSphere)
+	{
+		TriggerSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	// Schedule destruction after collapse animation
+	FTimerHandle CollapseTimer;
+	GetWorld()->GetTimerManager().SetTimer(CollapseTimer, [this]()
+	{
+		UE_LOG(LogTemp, Log, TEXT("Destroying collapsed wormhole: %s"), *WormholeName);
+		Destroy();
+	}, 5.0f, false); // 5 second collapse animation
+}
+
+void AWormholeActor::UpdateInstabilityEffects()
+{
+	float Stability = GetStabilityPercentage();
+
+	// Activate instability VFX when stability drops below threshold
+	if (Stability < 0.5f && InstabilityVFXComponent)
+	{
+		if (!InstabilityVFXComponent->IsActive())
+		{
+			InstabilityVFXComponent->Activate();
+			UE_LOG(LogTemp, Warning, TEXT("Wormhole '%s' becoming unstable (%.0f%% stability)"),
+				*WormholeName, Stability * 100.0f);
+		}
+
+		// Increase instability intensity as stability decreases
+		float Intensity = 1.0f - Stability;
+		if (InstabilityVFXComponent)
+		{
+			InstabilityVFXComponent->SetFloatParameter(FName("Intensity"), Intensity);
+		}
+	}
 }
 
 void AWormholeActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -266,4 +442,8 @@ void AWormholeActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME(AWormholeActor, WormholeId);
 	DOREPLIFETIME(AWormholeActor, WormholeName);
 	DOREPLIFETIME(AWormholeActor, TargetSystemId);
+	DOREPLIFETIME(AWormholeActor, MassCapacity);
+	DOREPLIFETIME(AWormholeActor, CurrentMassUsed);
+	DOREPLIFETIME(AWormholeActor, RemainingLifetime);
+	DOREPLIFETIME(AWormholeActor, bIsCollapsing);
 }

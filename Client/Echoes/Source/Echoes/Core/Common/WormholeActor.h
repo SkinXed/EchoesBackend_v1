@@ -82,6 +82,31 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Wormhole", meta = (BlueprintAuthorityOnly))
 	void InitiateJump(AActor* Ship);
 
+	/**
+	 * Process ship passing through wormhole
+	 * Reduces remaining mass and lifetime
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Wormhole")
+	void ProcessShipPassage(AActor* Ship, float ShipMass);
+
+	/**
+	 * Check if wormhole can accommodate ship of given mass
+	 */
+	UFUNCTION(BlueprintPure, Category = "Wormhole")
+	bool CanAccommodateShip(float ShipMass) const;
+
+	/**
+	 * Get stability percentage (0.0 to 1.0)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Wormhole")
+	float GetStabilityPercentage() const;
+
+	/**
+	 * Trigger wormhole collapse
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Wormhole", meta = (BlueprintAuthorityOnly))
+	void TriggerCollapse();
+
 protected:
 	/**
 	 * Generate unique color based on target system ID
@@ -97,6 +122,16 @@ protected:
 	 * Setup trigger zone for jump detection
 	 */
 	void SetupTriggerZone();
+
+	/**
+	 * Update wormhole degradation over time
+	 */
+	virtual void Tick(float DeltaTime) override;
+
+	/**
+	 * Update instability visual effects based on current state
+	 */
+	void UpdateInstabilityEffects();
 
 private:
 	// ==================== Components ====================
@@ -150,6 +185,28 @@ private:
 	/** Unique color for this wormhole */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wormhole", meta = (AllowPrivateAccess = "true"))
 	FLinearColor WormholeColor;
+
+	// ==================== Instability & Degradation ====================
+
+	/** Maximum mass capacity (in metric tons) */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	float MassCapacity;
+
+	/** Current mass that has passed through */
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	float CurrentMassUsed;
+
+	/** Remaining lifetime in seconds */
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	float RemainingLifetime;
+
+	/** Initial lifetime when wormhole was created */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	float InitialLifetime;
+
+	/** Whether wormhole is collapsing */
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	bool bIsCollapsing;
 
 	// ==================== Replication ====================
 

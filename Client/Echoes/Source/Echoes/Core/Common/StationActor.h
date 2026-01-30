@@ -48,6 +48,44 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Echoes|Station")
 	FString GetStationType() const { return StationType; }
 
+	// ==================== Docking Logic ====================
+
+	/**
+	 * Called when ship enters docking zone
+	 */
+	UFUNCTION()
+	void OnDockingZoneBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	/**
+	 * Server RPC to request docking at this station
+	 * Validates access rights and initiates docking sequence
+	 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerRPC_RequestDocking(APlayerController* PlayerController);
+
+	/**
+	 * Check if player has access rights to dock at this station
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Station")
+	bool HasDockingAccess(APlayerController* PlayerController) const;
+
+	/**
+	 * Initiate docking sequence for player
+	 * Transitions player state from InSpace to InHangar
+	 */
+	void InitiateDocking(APlayerController* PlayerController);
+
+	/**
+	 * Notify backend about character docking at this station
+	 */
+	void NotifyBackendDocking(APlayerController* PlayerController);
+
 protected:
 	// ==================== Components ====================
 
@@ -56,6 +94,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UNiagaraComponent* LightsComponent;
+
+	/** Docking zone - detects ships requesting to dock */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class USphereComponent* DockingZone;
 
 	// ==================== Station Data (Replicated) ====================
 
