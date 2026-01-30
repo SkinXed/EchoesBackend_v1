@@ -205,8 +205,12 @@ void UEchoesInventorySubsystem::OnShipsReceived(
 			// Cache ships
 			CachedShips = Ships;
 
+			// Wrap ships in FEchoesShipList for delegate
+			FEchoesShipList ShipList;
+			ShipList.Ships = Ships;
+
 			UE_LOG(LogTemp, Log, TEXT("Successfully parsed %d ships"), Ships.Num());
-			OnSuccess.ExecuteIfBound(Ships);
+			OnSuccess.ExecuteIfBound(ShipList);
 		}
 		else
 		{
