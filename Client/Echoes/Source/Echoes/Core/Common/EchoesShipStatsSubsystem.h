@@ -18,7 +18,8 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FOnApiError, const FString&, ErrorMessage);
  * 
  * Handles fetching ship stats from ASP.NET Core backend
  */
-UCLASS()
+
+UCLASS(Config = Game)
 class ECHOES_API UEchoesShipStatsSubsystem : public UGameInstanceSubsystem
 {
     GENERATED_BODY()

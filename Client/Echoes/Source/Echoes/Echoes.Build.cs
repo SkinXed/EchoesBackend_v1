@@ -14,7 +14,7 @@ public class Echoes : ModuleRules
 			"Engine", 
 			"InputCore",
 			"EnhancedInput", // For Enhanced Input System
-			"Http", // For HTTP requests
+			"HTTP", // For HTTP requests
 			"Json", // For JSON parsing
 			"JsonUtilities" // For JSON utilities
 		});

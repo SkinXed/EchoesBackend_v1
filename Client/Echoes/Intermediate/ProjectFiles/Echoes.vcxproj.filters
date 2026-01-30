@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Echoes.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Echoes.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\EchoesEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\ARCHITECTURAL_IMPROVEMENTS.md" />
+    <None Include="..\..\NETWORK_SECURITY.md" />
+    <None Include="..\..\SHIP_MOVEMENT_SYSTEM.md" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\Echoes">
+      <UniqueIdentifier>{3C2DB8AA-026A-3B12-A81D-3613AF062B13}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Echoes\Echoes.Build.cs">
+      <Filter>Source\Echoes</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Echoes\Echoes.cpp">
+      <Filter>Source\Echoes</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Echoes.h">
+      <Filter>Source\Echoes</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\EchoesGameModeBase.cpp">
+      <Filter>Source\Echoes</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\EchoesGameModeBase.h">
+      <Filter>Source\Echoes</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\Core">
+      <UniqueIdentifier>{C3E453A5-6B5C-3FB0-8227-B8DCF65CB454}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Echoes\Core\Client">
+      <UniqueIdentifier>{202B265E-B755-3E8E-92E8-7D40DB4DF21E}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Client\EchoesShipPawn.cpp">
+      <Filter>Source\Echoes\Core\Client</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Client\EchoesShipPawn.h">
+      <Filter>Source\Echoes\Core\Client</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\Core\Common">
+      <UniqueIdentifier>{C4BC4A80-2220-3FA8-8FCD-E49BA3BD531F}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\EchoesGameStateSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesGameStateSubsystem.h">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\EchoesShipMovementComponent.cpp">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesShipMovementComponent.h">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\EchoesShipStatsSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesShipStatsSubsystem.h">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesShipTypes.h">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\Core\Common\Networking">
+      <UniqueIdentifier>{8AFFDFA3-BEF9-3FF4-8BFB-9828377610FA}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesAuthSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesAuthSubsystem.h">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesIdentitySubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesIdentitySubsystem.h">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesInventorySubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesInventorySubsystem.h">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\Core\Server">
+      <UniqueIdentifier>{DE3C9C47-AAB0-3ABF-8615-B61F2B472514}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Server\EchoesHangarManager.cpp">
+      <Filter>Source\Echoes\Core\Server</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Server\EchoesHangarManager.h">
+      <Filter>Source\Echoes\Core\Server</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
