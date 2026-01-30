@@ -8,6 +8,7 @@
 #include "Materials/MaterialInstance.h"
 #include "Particles/ParticleSystem.h"
 #include "NiagaraSystem.h"
+#include "Sound/SoundBase.h"
 #include "EchoesWorldVisualTypes.generated.h"
 
 /**
