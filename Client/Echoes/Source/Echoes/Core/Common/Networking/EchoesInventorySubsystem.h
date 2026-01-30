@@ -7,13 +7,13 @@
 #include "Http.h"
 #include "EchoesInventorySubsystem.generated.h"
 
-// Forward declarations
-DECLARE_DELEGATE_OneParam(FOnShipsReceived, const TArray<struct FEchoesShipInstance>&);
-DECLARE_DELEGATE_OneParam(FOnShipFittingReceived, const struct FEchoesShipFitting&);
-DECLARE_DELEGATE_OneParam(FOnInventoryFailure, const FString&);
-DECLARE_DELEGATE(FOnShipActivated);
-DECLARE_DELEGATE(FOnModuleFitted);
-DECLARE_DELEGATE(FOnModuleUnfitted);
+// Forward declarations - Dynamic delegates for Blueprint support
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipsReceived, const FEchoesShipList&, ShipList);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipFittingReceived, const FEchoesShipFitting&, Fitting);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_DELEGATE(FOnShipActivated);
+DECLARE_DYNAMIC_DELEGATE(FOnModuleFitted);
+DECLARE_DYNAMIC_DELEGATE(FOnModuleUnfitted);
 
 // Multicast delegates for UI updates
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnFittingChanged, const struct FEchoesShipFitting&);
@@ -56,6 +56,19 @@ struct FEchoesShipInstance
 
 	UPROPERTY(BlueprintReadWrite, Category = "Ship")
 	int32 ModuleCount = 0;
+};
+
+/**
+ * Ship list response structure
+ * Wrapper for TArray to enable Blueprint support in delegates
+ */
+USTRUCT(BlueprintType)
+struct FEchoesShipList
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Ship")
+	TArray<FEchoesShipInstance> Ships;
 };
 
 /**
