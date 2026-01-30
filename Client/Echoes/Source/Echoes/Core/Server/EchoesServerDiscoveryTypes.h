@@ -455,6 +455,56 @@ struct FServerSystemConfig
 };
 
 /**
+ * Regional cluster configuration (mirrors C# ServerRegionalClusterConfigDto)
+ * Contains all solar systems within a region for multi-system servers
+ */
+USTRUCT(BlueprintType)
+struct FServerRegionalClusterConfig
+{
+	GENERATED_BODY()
+
+	/** Unique identifier of the region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	FGuid RegionId;
+
+	/** Name of the region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	FString RegionName;
+
+	/** Region code identifier */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	FString RegionCode;
+
+	/** Average security status across the region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	float AverageSecurity = 0.0f;
+
+	/** Number of constellations in this region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	int32 ConstellationCount = 0;
+
+	/** Number of solar systems in this region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	int32 SystemCount = 0;
+
+	/** Total number of planets across all systems in the region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	int32 TotalPlanets = 0;
+
+	/** Total number of stargates across all systems in the region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	int32 TotalStargates = 0;
+
+	/** Total number of stations across all systems in the region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	int32 TotalStations = 0;
+
+	/** List of all solar systems in this region */
+	UPROPERTY(BlueprintReadWrite, Category = "Region")
+	TArray<FServerSystemConfig> Systems;
+};
+
+/**
  * Server configuration request (mirrors C# ServerConfigRequestDto)
  */
 USTRUCT(BlueprintType)

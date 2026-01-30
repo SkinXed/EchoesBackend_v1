@@ -99,7 +99,7 @@ void AWormholeActor::Tick(float DeltaTime)
 			TriggerCollapse();
 		}
 		// Update instability effects as wormhole degrades
-		else if (GetStabilityPercentage() < 0.3f)
+		else if (GetStabilityPercentage() < TICK_INSTABILITY_THRESHOLD)
 		{
 			UpdateInstabilityEffects();
 		}
@@ -280,7 +280,7 @@ void AWormholeActor::InitiateJump(AActor* Ship)
 	}
 
 	// Check if wormhole can accommodate the ship
-	float ShipMass = 1000.0f; // TODO: Get actual ship mass from ship actor
+	float ShipMass = DEFAULT_SHIP_MASS_PLACEHOLDER; // TODO: Get actual ship mass from ship actor
 	
 	if (!CanAccommodateShip(ShipMass))
 	{
@@ -321,7 +321,7 @@ void AWormholeActor::ProcessShipPassage(AActor* Ship, float ShipMass)
 	CurrentMassUsed += ShipMass;
 
 	// Reduce lifetime proportionally to mass used
-	float LifetimeReduction = (ShipMass / MassCapacity) * InitialLifetime * 0.1f; // 10% of proportional lifetime
+	float LifetimeReduction = (ShipMass / MassCapacity) * InitialLifetime * LIFETIME_REDUCTION_FACTOR;
 	RemainingLifetime -= LifetimeReduction;
 
 	UE_LOG(LogTemp, Log, TEXT("Wormhole degradation: Mass used: %.0f / %.0f, Lifetime remaining: %.0f seconds"),
@@ -331,7 +331,7 @@ void AWormholeActor::ProcessShipPassage(AActor* Ship, float ShipMass)
 	UpdateInstabilityEffects();
 
 	// Check if should collapse
-	if (CurrentMassUsed >= MassCapacity * 0.95f || RemainingLifetime <= 60.0f)
+	if (CurrentMassUsed >= MassCapacity * CRITICAL_MASS_THRESHOLD || RemainingLifetime <= CRITICAL_LIFETIME_THRESHOLD)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("⚠ Wormhole critically unstable!"));
 	}
@@ -362,6 +362,12 @@ bool AWormholeActor::CanAccommodateShip(float ShipMass) const
 
 float AWormholeActor::GetStabilityPercentage() const
 {
+	// Prevent division by zero
+	if (MassCapacity <= 0.0f || InitialLifetime <= 0.0f)
+	{
+		return 0.0f;
+	}
+
 	// Calculate stability based on mass used and lifetime remaining
 	float MassStability = 1.0f - (CurrentMassUsed / MassCapacity);
 	float TimeStability = RemainingLifetime / InitialLifetime;
@@ -405,11 +411,20 @@ void AWormholeActor::TriggerCollapse()
 
 	// Schedule destruction after collapse animation
 	FTimerHandle CollapseTimer;
-	GetWorld()->GetTimerManager().SetTimer(CollapseTimer, [this]()
+	FTimerDelegate CollapseDelegate;
+	
+	// Use weak pointer to safely handle actor destruction
+	TWeakObjectPtr<AWormholeActor> WeakThis(this);
+	CollapseDelegate.BindLambda([WeakThis]()
 	{
-		UE_LOG(LogTemp, Log, TEXT("Destroying collapsed wormhole: %s"), *WormholeName);
-		Destroy();
-	}, 5.0f, false); // 5 second collapse animation
+		if (WeakThis.IsValid())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Destroying collapsed wormhole: %s"), *WeakThis->WormholeName);
+			WeakThis->Destroy();
+		}
+	});
+	
+	GetWorld()->GetTimerManager().SetTimer(CollapseTimer, CollapseDelegate, COLLAPSE_ANIMATION_DURATION, false);
 }
 
 void AWormholeActor::UpdateInstabilityEffects()
@@ -417,7 +432,7 @@ void AWormholeActor::UpdateInstabilityEffects()
 	float Stability = GetStabilityPercentage();
 
 	// Activate instability VFX when stability drops below threshold
-	if (Stability < 0.5f && InstabilityVFXComponent)
+	if (Stability < VFX_INSTABILITY_THRESHOLD && InstabilityVFXComponent)
 	{
 		if (!InstabilityVFXComponent->IsActive())
 		{
@@ -428,10 +443,7 @@ void AWormholeActor::UpdateInstabilityEffects()
 
 		// Increase instability intensity as stability decreases
 		float Intensity = 1.0f - Stability;
-		if (InstabilityVFXComponent)
-		{
-			InstabilityVFXComponent->SetFloatParameter(FName("Intensity"), Intensity);
-		}
+		InstabilityVFXComponent->SetFloatParameter(FName("Intensity"), Intensity);
 	}
 }
 
