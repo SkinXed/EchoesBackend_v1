@@ -175,7 +175,8 @@ void AStationActor::OnDockingZoneBeginOverlap(
 	// Check access rights and initiate docking
 	if (HasDockingAccess(PC))
 	{
-		ServerRPC_RequestDocking(PC);
+		// Server is already executing, call directly instead of RPC
+		InitiateDocking(PC);
 	}
 	else
 	{
@@ -255,12 +256,18 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 		UEchoesGameStateSubsystem* GameStateSubsystem = GameInstance->GetSubsystem<UEchoesGameStateSubsystem>();
 		if (GameStateSubsystem)
 		{
-			// Transition player state from InSpace to Hangar
-			// TODO: Get character ID from player state
-			FString CharacterId = TEXT("TODO_CharacterId");
-			GameStateSubsystem->TransitionToHangar(CharacterId);
-			
-			UE_LOG(LogTemp, Log, TEXT("✓ Player state transitioned to Hangar"));
+			// TODO: Get character ID from player state/controller
+			// For now, skip state transition if character ID not available
+			FString CharacterId = TEXT(""); // Placeholder
+			if (!CharacterId.IsEmpty())
+			{
+				GameStateSubsystem->TransitionToHangar(CharacterId);
+				UE_LOG(LogTemp, Log, TEXT("✓ Player state transitioned to Hangar"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("⚠ Character ID not available, skipping state transition"));
+			}
 		}
 		else
 		{

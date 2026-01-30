@@ -189,7 +189,7 @@ private:
 	// ==================== Instability & Degradation ====================
 
 	/** Maximum mass capacity (in metric tons) */
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true", ClampMin = "1.0"))
 	float MassCapacity;
 
 	/** Current mass that has passed through */
@@ -201,12 +201,35 @@ private:
 	float RemainingLifetime;
 
 	/** Initial lifetime when wormhole was created */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true", ClampMin = "1.0"))
 	float InitialLifetime;
 
 	/** Whether wormhole is collapsing */
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Wormhole|Instability", meta = (AllowPrivateAccess = "true"))
 	bool bIsCollapsing;
+
+	// ==================== Constants ====================
+
+	/** Stability threshold for triggering instability effects during tick */
+	static constexpr float TICK_INSTABILITY_THRESHOLD = 0.3f;
+
+	/** Stability threshold for showing instability VFX */
+	static constexpr float VFX_INSTABILITY_THRESHOLD = 0.5f;
+
+	/** Critical mass threshold (percentage of capacity) */
+	static constexpr float CRITICAL_MASS_THRESHOLD = 0.95f;
+
+	/** Critical lifetime threshold (seconds) */
+	static constexpr float CRITICAL_LIFETIME_THRESHOLD = 60.0f;
+
+	/** Lifetime reduction factor per ship passage */
+	static constexpr float LIFETIME_REDUCTION_FACTOR = 0.1f;
+
+	/** Collapse animation duration (seconds) */
+	static constexpr float COLLAPSE_ANIMATION_DURATION = 5.0f;
+
+	/** Default ship mass placeholder until proper mass retrieval implemented */
+	static constexpr float DEFAULT_SHIP_MASS_PLACEHOLDER = 1000.0f;
 
 	// ==================== Replication ====================
 

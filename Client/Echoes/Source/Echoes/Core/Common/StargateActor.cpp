@@ -29,7 +29,7 @@ AStargateActor::AStargateActor()
 	// Create jump trigger zone (box component for controlled activation area)
 	JumpTriggerZone = CreateDefaultSubobject<UBoxComponent>(TEXT("JumpTriggerZone"));
 	JumpTriggerZone->SetupAttachment(RootComponent);
-	JumpTriggerZone->SetBoxExtent(FVector(5000.0f, 5000.0f, 5000.0f)); // 50m x 50m x 50m
+	JumpTriggerZone->SetBoxExtent(FVector(5000.0f, 5000.0f, 5000.0f)); // 100m x 100m x 100m (half-extents)
 	JumpTriggerZone->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	JumpTriggerZone->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	JumpTriggerZone->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -233,8 +233,8 @@ void AStargateActor::OnJumpTriggerBeginOverlap(
 	// Check if ship is ready to jump
 	if (IsShipReadyToJump(Pawn))
 	{
-		// Initiate jump sequence
-		ServerRPC_RequestJump(PC);
+		// Server is already executing, call directly instead of RPC
+		InitiateJumpToTarget(PC);
 	}
 	else
 	{
