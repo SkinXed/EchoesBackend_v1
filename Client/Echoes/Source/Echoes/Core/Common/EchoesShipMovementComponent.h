@@ -90,14 +90,18 @@ protected:
     /** Apply thrust forces based on input (WASD mechanics) */
     void Common_ApplyThrust(float DeltaTime);
 
-    /** Align ship to target vector (mouse follow) */
+    /** Align ship to target vector using PD controller for torque */
     void Common_AlignToVector(float DeltaTime);
 
     /** Update warp state machine */
     void Common_UpdateWarp(float DeltaTime);
 
-    /** Apply damping to velocity when no input */
+    /** Apply linear damping based on velocity and InertiaMultiplier */
     void Common_ApplyDamping(float DeltaTime);
+
+    /** Calculate alignment time using EVE formula: (Inertia * Mass) / 500,000 */
+    UFUNCTION(BlueprintPure, Category = "Ship Stats")
+    float Common_CalculateAlignTime() const;
 
     // ==================== Warp State Handlers ====================
     
@@ -112,7 +116,15 @@ protected:
 
     // ==================== Configuration ====================
     
-    /** Rotation interpolation speed for alignment */
+    /** PD Controller Proportional gain for alignment torque */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Config|PD Controller")
+    float PDController_kP = 5.0f;
+
+    /** PD Controller Derivative gain for damping */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Config|PD Controller")
+    float PDController_kD = 2.0f;
+
+    /** Rotation interpolation speed for alignment (deprecated, use PD controller) */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Config")
     float RotationInterpSpeed = 2.0f;
 
@@ -124,17 +136,25 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Warp|Config")
     float WarpSpeedThreshold = 0.75f;
 
+    /** Velocity vector alignment threshold (dot product) for warp entry */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Warp|Config")
+    float WarpVelocityAlignmentThreshold = 0.95f;
+
     /** Warp speed multiplier when in warp */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Warp|Config")
     float WarpSpeedMultiplier = 10.0f;
 
-    /** Damping factor when no input (0-1) */
+    /** Damping factor when no input (0-1) - DEPRECATED, use linear damping */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Config")
     float DampingFactor = 0.98f;
 
     /** Minimum velocity threshold to apply damping */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Config")
     float MinVelocityForDamping = 1.0f;
+
+    /** Constant for align time calculation (EVE formula) */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Config")
+    float AlignTimeConstant = 500000.0f;
 
 private:
     /** Cached primitive component for physics */

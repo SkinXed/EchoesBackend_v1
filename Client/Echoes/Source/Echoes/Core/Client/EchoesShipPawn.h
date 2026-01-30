@@ -74,6 +74,10 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
     UInputAction* WarpAction;
 
+    /** Free look action (Alt key) */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+    UInputAction* FreeLookAction;
+
     // ==================== Configuration ====================
     
     /** Camera distance from ship */
@@ -95,6 +99,10 @@ public:
     /** Mouse sensitivity for camera control */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
     float MouseSensitivity = 1.0f;
+
+    /** Whether free look is currently active */
+    UPROPERTY(BlueprintReadOnly, Category = "Camera")
+    bool bFreeLookActive = false;
 
     // ==================== Ship Stats ====================
     
@@ -120,6 +128,12 @@ protected:
 
     /** Called to initiate warp */
     void Client_HandleWarp();
+
+    /** Called when free look is started */
+    void Client_HandleFreeLookStarted();
+
+    /** Called when free look is completed */
+    void Client_HandleFreeLookCompleted();
 
     // ==================== Camera ====================
     

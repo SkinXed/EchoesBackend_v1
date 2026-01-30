@@ -134,18 +134,23 @@ void UEchoesShipMovementComponent::Common_ApplyThrust(float DeltaTime)
     // Apply force based on thrust stat
     FVector Force = ThrustDirection * ShipStats.Thrust;
     
-    // Scale by inertia multiplier
+    // Mass is already applied by physics system, no need to multiply here
+    // InertiaMultiplier affects how quickly ship responds
     Force *= ShipStats.InertiaMultiplier;
 
     PrimitiveComponent->AddForce(Force, NAME_None, false);
 
-    // Clamp velocity to max
-    FVector CurrentVelocity = PrimitiveComponent->GetPhysicsLinearVelocity();
-    if (CurrentVelocity.Size() > ShipStats.MaxVelocity)
-    {
-        FVector ClampedVelocity = CurrentVelocity.GetSafeNormal() * ShipStats.MaxVelocity;
-        PrimitiveComponent->SetPhysicsLinearVelocity(ClampedVelocity);
-    }
+    // Natural velocity limiting through linear damping
+    // Max velocity is reached when F_thrust = v * Damping
+    // Damping is applied automatically via InertiaMultiplier as linear damping
+    // No need for hard velocity clamping - let physics handle it naturally
+}
+
+float UEchoesShipMovementComponent::Common_CalculateAlignTime() const
+{
+    // EVE-style formula: (Inertia * Mass) / Constant
+    // InertiaMultiplier represents ship's inertia characteristic
+    return (ShipStats.InertiaMultiplier * ShipStats.TotalMass) / AlignTimeConstant;
 }
 
 void UEchoesShipMovementComponent::Common_AlignToVector(float DeltaTime)
@@ -155,35 +160,36 @@ void UEchoesShipMovementComponent::Common_AlignToVector(float DeltaTime)
         return;
     }
 
-    // Get current forward vector
+    // Get current forward vector and angular velocity
     FVector CurrentForward = UpdatedComponent->GetForwardVector();
+    FVector CurrentAngularVelocity = PrimitiveComponent->GetPhysicsAngularVelocityInRadians();
     
-    // Calculate target rotation to face the target direction
-    FRotator TargetRotation = TargetDirection.Rotation();
-    FRotator CurrentRotation = UpdatedComponent->GetComponentRotation();
-
-    // Smoothly interpolate rotation using FMath::VInterpTo equivalent
-    // We'll use RInterpTo for rotations
-    FRotator NewRotation = FMath::RInterpTo(
-        CurrentRotation, 
-        TargetRotation, 
-        DeltaTime, 
-        RotationInterpSpeed
-    );
-
-    // Apply torque to rotate ship
-    // Convert rotation delta to angular velocity
-    FRotator RotationDelta = NewRotation - CurrentRotation;
-    FVector AngularVelocity = FVector(
-        FMath::DegreesToRadians(RotationDelta.Pitch),
-        FMath::DegreesToRadians(RotationDelta.Yaw),
-        FMath::DegreesToRadians(RotationDelta.Roll)
-    ) / DeltaTime;
-
-    // Scale by rotation speed stat and apply
-    AngularVelocity *= ShipStats.RotationSpeed * 0.1f; // Scale factor for feel
+    // Calculate angle error between current and target direction
+    FVector TargetForward = TargetDirection.GetSafeNormal();
+    FVector CrossProduct = FVector::CrossProduct(CurrentForward, TargetForward);
+    float DotProduct = FVector::DotProduct(CurrentForward, TargetForward);
+    float AngleRadians = FMath::Acos(FMath::Clamp(DotProduct, -1.0f, 1.0f));
     
-    PrimitiveComponent->SetPhysicsAngularVelocityInRadians(AngularVelocity, false, NAME_None);
+    // Axis of rotation (normalized cross product)
+    FVector RotationAxis = CrossProduct.GetSafeNormal();
+    
+    // PD Controller for torque calculation
+    // P (Proportional): Torque proportional to angle error
+    FVector ProportionalTorque = RotationAxis * AngleRadians * PDController_kP * ShipStats.RotationSpeed;
+    
+    // D (Derivative): Damping torque to prevent overshoot
+    // Project current angular velocity onto rotation axis
+    float AngularVelocityOnAxis = FVector::DotProduct(CurrentAngularVelocity, RotationAxis);
+    FVector DerivativeTorque = -RotationAxis * AngularVelocityOnAxis * PDController_kD * ShipStats.RotationSpeed;
+    
+    // Combined PD torque
+    FVector TotalTorque = ProportionalTorque + DerivativeTorque;
+    
+    // Scale by ship mass for proper physics response
+    TotalTorque *= ShipStats.TotalMass * 0.01f; // Scale factor for feel
+    
+    // Apply torque in radians
+    PrimitiveComponent->AddTorqueInRadians(TotalTorque, NAME_None, false);
 }
 
 void UEchoesShipMovementComponent::Common_ApplyDamping(float DeltaTime)
@@ -194,14 +200,23 @@ void UEchoesShipMovementComponent::Common_ApplyDamping(float DeltaTime)
     }
 
     FVector CurrentVelocity = PrimitiveComponent->GetPhysicsLinearVelocity();
+    float CurrentSpeed = CurrentVelocity.Size();
     
-    // Only apply damping if velocity is above minimum threshold
-    if (CurrentVelocity.Size() > MinVelocityForDamping)
+    // Apply linear damping to simulate space drag and reach terminal velocity
+    // F_damping = -v * DampingCoefficient
+    // At equilibrium: F_thrust = v * DampingCoefficient, giving us max velocity
+    // InertiaMultiplier serves as the damping coefficient
+    
+    if (CurrentSpeed > MinVelocityForDamping)
     {
-        FVector DampedVelocity = CurrentVelocity * DampingFactor;
-        PrimitiveComponent->SetPhysicsLinearVelocity(DampedVelocity);
+        // Calculate damping force opposite to velocity direction
+        FVector VelocityDirection = CurrentVelocity.GetSafeNormal();
+        float DampingCoefficient = ShipStats.InertiaMultiplier * 10.0f; // Scale for feel
+        FVector DampingForce = -VelocityDirection * CurrentSpeed * DampingCoefficient;
+        
+        PrimitiveComponent->AddForce(DampingForce, NAME_None, false);
     }
-    else if (CurrentVelocity.Size() <= MinVelocityForDamping)
+    else if (CurrentSpeed <= MinVelocityForDamping)
     {
         // Stop completely if very slow
         PrimitiveComponent->SetPhysicsLinearVelocity(FVector::ZeroVector);
@@ -248,11 +263,11 @@ bool UEchoesShipMovementComponent::CanEnterWarp() const
         return false;
     }
 
-    // Check alignment
+    // Check ship forward alignment with target
     FVector CurrentForward = UpdatedComponent->GetForwardVector();
     FVector ToTarget = (WarpTargetLocation - UpdatedComponent->GetComponentLocation()).GetSafeNormal();
-    float DotProduct = FVector::DotProduct(CurrentForward, ToTarget);
-    float AngleDegrees = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
+    float ForwardDotProduct = FVector::DotProduct(CurrentForward, ToTarget);
+    float AngleDegrees = FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(ForwardDotProduct, -1.0f, 1.0f)));
 
     bool bAligned = AngleDegrees <= WarpAlignmentThreshold;
 
@@ -262,6 +277,16 @@ bool UEchoesShipMovementComponent::CanEnterWarp() const
     float RequiredSpeed = ShipStats.MaxVelocity * WarpSpeedThreshold;
     
     bool bAtSpeed = CurrentSpeed >= RequiredSpeed;
+
+    // EVE-style: Check velocity vector alignment with target direction
+    if (CurrentSpeed > 1.0f)
+    {
+        FVector VelocityDirection = CurrentVelocity.GetSafeNormal();
+        float VelocityDotProduct = FVector::DotProduct(VelocityDirection, ToTarget);
+        bool bVelocityAligned = VelocityDotProduct >= WarpVelocityAlignmentThreshold;
+        
+        return bAligned && bAtSpeed && bVelocityAligned;
+    }
 
     return bAligned && bAtSpeed;
 }
@@ -301,7 +326,7 @@ void UEchoesShipMovementComponent::HandleAligningState(float DeltaTime)
     Common_AlignToVector(DeltaTime);
 
     // Apply forward thrust to build speed
-    FVector ForwardThrust = UpdatedComponent->GetForwardVector() * ShipStats.Thrust;
+    FVector ForwardThrust = UpdatedComponent->GetForwardVector() * ShipStats.Thrust * ShipStats.InertiaMultiplier;
     PrimitiveComponent->AddForce(ForwardThrust, NAME_None, false);
 
     // Check if we can enter warp
@@ -311,7 +336,13 @@ void UEchoesShipMovementComponent::HandleAligningState(float DeltaTime)
         WarpStateTime = 0.0f;
         WarpProgress = 0.0f;
         
-        UE_LOG(LogTemp, Log, TEXT("Entering warp state"));
+        // Disable physics simulation for ray-based warp movement
+        if (PrimitiveComponent->IsSimulatingPhysics())
+        {
+            PrimitiveComponent->SetSimulatePhysics(false);
+        }
+        
+        UE_LOG(LogTemp, Log, TEXT("Entering warp state - physics disabled"));
     }
 
     // Timeout after 30 seconds
@@ -329,16 +360,16 @@ void UEchoesShipMovementComponent::HandleWarpingState(float DeltaTime)
         return;
     }
 
-    // Disable normal control input during warp
-    // Apply high-speed movement toward target
+    // Ray-based movement (physics disabled)
     FVector CurrentLocation = UpdatedComponent->GetComponentLocation();
     FVector DirectionToTarget = (WarpTargetLocation - CurrentLocation).GetSafeNormal();
     
-    // Apply warp speed
+    // Calculate warp velocity
     float WarpVelocity = ShipStats.MaxVelocity * WarpSpeedMultiplier * ShipStats.WarpSpeed;
-    FVector WarpSpeed = DirectionToTarget * WarpVelocity;
     
-    PrimitiveComponent->SetPhysicsLinearVelocity(WarpSpeed);
+    // Move along ray
+    FVector NewLocation = CurrentLocation + (DirectionToTarget * WarpVelocity * DeltaTime);
+    UpdatedComponent->SetWorldLocation(NewLocation, false);
 
     // Check distance to target
     float DistanceToTarget = FVector::Dist(CurrentLocation, WarpTargetLocation);
@@ -349,7 +380,15 @@ void UEchoesShipMovementComponent::HandleWarpingState(float DeltaTime)
         WarpState = EWarpState::Exiting;
         WarpStateTime = 0.0f;
         
-        UE_LOG(LogTemp, Log, TEXT("Exiting warp state"));
+        // Re-enable physics for exit deceleration
+        if (!PrimitiveComponent->IsSimulatingPhysics())
+        {
+            PrimitiveComponent->SetSimulatePhysics(true);
+            // Set initial velocity for smooth transition
+            PrimitiveComponent->SetPhysicsLinearVelocity(DirectionToTarget * WarpVelocity);
+        }
+        
+        UE_LOG(LogTemp, Log, TEXT("Exiting warp state - physics re-enabled"));
     }
 }
 
@@ -360,13 +399,17 @@ void UEchoesShipMovementComponent::HandleExitingState(float DeltaTime)
         return;
     }
 
-    // Gradually decelerate
+    // Apply deceleration force opposite to velocity
     FVector CurrentVelocity = PrimitiveComponent->GetPhysicsLinearVelocity();
     float CurrentSpeed = CurrentVelocity.Size();
 
-    // Apply strong damping to slow down
-    FVector DeceleratedVelocity = CurrentVelocity * 0.9f;
-    PrimitiveComponent->SetPhysicsLinearVelocity(DeceleratedVelocity);
+    if (CurrentSpeed > ShipStats.MaxVelocity * 1.1f)
+    {
+        // Apply strong braking force
+        FVector VelocityDirection = CurrentVelocity.GetSafeNormal();
+        FVector BrakingForce = -VelocityDirection * ShipStats.Thrust * 2.0f; // 2x thrust for braking
+        PrimitiveComponent->AddForce(BrakingForce, NAME_None, false);
+    }
 
     // Exit warp when speed is low enough
     if (CurrentSpeed <= ShipStats.MaxVelocity * 1.1f)

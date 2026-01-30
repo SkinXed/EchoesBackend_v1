@@ -84,8 +84,8 @@ void AEchoesShipPawn::Tick(float DeltaTime)
     // Update camera
     Client_UpdateCamera(DeltaTime);
 
-    // Update target direction from camera if mouse follow is active
-    if (bMouseFollowActive && ShipMovement)
+    // Update target direction from camera if mouse follow is active AND not in free look
+    if (bMouseFollowActive && !bFreeLookActive && ShipMovement)
     {
         FVector TargetDir = Client_GetCameraTargetDirection();
         ShipMovement->SetTargetDirection(TargetDir);
@@ -120,6 +120,13 @@ void AEchoesShipPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
         if (WarpAction)
         {
             EnhancedInputComponent->BindAction(WarpAction, ETriggerEvent::Started, this, &AEchoesShipPawn::Client_HandleWarp);
+        }
+
+        // Bind free look action
+        if (FreeLookAction)
+        {
+            EnhancedInputComponent->BindAction(FreeLookAction, ETriggerEvent::Started, this, &AEchoesShipPawn::Client_HandleFreeLookStarted);
+            EnhancedInputComponent->BindAction(FreeLookAction, ETriggerEvent::Completed, this, &AEchoesShipPawn::Client_HandleFreeLookCompleted);
         }
     }
 }
@@ -203,6 +210,32 @@ void AEchoesShipPawn::Client_HandleWarp()
     ShipMovement->InitiateWarp(WarpTarget);
     
     UE_LOG(LogTemp, Log, TEXT("Warp initiated"));
+}
+
+void AEchoesShipPawn::Client_HandleFreeLookStarted()
+{
+    bFreeLookActive = true;
+    
+    // Disable mouse follow temporarily during free look
+    if (ShipMovement && bMouseFollowActive)
+    {
+        ShipMovement->SetMouseFollowEnabled(false);
+    }
+    
+    UE_LOG(LogTemp, Log, TEXT("Free look started"));
+}
+
+void AEchoesShipPawn::Client_HandleFreeLookCompleted()
+{
+    bFreeLookActive = false;
+    
+    // Re-enable mouse follow if it was active
+    if (ShipMovement && bMouseFollowActive)
+    {
+        ShipMovement->SetMouseFollowEnabled(true);
+    }
+    
+    UE_LOG(LogTemp, Log, TEXT("Free look completed"));
 }
 
 // ==================== Camera (Client_) ====================
