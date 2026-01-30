@@ -375,7 +375,7 @@ bool UEchoesAuthSubsystem::ParseAuthResponse(const FString& JsonString, FAuthRes
 				CharInfo.Name = CharObj->GetStringField(TEXT("name"));
 				CharInfo.WalletBalance = CharObj->GetNumberField(TEXT("walletBalance"));
 				
-				if (CharObj->HasField(TEXT("currentShipId")) && !CharObj->GetField(TEXT("currentShipId"))->IsNull())
+				if (CharObj->HasField(TEXT("currentShipId")) && !CharObj->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
 				{
 					CharInfo.CurrentShipId = CharObj->GetNumberField(TEXT("currentShipId"));
 				}
@@ -408,7 +408,7 @@ bool UEchoesAuthSubsystem::ParseCharacterData(const FString& JsonString, FCharac
 	OutData.WalletBalance = JsonObject->GetNumberField(TEXT("walletBalance"));
 	OutData.SecurityStatus = JsonObject->GetNumberField(TEXT("securityStatus"));
 	
-	if (JsonObject->HasField(TEXT("currentShipId")) && !JsonObject->GetField(TEXT("currentShipId"))->IsNull())
+	if (JsonObject->HasField(TEXT("currentShipId")) && !JsonObject->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
 	{
 		OutData.CurrentShipId = JsonObject->GetNumberField(TEXT("currentShipId"));
 	}
@@ -425,7 +425,7 @@ bool UEchoesAuthSubsystem::ParseCharacterData(const FString& JsonString, FCharac
 	OutData.IsDocked = JsonObject->GetBoolField(TEXT("isDocked"));
 	OutData.InWarp = JsonObject->GetBoolField(TEXT("inWarp"));
 
-	if (JsonObject->HasField(TEXT("lastLogin")) && !JsonObject->GetField(TEXT("lastLogin"))->IsNull())
+	if (JsonObject->HasField(TEXT("lastLogin")) && !JsonObject->GetField<EJson::None>(TEXT("lastLogin"))->IsNull())
 	{
 		FDateTime::Parse(JsonObject->GetStringField(TEXT("lastLogin")), OutData.LastLogin);
 	}

@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EchoesInventorySubsystem.h"
 #include "EchoesAuthSubsystem.h"
@@ -696,7 +696,7 @@ void UEchoesInventorySubsystem::OnModuleFitReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-	const FGuid ShipId,
+   const FGuid& ShipId,
 	FOnModuleFitted OnSuccess,
 	FOnInventoryFailure OnFailure)
 {
@@ -764,7 +764,7 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-	const FGuid ShipId,
+	const FGuid& ShipId, // Исправлено: добавлена ссылка
 	FOnModuleUnfitted OnSuccess,
 	FOnInventoryFailure OnFailure)
 {

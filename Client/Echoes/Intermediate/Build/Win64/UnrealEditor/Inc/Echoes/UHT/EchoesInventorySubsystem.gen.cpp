@@ -519,13 +519,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_S
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// Dynamic delegates for Blueprint support\n" },
-#endif
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Dynamic delegates for Blueprint support" },
-#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ShipList_MetaData[] = {
 		{ "NativeConst", "" },
@@ -858,7 +852,7 @@ struct Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Stat
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_FetchShips_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 1978592863
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_FetchShips_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3676293021
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_FetchShips_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3872701800
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips_Statics::NewProp_OnSuccess,
@@ -1335,7 +1329,7 @@ struct Z_Construct_UClass_UEchoesInventorySubsystem_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_ClearCache, "Inventory_ClearCache" }, // 529228144
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShipFitting, "Inventory_FetchShipFitting" }, // 2873828685
-		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips, "Inventory_FetchShips" }, // 3813062759
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips, "Inventory_FetchShips" }, // 2505205704
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetActiveShip, "Inventory_GetActiveShip" }, // 3294980606
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetCachedFitting, "Inventory_GetCachedFitting" }, // 576491551
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetCachedShips, "Inventory_GetCachedShips" }, // 1205811476
@@ -1401,10 +1395,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FEchoesShipFitting::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipFitting_Statics::NewStructOps, TEXT("EchoesShipFitting"), &Z_Registration_Info_UScriptStruct_FEchoesShipFitting, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipFitting), 2094547099U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 1873413241U) },
+		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 1379557213U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_2087096920(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_1502455340(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);
