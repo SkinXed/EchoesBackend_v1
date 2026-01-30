@@ -169,6 +169,78 @@ public class ShipInventoryController : ControllerBase
     }
 
     /// <summary>
+    /// Verify ship ownership (for UE Server validation)
+    /// GET /api/inventory/ship/{id}/ownership
+    /// </summary>
+    [HttpGet("ship/{id}/ownership")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> VerifyShipOwnership(Guid id)
+    {
+        try
+        {
+            // Extract character ID from JWT token
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var characterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            // Check if ship exists
+            var ship = await _context.ShipInstances
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (ship == null)
+            {
+                return NotFound(new 
+                { 
+                    shipId = id,
+                    characterId = characterId,
+                    isOwned = false,
+                    error = "Ship not found"
+                });
+            }
+
+            // Check ownership
+            bool isOwned = ship.CharacterId == characterId;
+
+            if (!isOwned)
+            {
+                _logger.LogWarning("Character {CharacterId} attempted to access ship {ShipId} owned by {OwnerId}", 
+                    characterId, id, ship.CharacterId);
+                
+                return StatusCode(StatusCodes.Status403Forbidden, new 
+                { 
+                    shipId = id,
+                    characterId = characterId,
+                    isOwned = false,
+                    error = "Ship does not belong to this character"
+                });
+            }
+
+            _logger.LogInformation("Verified ownership of ship {ShipId} for character {CharacterId}", 
+                id, characterId);
+
+            return Ok(new 
+            { 
+                shipId = id,
+                characterId = characterId,
+                isOwned = true,
+                shipName = ship.Name
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error verifying ship ownership for {ShipId}", id);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
     /// Activate a ship (set as current active ship)
     /// POST /api/inventory/ship/{id}/activate
     /// </summary>
