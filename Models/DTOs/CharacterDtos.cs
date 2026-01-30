@@ -128,4 +128,14 @@ namespace Echoes.API.Models.DTOs
         public int SkillId { get; set; }
         public int TargetLevel { get; set; } = 1;
     }
+
+    /// <summary>
+    /// Request DTO for creating a new character
+    /// </summary>
+    public class CreateCharacterRequest
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Race { get; set; } = "Caldari"; // Caldari, Gallente, Amarr, Minmatar
+        public int PortraitId { get; set; } = 1;
+    }
 }

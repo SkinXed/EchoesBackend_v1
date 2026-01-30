@@ -161,4 +161,99 @@ public class CharacterController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
+
+    /// <summary>
+    /// Create a new character for the authenticated account
+    /// POST /api/character
+    /// </summary>
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<CharacterDataDto>> CreateCharacter([FromBody] CreateCharacterRequest request)
+    {
+        try
+        {
+            // Extract account ID from JWT token
+            var accountIdClaim = User.FindFirst("AccountId")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(accountIdClaim) || !Guid.TryParse(accountIdClaim, out var accountId))
+            {
+                return Unauthorized(new { error = "Invalid token - no account ID" });
+            }
+
+            // Validate input
+            if (string.IsNullOrWhiteSpace(request.Name) || request.Name.Length < 3 || request.Name.Length > 50)
+            {
+                return BadRequest(new { error = "Character name must be between 3 and 50 characters" });
+            }
+
+            // Check if name is already taken
+            var existingCharacter = await _context.Characters
+                .AnyAsync(c => c.Name.ToLower() == request.Name.ToLower());
+
+            if (existingCharacter)
+            {
+                return BadRequest(new { error = "Character name already taken" });
+            }
+
+            // Validate race
+            var validRaces = new[] { "Caldari", "Gallente", "Amarr", "Minmatar" };
+            if (!validRaces.Contains(request.Race))
+            {
+                return BadRequest(new { error = "Invalid race. Must be one of: Caldari, Gallente, Amarr, Minmatar" });
+            }
+
+            // Get or create default starting ship (Rookie Ship)
+            var rookieShip = await _context.Items
+                .FirstOrDefaultAsync(i => i.Name.Contains("Rookie") && i.Category == "Ship");
+
+            // Create new character
+            var character = new Models.Entities.Character.Character
+            {
+                Id = Guid.NewGuid(),
+                AccountId = accountId,
+                Name = request.Name,
+                Race = request.Race,
+                PortraitId = request.PortraitId > 0 ? request.PortraitId : 1,
+                WalletBalance = 5000000, // Starting ISK
+                SecurityStatus = 0.0,
+                TotalSkillPoints = 0,
+                UnallocatedSkillPoints = 50000, // Starting skill points
+                IsOnline = false,
+                IsDocked = true,
+                InWarp = false,
+                CreatedAt = DateTime.UtcNow,
+                LastLogin = DateTime.UtcNow
+            };
+
+            _context.Characters.Add(character);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Created new character {CharacterName} for account {AccountId}", 
+                character.Name, accountId);
+
+            var characterData = new CharacterDataDto
+            {
+                CharacterId = character.Id,
+                Name = character.Name,
+                AccountId = character.AccountId,
+                WalletBalance = character.WalletBalance,
+                SecurityStatus = character.SecurityStatus,
+                CurrentShipId = character.ActiveShipItemId,
+                TotalSkillPoints = character.TotalSkillPoints,
+                UnallocatedSkillPoints = character.UnallocatedSkillPoints,
+                IsOnline = character.IsOnline,
+                IsDocked = character.IsDocked
+            };
+
+            return CreatedAtAction(nameof(GetCharacter), new { id = character.Id }, characterData);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating character");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
 }

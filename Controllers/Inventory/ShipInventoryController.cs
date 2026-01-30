@@ -310,4 +310,165 @@ public class ShipInventoryController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
+
+    /// <summary>
+    /// Fit a module to a ship
+    /// PUT /api/inventory/ship/{shipId}/module/{moduleId}/fit
+    /// </summary>
+    [HttpPut("ship/{shipId}/module/{moduleId}/fit")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> FitModule(
+        Guid shipId, 
+        Guid moduleId, 
+        [FromBody] FitModuleRequest request)
+    {
+        try
+        {
+            // Extract character ID from JWT token
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var characterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            // Verify ship belongs to character
+            var ship = await _context.ShipInstances
+                .Include(s => s.FittedModules)
+                .FirstOrDefaultAsync(s => s.Id == shipId && s.CharacterId == characterId);
+
+            if (ship == null)
+            {
+                return NotFound(new { error = "Ship not found or does not belong to you" });
+            }
+
+            // Verify module belongs to character
+            var module = await _context.ShipInstanceModules
+                .FirstOrDefaultAsync(m => m.Id == moduleId && m.CharacterId == characterId);
+
+            if (module == null)
+            {
+                return NotFound(new { error = "Module not found or does not belong to you" });
+            }
+
+            // Validate slot type
+            var validSlotTypes = new[] { "High", "Mid", "Low", "Rig" };
+            if (!validSlotTypes.Contains(request.SlotType))
+            {
+                return BadRequest(new { error = "Invalid slot type. Must be High, Mid, Low, or Rig" });
+            }
+
+            // Check if slot is already occupied
+            var existingModuleInSlot = ship.FittedModules
+                .FirstOrDefault(m => m.SlotType == request.SlotType && m.SlotIndex == request.SlotIndex);
+
+            if (existingModuleInSlot != null)
+            {
+                return BadRequest(new 
+                { 
+                    error = $"Slot {request.SlotType} {request.SlotIndex} is already occupied",
+                    occupiedByModuleId = existingModuleInSlot.Id
+                });
+            }
+
+            // Update module
+            module.ShipInstanceId = shipId;
+            module.SlotType = request.SlotType;
+            module.SlotIndex = request.SlotIndex;
+            module.IsOnline = true;
+
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation(
+                "Fitted module {ModuleId} to ship {ShipId} in slot {SlotType}:{SlotIndex}", 
+                moduleId, shipId, request.SlotType, request.SlotIndex);
+
+            return Ok(new 
+            { 
+                success = true,
+                moduleId = moduleId,
+                shipId = shipId,
+                slotType = request.SlotType,
+                slotIndex = request.SlotIndex,
+                message = $"Module fitted to {request.SlotType} slot {request.SlotIndex}"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fitting module {ModuleId} to ship {ShipId}", moduleId, shipId);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Unfit a module from a ship (returns it to cargo)
+    /// DELETE /api/inventory/ship/{shipId}/module/{moduleId}/unfit
+    /// </summary>
+    [HttpDelete("ship/{shipId}/module/{moduleId}/unfit")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UnfitModule(Guid shipId, Guid moduleId)
+    {
+        try
+        {
+            // Extract character ID from JWT token
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var characterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            // Verify ship belongs to character
+            var ship = await _context.ShipInstances
+                .FirstOrDefaultAsync(s => s.Id == shipId && s.CharacterId == characterId);
+
+            if (ship == null)
+            {
+                return NotFound(new { error = "Ship not found or does not belong to you" });
+            }
+
+            // Verify module exists and is fitted to this ship
+            var module = await _context.ShipInstanceModules
+                .FirstOrDefaultAsync(m => 
+                    m.Id == moduleId && 
+                    m.CharacterId == characterId && 
+                    m.ShipInstanceId == shipId);
+
+            if (module == null)
+            {
+                return NotFound(new { error = "Module not found or not fitted to this ship" });
+            }
+
+            // Unfit the module (return to cargo)
+            module.ShipInstanceId = null;
+            module.SlotType = null;
+            module.SlotIndex = null;
+            module.IsOnline = false;
+
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation(
+                "Unfitted module {ModuleId} from ship {ShipId}", 
+                moduleId, shipId);
+
+            return Ok(new 
+            { 
+                success = true,
+                moduleId = moduleId,
+                message = "Module returned to cargo"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error unfitting module {ModuleId} from ship {ShipId}", moduleId, shipId);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
 }

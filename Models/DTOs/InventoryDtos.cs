@@ -63,4 +63,13 @@ namespace Echoes.API.Models.DTOs
     {
         public Guid ShipInstanceId { get; set; }
     }
+
+    /// <summary>
+    /// Request to fit a module to a ship
+    /// </summary>
+    public class FitModuleRequest
+    {
+        public string SlotType { get; set; } = string.Empty; // High, Mid, Low, Rig
+        public int SlotIndex { get; set; }
+    }
 }
