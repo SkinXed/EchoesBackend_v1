@@ -82,7 +82,7 @@ struct FAuthResponse
 	TArray<FCharacterInfo> Characters;
 };
 
-// Dynamic delegates for Blueprint support (declared after struct definitions)
+
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnLoginSuccess, const FAuthResponse&, AuthResponse);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnLoginFailure, const FString&, ErrorMessage);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnRegisterSuccess, const FAuthResponse&, AuthResponse);

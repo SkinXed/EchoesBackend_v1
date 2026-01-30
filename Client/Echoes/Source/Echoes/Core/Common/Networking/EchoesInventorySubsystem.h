@@ -146,7 +146,7 @@ struct FEchoesShipFitting
 	TArray<FEchoesModule> Modules;
 };
 
-// Dynamic delegates for Blueprint support (declared after struct definitions)
+
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipsReceived, const FEchoesShipList&, ShipList);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipFittingReceived, const FEchoesShipFitting&, Fitting);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMessage);

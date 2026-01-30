@@ -1,10 +1,10 @@
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\EchoesGameModeBase.h
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Client\EchoesShipPawn.h
-C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\EchoesShipMovementComponent.h
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\EchoesGameStateSubsystem.h
+C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\EchoesShipMovementComponent.h
+C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\EchoesShipStatsSubsystem.h
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\EchoesShipTypes.h
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\Networking\EchoesAuthSubsystem.h
-C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\EchoesShipStatsSubsystem.h
-C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Server\EchoesHangarManager.h
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\Networking\EchoesIdentitySubsystem.h
 C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Common\Networking\EchoesInventorySubsystem.h
+C:\Reposetory\EchoesBackend_v1\Client\Echoes\Source\Echoes\Core\Server\EchoesHangarManager.h
