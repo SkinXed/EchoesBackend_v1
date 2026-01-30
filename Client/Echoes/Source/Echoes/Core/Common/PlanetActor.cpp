@@ -12,7 +12,12 @@ APlanetActor::APlanetActor()
 
 	// Enable replication
 	bReplicates = true;
-	bAlwaysRelevant = true; // Planets are always relevant to all clients
+	bAlwaysRelevant = false; // Planets can be culled based on distance
+
+	// Set network cull distance for regional clusters
+	// Large distance to accommodate multiple systems
+	// 10 million units = reasonable inter-system visibility range
+	NetCullDistanceSquared = 100000000000000.0; // 10 million units squared
 
 	// Create root component
 	USceneComponent* RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));

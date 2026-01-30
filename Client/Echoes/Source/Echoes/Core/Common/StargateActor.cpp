@@ -16,7 +16,11 @@ AStargateActor::AStargateActor()
 
 	// Enable replication
 	bReplicates = true;
-	bAlwaysRelevant = true;
+	bAlwaysRelevant = false; // Stargates can be culled based on distance
+
+	// Set network cull distance for regional clusters
+	// 5 million units = reasonable visibility range for stargates
+	NetCullDistanceSquared = 25000000000000.0; // 5 million units squared
 
 	// Create root component
 	USceneComponent* RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
