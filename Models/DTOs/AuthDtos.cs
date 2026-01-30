@@ -34,10 +34,23 @@ namespace Echoes.API.Models.DTOs
     {
         public bool Success { get; set; }
         public string Token { get; set; } = string.Empty;
+        public Guid AccountId { get; set; }
         public Guid CharacterId { get; set; }
         public string CharacterName { get; set; } = string.Empty;
         public Guid SessionId { get; set; }
         public DateTime ExpiresAt { get; set; }
+        public List<CharacterInfoDto> Characters { get; set; } = new List<CharacterInfoDto>();
+    }
+
+    // DTO для информации о персонаже
+    public class CharacterInfoDto
+    {
+        public Guid CharacterId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public long WalletBalance { get; set; }
+        public long? CurrentShipId { get; set; }
+        public bool IsMain { get; set; }
+        public bool IsOnline { get; set; }
     }
 
     // DTO для обновления токена

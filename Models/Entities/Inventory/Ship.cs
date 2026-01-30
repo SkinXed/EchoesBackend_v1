@@ -121,6 +121,25 @@ namespace Echoes.API.Models.Entities.Inventory
         [Column("ship_bonuses", TypeName = "jsonb")]
         public string ShipBonuses { get; set; } = "{}";
 
+        // Movement stats for EVE-like physics
+        [Column("base_mass")]
+        public decimal BaseMass { get; set; } = 1000000; // kg
+
+        [Column("thrust")]
+        public decimal Thrust { get; set; } = 500000; // Newtons
+
+        [Column("rotation_speed")]
+        public decimal RotationSpeed { get; set; } = 30.0m; // degrees per second
+
+        [Column("warp_speed")]
+        public decimal WarpSpeed { get; set; } = 3.0m; // AU/s multiplier
+
+        [Column("inertia_multiplier")]
+        public decimal InertiaMultiplier { get; set; } = 1.0m;
+
+        [Column("max_velocity")]
+        public decimal MaxVelocity { get; set; } = 100.0m; // m/s
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
