@@ -6,6 +6,9 @@
 #include "StarActor.h"
 #include "StationActor.h"
 #include "StargateActor.h"
+#include "AsteroidBeltActor.h"
+#include "AnomalyActor.h"
+#include "WormholeActor.h"
 #include "Engine/World.h"
 #include "Engine/DataTable.h"
 #include "Kismet/GameplayStatics.h"
@@ -74,6 +77,9 @@ void AEchoesWorldGenerator::OnServerConfigReceived(const FServerSystemConfig& Co
 	UE_LOG(LogTemp, Log, TEXT("Planets: %d"), Config.Planets.Num());
 	UE_LOG(LogTemp, Log, TEXT("Stations: %d"), Config.Stations.Num());
 	UE_LOG(LogTemp, Log, TEXT("Stargates: %d"), Config.Stargates.Num());
+	UE_LOG(LogTemp, Log, TEXT("Asteroid Belts: %d"), Config.AsteroidBelts.Num());
+	UE_LOG(LogTemp, Log, TEXT("Anomalies: %d"), Config.Anomalies.Num());
+	UE_LOG(LogTemp, Log, TEXT("Wormholes: %d"), Config.Wormholes.Num());
 
 	// Clear any existing world
 	if (bWorldGenerated)
@@ -115,6 +121,15 @@ void AEchoesWorldGenerator::ServerOnly_GenerateWorld(const FServerSystemConfig& 
 
 	// Spawn all stargates
 	SpawnStargates(Config.Stargates);
+
+	// Spawn all asteroid belts
+	SpawnAsteroidBelts(Config.AsteroidBelts);
+
+	// Spawn all anomalies
+	SpawnAnomalies(Config.Anomalies);
+
+	// Spawn all wormholes
+	SpawnWormholes(Config.Wormholes);
 
 	UE_LOG(LogTemp, Log, TEXT("World generation completed. Total actors spawned: %d"), SpawnedActors.Num());
 }
@@ -514,4 +529,261 @@ void AEchoesWorldGenerator::AsyncLoadAssetsForConfig(const FServerSystemConfig& 
 	//     this, &AEchoesWorldGenerator::OnAssetsLoaded));
 
 	UE_LOG(LogTemp, Verbose, TEXT("Async asset loading not yet implemented - using direct references"));
+}
+
+void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>& AsteroidBelts)
+{
+	if (!AsteroidBeltActorClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AsteroidBeltActorClass is not set!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning %d asteroid belts..."), AsteroidBelts.Num());
+
+	for (const FAsteroidBeltConfig& BeltConfig : AsteroidBelts)
+	{
+		// Convert coordinates
+		FVector BeltLocation = ConvertCoordinates(
+			BeltConfig.PositionX,
+			BeltConfig.PositionY,
+			BeltConfig.PositionZ);
+
+		FRotator BeltRotation = FRotator::ZeroRotator;
+
+		// Spawn parameters
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		// Spawn asteroid belt actor
+		AAsteroidBeltActor* AsteroidBelt = GetWorld()->SpawnActor<AAsteroidBeltActor>(
+			AsteroidBeltActorClass,
+			BeltLocation,
+			BeltRotation,
+			SpawnParams);
+
+		if (AsteroidBelt)
+		{
+			// Get visual data from data table
+			FAsteroidBeltVisualRow* VisualData = GetAsteroidBeltVisualData(TEXT("Default"));
+			if (!VisualData)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for asteroid belt"));
+				VisualData = new FAsteroidBeltVisualRow();
+			}
+
+			// Generate seed from belt ID
+			int32 Seed = GenerateSeedFromGuid(BeltConfig.Id);
+
+			// Calculate belt radius (default 100km if not specified)
+			float BeltRadius = 100000.0f * UniverseToWorldScale * 100000.0f;
+
+			// Initialize asteroid belt
+			AsteroidBelt->InitializeAsteroidBelt(
+				BeltConfig.Id,
+				BeltConfig.Name,
+				Seed,
+				BeltRadius,
+				1000, // Default asteroid count
+				*VisualData);
+
+			SpawnedActors.Add(AsteroidBelt);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Asteroid Belt spawned: %s at (%s)"),
+				*BeltConfig.Name, *BeltLocation.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn asteroid belt: %s"), *BeltConfig.Name);
+		}
+	}
+}
+
+void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomalies)
+{
+	if (!AnomalyActorClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AnomalyActorClass is not set!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning %d anomalies..."), Anomalies.Num());
+
+	for (const FAnomalyConfig& AnomalyConfig : Anomalies)
+	{
+		// Convert coordinates
+		FVector AnomalyLocation = ConvertCoordinates(
+			AnomalyConfig.PositionX,
+			AnomalyConfig.PositionY,
+			AnomalyConfig.PositionZ);
+
+		FRotator AnomalyRotation = FRotator::ZeroRotator;
+
+		// Spawn parameters
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		// Spawn anomaly actor
+		AAnomalyActor* Anomaly = GetWorld()->SpawnActor<AAnomalyActor>(
+			AnomalyActorClass,
+			AnomalyLocation,
+			AnomalyRotation,
+			SpawnParams);
+
+		if (Anomaly)
+		{
+			// Get visual data from data table based on anomaly type
+			FAnomalyVisualRow* VisualData = GetAnomalyVisualData(AnomalyConfig.Type);
+			if (!VisualData)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for anomaly type: %s"), *AnomalyConfig.Type);
+				VisualData = new FAnomalyVisualRow();
+			}
+
+			// Generate seed from anomaly ID
+			int32 Seed = GenerateSeedFromGuid(AnomalyConfig.Id);
+
+			// Initialize anomaly
+			Anomaly->InitializeAnomaly(
+				AnomalyConfig.Id,
+				AnomalyConfig.Name,
+				AnomalyConfig.Type,
+				AnomalyConfig.Difficulty,
+				Seed,
+				*VisualData);
+
+			SpawnedActors.Add(Anomaly);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Anomaly spawned: %s (Type: %s, Difficulty: %s) at (%s)"),
+				*AnomalyConfig.Name, *AnomalyConfig.Type, *AnomalyConfig.Difficulty, *AnomalyLocation.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn anomaly: %s"), *AnomalyConfig.Name);
+		}
+	}
+}
+
+void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormholes)
+{
+	if (!WormholeActorClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("WormholeActorClass is not set!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning %d wormholes..."), Wormholes.Num());
+
+	for (const FWormholeConfig& WormholeConfig : Wormholes)
+	{
+		// Convert coordinates
+		FVector WormholeLocation = ConvertCoordinates(
+			WormholeConfig.PositionX,
+			WormholeConfig.PositionY,
+			WormholeConfig.PositionZ);
+
+		FRotator WormholeRotation = FRotator::ZeroRotator;
+
+		// Spawn parameters
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		// Spawn wormhole actor
+		AWormholeActor* Wormhole = GetWorld()->SpawnActor<AWormholeActor>(
+			WormholeActorClass,
+			WormholeLocation,
+			WormholeRotation,
+			SpawnParams);
+
+		if (Wormhole)
+		{
+			// Get visual data from data table
+			FWormholeVisualRow* VisualData = GetWormholeVisualData(TEXT("Default"));
+			if (!VisualData)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for wormhole"));
+				VisualData = new FWormholeVisualRow();
+			}
+
+			// Generate seed from wormhole ID
+			int32 Seed = GenerateSeedFromGuid(WormholeConfig.Id);
+
+			// Initialize wormhole
+			Wormhole->InitializeWormhole(
+				WormholeConfig.Id,
+				WormholeConfig.Name,
+				WormholeConfig.TargetSystemId,
+				Seed,
+				*VisualData);
+
+			SpawnedActors.Add(Wormhole);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Wormhole spawned: %s -> System %s at (%s)"),
+				*WormholeConfig.Name, *WormholeConfig.TargetSystemId.ToString(), *WormholeLocation.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn wormhole: %s"), *WormholeConfig.Name);
+		}
+	}
+}
+
+FAsteroidBeltVisualRow* AEchoesWorldGenerator::GetAsteroidBeltVisualData(const FString& BeltType)
+{
+	if (!AsteroidBeltDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AsteroidBeltDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*BeltType);
+	FAsteroidBeltVisualRow* Row = AsteroidBeltDataTable->FindRow<FAsteroidBeltVisualRow>(RowName, TEXT("GetAsteroidBeltVisualData"));
+	
+	if (!Row)
+	{
+		Row = AsteroidBeltDataTable->FindRow<FAsteroidBeltVisualRow>(FName(TEXT("Default")), TEXT("GetAsteroidBeltVisualData"));
+	}
+
+	return Row;
+}
+
+FAnomalyVisualRow* AEchoesWorldGenerator::GetAnomalyVisualData(const FString& AnomalyType)
+{
+	if (!AnomalyDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AnomalyDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*AnomalyType);
+	FAnomalyVisualRow* Row = AnomalyDataTable->FindRow<FAnomalyVisualRow>(RowName, TEXT("GetAnomalyVisualData"));
+	
+	if (!Row)
+	{
+		Row = AnomalyDataTable->FindRow<FAnomalyVisualRow>(FName(TEXT("Default")), TEXT("GetAnomalyVisualData"));
+	}
+
+	return Row;
+}
+
+FWormholeVisualRow* AEchoesWorldGenerator::GetWormholeVisualData(const FString& WormholeClass)
+{
+	if (!WormholeDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("WormholeDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*WormholeClass);
+	FWormholeVisualRow* Row = WormholeDataTable->FindRow<FWormholeVisualRow>(RowName, TEXT("GetWormholeVisualData"));
+	
+	if (!Row)
+	{
+		Row = WormholeDataTable->FindRow<FWormholeVisualRow>(FName(TEXT("Default")), TEXT("GetWormholeVisualData"));
+	}
+
+	return Row;
 }

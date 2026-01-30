@@ -15,6 +15,9 @@ class APlanetActor;
 class AStarActor;
 class AStationActor;
 class AStargateActor;
+class AAsteroidBeltActor;
+class AAnomalyActor;
+class AWormholeActor;
 
 /**
  * AEchoesWorldGenerator
@@ -81,6 +84,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|DataTables")
 	UDataTable* StargateDataTable;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|DataTables")
+	UDataTable* AsteroidBeltDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|DataTables")
+	UDataTable* AnomalyDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|DataTables")
+	UDataTable* WormholeDataTable;
+
 	/**
 	 * Actor classes to spawn
 	 */
@@ -95,6 +107,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
 	TSubclassOf<AStargateActor> StargateActorClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
+	TSubclassOf<AAsteroidBeltActor> AsteroidBeltActorClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
+	TSubclassOf<AAnomalyActor> AnomalyActorClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
+	TSubclassOf<AWormholeActor> WormholeActorClass;
 
 	// ==================== Generation Control ====================
 
@@ -143,6 +164,21 @@ protected:
 	 */
 	void SpawnStargates(const TArray<FStargateConfig>& Stargates);
 
+	/**
+	 * Spawn all asteroid belts in the system
+	 */
+	void SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>& AsteroidBelts);
+
+	/**
+	 * Spawn all anomalies in the system
+	 */
+	void SpawnAnomalies(const TArray<FAnomalyConfig>& Anomalies);
+
+	/**
+	 * Spawn all wormholes in the system
+	 */
+	void SpawnWormholes(const TArray<FWormholeConfig>& Wormholes);
+
 	// ==================== Helper Functions ====================
 
 	/**
@@ -158,6 +194,9 @@ protected:
 	FStarVisualRow* GetStarVisualData(const FString& StarClass);
 	FStationVisualRow* GetStationVisualData(const FString& StationType);
 	FStargateVisualRow* GetStargateVisualData(const FString& Model);
+	FAsteroidBeltVisualRow* GetAsteroidBeltVisualData(const FString& BeltType);
+	FAnomalyVisualRow* GetAnomalyVisualData(const FString& AnomalyType);
+	FWormholeVisualRow* GetWormholeVisualData(const FString& WormholeClass);
 
 	/**
 	 * Generate seed from GUID for procedural variation
