@@ -29,6 +29,7 @@ public:
 
 protected:
     virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:
     virtual void Tick(float DeltaTime) override;
@@ -106,13 +107,47 @@ public:
 
     // ==================== Ship Stats ====================
     
-    /** Initialize ship from backend stats */
+    /** Initialize ship from backend stats (Common - can be called on any side) */
+    UFUNCTION(BlueprintCallable, Category = "Ship")
+    void Common_InitializeFromStats(const FEchoesShipStats& Stats);
+    
+    /** Legacy function name for backward compatibility */
     UFUNCTION(BlueprintCallable, Category = "Ship")
     void InitializeShipStats(const FEchoesShipStats& Stats);
 
     /** Get current ship stats */
     UFUNCTION(BlueprintPure, Category = "Ship")
     FEchoesShipStats GetShipStats() const;
+    
+    /** Server RPC to request ship initialization with ownership verification */
+    UFUNCTION(Server, Reliable, BlueprintCallable, Category = "Ship")
+    void ServerRPC_RequestShipInitialization(const FString& ShipId);
+    
+    /** Implementation of server RPC */
+    void ServerRPC_RequestShipInitialization_Implementation(const FString& ShipId);
+    
+protected:
+    /** Replicated ship stats - authoritative on server */
+    UPROPERTY(ReplicatedUsing = OnRep_ShipStats, BlueprintReadOnly, Category = "Ship")
+    FEchoesShipStats ReplicatedShipStats;
+    
+    /** Called when ship stats are replicated from server to client */
+    UFUNCTION()
+    void OnRep_ShipStats();
+    
+    /** Subscribe to inventory subsystem for fitting updates */
+    void SubscribeToInventoryUpdates();
+    
+    /** Unsubscribe from inventory subsystem */
+    void UnsubscribeFromInventoryUpdates();
+    
+    /** Handle fitting received from inventory subsystem */
+    UFUNCTION()
+    void OnFittingReceived(const FEchoesShipStats& Stats);
+    
+public:
+    /** Override to replicate properties */
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
     // ==================== Input Handlers ====================
