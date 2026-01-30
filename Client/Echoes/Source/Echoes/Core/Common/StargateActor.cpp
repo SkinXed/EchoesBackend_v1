@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "EchoesWorldGenerator.h"
+#include "../EchoesServerGameMode.h"
 
 AStargateActor::AStargateActor()
 {
@@ -331,30 +332,44 @@ void AStargateActor::InitiateJumpToTarget(APlayerController* PlayerController)
 	if (WorldGenerator && WorldGenerator->IsSystemOnThisServer(TargetSystemId))
 	{
 		// ==================== LOCAL JUMP (Intra-Server) ====================
-		UE_LOG(LogTemp, Log, TEXT("✓ Target system is ON THIS SERVER - performing LOCAL jump (instant teleportation)"));
+		UE_LOG(LogTemp, Log, TEXT("✓ Target system is ON THIS SERVER - performing LOCAL jump via JumpManager"));
 
 		// Get the target gate location
 		FVector TargetGateLocation = GetTargetGateLocationOnServer(TargetSystemId);
 		
-		// Get player's pawn
-		APawn* PlayerPawn = PlayerController->GetPawn();
-		if (PlayerPawn)
+		// Get JumpManager from GameMode
+		AGameModeBase* GameMode = GetWorld()->GetAuthGameMode();
+		AEchoesServerGameMode* EchoesGameMode = Cast<AEchoesServerGameMode>(GameMode);
+		
+		if (EchoesGameMode && EchoesGameMode->GetJumpManager())
 		{
-			// Teleport player to target gate location
-			PlayerPawn->SetActorLocation(TargetGateLocation);
+			// Use JumpManager for seamless transition
+			bool bJumpInitiated = EchoesGameMode->GetJumpManager()->InitiateIntraServerJump(
+				PlayerController,
+				TargetGateLocation,
+				TargetSystemId
+			);
 
-			UE_LOG(LogTemp, Log, TEXT("✓ Player teleported to target gate at [%.0f, %.0f, %.0f]"),
-				TargetGateLocation.X, TargetGateLocation.Y, TargetGateLocation.Z);
-
-			// Play jump effects locally
-			// TODO: Spawn VFX and SFX at both locations
-
-			// Log the jump for analytics
-			UE_LOG(LogTemp, Log, TEXT("✓ LOCAL JUMP COMPLETE"));
+			if (bJumpInitiated)
+			{
+				UE_LOG(LogTemp, Log, TEXT("✓ Jump initiated via JumpManager"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("✗ Failed to initiate jump via JumpManager"));
+			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get player pawn for teleportation"));
+			// Fallback: Direct teleportation (old method)
+			UE_LOG(LogTemp, Warning, TEXT("⚠ JumpManager not available, using direct teleportation"));
+			
+			APawn* PlayerPawn = PlayerController->GetPawn();
+			if (PlayerPawn)
+			{
+				PlayerPawn->SetActorLocation(TargetGateLocation);
+				UE_LOG(LogTemp, Log, TEXT("✓ Player teleported to target gate (fallback method)"));
+			}
 		}
 	}
 	else

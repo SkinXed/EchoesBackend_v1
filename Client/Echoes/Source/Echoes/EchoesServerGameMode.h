@@ -61,6 +61,12 @@ public:
 	bool IsWorldGenerated() const { return bWorldGenerated; }
 
 	/**
+	 * Get the jump manager (for stargate jumps)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	UEchoesJumpManager* GetJumpManager() const { return JumpManager; }
+
+	/**
 	 * Manually trigger world generation (for testing)
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Server", meta = (DevelopmentOnly))
@@ -96,6 +102,10 @@ private:
 	/** Reference to world generator */
 	UPROPERTY()
 	AEchoesWorldGenerator* WorldGenerator;
+
+	/** Jump manager for intra-server jumps */
+	UPROPERTY()
+	class UEchoesJumpManager* JumpManager;
 
 	// ==================== State ====================
 

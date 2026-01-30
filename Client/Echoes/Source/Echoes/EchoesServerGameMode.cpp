@@ -3,6 +3,7 @@
 #include "EchoesServerGameMode.h"
 #include "Core/Server/EchoesServerManagementSubsystem.h"
 #include "Core/Common/EchoesWorldGenerator.h"
+#include "Core/Common/EchoesJumpManager.h"
 #include "Core/Server/EchoesServerDiscoveryTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -12,6 +13,9 @@ AEchoesServerGameMode::AEchoesServerGameMode()
 	bWorldGenerated = false;
 	bWaitingForConfig = false;
 	bSubscribedToConfigDelegate = false;
+
+	// Create jump manager component
+	JumpManager = CreateDefaultSubobject<UEchoesJumpManager>(TEXT("JumpManager"));
 }
 
 void AEchoesServerGameMode::BeginPlay()
