@@ -3,6 +3,27 @@ using Echoes.API.Models.Enums;
 
 namespace Echoes.API.Models.DTOs
 {
+    /// <summary>
+    /// DTO for character data response (mirrors UE5 FCharacterData)
+    /// </summary>
+    public class CharacterDataDto
+    {
+        public Guid CharacterId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public Guid AccountId { get; set; }
+        public long WalletBalance { get; set; }
+        public float SecurityStatus { get; set; }
+        public long? CurrentShipId { get; set; }
+        public Guid? CorporationId { get; set; }
+        public int RaceId { get; set; }
+        public int TotalSkillPoints { get; set; }
+        public int UnallocatedSkillPoints { get; set; }
+        public bool IsOnline { get; set; }
+        public bool IsDocked { get; set; }
+        public bool InWarp { get; set; }
+        public DateTime? LastLogin { get; set; }
+    }
+
     // DTO для отображения персонажа
     public class CharacterDto
     {

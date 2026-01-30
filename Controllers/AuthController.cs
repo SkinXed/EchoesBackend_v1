@@ -108,14 +108,30 @@ namespace Echoes.API.Controllers
                 // Генерация JWT токена
                 var token = GenerateJwtToken(account, character, session);
 
+                // Получить список всех персонажей аккаунта
+                var characters = await _context.Characters
+                    .Where(c => c.AccountId == account.Id)
+                    .Select(c => new CharacterInfoDto
+                    {
+                        CharacterId = c.Id,
+                        Name = c.Name,
+                        WalletBalance = c.WalletBalance,
+                        CurrentShipId = c.ActiveShipItemId,
+                        IsMain = c.IsMain,
+                        IsOnline = c.IsOnline
+                    })
+                    .ToListAsync();
+
                 return Ok(new AuthResponseDto
                 {
                     Success = true,
                     Token = token,
+                    AccountId = account.Id,
                     CharacterId = character.Id,
                     CharacterName = character.Name,
                     SessionId = session.Id,
-                    ExpiresAt = session.ExpiresAt
+                    ExpiresAt = session.ExpiresAt,
+                    Characters = characters
                 });
             }
             catch (Exception ex)
@@ -185,14 +201,30 @@ namespace Echoes.API.Controllers
                 // Генерация JWT
                 var token = GenerateJwtToken(account, character, session);
 
+                // Получить список всех персонажей аккаунта
+                var characters = await _context.Characters
+                    .Where(c => c.AccountId == account.Id)
+                    .Select(c => new CharacterInfoDto
+                    {
+                        CharacterId = c.Id,
+                        Name = c.Name,
+                        WalletBalance = c.WalletBalance,
+                        CurrentShipId = c.ActiveShipItemId,
+                        IsMain = c.IsMain,
+                        IsOnline = c.IsOnline
+                    })
+                    .ToListAsync();
+
                 return Ok(new AuthResponseDto
                 {
                     Success = true,
                     Token = token,
+                    AccountId = account.Id,
                     CharacterId = character.Id,
                     CharacterName = character.Name,
                     SessionId = session.Id,
-                    ExpiresAt = session.ExpiresAt
+                    ExpiresAt = session.ExpiresAt,
+                    Characters = characters
                 });
             }
             catch (Exception ex)
