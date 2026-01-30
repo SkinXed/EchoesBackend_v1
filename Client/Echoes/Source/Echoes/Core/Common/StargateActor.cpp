@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "EchoesWorldGenerator.h"
 
 AStargateActor::AStargateActor()
 {
@@ -314,18 +315,101 @@ void AStargateActor::InitiateJumpToTarget(APlayerController* PlayerController)
 	UE_LOG(LogTemp, Log, TEXT("Source Gate: %s"), *GateName);
 	UE_LOG(LogTemp, Log, TEXT("Target System: %s (%s)"), *TargetSystemName, *TargetSystemId.ToString());
 
-	// TODO: Implement actual jump logic:
-	// 1. Query backend for target system server IP/Port
-	// 2. Send player to target server via ClientTravel
-	// 3. Apply jump costs (fuel, ISK, etc.)
-	// 4. Play jump animation/effects
-	// 5. Update player location in backend database
+	// Get World Generator to check if target system is on this server
+	AEchoesWorldGenerator* WorldGenerator = nullptr;
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEchoesWorldGenerator::StaticClass(), FoundActors);
+	if (FoundActors.Num() > 0)
+	{
+		WorldGenerator = Cast<AEchoesWorldGenerator>(FoundActors[0]);
+	}
 
-	// Placeholder: For now, just log the jump
-	UE_LOG(LogTemp, Warning, TEXT("⚠ Jump logic not fully implemented - would travel to system %s"),
-		*TargetSystemId.ToString());
+	if (WorldGenerator && WorldGenerator->IsSystemOnThisServer(TargetSystemId))
+	{
+		// ==================== LOCAL JUMP (Intra-Server) ====================
+		UE_LOG(LogTemp, Log, TEXT("✓ Target system is ON THIS SERVER - performing LOCAL jump (instant teleportation)"));
 
-	// Example of what would happen in production:
-	// FString TargetServerURL = GetTargetServerURL(TargetSystemId);
-	// PlayerController->ClientTravel(TargetServerURL, ETravelType::TRAVEL_Absolute);
+		// Get the target gate location
+		FVector TargetGateLocation = GetTargetGateLocationOnServer(TargetSystemId);
+		
+		// Get player's pawn
+		APawn* PlayerPawn = PlayerController->GetPawn();
+		if (PlayerPawn)
+		{
+			// Teleport player to target gate location
+			PlayerPawn->SetActorLocation(TargetGateLocation);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Player teleported to target gate at [%.0f, %.0f, %.0f]"),
+				TargetGateLocation.X, TargetGateLocation.Y, TargetGateLocation.Z);
+
+			// Play jump effects locally
+			// TODO: Spawn VFX and SFX at both locations
+
+			// Log the jump for analytics
+			UE_LOG(LogTemp, Log, TEXT("✓ LOCAL JUMP COMPLETE"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get player pawn for teleportation"));
+		}
+	}
+	else
+	{
+		// ==================== CROSS-SERVER JUMP (Inter-Server) ====================
+		UE_LOG(LogTemp, Log, TEXT("⚠ Target system is NOT on this server - performing CROSS-SERVER jump (client travel)"));
+
+		// TODO: Query backend for target server IP/Port
+		// FString TargetServerURL = GetTargetServerURLFromBackend(TargetSystemId);
+		
+		// Placeholder: For now, just log the jump
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Cross-server jump logic not fully implemented"));
+		UE_LOG(LogTemp, Warning, TEXT("Would query backend for server hosting system: %s"), *TargetSystemId.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Then call: PlayerController->ClientTravel(TargetServerURL, TRAVEL_Absolute)"));
+
+		// Example of what would happen in production:
+		// PlayerController->ClientTravel(TargetServerURL, ETravelType::TRAVEL_Absolute);
+	}
+}
+
+FVector AStargateActor::GetTargetGateLocationOnServer(const FGuid& TargetSystemId)
+{
+	// Get World Generator to look up system offset and find target gate
+	AEchoesWorldGenerator* WorldGenerator = nullptr;
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEchoesWorldGenerator::StaticClass(), FoundActors);
+	if (FoundActors.Num() > 0)
+	{
+		WorldGenerator = Cast<AEchoesWorldGenerator>(FoundActors[0]);
+	}
+
+	if (!WorldGenerator)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to find WorldGenerator for gate location lookup"));
+		return FVector::ZeroVector;
+	}
+
+	// Get system offset for target system
+	FVector TargetSystemOffset = WorldGenerator->GetSystemGlobalOffset(TargetSystemId);
+
+	// Find the target stargate in the target system that connects back to our system
+	// For now, we'll just return the system offset (star location)
+	// TODO: Find the actual stargate actor that leads back to our system
+	TArray<AActor*> AllGates;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStargateActor::StaticClass(), AllGates);
+
+	for (AActor* GateActor : AllGates)
+	{
+		AStargateActor* Gate = Cast<AStargateActor>(GateActor);
+		if (Gate && Gate->GetTargetSystemId() == TargetSystemId)
+		{
+			// Found a gate that leads to target system - use its target location
+			// In a proper implementation, we'd find the gate IN the target system
+			// For now, offset from system center
+			return TargetSystemOffset + FVector(10000.0f, 0.0f, 0.0f); // 100m offset from system center
+		}
+	}
+
+	// Default: Return target system center (star location)
+	UE_LOG(LogTemp, Warning, TEXT("Could not find specific target gate, using system center"));
+	return TargetSystemOffset;
 }

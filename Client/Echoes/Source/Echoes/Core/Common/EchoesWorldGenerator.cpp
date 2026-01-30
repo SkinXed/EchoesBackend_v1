@@ -291,7 +291,7 @@ void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config, const F
 	}
 }
 
-void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
+void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, const FVector& SystemOffset)
 {
 	if (!PlanetActorClass)
 	{
@@ -304,7 +304,7 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
 	for (const FPlanetConfig& PlanetConfig : Planets)
 	{
 		// Convert coordinates from km to Unreal units
-		FVector PlanetLocation = ConvertCoordinates(
+		FVector PlanetLocation = SystemOffset + ConvertCoordinates(
 			PlanetConfig.PositionX,
 			PlanetConfig.PositionY,
 			PlanetConfig.PositionZ);
@@ -357,7 +357,7 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
 	}
 }
 
-void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations)
+void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations, const FVector& SystemOffset)
 {
 	if (!StationActorClass)
 	{
@@ -370,7 +370,7 @@ void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations
 	for (const FStationConfig& StationConfig : Stations)
 	{
 		// Convert coordinates
-		FVector StationLocation = ConvertCoordinates(
+		FVector StationLocation = SystemOffset + ConvertCoordinates(
 			StationConfig.PositionX,
 			StationConfig.PositionY,
 			StationConfig.PositionZ);
@@ -422,7 +422,7 @@ void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations
 	}
 }
 
-void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Stargates)
+void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Stargates, const FVector& SystemOffset)
 {
 	if (!StargateActorClass)
 	{
@@ -435,7 +435,7 @@ void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Starga
 	for (const FStargateConfig& GateConfig : Stargates)
 	{
 		// Convert coordinates
-		FVector GateLocation = ConvertCoordinates(
+		FVector GateLocation = SystemOffset + ConvertCoordinates(
 			static_cast<int64>(GateConfig.PositionX * 1000.0f), // Convert to km if in AU
 			static_cast<int64>(GateConfig.PositionY * 1000.0f),
 			static_cast<int64>(GateConfig.PositionZ * 1000.0f));
@@ -612,7 +612,7 @@ void AEchoesWorldGenerator::AsyncLoadAssetsForConfig(const FServerSystemConfig& 
 	UE_LOG(LogTemp, Verbose, TEXT("Async asset loading not yet implemented - using direct references"));
 }
 
-void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>& AsteroidBelts)
+void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>& AsteroidBelts, const FVector& SystemOffset)
 {
 	if (!AsteroidBeltActorClass)
 	{
@@ -625,7 +625,7 @@ void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>
 	for (const FAsteroidBeltConfig& BeltConfig : AsteroidBelts)
 	{
 		// Convert coordinates
-		FVector BeltLocation = ConvertCoordinates(
+		FVector BeltLocation = SystemOffset + ConvertCoordinates(
 			BeltConfig.PositionX,
 			BeltConfig.PositionY,
 			BeltConfig.PositionZ);
@@ -683,7 +683,7 @@ void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>
 	}
 }
 
-void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomalies)
+void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomalies, const FVector& SystemOffset)
 {
 	if (!AnomalyActorClass)
 	{
@@ -696,7 +696,7 @@ void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomali
 	for (const FAnomalyConfig& AnomalyConfig : Anomalies)
 	{
 		// Convert coordinates
-		FVector AnomalyLocation = ConvertCoordinates(
+		FVector AnomalyLocation = SystemOffset + ConvertCoordinates(
 			AnomalyConfig.PositionX,
 			AnomalyConfig.PositionY,
 			AnomalyConfig.PositionZ);
@@ -750,7 +750,7 @@ void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomali
 	}
 }
 
-void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormholes)
+void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormholes, const FVector& SystemOffset)
 {
 	if (!WormholeActorClass)
 	{
@@ -763,7 +763,7 @@ void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormho
 	for (const FWormholeConfig& WormholeConfig : Wormholes)
 	{
 		// Convert coordinates
-		FVector WormholeLocation = ConvertCoordinates(
+		FVector WormholeLocation = SystemOffset + ConvertCoordinates(
 			WormholeConfig.PositionX,
 			WormholeConfig.PositionY,
 			WormholeConfig.PositionZ);

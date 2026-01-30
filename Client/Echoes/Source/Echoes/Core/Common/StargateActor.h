@@ -90,6 +90,11 @@ public:
 	 */
 	void InitiateJumpToTarget(APlayerController* PlayerController);
 
+	/**
+	 * Get the location of the target gate on this server (for local jumps)
+	 */
+	FVector GetTargetGateLocationOnServer(const FGuid& TargetSystemId);
+
 protected:
 	// ==================== Components ====================
 
