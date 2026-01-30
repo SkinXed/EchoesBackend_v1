@@ -39,7 +39,7 @@ AAsteroidBeltActor::AAsteroidBeltActor()
 	AmbientAudioComponent->bAutoActivate = false;
 
 	GenerationSeed = 0;
-	Radius = 100000.0f; // Default 100km
+	Radius = 100000.0f; // Default 100km in world units (before scaling)
 	AsteroidCount = 0;
 }
 

@@ -50,7 +50,7 @@ AWormholeActor::AWormholeActor()
 	// Create trigger sphere for jump detection
 	TriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("TriggerSphere"));
 	TriggerSphere->SetupAttachment(RootComponent);
-	TriggerSphere->SetSphereRadius(2000.0f); // 20m default radius
+	TriggerSphere->SetSphereRadius(2000.0f); // 2000 Unreal Units (20m if 1 UU = 1cm)
 	TriggerSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	TriggerSphere->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	TriggerSphere->SetGenerateOverlapEvents(true);

@@ -50,7 +50,7 @@ AAnomalyActor::AAnomalyActor()
 	// Create trigger sphere for interaction
 	TriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("TriggerSphere"));
 	TriggerSphere->SetupAttachment(RootComponent);
-	TriggerSphere->SetSphereRadius(5000.0f); // 50m default radius
+	TriggerSphere->SetSphereRadius(5000.0f); // 5000 Unreal Units (50m if 1 UU = 1cm)
 	TriggerSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	TriggerSphere->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	TriggerSphere->SetGenerateOverlapEvents(true);
@@ -109,6 +109,18 @@ void AAnomalyActor::InitializeAnomaly(
 
 	// Setup type-specific visuals
 	SetupTypeSpecificVisuals(AnomalyType, VisualData);
+
+	// Load signature VFX (for scanning)
+	if (!VisualData.SignatureVFX.IsNull())
+	{
+		UNiagaraSystem* SignatureVFX = VisualData.SignatureVFX.LoadSynchronous();
+		if (SignatureVFX && SignatureVFXComponent)
+		{
+			SignatureVFXComponent->SetAsset(SignatureVFX);
+			// Don't activate yet - will be activated when scanned
+			UE_LOG(LogTemp, Log, TEXT("✓ Signature VFX loaded"));
+		}
+	}
 
 	// Setup difficulty indicators
 	SetupDifficultyIndicators(AnomalyDifficulty, VisualData);

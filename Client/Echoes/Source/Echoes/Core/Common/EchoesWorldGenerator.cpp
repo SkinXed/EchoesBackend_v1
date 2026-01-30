@@ -567,16 +567,18 @@ void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>
 		{
 			// Get visual data from data table
 			FAsteroidBeltVisualRow* VisualData = GetAsteroidBeltVisualData(TEXT("Default"));
+			FAsteroidBeltVisualRow DefaultVisualData;
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for asteroid belt"));
-				VisualData = new FAsteroidBeltVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for asteroid belt, using defaults"));
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed from belt ID
 			int32 Seed = GenerateSeedFromGuid(BeltConfig.Id);
 
-			// Calculate belt radius (default 100km if not specified)
+			// Calculate belt radius from database value or use default
+			// Default: 100,000 km = 100,000,000 m in world space
 			float BeltRadius = 100000.0f * UniverseToWorldScale * 100000.0f;
 
 			// Initialize asteroid belt
@@ -636,10 +638,11 @@ void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomali
 		{
 			// Get visual data from data table based on anomaly type
 			FAnomalyVisualRow* VisualData = GetAnomalyVisualData(AnomalyConfig.Type);
+			FAnomalyVisualRow DefaultVisualData;
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for anomaly type: %s"), *AnomalyConfig.Type);
-				VisualData = new FAnomalyVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for anomaly type: %s, using defaults"), *AnomalyConfig.Type);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed from anomaly ID
@@ -702,10 +705,11 @@ void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormho
 		{
 			// Get visual data from data table
 			FWormholeVisualRow* VisualData = GetWormholeVisualData(TEXT("Default"));
+			FWormholeVisualRow DefaultVisualData;
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for wormhole"));
-				VisualData = new FWormholeVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for wormhole, using defaults"));
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed from wormhole ID
