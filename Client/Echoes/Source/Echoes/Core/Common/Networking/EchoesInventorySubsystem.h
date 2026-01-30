@@ -7,17 +7,6 @@
 #include "Http.h"
 #include "EchoesInventorySubsystem.generated.h"
 
-// Forward declarations - Dynamic delegates for Blueprint support
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipsReceived, const FEchoesShipList&, ShipList);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipFittingReceived, const FEchoesShipFitting&, Fitting);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMessage);
-DECLARE_DYNAMIC_DELEGATE(FOnShipActivated);
-DECLARE_DYNAMIC_DELEGATE(FOnModuleFitted);
-DECLARE_DYNAMIC_DELEGATE(FOnModuleUnfitted);
-
-// Multicast delegates for UI updates
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnFittingChanged, const struct FEchoesShipFitting&);
-
 /**
  * Ship instance structure (mirrors C# ShipInstanceDto)
  * Common_ prefix for shared data structures
@@ -156,6 +145,17 @@ struct FEchoesShipFitting
 	UPROPERTY(BlueprintReadWrite, Category = "Ship")
 	TArray<FEchoesModule> Modules;
 };
+
+// Dynamic delegates for Blueprint support
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipsReceived, const FEchoesShipList&, ShipList);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipFittingReceived, const FEchoesShipFitting&, Fitting);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_DELEGATE(FOnShipActivated);
+DECLARE_DYNAMIC_DELEGATE(FOnModuleFitted);
+DECLARE_DYNAMIC_DELEGATE(FOnModuleUnfitted);
+
+// Multicast delegates for UI updates
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFittingChanged, const struct FEchoesShipFitting&);
 
 /**
  * UEchoesInventorySubsystem

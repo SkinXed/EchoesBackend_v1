@@ -7,12 +7,6 @@
 #include "Http.h"
 #include "EchoesIdentitySubsystem.generated.h"
 
-// Forward declarations - Dynamic delegates for Blueprint support
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataReceived, const FEchoesCharacter&, CharacterData);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataFailure, const FString&, ErrorMessage);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterSelected);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterCreated, const FEchoesCharacter&, CharacterData);
-
 /**
  * Character structure (mirrors C# CharacterDataDto)
  * Common_ prefix for shared data structures
@@ -72,6 +66,12 @@ struct FEchoesCharacter
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	FString PortraitURL;
 };
+
+// Dynamic delegates for Blueprint support
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataReceived, const FEchoesCharacter&, CharacterData);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataFailure, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterSelected);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterCreated, const FEchoesCharacter&, CharacterData);
 
 /**
  * UEchoesIdentitySubsystem
