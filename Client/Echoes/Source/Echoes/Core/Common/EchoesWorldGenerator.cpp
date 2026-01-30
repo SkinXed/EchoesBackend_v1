@@ -22,6 +22,7 @@ AEchoesWorldGenerator::AEchoesWorldGenerator()
 	bAlwaysRelevant = true;
 
 	bWorldGenerated = false;
+	bIsRegionalCluster = false;
 }
 
 void AEchoesWorldGenerator::BeginPlay()
@@ -44,12 +45,16 @@ void AEchoesWorldGenerator::BeginPlay()
 		ServerManagementSubsystem = GameInstance->GetSubsystem<UEchoesServerManagementSubsystem>();
 		if (ServerManagementSubsystem)
 		{
-			// Subscribe to OnServerConfigReceived delegate
+			// Subscribe to both delegates
 			ServerManagementSubsystem->OnServerConfigReceived.AddDynamic(
 				this,
 				&AEchoesWorldGenerator::OnServerConfigReceived);
 
-			UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Successfully subscribed to OnServerConfigReceived"));
+			ServerManagementSubsystem->OnRegionalClusterConfigReceived.AddDynamic(
+				this,
+				&AEchoesWorldGenerator::OnRegionalClusterConfigReceived);
+
+			UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Successfully subscribed to config delegates"));
 		}
 		else
 		{
@@ -97,6 +102,32 @@ void AEchoesWorldGenerator::OnServerConfigReceived(const FServerSystemConfig& Co
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
 }
 
+void AEchoesWorldGenerator::OnRegionalClusterConfigReceived(const FServerRegionalClusterConfig& RegionalConfig)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║   ECHOES WORLD GENERATOR - REGIONAL CLUSTER CONFIG      ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Region: %s (%s)"), *RegionalConfig.RegionName, *RegionalConfig.RegionCode);
+	UE_LOG(LogTemp, Log, TEXT("Systems: %d"), RegionalConfig.Systems.Num());
+	UE_LOG(LogTemp, Log, TEXT("Total Planets: %d"), RegionalConfig.TotalPlanets);
+	UE_LOG(LogTemp, Log, TEXT("Total Stargates: %d"), RegionalConfig.TotalStargates);
+	UE_LOG(LogTemp, Log, TEXT("Total Stations: %d"), RegionalConfig.TotalStations);
+
+	// Generate the regional cluster
+	ServerOnly_GenerateRegionalCluster(RegionalConfig);
+
+	bWorldGenerated = true;
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    REGIONAL CLUSTER GENERATION COMPLETE                 ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+}
+
 void AEchoesWorldGenerator::ServerOnly_GenerateWorld(const FServerSystemConfig& Config)
 {
 	if (!HasAuthority())
@@ -107,31 +138,81 @@ void AEchoesWorldGenerator::ServerOnly_GenerateWorld(const FServerSystemConfig& 
 
 	UE_LOG(LogTemp, Log, TEXT("Beginning world generation for system: %s"), *Config.SystemName);
 
+	bIsRegionalCluster = false;
+
+	// Generate single system at origin
+	GenerateSingleSystem(Config, FVector::ZeroVector);
+
+	UE_LOG(LogTemp, Log, TEXT("World generation completed. Total actors spawned: %d"), SpawnedActors.Num());
+}
+
+void AEchoesWorldGenerator::ServerOnly_GenerateRegionalCluster(const FServerRegionalClusterConfig& RegionalConfig)
+{
+	if (!HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ServerOnly_GenerateRegionalCluster called on client - ignoring"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Beginning regional cluster generation for region: %s"), *RegionalConfig.RegionName);
+
+	bIsRegionalCluster = true;
+	CachedRegionalConfig = RegionalConfig;
+
+	// Clear system offsets map
+	SystemOffsets.Empty();
+
+	// Iterate through all systems in the region
+	for (const FServerSystemConfig& SystemConfig : RegionalConfig.Systems)
+	{
+		// Calculate global offset for this system based on its DB coordinates
+		FVector SystemOffset = CalculateSystemGlobalOffset(
+			SystemConfig.PositionX,
+			SystemConfig.PositionY,
+			SystemConfig.PositionZ
+		);
+
+		// Store offset for later lookups (for stargate jumps)
+		SystemOffsets.Add(SystemConfig.SystemId, SystemOffset);
+
+		UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+		UE_LOG(LogTemp, Log, TEXT("║    GENERATING SYSTEM: %-35s║"), *SystemConfig.SystemName);
+		UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+		UE_LOG(LogTemp, Log, TEXT("  DB Coordinates: [%lld, %lld, %lld]"), 
+			SystemConfig.PositionX, SystemConfig.PositionY, SystemConfig.PositionZ);
+		UE_LOG(LogTemp, Log, TEXT("  Global Offset: [%.0f, %.0f, %.0f]"), 
+			SystemOffset.X, SystemOffset.Y, SystemOffset.Z);
+		UE_LOG(LogTemp, Log, TEXT("  Planets: %d, Stations: %d, Stargates: %d"), 
+			SystemConfig.Planets.Num(), SystemConfig.Stations.Num(), SystemConfig.Stargates.Num());
+
+		// Generate this system at its calculated offset
+		GenerateSingleSystem(SystemConfig, SystemOffset);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Regional cluster generation completed. Total actors spawned: %d"), SpawnedActors.Num());
+	UE_LOG(LogTemp, Log, TEXT("Systems generated: %d"), RegionalConfig.Systems.Num());
+}
+
+void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Config, const FVector& SystemOffset)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
 	// Optional: Async load assets before spawning (optimization)
 	// AsyncLoadAssetsForConfig(Config);
 
-	// Spawn star at system center
-	SpawnStar(Config);
+	// Spawn star at system center (with offset)
+	SpawnStar(Config, SystemOffset);
 
-	// Spawn all planets
-	SpawnPlanets(Config.Planets);
-
-	// Spawn all stations
-	SpawnStations(Config.Stations);
-
-	// Spawn all stargates
-	SpawnStargates(Config.Stargates);
-
-	// Spawn all asteroid belts
-	SpawnAsteroidBelts(Config.AsteroidBelts);
-
-	// Spawn all anomalies
-	SpawnAnomalies(Config.Anomalies);
-
-	// Spawn all wormholes
-	SpawnWormholes(Config.Wormholes);
-
-	UE_LOG(LogTemp, Log, TEXT("World generation completed. Total actors spawned: %d"), SpawnedActors.Num());
+	// Spawn all objects in the system (with offset)
+	SpawnPlanets(Config.Planets, SystemOffset);
+	SpawnStations(Config.Stations, SystemOffset);
+	SpawnStargates(Config.Stargates, SystemOffset);
+	SpawnAsteroidBelts(Config.AsteroidBelts, SystemOffset);
+	SpawnAnomalies(Config.Anomalies, SystemOffset);
+	SpawnWormholes(Config.Wormholes, SystemOffset);
 }
 
 void AEchoesWorldGenerator::ServerOnly_ClearWorld()
@@ -155,7 +236,7 @@ void AEchoesWorldGenerator::ServerOnly_ClearWorld()
 	bWorldGenerated = false;
 }
 
-void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config)
+void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config, const FVector& SystemOffset)
 {
 	if (!StarActorClass)
 	{
@@ -165,8 +246,8 @@ void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config)
 
 	UE_LOG(LogTemp, Log, TEXT("Spawning star: %s (Class: %s)"), *Config.SystemName, *Config.StarClass);
 
-	// Star is always at origin (0,0,0)
-	FVector StarLocation = FVector::ZeroVector;
+	// Star is at system offset (which is ZeroVector for single-system mode)
+	FVector StarLocation = SystemOffset;
 	FRotator StarRotation = FRotator::ZeroRotator;
 
 	// Spawn parameters
@@ -790,4 +871,41 @@ FWormholeVisualRow* AEchoesWorldGenerator::GetWormholeVisualData(const FString& 
 	}
 
 	return Row;
+}
+
+// ==================== Regional Cluster Helpers ====================
+
+FVector AEchoesWorldGenerator::CalculateSystemGlobalOffset(int64 PosX, int64 PosY, int64 PosZ) const
+{
+// Convert DB coordinates to world coordinates using RegionDistanceScale
+// Uses double precision to handle large distances (LWC support)
+double OffsetX = static_cast<double>(PosX) * RegionDistanceScale;
+double OffsetY = static_cast<double>(PosY) * RegionDistanceScale;
+double OffsetZ = static_cast<double>(PosZ) * RegionDistanceScale;
+
+return FVector(OffsetX, OffsetY, OffsetZ);
+}
+
+bool AEchoesWorldGenerator::IsSystemOnThisServer(const FGuid& SystemId) const
+{
+if (!bIsRegionalCluster)
+{
+// Single system mode - check against current system
+return false; // TODO: Compare with current system ID
+}
+
+// Regional cluster mode - check if system is in our cached config
+return SystemOffsets.Contains(SystemId);
+}
+
+FVector AEchoesWorldGenerator::GetSystemGlobalOffset(const FGuid& SystemId) const
+{
+const FVector* Offset = SystemOffsets.Find(SystemId);
+if (Offset)
+{
+return *Offset;
+}
+
+UE_LOG(LogTemp, Warning, TEXT("System ID not found in SystemOffsets map: %s"), *SystemId.ToString());
+return FVector::ZeroVector;
 }
