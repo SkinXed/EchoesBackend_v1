@@ -168,7 +168,9 @@ services.AddScoped<Echoes.API.Services.Ship.IShipFittingService, Echoes.API.Serv
 services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        // CRITICAL: Use null (PascalCase) to match UE5 C++ USTRUCT property names
+        // DO NOT use CamelCase as it breaks UE5 JSON parsing!
+        options.JsonSerializerOptions.PropertyNamingPolicy = null; // PascalCase (default)
         options.JsonSerializerOptions.WriteIndented = true;
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
