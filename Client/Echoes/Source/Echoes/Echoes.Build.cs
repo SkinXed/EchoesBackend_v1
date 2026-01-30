@@ -13,7 +13,10 @@ public class Echoes : ModuleRules
 			"CoreUObject", 
 			"Engine", 
 			"InputCore",
-			"EnhancedInput" // For Enhanced Input System
+			"EnhancedInput", // For Enhanced Input System
+			"Http", // For HTTP requests
+			"Json", // For JSON parsing
+			"JsonUtilities" // For JSON utilities
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

@@ -105,6 +105,39 @@ Physics-based movement using `AddForce` and `AddTorqueInRadians`.
 - **Configurable distance and pitch**
 - **Smooth interpolation**
 
+#### Ship Stats Subsystem (Common/EchoesShipStatsSubsystem)
+
+**Mirror Architecture** - Corresponds to backend ShipController.
+
+**API Methods:**
+- `FetchShipStats()` - Retrieves ship stats from backend
+- `AddModule()` - Adds module to ship instance
+
+**Configuration:**
+- `ApiBaseUrl` - Backend API endpoint (default: http://localhost:5116/api)
+- `ServerSecret` - Must match backend configuration
+
+**Usage Example:**
+```cpp
+// Get subsystem
+UEchoesShipStatsSubsystem* Subsystem = 
+    GetGameInstance()->GetSubsystem<UEchoesShipStatsSubsystem>();
+
+// Fetch ship stats
+FOnShipStatsFetched OnSuccess;
+OnSuccess.BindLambda([this](const FEchoesShipStats& Stats) {
+    // Initialize ship with fetched stats
+    ShipPawn->InitializeShipStats(Stats);
+});
+
+FOnApiError OnError;
+OnError.BindLambda([](const FString& Error) {
+    UE_LOG(LogTemp, Error, TEXT("Failed to fetch stats: %s"), *Error);
+});
+
+Subsystem->FetchShipStats(ShipInstanceId, OnSuccess, OnError);
+```
+
 ## Usage
 
 ### Backend Setup
@@ -137,23 +170,47 @@ Headers:
    - Create Input Actions for Move, Look, MouseFollow, Warp
    - Assign to pawn's input properties
 
-3. **Initialize Ship Stats:**
+3. **Initialize Ship Stats from Backend:**
 ```cpp
-// Get stats from backend API
-FEchoesShipStats Stats;
-Stats.TotalMass = 1500000.0f; // From backend
-Stats.Thrust = 600000.0f;
-Stats.RotationSpeed = 35.0f;
-// ... set other fields
+// In GameMode or PlayerController BeginPlay:
 
-// Initialize pawn
-ShipPawn->InitializeShipStats(Stats);
+// Get subsystem
+UEchoesShipStatsSubsystem* Subsystem = 
+    GetGameInstance()->GetSubsystem<UEchoesShipStatsSubsystem>();
+
+// Create callbacks
+FOnShipStatsFetched OnSuccess;
+OnSuccess.BindLambda([this](const FEchoesShipStats& Stats) {
+    // Find or spawn ship pawn
+    AEchoesShipPawn* ShipPawn = GetPlayerShip();
+    if (ShipPawn)
+    {
+        ShipPawn->InitializeShipStats(Stats);
+        UE_LOG(LogTemp, Log, TEXT("Ship initialized with backend stats"));
+    }
+});
+
+FOnApiError OnError;
+OnError.BindLambda([](const FString& Error) {
+    UE_LOG(LogTemp, Error, TEXT("Failed to fetch stats: %s"), *Error);
+});
+
+// Fetch stats from backend
+FGuid ShipInstanceId = GetPlayerShipId(); // Get from player data
+Subsystem->FetchShipStats(ShipInstanceId, OnSuccess, OnError);
 ```
 
 4. **Configure Camera:**
    - Adjust `CameraDistance` for view
    - Set `CameraLagSpeed` for mass feel (lower = more lag)
    - `CameraPitch` for angle
+
+5. **Configure Subsystem (DefaultGame.ini or Project Settings):**
+```ini
+[/Script/Echoes.EchoesShipStatsSubsystem]
+ApiBaseUrl=http://localhost:5116/api
+ServerSecret=UE5-Server-Secret-Change-Me-In-Production
+```
 
 ## Naming Conventions
 
