@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesStationMenuWidget.h"
+#include "UI/EchoesStationMenuWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

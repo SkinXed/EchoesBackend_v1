@@ -287,9 +287,11 @@ void AEchoesItemActor::LoadItemDefinition()
 	// Load world mesh asynchronously
 	if (!Definition.WorldMesh.IsNull())
 	{
+		FOnWorldMeshLoaded OnLoaded;
+		OnLoaded.BindDynamic(this, &AEchoesItemActor::OnMeshLoaded);
 		InvSubsystem->AsyncLoadItemWorldMesh(
 			ItemId,
-			FOnWorldMeshLoaded::CreateUObject(this, &AEchoesItemActor::OnMeshLoaded)
+			OnLoaded
 		);
 	}
 	else

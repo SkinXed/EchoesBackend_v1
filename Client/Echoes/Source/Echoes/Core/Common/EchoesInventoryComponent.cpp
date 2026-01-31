@@ -263,27 +263,46 @@ void UEchoesInventoryComponent::OnItemMoveResponse(
 		UE_LOG(LogTemp, Log, TEXT("EchoesInventoryComponent: Item move successful"));
 		
 		// Refresh items to update cache
-		FetchItems(
-			FOnItemsFetched::CreateLambda([this, OnSuccess](const FEchoesContainerItems& Items)
-			{
-				// Items updated, trigger delegate
-				OnInventoryUpdated.Broadcast(Items);
-				OnSuccess.ExecuteIfBound();
-			}),
-			FOnInventoryOperationFailure::CreateLambda([this, OnSuccess](const FString& Error)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("EchoesInventoryComponent: Failed to refresh after move: %s"), *Error);
-				// Still report success since the move itself succeeded
-				// Just log the warning and proceed with success
-				OnSuccess.ExecuteIfBound();
-			})
-		);
+		bHasPendingMoveRefresh = true;
+		PendingMoveRefreshSuccess = OnSuccess;
+
+		FOnItemsFetched RefreshSuccess;
+		RefreshSuccess.BindDynamic(this, &UEchoesInventoryComponent::HandleMoveRefreshSuccess);
+
+		FOnInventoryOperationFailure RefreshFailure;
+		RefreshFailure.BindDynamic(this, &UEchoesInventoryComponent::HandleMoveRefreshFailure);
+
+		FetchItems(RefreshSuccess, RefreshFailure);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: Item move failed - HTTP %d: %s"),
 			ResponseCode, *ResponseBody);
 		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+	}
+}
+
+void UEchoesInventoryComponent::HandleMoveRefreshSuccess(const FEchoesContainerItems& Items)
+{
+	OnInventoryUpdated.Broadcast(Items);
+
+	if (bHasPendingMoveRefresh)
+	{
+		PendingMoveRefreshSuccess.ExecuteIfBound();
+		PendingMoveRefreshSuccess.Unbind();
+		bHasPendingMoveRefresh = false;
+	}
+}
+
+void UEchoesInventoryComponent::HandleMoveRefreshFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Warning, TEXT("EchoesInventoryComponent: Failed to refresh after move: %s"), *Error);
+
+	if (bHasPendingMoveRefresh)
+	{
+		PendingMoveRefreshSuccess.ExecuteIfBound();
+		PendingMoveRefreshSuccess.Unbind();
+		bHasPendingMoveRefresh = false;
 	}
 }
 

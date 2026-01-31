@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Server/EchoesServerDiscoveryTypes.h"
+#include "Core/Server/EchoesServerDiscoveryTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -117,6 +117,16 @@ struct Z_Construct_UScriptStruct_FRegisterServerRequest_Statics
 		{ "ToolTip", "Optional: Region ID if this is a regional cluster server handling multiple systems" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ServerType_MetaData[] = {
+		{ "Category", "Server" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Node type: \"DedicatedSystem\" or \"RegionalCluster\" */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/EchoesServerDiscoveryTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Node type: \"DedicatedSystem\" or \"RegionalCluster\"" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MaxPlayers_MetaData[] = {
 		{ "Category", "Server" },
 #if !UE_BUILD_SHIPPING
@@ -174,6 +184,7 @@ struct Z_Construct_UScriptStruct_FRegisterServerRequest_Statics
 	static const UECodeGen_Private::FIntPropertyParams NewProp_WebPort;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_SolarSystemId;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_RegionId;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ServerType;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxPlayers;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_GeoRegion;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_GameVersion;
@@ -192,6 +203,7 @@ const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FRegisterS
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_WebPort = { "WebPort", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, WebPort), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WebPort_MetaData), NewProp_WebPort_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_SolarSystemId = { "SolarSystemId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, SolarSystemId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SolarSystemId_MetaData), NewProp_SolarSystemId_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_RegionId = { "RegionId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, RegionId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RegionId_MetaData), NewProp_RegionId_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_ServerType = { "ServerType", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, ServerType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerType_MetaData), NewProp_ServerType_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_MaxPlayers = { "MaxPlayers", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, MaxPlayers), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxPlayers_MetaData), NewProp_MaxPlayers_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_GeoRegion = { "GeoRegion", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, GeoRegion), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GeoRegion_MetaData), NewProp_GeoRegion_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_GameVersion = { "GameVersion", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRegisterServerRequest, GameVersion), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GameVersion_MetaData), NewProp_GameVersion_MetaData) };
@@ -204,6 +216,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FR
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_WebPort,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_SolarSystemId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_RegionId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_ServerType,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_MaxPlayers,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_GeoRegion,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewProp_GameVersion,
@@ -2108,7 +2121,7 @@ UScriptStruct* Z_Construct_UScriptStruct_FServerRegionalClusterConfigResponse()
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerDiscoveryTypes_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FRegisterServerRequest::StaticStruct, Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewStructOps, TEXT("RegisterServerRequest"), &Z_Registration_Info_UScriptStruct_FRegisterServerRequest, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FRegisterServerRequest), 3678465383U) },
+		{ FRegisterServerRequest::StaticStruct, Z_Construct_UScriptStruct_FRegisterServerRequest_Statics::NewStructOps, TEXT("RegisterServerRequest"), &Z_Registration_Info_UScriptStruct_FRegisterServerRequest, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FRegisterServerRequest), 618894285U) },
 		{ FRegisterServerResponse::StaticStruct, Z_Construct_UScriptStruct_FRegisterServerResponse_Statics::NewStructOps, TEXT("RegisterServerResponse"), &Z_Registration_Info_UScriptStruct_FRegisterServerResponse, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FRegisterServerResponse), 1274605200U) },
 		{ FHeartbeatRequest::StaticStruct, Z_Construct_UScriptStruct_FHeartbeatRequest_Statics::NewStructOps, TEXT("HeartbeatRequest"), &Z_Registration_Info_UScriptStruct_FHeartbeatRequest, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FHeartbeatRequest), 3968423781U) },
 		{ FHeartbeatResponse::StaticStruct, Z_Construct_UScriptStruct_FHeartbeatResponse_Statics::NewStructOps, TEXT("HeartbeatResponse"), &Z_Registration_Info_UScriptStruct_FHeartbeatResponse, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FHeartbeatResponse), 3958755147U) },
@@ -2127,7 +2140,7 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FServerRegionalClusterConfigResponse::StaticStruct, Z_Construct_UScriptStruct_FServerRegionalClusterConfigResponse_Statics::NewStructOps, TEXT("ServerRegionalClusterConfigResponse"), &Z_Registration_Info_UScriptStruct_FServerRegionalClusterConfigResponse, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FServerRegionalClusterConfigResponse), 636578418U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerDiscoveryTypes_h__Script_Echoes_1349779675(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerDiscoveryTypes_h__Script_Echoes_4236468415(TEXT("/Script/Echoes"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerDiscoveryTypes_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerDiscoveryTypes_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

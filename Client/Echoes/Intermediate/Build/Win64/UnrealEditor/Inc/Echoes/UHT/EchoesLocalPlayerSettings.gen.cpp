@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/Save/EchoesLocalPlayerSettings.h"
+#include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

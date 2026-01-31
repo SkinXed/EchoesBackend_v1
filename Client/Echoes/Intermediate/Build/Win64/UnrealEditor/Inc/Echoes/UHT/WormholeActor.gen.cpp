@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/WormholeActor.h"
-#include "Echoes/Core/Common/EchoesWorldVisualTypes.h"
+#include "Core/Common/WormholeActor.h"
+#include "Core/Common/EchoesWorldVisualTypes.h"
 #include "Engine/HitResult.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS

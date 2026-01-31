@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/Networking/EchoesCharacterData.h"
+#include "Core/Common/Networking/EchoesCharacterData.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

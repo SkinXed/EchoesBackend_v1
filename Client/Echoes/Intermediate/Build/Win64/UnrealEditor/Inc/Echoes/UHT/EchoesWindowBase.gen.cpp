@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesWindowBase.h"
+#include "UI/EchoesWindowBase.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

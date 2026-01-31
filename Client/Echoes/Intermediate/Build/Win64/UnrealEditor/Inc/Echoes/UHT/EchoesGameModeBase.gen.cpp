@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/EchoesGameModeBase.h"
+#include "EchoesGameModeBase.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

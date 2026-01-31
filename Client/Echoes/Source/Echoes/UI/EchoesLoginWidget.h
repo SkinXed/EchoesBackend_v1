@@ -6,10 +6,10 @@
 #include "UI/EchoesWindowBase.h"
 #include "../Core/Common/Networking/EchoesAuthSubsystem.h"
 
+#include "EchoesLoginWidget.generated.h"
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoginSuccessEvent, const FAuthResponse&, AuthResponse);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoginFailureEvent, const FString&, ErrorMessage);
-
-#include "EchoesLoginWidget.generated.h"
 
 class UEditableTextBox;
 class UButton;
@@ -97,11 +97,13 @@ protected:
 	/**
 	 * Called when login succeeds
 	 */
+	UFUNCTION()
 	void OnLoginSuccess(const FAuthResponse& AuthResponse);
 
 	/**
 	 * Called when login fails
 	 */
+	UFUNCTION()
 	void OnLoginFailure(const FString& ErrorMessage);
 
 	// ==================== Helper Functions ====================

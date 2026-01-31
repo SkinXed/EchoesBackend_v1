@@ -331,7 +331,7 @@ void UEchoesIdentitySubsystem::UI_CreateCharacter(
 	const FString& CharacterName,
 	const FString& Race,
 	int32 PortraitId,
-	FOnCharacterCreated OnSuccess,
+	FOnIdentityCharacterCreated OnSuccess,
 	FOnCharacterDataFailure OnFailure)
 {
 	if (!Http)
@@ -408,7 +408,7 @@ void UEchoesIdentitySubsystem::OnCharacterCreationReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-	FOnCharacterCreated OnSuccess,
+	FOnIdentityCharacterCreated OnSuccess,
 	FOnCharacterDataFailure OnFailure)
 {
 	if (!bWasSuccessful || !Response.IsValid())

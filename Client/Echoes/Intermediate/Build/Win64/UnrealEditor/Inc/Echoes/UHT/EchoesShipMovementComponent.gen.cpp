@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/EchoesShipMovementComponent.h"
-#include "Echoes/Core/Common/EchoesShipTypes.h"
+#include "Core/Common/EchoesShipMovementComponent.h"
+#include "Core/Common/EchoesShipTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

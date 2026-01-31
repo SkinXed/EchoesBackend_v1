@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesInventoryEntryWidget.h"
+#include "UI/EchoesInventoryEntryWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -124,6 +124,154 @@ DEFINE_FUNCTION(UEchoesInventoryEntryWidget::execHandleIconLoaded)
 	P_NATIVE_END;
 }
 // ********** End Class UEchoesInventoryEntryWidget Function HandleIconLoaded **********************
+
+// ********** Begin Class UEchoesInventoryEntryWidget Function HandleJettisonFailure ***************
+struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics
+{
+	struct EchoesInventoryEntryWidget_eventHandleJettisonFailure_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryEntryWidget_eventHandleJettisonFailure_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventoryEntryWidget, nullptr, "HandleJettisonFailure", Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::EchoesInventoryEntryWidget_eventHandleJettisonFailure_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::EchoesInventoryEntryWidget_eventHandleJettisonFailure_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventoryEntryWidget::execHandleJettisonFailure)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleJettisonFailure(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventoryEntryWidget Function HandleJettisonFailure *****************
+
+// ********** Begin Class UEchoesInventoryEntryWidget Function HandleJettisonSuccess ***************
+struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventoryEntryWidget, nullptr, "HandleJettisonSuccess", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventoryEntryWidget::execHandleJettisonSuccess)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleJettisonSuccess();
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventoryEntryWidget Function HandleJettisonSuccess *****************
+
+// ********** Begin Class UEchoesInventoryEntryWidget Function HandleStackAllFailure ***************
+struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics
+{
+	struct EchoesInventoryEntryWidget_eventHandleStackAllFailure_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryEntryWidget_eventHandleStackAllFailure_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventoryEntryWidget, nullptr, "HandleStackAllFailure", Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::EchoesInventoryEntryWidget_eventHandleStackAllFailure_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::EchoesInventoryEntryWidget_eventHandleStackAllFailure_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventoryEntryWidget::execHandleStackAllFailure)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleStackAllFailure(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventoryEntryWidget Function HandleStackAllFailure *****************
+
+// ********** Begin Class UEchoesInventoryEntryWidget Function HandleStackAllSuccess ***************
+struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventoryEntryWidget, nullptr, "HandleStackAllSuccess", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventoryEntryWidget::execHandleStackAllSuccess)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleStackAllSuccess();
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventoryEntryWidget Function HandleStackAllSuccess *****************
 
 // ********** Begin Class UEchoesInventoryEntryWidget Function OnDragQuantityCancelled *************
 struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantityCancelled_Statics
@@ -347,6 +495,10 @@ void UEchoesInventoryEntryWidget::StaticRegisterNativesUEchoesInventoryEntryWidg
 	static const FNameNativePtrPair Funcs[] = {
 		{ "HandleContextMenuAction", &UEchoesInventoryEntryWidget::execHandleContextMenuAction },
 		{ "HandleIconLoaded", &UEchoesInventoryEntryWidget::execHandleIconLoaded },
+		{ "HandleJettisonFailure", &UEchoesInventoryEntryWidget::execHandleJettisonFailure },
+		{ "HandleJettisonSuccess", &UEchoesInventoryEntryWidget::execHandleJettisonSuccess },
+		{ "HandleStackAllFailure", &UEchoesInventoryEntryWidget::execHandleStackAllFailure },
+		{ "HandleStackAllSuccess", &UEchoesInventoryEntryWidget::execHandleStackAllSuccess },
 		{ "OnDragQuantityCancelled", &UEchoesInventoryEntryWidget::execOnDragQuantityCancelled },
 		{ "OnDragQuantitySelected", &UEchoesInventoryEntryWidget::execOnDragQuantitySelected },
 		{ "OnJettisonQuantityCancelled", &UEchoesInventoryEntryWidget::execOnJettisonQuantityCancelled },
@@ -498,6 +650,10 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleContextMenuAction, "HandleContextMenuAction" }, // 589391854
 		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleIconLoaded, "HandleIconLoaded" }, // 3370816314
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure, "HandleJettisonFailure" }, // 3892818357
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess, "HandleJettisonSuccess" }, // 2363951933
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure, "HandleStackAllFailure" }, // 3878818885
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess, "HandleStackAllSuccess" }, // 733883559
 		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantityCancelled, "OnDragQuantityCancelled" }, // 2729483125
 		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantitySelected, "OnDragQuantitySelected" }, // 1161400816
 		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantityCancelled, "OnJettisonQuantityCancelled" }, // 53401379
@@ -570,10 +726,10 @@ UEchoesInventoryEntryWidget::~UEchoesInventoryEntryWidget() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryEntryWidget, UEchoesInventoryEntryWidget::StaticClass, TEXT("UEchoesInventoryEntryWidget"), &Z_Registration_Info_UClass_UEchoesInventoryEntryWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryEntryWidget), 3647344185U) },
+		{ Z_Construct_UClass_UEchoesInventoryEntryWidget, UEchoesInventoryEntryWidget::StaticClass, TEXT("UEchoesInventoryEntryWidget"), &Z_Registration_Info_UClass_UEchoesInventoryEntryWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryEntryWidget), 2882616340U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_3249718318(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_2860265747(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

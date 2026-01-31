@@ -71,7 +71,7 @@ struct FEchoesCharacter
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataReceived, const FEchoesCharacter&, CharacterData);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterDataFailure, const FString&, ErrorMessage);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterSelected);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnCharacterCreated, const FEchoesCharacter&, CharacterData);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnIdentityCharacterCreated, const FEchoesCharacter&, CharacterData);
 
 /**
  * UEchoesIdentitySubsystem
@@ -171,7 +171,7 @@ public:
 		const FString& CharacterName,
 		const FString& Race,
 		int32 PortraitId,
-		FOnCharacterCreated OnSuccess,
+		FOnIdentityCharacterCreated OnSuccess,
 		FOnCharacterDataFailure OnFailure);
 
 	/**
@@ -223,7 +223,7 @@ protected:
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful,
-		FOnCharacterCreated OnSuccess,
+		FOnIdentityCharacterCreated OnSuccess,
 		FOnCharacterDataFailure OnFailure);
 
 	// ==================== Helper Functions ====================

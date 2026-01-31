@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Core/Common/EchoesShipTypes.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
 #include "EchoesShipPawn.generated.h"
 
 class UEchoesShipMovementComponent;
@@ -134,7 +135,7 @@ protected:
     /** Called when ship stats are replicated from server to client */
     UFUNCTION()
     void OnRep_ShipStats();
-    
+
     /** Subscribe to inventory subsystem for fitting updates */
     void SubscribeToInventoryUpdates();
     
@@ -144,7 +145,13 @@ protected:
     /** Handle fitting received from inventory subsystem */
     UFUNCTION()
     void OnFittingReceived(const FEchoesShipStats& Stats);
-    
+
+    UFUNCTION()
+    void HandleShipFittingReceived(const FEchoesShipFitting& Fitting);
+
+    UFUNCTION()
+    void HandleShipFittingFailed(const FString& Error);
+
 public:
     /** Override to replicate properties */
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

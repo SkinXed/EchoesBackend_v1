@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/EchoesJumpManager.h"
+#include "Core/Common/EchoesJumpManager.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

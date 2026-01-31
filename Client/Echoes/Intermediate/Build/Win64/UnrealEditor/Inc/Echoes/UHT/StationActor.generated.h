@@ -30,6 +30,8 @@ struct FStationVisualRow;
 	virtual void ClientRPC_OpenStationMenu_Implementation(const FString& InStationName, const FString& InStationType, FGuid const& InHangarStorageId); \
 	virtual bool ServerRPC_RequestDocking_Validate(APlayerController* ); \
 	virtual void ServerRPC_RequestDocking_Implementation(APlayerController* PlayerController); \
+	DECLARE_FUNCTION(execHandleHangarFailure); \
+	DECLARE_FUNCTION(execHandleHangarReceived); \
 	DECLARE_FUNCTION(execOnRep_StationData); \
 	DECLARE_FUNCTION(execServerRPC_RequestUndock); \
 	DECLARE_FUNCTION(execClientRPC_OpenStationMenu); \

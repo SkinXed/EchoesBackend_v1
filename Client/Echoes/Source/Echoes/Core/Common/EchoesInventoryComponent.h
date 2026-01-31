@@ -290,4 +290,13 @@ private:
 	/** Cached items list */
 	UPROPERTY()
 	FEchoesContainerItems CachedItems;
+
+	UFUNCTION()
+	void HandleMoveRefreshSuccess(const FEchoesContainerItems& Items);
+
+	UFUNCTION()
+	void HandleMoveRefreshFailure(const FString& Error);
+
+	FOnItemMoveSuccess PendingMoveRefreshSuccess;
+	bool bHasPendingMoveRefresh = false;
 };

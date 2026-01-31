@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/EchoesInventoryComponent.h"
+#include "Core/Common/EchoesInventoryComponent.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -605,6 +605,96 @@ DEFINE_FUNCTION(UEchoesInventoryComponent::execGetCachedItems)
 }
 // ********** End Class UEchoesInventoryComponent Function GetCachedItems **************************
 
+// ********** Begin Class UEchoesInventoryComponent Function HandleMoveRefreshFailure **************
+struct Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics
+{
+	struct EchoesInventoryComponent_eventHandleMoveRefreshFailure_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventHandleMoveRefreshFailure_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventoryComponent, nullptr, "HandleMoveRefreshFailure", Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::EchoesInventoryComponent_eventHandleMoveRefreshFailure_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::EchoesInventoryComponent_eventHandleMoveRefreshFailure_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventoryComponent::execHandleMoveRefreshFailure)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleMoveRefreshFailure(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventoryComponent Function HandleMoveRefreshFailure ****************
+
+// ********** Begin Class UEchoesInventoryComponent Function HandleMoveRefreshSuccess **************
+struct Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics
+{
+	struct EchoesInventoryComponent_eventHandleMoveRefreshSuccess_Parms
+	{
+		FEchoesContainerItems Items;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Items_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Items;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventHandleMoveRefreshSuccess_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 255446170
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::NewProp_Items,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventoryComponent, nullptr, "HandleMoveRefreshSuccess", Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::EchoesInventoryComponent_eventHandleMoveRefreshSuccess_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::EchoesInventoryComponent_eventHandleMoveRefreshSuccess_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventoryComponent::execHandleMoveRefreshSuccess)
+{
+	P_GET_STRUCT_REF(FEchoesContainerItems,Z_Param_Out_Items);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleMoveRefreshSuccess(Z_Param_Out_Items);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventoryComponent Function HandleMoveRefreshSuccess ****************
+
 // ********** Begin Class UEchoesInventoryComponent Function InitializeStorage *********************
 struct Z_Construct_UFunction_UEchoesInventoryComponent_InitializeStorage_Statics
 {
@@ -877,6 +967,8 @@ void UEchoesInventoryComponent::StaticRegisterNativesUEchoesInventoryComponent()
 		{ "FetchItems", &UEchoesInventoryComponent::execFetchItems },
 		{ "GetAvailableVolume", &UEchoesInventoryComponent::execGetAvailableVolume },
 		{ "GetCachedItems", &UEchoesInventoryComponent::execGetCachedItems },
+		{ "HandleMoveRefreshFailure", &UEchoesInventoryComponent::execHandleMoveRefreshFailure },
+		{ "HandleMoveRefreshSuccess", &UEchoesInventoryComponent::execHandleMoveRefreshSuccess },
 		{ "InitializeStorage", &UEchoesInventoryComponent::execInitializeStorage },
 		{ "ServerOnly_JettisonItem", &UEchoesInventoryComponent::execServerOnly_JettisonItem },
 		{ "ServerOnly_MoveItem", &UEchoesInventoryComponent::execServerOnly_MoveItem },
@@ -1001,6 +1093,8 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 		{ &Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems, "FetchItems" }, // 1179103527
 		{ &Z_Construct_UFunction_UEchoesInventoryComponent_GetAvailableVolume, "GetAvailableVolume" }, // 3725079514
 		{ &Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems, "GetCachedItems" }, // 2523739166
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure, "HandleMoveRefreshFailure" }, // 3064735412
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess, "HandleMoveRefreshSuccess" }, // 4191017057
 		{ &Z_Construct_UFunction_UEchoesInventoryComponent_InitializeStorage, "InitializeStorage" }, // 3046700570
 		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem, "ServerOnly_JettisonItem" }, // 4235737200
 		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem, "ServerOnly_MoveItem" }, // 2995778485
@@ -1067,10 +1161,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FEchoesContainerItems::StaticStruct, Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewStructOps, TEXT("EchoesContainerItems"), &Z_Registration_Info_UScriptStruct_FEchoesContainerItems, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesContainerItems), 255446170U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryComponent, UEchoesInventoryComponent::StaticClass, TEXT("UEchoesInventoryComponent"), &Z_Registration_Info_UClass_UEchoesInventoryComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryComponent), 3041158989U) },
+		{ Z_Construct_UClass_UEchoesInventoryComponent, UEchoesInventoryComponent::StaticClass, TEXT("UEchoesInventoryComponent"), &Z_Registration_Info_UClass_UEchoesInventoryComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryComponent), 880132349U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_1380075488(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_2637190715(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

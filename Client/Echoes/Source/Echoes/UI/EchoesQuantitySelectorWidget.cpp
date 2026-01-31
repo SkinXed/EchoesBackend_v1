@@ -90,7 +90,7 @@ void UEchoesQuantitySelectorWidget::NativeDestruct()
 FReply UEchoesQuantitySelectorWidget::NativeOnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
 	// Handle Enter key to confirm
-	if (InKeyEvent.GetKey() == EKeys::Enter || InKeyEvent.GetKey() == EKeys::NumPadEnter)
+	if (InKeyEvent.GetKey() == EKeys::Enter)
 	{
 		OnConfirmClicked();
 		return FReply::Handled();

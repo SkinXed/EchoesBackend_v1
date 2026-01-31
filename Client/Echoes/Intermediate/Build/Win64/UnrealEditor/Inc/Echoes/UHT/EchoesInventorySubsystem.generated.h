@@ -125,6 +125,10 @@ ECHOES_API void FOnHangarReceived_DelegateWrapper(const FScriptDelegate& OnHanga
 
 // ********** Begin Class UEchoesInventorySubsystem ************************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h_191_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleUnfitRefreshFailure); \
+	DECLARE_FUNCTION(execHandleUnfitRefreshSuccess); \
+	DECLARE_FUNCTION(execHandleFitRefreshFailure); \
+	DECLARE_FUNCTION(execHandleFitRefreshSuccess); \
 	DECLARE_FUNCTION(execUI_UnfitModule); \
 	DECLARE_FUNCTION(execUI_FitModule); \
 	DECLARE_FUNCTION(execHasItemInRegistry); \

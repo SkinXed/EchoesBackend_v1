@@ -9,7 +9,6 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterCreated__DelegateSignature();
-	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterCreated__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterCreationFailed__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature();
@@ -20,6 +19,7 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnEntryFlowComplete__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature();
+	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnInventoryButtonClicked__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature();
@@ -55,7 +55,6 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 			static UObject* (*const SingletonFuncArray[])() = {
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterCreated__DelegateSignature,
-				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterCreated__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterCreationFailed__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature,
@@ -66,6 +65,7 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnEntryFlowComplete__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnInventoryButtonClicked__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature,
@@ -99,13 +99,13 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x351665E4,
-				0xE383EEBC,
+				0x526DF8F3,
+				0x035927AA,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_Echoes.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_Echoes.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Echoes(Z_Construct_UPackage__Script_Echoes, TEXT("/Script/Echoes"), Z_Registration_Info_UPackage__Script_Echoes, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x351665E4, 0xE383EEBC));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Echoes(Z_Construct_UPackage__Script_Echoes, TEXT("/Script/Echoes"), Z_Registration_Info_UPackage__Script_Echoes, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x526DF8F3, 0x035927AA));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

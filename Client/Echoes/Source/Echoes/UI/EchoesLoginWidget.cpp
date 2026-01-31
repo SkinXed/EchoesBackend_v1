@@ -98,10 +98,10 @@ void UEchoesLoginWidget::OnLoginButtonClicked()
 
 	// Create delegates
 	FOnLoginSuccess SuccessDelegate;
-	SuccessDelegate.BindUObject(this, &UEchoesLoginWidget::OnLoginSuccess);
+	SuccessDelegate.BindDynamic(this, &UEchoesLoginWidget::OnLoginSuccess);
 
 	FOnLoginFailure FailureDelegate;
-	FailureDelegate.BindUObject(this, &UEchoesLoginWidget::OnLoginFailure);
+	FailureDelegate.BindDynamic(this, &UEchoesLoginWidget::OnLoginFailure);
 
 	// Call auth subsystem
 	AuthSubsystem->Auth_Login(LoginRequest, SuccessDelegate, FailureDelegate);

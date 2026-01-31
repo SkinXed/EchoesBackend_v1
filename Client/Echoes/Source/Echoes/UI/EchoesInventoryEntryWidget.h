@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
+#include "Components/PanelWidget.h"
 #include "UI/EchoesContextMenuWidget.h"
 #include "EchoesInventoryEntryWidget.generated.h"
 
@@ -133,6 +134,10 @@ private:
 	UPROPERTY()
 	UEchoesInventoryItemObject* CurrentItemObject;
 
+	FGeometry PendingDragGeometry;
+	FPointerEvent PendingDragEvent;
+	bool bWaitingForDragQuantity = false;
+
 	/**
 	 * Start async icon loading for current item
 	 */
@@ -205,8 +210,15 @@ private:
 	UFUNCTION()
 	void OnJettisonQuantityCancelled();
 
-	/** Stored data for pending drag operation */
-	FPointerEvent PendingDragEvent;
-	FGeometry PendingDragGeometry;
-	bool bWaitingForDragQuantity;
+	UFUNCTION()
+	void HandleJettisonSuccess();
+
+	UFUNCTION()
+	void HandleJettisonFailure(const FString& Error);
+
+	UFUNCTION()
+	void HandleStackAllSuccess();
+
+	UFUNCTION()
+	void HandleStackAllFailure(const FString& Error);
 };

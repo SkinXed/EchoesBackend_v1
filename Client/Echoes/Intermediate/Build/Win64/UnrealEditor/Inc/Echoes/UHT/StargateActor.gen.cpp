@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/StargateActor.h"
-#include "Echoes/Core/Common/EchoesWorldVisualTypes.h"
+#include "Core/Common/StargateActor.h"
+#include "Core/Common/EchoesWorldVisualTypes.h"
 #include "Engine/HitResult.h"
 #include "UObject/CoreNet.h"
 

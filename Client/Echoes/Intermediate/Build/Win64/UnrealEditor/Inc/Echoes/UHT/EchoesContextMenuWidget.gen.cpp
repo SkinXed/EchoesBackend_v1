@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesContextMenuWidget.h"
+#include "UI/EchoesContextMenuWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -14,18 +14,155 @@ void EmptyLinkFunctionForGeneratedCodeEchoesContextMenuWidget() {}
 // ********** Begin Cross Module References ********************************************************
 COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
+ECHOES_API UClass* Z_Construct_UClass_UEchoesContextMenuActionButton();
+ECHOES_API UClass* Z_Construct_UClass_UEchoesContextMenuActionButton_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesContextMenuWidget();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesContextMenuWidget_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventoryItemObject_NoRegister();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnContextMenuActionSelected__DelegateSignature();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FContextMenuAction();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
+UMG_API UClass* Z_Construct_UClass_UButton();
 UMG_API UClass* Z_Construct_UClass_UButton_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UTextBlock_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UUserWidget();
 UMG_API UClass* Z_Construct_UClass_UVerticalBox_NoRegister();
 UPackage* Z_Construct_UPackage__Script_Echoes();
 // ********** End Cross Module References **********************************************************
+
+// ********** Begin Class UEchoesContextMenuActionButton Function HandleClicked ********************
+struct Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesContextMenuActionButton, nullptr, "HandleClicked", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesContextMenuActionButton::execHandleClicked)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleClicked();
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesContextMenuActionButton Function HandleClicked **********************
+
+// ********** Begin Class UEchoesContextMenuActionButton *******************************************
+void UEchoesContextMenuActionButton::StaticRegisterNativesUEchoesContextMenuActionButton()
+{
+	UClass* Class = UEchoesContextMenuActionButton::StaticClass();
+	static const FNameNativePtrPair Funcs[] = {
+		{ "HandleClicked", &UEchoesContextMenuActionButton::execHandleClicked },
+	};
+	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
+}
+FClassRegistrationInfo Z_Registration_Info_UClass_UEchoesContextMenuActionButton;
+UClass* UEchoesContextMenuActionButton::GetPrivateStaticClass()
+{
+	using TClass = UEchoesContextMenuActionButton;
+	if (!Z_Registration_Info_UClass_UEchoesContextMenuActionButton.InnerSingleton)
+	{
+		GetPrivateStaticClassBody(
+			StaticPackage(),
+			TEXT("EchoesContextMenuActionButton"),
+			Z_Registration_Info_UClass_UEchoesContextMenuActionButton.InnerSingleton,
+			StaticRegisterNativesUEchoesContextMenuActionButton,
+			sizeof(TClass),
+			alignof(TClass),
+			TClass::StaticClassFlags,
+			TClass::StaticClassCastFlags(),
+			TClass::StaticConfigName(),
+			(UClass::ClassConstructorType)InternalConstructor<TClass>,
+			(UClass::ClassVTableHelperCtorCallerType)InternalVTableHelperCtorCaller<TClass>,
+			UOBJECT_CPPCLASS_STATICFUNCTIONS_FORCLASS(TClass),
+			&TClass::Super::StaticClass,
+			&TClass::WithinClass::StaticClass
+		);
+	}
+	return Z_Registration_Info_UClass_UEchoesContextMenuActionButton.InnerSingleton;
+}
+UClass* Z_Construct_UClass_UEchoesContextMenuActionButton_NoRegister()
+{
+	return UEchoesContextMenuActionButton::GetPrivateStaticClass();
+}
+struct Z_Construct_UClass_UEchoesContextMenuActionButton_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
+		{ "IncludePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionId_MetaData[] = {
+		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OwnerWidget_MetaData[] = {
+		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ActionId;
+	static const UECodeGen_Private::FWeakObjectPropertyParams NewProp_OwnerWidget;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static UObject* (*const DependentSingletons[])();
+	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked, "HandleClicked" }, // 2861169340
+	};
+	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
+	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
+		TCppClassTypeTraits<UEchoesContextMenuActionButton>::IsAbstract,
+	};
+	static const UECodeGen_Private::FClassParams ClassParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::NewProp_ActionId = { "ActionId", nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuActionButton, ActionId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionId_MetaData), NewProp_ActionId_MetaData) };
+const UECodeGen_Private::FWeakObjectPropertyParams Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::NewProp_OwnerWidget = { "OwnerWidget", nullptr, (EPropertyFlags)0x0014000000080008, UECodeGen_Private::EPropertyGenFlags::WeakObject, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuActionButton, OwnerWidget), Z_Construct_UClass_UEchoesContextMenuWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OwnerWidget_MetaData), NewProp_OwnerWidget_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::NewProp_ActionId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::NewProp_OwnerWidget,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::PropPointers) < 2048);
+UObject* (*const Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::DependentSingletons[])() = {
+	(UObject* (*)())Z_Construct_UClass_UButton,
+	(UObject* (*)())Z_Construct_UPackage__Script_Echoes,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::DependentSingletons) < 16);
+const UECodeGen_Private::FClassParams Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::ClassParams = {
+	&UEchoesContextMenuActionButton::StaticClass,
+	nullptr,
+	&StaticCppClassTypeInfo,
+	DependentSingletons,
+	FuncInfo,
+	Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::PropPointers,
+	nullptr,
+	UE_ARRAY_COUNT(DependentSingletons),
+	UE_ARRAY_COUNT(FuncInfo),
+	UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::PropPointers),
+	0,
+	0x00B000A0u,
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::Class_MetaDataParams), Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::Class_MetaDataParams)
+};
+UClass* Z_Construct_UClass_UEchoesContextMenuActionButton()
+{
+	if (!Z_Registration_Info_UClass_UEchoesContextMenuActionButton.OuterSingleton)
+	{
+		UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_UEchoesContextMenuActionButton.OuterSingleton, Z_Construct_UClass_UEchoesContextMenuActionButton_Statics::ClassParams);
+	}
+	return Z_Registration_Info_UClass_UEchoesContextMenuActionButton.OuterSingleton;
+}
+UEchoesContextMenuActionButton::UEchoesContextMenuActionButton(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
+DEFINE_VTABLE_PTR_HELPER_CTOR(UEchoesContextMenuActionButton);
+UEchoesContextMenuActionButton::~UEchoesContextMenuActionButton() {}
+// ********** End Class UEchoesContextMenuActionButton *********************************************
 
 // ********** Begin Delegate FOnContextMenuActionSelected ******************************************
 struct Z_Construct_UDelegateFunction_Echoes_OnContextMenuActionSelected__DelegateSignature_Statics
@@ -374,6 +511,57 @@ DEFINE_FUNCTION(UEchoesContextMenuWidget::execGetSourceStorageId)
 }
 // ********** End Class UEchoesContextMenuWidget Function GetSourceStorageId ***********************
 
+// ********** Begin Class UEchoesContextMenuWidget Function HandleActionButtonClicked **************
+struct Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics
+{
+	struct EchoesContextMenuWidget_eventHandleActionButtonClicked_Parms
+	{
+		FString ActionId;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Handle action button clicked\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Handle action button clicked" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ActionId;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::NewProp_ActionId = { "ActionId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventHandleActionButtonClicked_Parms, ActionId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionId_MetaData), NewProp_ActionId_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::NewProp_ActionId,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesContextMenuWidget, nullptr, "HandleActionButtonClicked", Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::EchoesContextMenuWidget_eventHandleActionButtonClicked_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::EchoesContextMenuWidget_eventHandleActionButtonClicked_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesContextMenuWidget::execHandleActionButtonClicked)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_ActionId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleActionButtonClicked(Z_Param_ActionId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesContextMenuWidget Function HandleActionButtonClicked ****************
+
 // ********** Begin Class UEchoesContextMenuWidget Function InitializeMenu *************************
 struct Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics
 {
@@ -446,57 +634,6 @@ DEFINE_FUNCTION(UEchoesContextMenuWidget::execInitializeMenu)
 	P_NATIVE_END;
 }
 // ********** End Class UEchoesContextMenuWidget Function InitializeMenu ***************************
-
-// ********** Begin Class UEchoesContextMenuWidget Function OnActionButtonClicked ******************
-struct Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics
-{
-	struct EchoesContextMenuWidget_eventOnActionButtonClicked_Parms
-	{
-		FString ActionId;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Handle action button clicked\n\x09 */" },
-#endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Handle action button clicked" },
-#endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionId_MetaData[] = {
-		{ "NativeConst", "" },
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FStrPropertyParams NewProp_ActionId;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::NewProp_ActionId = { "ActionId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventOnActionButtonClicked_Parms, ActionId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionId_MetaData), NewProp_ActionId_MetaData) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::NewProp_ActionId,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesContextMenuWidget, nullptr, "OnActionButtonClicked", Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::EchoesContextMenuWidget_eventOnActionButtonClicked_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::Function_MetaDataParams)},  };
-static_assert(sizeof(Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::EchoesContextMenuWidget_eventOnActionButtonClicked_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(UEchoesContextMenuWidget::execOnActionButtonClicked)
-{
-	P_GET_PROPERTY(FStrProperty,Z_Param_ActionId);
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->OnActionButtonClicked(Z_Param_ActionId);
-	P_NATIVE_END;
-}
-// ********** End Class UEchoesContextMenuWidget Function OnActionButtonClicked ********************
 
 // ********** Begin Class UEchoesContextMenuWidget Function OnMenuClosed ***************************
 static FName NAME_UEchoesContextMenuWidget_OnMenuClosed = FName(TEXT("OnMenuClosed"));
@@ -613,8 +750,8 @@ void UEchoesContextMenuWidget::StaticRegisterNativesUEchoesContextMenuWidget()
 		{ "GetItemObject", &UEchoesContextMenuWidget::execGetItemObject },
 		{ "GetSourceActor", &UEchoesContextMenuWidget::execGetSourceActor },
 		{ "GetSourceStorageId", &UEchoesContextMenuWidget::execGetSourceStorageId },
+		{ "HandleActionButtonClicked", &UEchoesContextMenuWidget::execHandleActionButtonClicked },
 		{ "InitializeMenu", &UEchoesContextMenuWidget::execInitializeMenu },
-		{ "OnActionButtonClicked", &UEchoesContextMenuWidget::execOnActionButtonClicked },
 		{ "PositionAtMouse", &UEchoesContextMenuWidget::execPositionAtMouse },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -770,8 +907,8 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetItemObject, "GetItemObject" }, // 2378664621
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceActor, "GetSourceActor" }, // 2140620926
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceStorageId, "GetSourceStorageId" }, // 3072815231
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked, "HandleActionButtonClicked" }, // 2125682825
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu, "InitializeMenu" }, // 3270031374
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnActionButtonClicked, "OnActionButtonClicked" }, // 3803949279
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuClosed, "OnMenuClosed" }, // 1339726811
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuInitialized, "OnMenuInitialized" }, // 2649430440
 		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_PositionAtMouse, "PositionAtMouse" }, // 4167901612
@@ -844,10 +981,11 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FContextMenuAction::StaticStruct, Z_Construct_UScriptStruct_FContextMenuAction_Statics::NewStructOps, TEXT("ContextMenuAction"), &Z_Registration_Info_UScriptStruct_FContextMenuAction, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FContextMenuAction), 2369989439U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesContextMenuWidget, UEchoesContextMenuWidget::StaticClass, TEXT("UEchoesContextMenuWidget"), &Z_Registration_Info_UClass_UEchoesContextMenuWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuWidget), 2281672687U) },
+		{ Z_Construct_UClass_UEchoesContextMenuActionButton, UEchoesContextMenuActionButton::StaticClass, TEXT("UEchoesContextMenuActionButton"), &Z_Registration_Info_UClass_UEchoesContextMenuActionButton, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuActionButton), 1119669276U) },
+		{ Z_Construct_UClass_UEchoesContextMenuWidget, UEchoesContextMenuWidget::StaticClass, TEXT("UEchoesContextMenuWidget"), &Z_Registration_Info_UClass_UEchoesContextMenuWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuWidget), 2273259366U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_4264620705(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_1088118868(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

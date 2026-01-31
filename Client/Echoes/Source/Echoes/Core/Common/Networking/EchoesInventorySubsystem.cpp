@@ -759,7 +759,7 @@ void UEchoesInventorySubsystem::OnModuleFitReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-   const FGuid& ShipId,
+	FGuid ShipId,
 	FOnModuleFitted OnSuccess,
 	FOnInventoryFailure OnFailure)
 {
@@ -779,28 +779,14 @@ void UEchoesInventorySubsystem::OnModuleFitReceived(
 	if (ResponseCode == 200)
 	{
 		// Success! Now refresh the ship fitting to get updated stats
+		bHasPendingFitRefresh = true;
+		PendingModuleFitSuccess = OnSuccess;
+
 		FOnShipFittingReceived RefreshSuccess;
-		RefreshSuccess.BindLambda([this, OnSuccess](const FEchoesShipFitting& Fitting)
-		{
-			// Cache updated fitting
-			CachedFitting = Fitting;
-			
-			// Trigger fitting changed delegate for UI updates
-			OnFittingChanged.Broadcast(Fitting);
-			
-			// Call success callback
-			OnSuccess.ExecuteIfBound();
-			
-			UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module fitted and fitting updated"));
-		});
+		RefreshSuccess.BindDynamic(this, &UEchoesInventorySubsystem::HandleFitRefreshSuccess);
 
 		FOnInventoryFailure RefreshFailure;
-		RefreshFailure.BindLambda([OnSuccess](const FString& Error)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module fitted but failed to refresh fitting: %s"), *Error);
-			// Still call success since the fit operation succeeded
-			OnSuccess.ExecuteIfBound();
-		});
+		RefreshFailure.BindDynamic(this, &UEchoesInventorySubsystem::HandleFitRefreshFailure);
 
 		Inventory_FetchShipFitting(ShipId, RefreshSuccess, RefreshFailure);
 	}
@@ -830,7 +816,7 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-	const FGuid& ShipId, // Исправлено: добавлена ссылка
+	FGuid ShipId,
 	FOnModuleUnfitted OnSuccess,
 	FOnInventoryFailure OnFailure)
 {
@@ -850,28 +836,14 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	if (ResponseCode == 200)
 	{
 		// Success! Now refresh the ship fitting to get updated stats
+		bHasPendingUnfitRefresh = true;
+		PendingModuleUnfitSuccess = OnSuccess;
+
 		FOnShipFittingReceived RefreshSuccess;
-		RefreshSuccess.BindLambda([this, OnSuccess](const FEchoesShipFitting& Fitting)
-		{
-			// Cache updated fitting
-			CachedFitting = Fitting;
-			
-			// Trigger fitting changed delegate for UI updates
-			OnFittingChanged.Broadcast(Fitting);
-			
-			// Call success callback
-			OnSuccess.ExecuteIfBound();
-			
-			UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module unfitted and fitting updated"));
-		});
+		RefreshSuccess.BindDynamic(this, &UEchoesInventorySubsystem::HandleUnfitRefreshSuccess);
 
 		FOnInventoryFailure RefreshFailure;
-		RefreshFailure.BindLambda([OnSuccess](const FString& Error)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module unfitted but failed to refresh fitting: %s"), *Error);
-			// Still call success since the unfit operation succeeded
-			OnSuccess.ExecuteIfBound();
-		});
+		RefreshFailure.BindDynamic(this, &UEchoesInventorySubsystem::HandleUnfitRefreshFailure);
 
 		Inventory_FetchShipFitting(ShipId, RefreshSuccess, RefreshFailure);
 	}
@@ -889,6 +861,60 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	{
 		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Unexpected response code: %d"), ResponseCode);
 		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+	}
+}
+
+void UEchoesInventorySubsystem::HandleFitRefreshSuccess(const FEchoesShipFitting& Fitting)
+{
+	CachedFitting = Fitting;
+	OnFittingChanged.Broadcast(Fitting);
+
+	if (bHasPendingFitRefresh)
+	{
+		PendingModuleFitSuccess.ExecuteIfBound();
+		PendingModuleFitSuccess.Unbind();
+		bHasPendingFitRefresh = false;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module fitted and fitting updated"));
+}
+
+void UEchoesInventorySubsystem::HandleFitRefreshFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module fitted but failed to refresh fitting: %s"), *Error);
+
+	if (bHasPendingFitRefresh)
+	{
+		PendingModuleFitSuccess.ExecuteIfBound();
+		PendingModuleFitSuccess.Unbind();
+		bHasPendingFitRefresh = false;
+	}
+}
+
+void UEchoesInventorySubsystem::HandleUnfitRefreshSuccess(const FEchoesShipFitting& Fitting)
+{
+	CachedFitting = Fitting;
+	OnFittingChanged.Broadcast(Fitting);
+
+	if (bHasPendingUnfitRefresh)
+	{
+		PendingModuleUnfitSuccess.ExecuteIfBound();
+		PendingModuleUnfitSuccess.Unbind();
+		bHasPendingUnfitRefresh = false;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module unfitted and fitting updated"));
+}
+
+void UEchoesInventorySubsystem::HandleUnfitRefreshFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module unfitted but failed to refresh fitting: %s"), *Error);
+
+	if (bHasPendingUnfitRefresh)
+	{
+		PendingModuleUnfitSuccess.ExecuteIfBound();
+		PendingModuleUnfitSuccess.Unbind();
+		bHasPendingUnfitRefresh = false;
 	}
 }
 

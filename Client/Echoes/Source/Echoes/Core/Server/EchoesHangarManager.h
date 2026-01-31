@@ -35,7 +35,7 @@ public:
 
 	/** Spawn ship preview mesh at target point */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
-	void SpawnShipPreview(const FString& ShipId);
+	void SpawnShipPreview(const FGuid& ShipId);
 
 	/** Update ship mesh when fitting changes */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
@@ -51,9 +51,11 @@ protected:
 	void OnFittingChanged(const FEchoesShipFitting& NewFitting);
 
 	/** Called when ship fitting is successfully fetched */
+	UFUNCTION()
 	void OnShipFittingReceived(const FEchoesShipFitting& Fitting);
 
 	/** Called when ship fitting fetch fails */
+	UFUNCTION()
 	void OnShipFittingFailed(const FString& Error);
 
 public:
@@ -76,7 +78,7 @@ protected:
 
 	/** Current ship ID being displayed */
 	UPROPERTY()
-	FString CurrentShipId;
+	FGuid CurrentShipId;
 
 	/** Cached inventory subsystem reference */
 	UPROPERTY()

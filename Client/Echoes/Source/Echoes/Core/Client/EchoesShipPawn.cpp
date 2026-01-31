@@ -153,14 +153,6 @@ void AEchoesShipPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 // ==================== Ship Stats ====================
 
-void AEchoesShipPawn::InitializeShipStats(const FEchoesShipStats& Stats)
-{
-    if (ShipMovement)
-    {
-        ShipMovement->InitializeShipStats(Stats);
-    }
-}
-
 FEchoesShipStats AEchoesShipPawn::GetShipStats() const
 {
     if (ShipMovement)
@@ -310,7 +302,7 @@ void AEchoesShipPawn::OnRep_ShipStats()
 {
     // Ship stats replicated from server - apply them locally
     UE_LOG(LogTemp, Log, TEXT("Ship stats replicated: Mass=%.1f, Thrust=%.1f"), 
-        ReplicatedShipStats.Mass, ReplicatedShipStats.ThrustForce);
+        ReplicatedShipStats.TotalMass, ReplicatedShipStats.Thrust);
     
     // Apply stats to movement component and mesh
     Common_InitializeFromStats(ReplicatedShipStats);
@@ -321,7 +313,7 @@ void AEchoesShipPawn::OnRep_ShipStats()
 void AEchoesShipPawn::Common_InitializeFromStats(const FEchoesShipStats& Stats)
 {
     UE_LOG(LogTemp, Log, TEXT("Initializing ship with stats: Mass=%.1f, Thrust=%.1f, Inertia=%.3f"), 
-        Stats.Mass, Stats.ThrustForce, Stats.InertiaMultiplier);
+        Stats.TotalMass, Stats.Thrust, Stats.InertiaMultiplier);
     
     // Apply stats to movement component
     if (ShipMovement)
@@ -333,7 +325,7 @@ void AEchoesShipPawn::Common_InitializeFromStats(const FEchoesShipStats& Stats)
     if (ShipMesh)
     {
         // Set mass directly on physics body
-        ShipMesh->SetMassOverrideInKg(NAME_None, Stats.Mass, true);
+        ShipMesh->SetMassOverrideInKg(NAME_None, Stats.TotalMass, true);
         
         // Update linear damping based on inertia multiplier
         // Higher inertia = more damping for realistic "heavy" feel
@@ -341,7 +333,7 @@ void AEchoesShipPawn::Common_InitializeFromStats(const FEchoesShipStats& Stats)
         ShipMesh->SetLinearDamping(LinearDamping);
         
         UE_LOG(LogTemp, Log, TEXT("Updated mesh mass to %.1f kg, linear damping to %.3f"), 
-            Stats.Mass, LinearDamping);
+            Stats.TotalMass, LinearDamping);
     }
     
     // If we're the server, update the replicated stats
@@ -357,6 +349,29 @@ void AEchoesShipPawn::InitializeShipStats(const FEchoesShipStats& Stats)
     Common_InitializeFromStats(Stats);
 }
 
+void AEchoesShipPawn::HandleShipFittingReceived(const FEchoesShipFitting& Fitting)
+{
+    // Convert ShipFitting to ShipStats
+    FEchoesShipStats Stats;
+    Stats.TotalMass = Fitting.TotalMass;
+    Stats.Thrust = Fitting.Thrust;
+    Stats.InertiaMultiplier = Fitting.InertiaMultiplier;
+    Stats.RotationSpeed = Fitting.RotationTorque;
+    Stats.MaxVelocity = Fitting.MaxVelocity;
+    Stats.WarpSpeed = 1000000.0f; // Default warp speed
+    
+    UE_LOG(LogTemp, Log, TEXT("Server verified ship ownership and fetched stats. Initializing physics."));
+    
+    // Initialize physics (this will replicate to clients)
+    Common_InitializeFromStats(Stats);
+}
+
+void AEchoesShipPawn::HandleShipFittingFailed(const FString& Error)
+{
+    UE_LOG(LogTemp, Error, TEXT("Server failed to verify ship ownership: %s"), *Error);
+    // Don't initialize - ship ownership not verified
+}
+
 void AEchoesShipPawn::ServerRPC_RequestShipInitialization_Implementation(const FString& ShipId)
 {
     // Server-side: Verify ship ownership and initialize physics
@@ -368,34 +383,12 @@ void AEchoesShipPawn::ServerRPC_RequestShipInitialization_Implementation(const F
         if (UEchoesInventorySubsystem* InventorySubsystem = GameInstance->GetSubsystem<UEchoesInventorySubsystem>())
         {
             // First, verify ownership
-            FString ShipIdGuid = ShipId; // Convert to appropriate format
-            
             // Fetch ship fitting from backend (this will verify ownership via JWT)
             FOnShipFittingReceived OnSuccess;
-            OnSuccess.BindLambda([this](const FEchoesShipFitting& Fitting)
-            {
-                // Convert ShipFitting to ShipStats
-                FEchoesShipStats Stats;
-                Stats.Mass = Fitting.TotalMass;
-                Stats.ThrustForce = Fitting.Thrust;
-                Stats.InertiaMultiplier = Fitting.InertiaMultiplier;
-                Stats.RotationTorque = Fitting.RotationTorque;
-                Stats.MaxVelocity = Fitting.MaxVelocity;
-                Stats.MaxWarpSpeed = 1000000.0f; // Default warp speed
-                
-                UE_LOG(LogTemp, Log, TEXT("Server verified ship ownership and fetched stats. Initializing physics."));
-                
-                // Initialize physics (this will replicate to clients)
-                Common_InitializeFromStats(Stats);
-            });
+            OnSuccess.BindDynamic(this, &AEchoesShipPawn::HandleShipFittingReceived);
             
             FOnInventoryFailure OnFailure;
-            OnFailure.BindLambda([this, ShipId](const FString& Error)
-            {
-                UE_LOG(LogTemp, Error, TEXT("Server failed to verify ship ownership for %s: %s"), 
-                    *ShipId, *Error);
-                // Don't initialize - ship ownership not verified
-            });
+            OnFailure.BindDynamic(this, &AEchoesShipPawn::HandleShipFittingFailed);
             
             // Attempt to fetch ship fitting (includes ownership verification)
             FGuid ShipGuid;

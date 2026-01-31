@@ -19,7 +19,15 @@ UEchoesContextMenuWidget::UEchoesContextMenuWidget(const FObjectInitializer& Obj
 	, SourceActor(nullptr)
 	, bIsOpen(false)
 {
-	bIsFocusable = true;
+	SetIsFocusable(true);
+}
+
+void UEchoesContextMenuActionButton::HandleClicked()
+{
+	if (OwnerWidget.IsValid())
+	{
+		OwnerWidget->HandleActionButtonClicked(ActionId);
+	}
 }
 
 void UEchoesContextMenuWidget::NativeConstruct()
@@ -187,10 +195,10 @@ void UEchoesContextMenuWidget::BuildMenuContent()
 		if (ActionButton)
 		{
 			// Add to container
-			UVerticalBoxSlot* Slot = ActionsContainer->AddChildToVerticalBox(ActionButton);
-			if (Slot)
+			UVerticalBoxSlot* BoxSlot = ActionsContainer->AddChildToVerticalBox(ActionButton);
+			if (BoxSlot)
 			{
-				Slot->SetPadding(FMargin(0.0f, ButtonSpacing));
+				BoxSlot->SetPadding(FMargin(0.0f, ButtonSpacing));
 			}
 		}
 	}
@@ -198,7 +206,7 @@ void UEchoesContextMenuWidget::BuildMenuContent()
 	UE_LOG(LogTemp, Verbose, TEXT("Context menu: Built %d action buttons"), Actions.Num());
 }
 
-void UEchoesContextMenuWidget::OnActionButtonClicked(const FString& ActionId)
+void UEchoesContextMenuWidget::HandleActionButtonClicked(const FString& ActionId)
 {
 	UE_LOG(LogTemp, Log, TEXT("Context menu action selected: %s"), *ActionId);
 
@@ -211,12 +219,22 @@ void UEchoesContextMenuWidget::OnActionButtonClicked(const FString& ActionId)
 
 UButton* UEchoesContextMenuWidget::CreateActionButton(const FContextMenuAction& Action)
 {
+	UClass* ButtonClass = UEchoesContextMenuActionButton::StaticClass();
+	if (ActionButtonClass && ActionButtonClass->IsChildOf(UEchoesContextMenuActionButton::StaticClass()))
+	{
+		ButtonClass = ActionButtonClass.Get();
+	}
+
 	// Create button
-	UButton* Button = NewObject<UButton>(this, ActionButtonClass ? ActionButtonClass : UButton::StaticClass());
+	UEchoesContextMenuActionButton* Button = NewObject<UEchoesContextMenuActionButton>(this, ButtonClass);
 	if (!Button)
 	{
 		return nullptr;
 	}
+
+	Button->OwnerWidget = this;
+	Button->ActionId = Action.ActionId;
+	Button->OnClicked.AddDynamic(Button, &UEchoesContextMenuActionButton::HandleClicked);
 
 	// Create text label
 	UTextBlock* ButtonText = NewObject<UTextBlock>(Button);
@@ -225,15 +243,6 @@ UButton* UEchoesContextMenuWidget::CreateActionButton(const FContextMenuAction& 
 		ButtonText->SetText(Action.DisplayName);
 		Button->AddChild(ButtonText);
 	}
-
-	// Bind click event
-	// We need to capture ActionId for the lambda
-	FString ActionIdCopy = Action.ActionId;
-	Button->OnClicked.AddDynamic(this, &UEchoesContextMenuWidget::OnActionButtonClicked);
-	
-	// Store action ID in button's tag for retrieval in callback
-	// Note: We'll need to modify OnActionButtonClicked to retrieve from sender
-	// For now, use a simple binding approach
 
 	// Enable/disable based on action state
 	Button->SetIsEnabled(Action.bEnabled);

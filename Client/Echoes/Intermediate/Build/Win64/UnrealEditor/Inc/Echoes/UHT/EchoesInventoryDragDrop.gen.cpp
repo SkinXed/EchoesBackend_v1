@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesInventoryDragDrop.h"
-#include "Echoes/Core/Common/EchoesInventoryComponent.h"
+#include "UI/EchoesInventoryDragDrop.h"
+#include "Core/Common/EchoesInventoryComponent.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

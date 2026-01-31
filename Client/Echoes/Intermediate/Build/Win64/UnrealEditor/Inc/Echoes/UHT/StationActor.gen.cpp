@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/StationActor.h"
-#include "Echoes/Core/Common/EchoesWorldVisualTypes.h"
+#include "Core/Common/StationActor.h"
+#include "Core/Common/EchoesWorldVisualTypes.h"
 #include "Engine/HitResult.h"
 #include "UObject/CoreNet.h"
 
@@ -238,6 +238,108 @@ DEFINE_FUNCTION(AStationActor::execGetStationType)
 	P_NATIVE_END;
 }
 // ********** End Class AStationActor Function GetStationType **************************************
+
+// ********** Begin Class AStationActor Function HandleHangarFailure *******************************
+struct Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics
+{
+	struct StationActor_eventHandleHangarFailure_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Called when ship fitting fetch fails */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Called when ship fitting fetch fails" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventHandleHangarFailure_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AStationActor, nullptr, "HandleHangarFailure", Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::PropPointers), sizeof(Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::StationActor_eventHandleHangarFailure_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::Function_MetaDataParams), Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::StationActor_eventHandleHangarFailure_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AStationActor_HandleHangarFailure()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AStationActor::execHandleHangarFailure)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleHangarFailure(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class AStationActor Function HandleHangarFailure *********************************
+
+// ********** Begin Class AStationActor Function HandleHangarReceived ******************************
+struct Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics
+{
+	struct StationActor_eventHandleHangarReceived_Parms
+	{
+		FGuid HangarStorageId;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Called when ship fitting is successfully fetched */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Called when ship fitting is successfully fetched" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HangarStorageId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_HangarStorageId;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::NewProp_HangarStorageId = { "HangarStorageId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventHandleHangarReceived_Parms, HangarStorageId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HangarStorageId_MetaData), NewProp_HangarStorageId_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::NewProp_HangarStorageId,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AStationActor, nullptr, "HandleHangarReceived", Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::PropPointers), sizeof(Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::StationActor_eventHandleHangarReceived_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00C80401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::Function_MetaDataParams), Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::StationActor_eventHandleHangarReceived_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AStationActor_HandleHangarReceived()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AStationActor::execHandleHangarReceived)
+{
+	P_GET_STRUCT_REF(FGuid,Z_Param_Out_HangarStorageId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleHangarReceived(Z_Param_Out_HangarStorageId);
+	P_NATIVE_END;
+}
+// ********** End Class AStationActor Function HandleHangarReceived ********************************
 
 // ********** Begin Class AStationActor Function HasDockingAccess **********************************
 struct Z_Construct_UFunction_AStationActor_HasDockingAccess_Statics
@@ -625,6 +727,8 @@ void AStationActor::StaticRegisterNativesAStationActor()
 		{ "GetStationId", &AStationActor::execGetStationId },
 		{ "GetStationName", &AStationActor::execGetStationName },
 		{ "GetStationType", &AStationActor::execGetStationType },
+		{ "HandleHangarFailure", &AStationActor::execHandleHangarFailure },
+		{ "HandleHangarReceived", &AStationActor::execHandleHangarReceived },
 		{ "HasDockingAccess", &AStationActor::execHasDockingAccess },
 		{ "InitializeStation", &AStationActor::execInitializeStation },
 		{ "OnDockingZoneBeginOverlap", &AStationActor::execOnDockingZoneBeginOverlap },
@@ -745,6 +849,8 @@ struct Z_Construct_UClass_AStationActor_Statics
 		{ &Z_Construct_UFunction_AStationActor_GetStationId, "GetStationId" }, // 724220845
 		{ &Z_Construct_UFunction_AStationActor_GetStationName, "GetStationName" }, // 3095192526
 		{ &Z_Construct_UFunction_AStationActor_GetStationType, "GetStationType" }, // 3584134899
+		{ &Z_Construct_UFunction_AStationActor_HandleHangarFailure, "HandleHangarFailure" }, // 3147242742
+		{ &Z_Construct_UFunction_AStationActor_HandleHangarReceived, "HandleHangarReceived" }, // 288522190
 		{ &Z_Construct_UFunction_AStationActor_HasDockingAccess, "HasDockingAccess" }, // 347559422
 		{ &Z_Construct_UFunction_AStationActor_InitializeStation, "InitializeStation" }, // 3630069563
 		{ &Z_Construct_UFunction_AStationActor_OnDockingZoneBeginOverlap, "OnDockingZoneBeginOverlap" }, // 2257829724
@@ -828,10 +934,10 @@ AStationActor::~AStationActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 4132708053U) },
+		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 300704525U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_3909705920(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_3951727151(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/EchoesItemDefinitions.h"
+#include "Core/Common/EchoesItemDefinitions.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

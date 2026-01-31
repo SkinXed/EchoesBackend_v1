@@ -20,7 +20,11 @@ class UEchoesInventoryItemObject;
 class UTexture2D;
 
 // ********** Begin Class UEchoesInventoryEntryWidget **********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleStackAllFailure); \
+	DECLARE_FUNCTION(execHandleStackAllSuccess); \
+	DECLARE_FUNCTION(execHandleJettisonFailure); \
+	DECLARE_FUNCTION(execHandleJettisonSuccess); \
 	DECLARE_FUNCTION(execOnJettisonQuantityCancelled); \
 	DECLARE_FUNCTION(execOnJettisonQuantitySelected); \
 	DECLARE_FUNCTION(execOnDragQuantityCancelled); \
@@ -32,7 +36,7 @@ class UTexture2D;
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventoryEntryWidget_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesInventoryEntryWidget(); \
 	friend struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics; \
@@ -44,7 +48,7 @@ public: \
 	virtual UObject* _getUObject() const override { return const_cast<UEchoesInventoryEntryWidget*>(this); }
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesInventoryEntryWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -56,13 +60,13 @@ public: \
 	NO_API virtual ~UEchoesInventoryEntryWidget();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_30_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_31_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_33_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h_34_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

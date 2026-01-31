@@ -49,12 +49,12 @@ ECHOES_API void FOnCharacterSelected_DelegateWrapper(const FMulticastScriptDeleg
 
 // ********** End Delegate FOnCharacterSelected ****************************************************
 
-// ********** Begin Delegate FOnCharacterCreated ***************************************************
+// ********** Begin Delegate FOnIdentityCharacterCreated *******************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_74_DELEGATE \
-ECHOES_API void FOnCharacterCreated_DelegateWrapper(const FScriptDelegate& OnCharacterCreated, FEchoesCharacter const& CharacterData);
+ECHOES_API void FOnIdentityCharacterCreated_DelegateWrapper(const FScriptDelegate& OnIdentityCharacterCreated, FEchoesCharacter const& CharacterData);
 
 
-// ********** End Delegate FOnCharacterCreated *****************************************************
+// ********** End Delegate FOnIdentityCharacterCreated *********************************************
 
 // ********** Begin Class UEchoesIdentitySubsystem *************************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_RPC_WRAPPERS_NO_PURE_DECLS \

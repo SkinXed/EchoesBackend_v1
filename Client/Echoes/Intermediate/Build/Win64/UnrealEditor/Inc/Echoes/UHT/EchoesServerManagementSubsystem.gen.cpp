@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Server/EchoesServerManagementSubsystem.h"
-#include "Echoes/Core/Server/EchoesServerDiscoveryTypes.h"
+#include "Core/Server/EchoesServerManagementSubsystem.h"
+#include "Core/Server/EchoesServerDiscoveryTypes.h"
 #include "Engine/GameInstance.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -510,7 +510,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Registe
 	struct EchoesServerManagementSubsystem_eventServerOnly_Register_Parms
 	{
 		FString InstanceId;
-		int32 GamePort;
+		int32 InGamePort;
 		FGuid SolarSystemId;
 	};
 #if WITH_METADATA
@@ -519,7 +519,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Registe
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Register this server with the backend (The Handshake)\n\x09 * Called automatically during Initialize() if running as dedicated server\n\x09 * Can also be triggered manually from GameMode\n\x09 * \n\x09 * @param InstanceId - Unique GUID for this server instance\n\x09 * @param GamePort - Port for game connections\n\x09 * @param SolarSystemId - Solar system this server hosts (for DedicatedSystem mode)\n\x09 */" },
 #endif
-		{ "CPP_Default_GamePort", "7777" },
+		{ "CPP_Default_InGamePort", "7777" },
 		{ "CPP_Default_SolarSystemId", "()" },
 		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
@@ -534,17 +534,17 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Registe
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_InstanceId;
-	static const UECodeGen_Private::FIntPropertyParams NewProp_GamePort;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_InGamePort;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_SolarSystemId;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_InstanceId = { "InstanceId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesServerManagementSubsystem_eventServerOnly_Register_Parms, InstanceId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InstanceId_MetaData), NewProp_InstanceId_MetaData) };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_GamePort = { "GamePort", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesServerManagementSubsystem_eventServerOnly_Register_Parms, GamePort), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_InGamePort = { "InGamePort", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesServerManagementSubsystem_eventServerOnly_Register_Parms, InGamePort), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_SolarSystemId = { "SolarSystemId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesServerManagementSubsystem_eventServerOnly_Register_Parms, SolarSystemId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SolarSystemId_MetaData), NewProp_SolarSystemId_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_InstanceId,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_GamePort,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_InGamePort,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::NewProp_SolarSystemId,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register_Statics::PropPointers) < 2048);
@@ -562,11 +562,11 @@ UFunction* Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Reg
 DEFINE_FUNCTION(UEchoesServerManagementSubsystem::execServerOnly_Register)
 {
 	P_GET_PROPERTY(FStrProperty,Z_Param_InstanceId);
-	P_GET_PROPERTY(FIntProperty,Z_Param_GamePort);
+	P_GET_PROPERTY(FIntProperty,Z_Param_InGamePort);
 	P_GET_STRUCT_REF(FGuid,Z_Param_Out_SolarSystemId);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->ServerOnly_Register(Z_Param_InstanceId,Z_Param_GamePort,Z_Param_Out_SolarSystemId);
+	P_THIS->ServerOnly_Register(Z_Param_InstanceId,Z_Param_InGamePort,Z_Param_Out_SolarSystemId);
 	P_NATIVE_END;
 }
 // ********** End Class UEchoesServerManagementSubsystem Function ServerOnly_Register **************
@@ -812,7 +812,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsServerRegistered, "IsServerRegistered" }, // 3706503401
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_GetConfig, "ServerOnly_GetConfig" }, // 4088227962
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Heartbeat, "ServerOnly_Heartbeat" }, // 1540807896
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register, "ServerOnly_Register" }, // 472086446
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register, "ServerOnly_Register" }, // 946668330
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Unregister, "ServerOnly_Unregister" }, // 2128658270
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -891,10 +891,10 @@ UEchoesServerManagementSubsystem::~UEchoesServerManagementSubsystem() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesServerManagementSubsystem, UEchoesServerManagementSubsystem::StaticClass, TEXT("UEchoesServerManagementSubsystem"), &Z_Registration_Info_UClass_UEchoesServerManagementSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerManagementSubsystem), 3653310144U) },
+		{ Z_Construct_UClass_UEchoesServerManagementSubsystem, UEchoesServerManagementSubsystem::StaticClass, TEXT("UEchoesServerManagementSubsystem"), &Z_Registration_Info_UClass_UEchoesServerManagementSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerManagementSubsystem), 690058291U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_1800731185(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_872765511(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

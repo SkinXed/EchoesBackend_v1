@@ -95,6 +95,7 @@ protected:
 	 * Populate the list view with inventory items
 	 * @param Items - Items to display
 	 */
+	UFUNCTION()
 	void PopulateInventoryList(const FEchoesContainerItems& Items);
 
 	/**
@@ -160,4 +161,13 @@ private:
 	 * Unbind from current inventory component
 	 */
 	void UnbindInventoryComponent();
+
+	UFUNCTION()
+	void HandleMoveSuccess();
+
+	UFUNCTION()
+	void HandleMoveFailure(const FString& Error);
+
+	UFUNCTION()
+	void HandleFetchFailure(const FString& Error);
 };

@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/PlanetActor.h"
-#include "Echoes/Core/Common/EchoesWorldVisualTypes.h"
+#include "Core/Common/PlanetActor.h"
+#include "Core/Common/EchoesWorldVisualTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

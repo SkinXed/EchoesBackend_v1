@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/Networking/EchoesInventorySubsystem.h"
-#include "Echoes/Core/Common/EchoesItemDefinitions.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "Core/Common/EchoesItemDefinitions.h"
 #include "Engine/GameInstance.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -1201,6 +1201,186 @@ DEFINE_FUNCTION(UEchoesInventorySubsystem::execGetPersonalHangarId)
 }
 // ********** End Class UEchoesInventorySubsystem Function GetPersonalHangarId *********************
 
+// ********** Begin Class UEchoesInventorySubsystem Function HandleFitRefreshFailure ***************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics
+{
+	struct EchoesInventorySubsystem_eventHandleFitRefreshFailure_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventHandleFitRefreshFailure_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "HandleFitRefreshFailure", Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::EchoesInventorySubsystem_eventHandleFitRefreshFailure_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::EchoesInventorySubsystem_eventHandleFitRefreshFailure_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execHandleFitRefreshFailure)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleFitRefreshFailure(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function HandleFitRefreshFailure *****************
+
+// ********** Begin Class UEchoesInventorySubsystem Function HandleFitRefreshSuccess ***************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics
+{
+	struct EchoesInventorySubsystem_eventHandleFitRefreshSuccess_Parms
+	{
+		FEchoesShipFitting Fitting;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Fitting_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Fitting;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::NewProp_Fitting = { "Fitting", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventHandleFitRefreshSuccess_Parms, Fitting), Z_Construct_UScriptStruct_FEchoesShipFitting, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Fitting_MetaData), NewProp_Fitting_MetaData) }; // 2094547099
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::NewProp_Fitting,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "HandleFitRefreshSuccess", Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::EchoesInventorySubsystem_eventHandleFitRefreshSuccess_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::EchoesInventorySubsystem_eventHandleFitRefreshSuccess_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execHandleFitRefreshSuccess)
+{
+	P_GET_STRUCT_REF(FEchoesShipFitting,Z_Param_Out_Fitting);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleFitRefreshSuccess(Z_Param_Out_Fitting);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function HandleFitRefreshSuccess *****************
+
+// ********** Begin Class UEchoesInventorySubsystem Function HandleUnfitRefreshFailure *************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics
+{
+	struct EchoesInventorySubsystem_eventHandleUnfitRefreshFailure_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventHandleUnfitRefreshFailure_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "HandleUnfitRefreshFailure", Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::EchoesInventorySubsystem_eventHandleUnfitRefreshFailure_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::EchoesInventorySubsystem_eventHandleUnfitRefreshFailure_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execHandleUnfitRefreshFailure)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleUnfitRefreshFailure(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function HandleUnfitRefreshFailure ***************
+
+// ********** Begin Class UEchoesInventorySubsystem Function HandleUnfitRefreshSuccess *************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics
+{
+	struct EchoesInventorySubsystem_eventHandleUnfitRefreshSuccess_Parms
+	{
+		FEchoesShipFitting Fitting;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Fitting_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Fitting;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::NewProp_Fitting = { "Fitting", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventHandleUnfitRefreshSuccess_Parms, Fitting), Z_Construct_UScriptStruct_FEchoesShipFitting, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Fitting_MetaData), NewProp_Fitting_MetaData) }; // 2094547099
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::NewProp_Fitting,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "HandleUnfitRefreshSuccess", Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::EchoesInventorySubsystem_eventHandleUnfitRefreshSuccess_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::EchoesInventorySubsystem_eventHandleUnfitRefreshSuccess_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execHandleUnfitRefreshSuccess)
+{
+	P_GET_STRUCT_REF(FEchoesShipFitting,Z_Param_Out_Fitting);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleUnfitRefreshSuccess(Z_Param_Out_Fitting);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function HandleUnfitRefreshSuccess ***************
+
 // ********** Begin Class UEchoesInventorySubsystem Function HasItemDefinition *********************
 struct Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics
 {
@@ -1904,6 +2084,10 @@ void UEchoesInventorySubsystem::StaticRegisterNativesUEchoesInventorySubsystem()
 		{ "GetItemDefinitionDataByTypeId", &UEchoesInventorySubsystem::execGetItemDefinitionDataByTypeId },
 		{ "GetItemFromRegistryData", &UEchoesInventorySubsystem::execGetItemFromRegistryData },
 		{ "GetPersonalHangarId", &UEchoesInventorySubsystem::execGetPersonalHangarId },
+		{ "HandleFitRefreshFailure", &UEchoesInventorySubsystem::execHandleFitRefreshFailure },
+		{ "HandleFitRefreshSuccess", &UEchoesInventorySubsystem::execHandleFitRefreshSuccess },
+		{ "HandleUnfitRefreshFailure", &UEchoesInventorySubsystem::execHandleUnfitRefreshFailure },
+		{ "HandleUnfitRefreshSuccess", &UEchoesInventorySubsystem::execHandleUnfitRefreshSuccess },
 		{ "HasItemDefinition", &UEchoesInventorySubsystem::execHasItemDefinition },
 		{ "HasItemInRegistry", &UEchoesInventorySubsystem::execHasItemInRegistry },
 		{ "Inventory_ClearCache", &UEchoesInventorySubsystem::execInventory_ClearCache },
@@ -2028,6 +2212,10 @@ struct Z_Construct_UClass_UEchoesInventorySubsystem_Statics
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId, "GetItemDefinitionDataByTypeId" }, // 2617795425
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData, "GetItemFromRegistryData" }, // 1634449037
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId, "GetPersonalHangarId" }, // 2254671601
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshFailure, "HandleFitRefreshFailure" }, // 3184049069
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HandleFitRefreshSuccess, "HandleFitRefreshSuccess" }, // 2466377002
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshFailure, "HandleUnfitRefreshFailure" }, // 3929300368
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HandleUnfitRefreshSuccess, "HandleUnfitRefreshSuccess" }, // 172760144
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition, "HasItemDefinition" }, // 2850417126
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry, "HasItemInRegistry" }, // 1983660015
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_ClearCache, "Inventory_ClearCache" }, // 529228144
@@ -2113,10 +2301,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FEchoesShipFitting::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipFitting_Statics::NewStructOps, TEXT("EchoesShipFitting"), &Z_Registration_Info_UScriptStruct_FEchoesShipFitting, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipFitting), 2094547099U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 3672484356U) },
+		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 1783796503U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_2939552473(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_2140423920(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

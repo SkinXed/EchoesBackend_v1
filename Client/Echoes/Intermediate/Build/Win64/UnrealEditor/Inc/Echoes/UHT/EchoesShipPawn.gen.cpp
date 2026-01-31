@@ -5,8 +5,9 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Client/EchoesShipPawn.h"
-#include "Echoes/Core/Common/EchoesShipTypes.h"
+#include "Core/Client/EchoesShipPawn.h"
+#include "Core/Common/EchoesShipTypes.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -16,6 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeEchoesShipPawn() {}
 ECHOES_API UClass* Z_Construct_UClass_AEchoesShipPawn();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesShipPawn_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesShipMovementComponent_NoRegister();
+ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipFitting();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipStats();
 ENGINE_API UClass* Z_Construct_UClass_APawn();
 ENGINE_API UClass* Z_Construct_UClass_UCameraComponent_NoRegister();
@@ -125,6 +127,96 @@ DEFINE_FUNCTION(AEchoesShipPawn::execGetShipStats)
 	P_NATIVE_END;
 }
 // ********** End Class AEchoesShipPawn Function GetShipStats **************************************
+
+// ********** Begin Class AEchoesShipPawn Function HandleShipFittingFailed *************************
+struct Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics
+{
+	struct EchoesShipPawn_eventHandleShipFittingFailed_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventHandleShipFittingFailed_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AEchoesShipPawn, nullptr, "HandleShipFittingFailed", Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::PropPointers), sizeof(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::EchoesShipPawn_eventHandleShipFittingFailed_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::EchoesShipPawn_eventHandleShipFittingFailed_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AEchoesShipPawn::execHandleShipFittingFailed)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleShipFittingFailed(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class AEchoesShipPawn Function HandleShipFittingFailed ***************************
+
+// ********** Begin Class AEchoesShipPawn Function HandleShipFittingReceived ***********************
+struct Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics
+{
+	struct EchoesShipPawn_eventHandleShipFittingReceived_Parms
+	{
+		FEchoesShipFitting Fitting;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Fitting_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Fitting;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::NewProp_Fitting = { "Fitting", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventHandleShipFittingReceived_Parms, Fitting), Z_Construct_UScriptStruct_FEchoesShipFitting, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Fitting_MetaData), NewProp_Fitting_MetaData) }; // 2094547099
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::NewProp_Fitting,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AEchoesShipPawn, nullptr, "HandleShipFittingReceived", Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::PropPointers), sizeof(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::EchoesShipPawn_eventHandleShipFittingReceived_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::EchoesShipPawn_eventHandleShipFittingReceived_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AEchoesShipPawn::execHandleShipFittingReceived)
+{
+	P_GET_STRUCT_REF(FEchoesShipFitting,Z_Param_Out_Fitting);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleShipFittingReceived(Z_Param_Out_Fitting);
+	P_NATIVE_END;
+}
+// ********** End Class AEchoesShipPawn Function HandleShipFittingReceived *************************
 
 // ********** Begin Class AEchoesShipPawn Function InitializeShipStats *****************************
 struct Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics
@@ -331,6 +423,8 @@ void AEchoesShipPawn::StaticRegisterNativesAEchoesShipPawn()
 	static const FNameNativePtrPair Funcs[] = {
 		{ "Common_InitializeFromStats", &AEchoesShipPawn::execCommon_InitializeFromStats },
 		{ "GetShipStats", &AEchoesShipPawn::execGetShipStats },
+		{ "HandleShipFittingFailed", &AEchoesShipPawn::execHandleShipFittingFailed },
+		{ "HandleShipFittingReceived", &AEchoesShipPawn::execHandleShipFittingReceived },
 		{ "InitializeShipStats", &AEchoesShipPawn::execInitializeShipStats },
 		{ "OnFittingReceived", &AEchoesShipPawn::execOnFittingReceived },
 		{ "OnRep_ShipStats", &AEchoesShipPawn::execOnRep_ShipStats },
@@ -580,6 +674,8 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats, "Common_InitializeFromStats" }, // 2490362803
 		{ &Z_Construct_UFunction_AEchoesShipPawn_GetShipStats, "GetShipStats" }, // 1312928224
+		{ &Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed, "HandleShipFittingFailed" }, // 2708423049
+		{ &Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived, "HandleShipFittingReceived" }, // 1989409304
 		{ &Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats, "InitializeShipStats" }, // 1082518863
 		{ &Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived, "OnFittingReceived" }, // 3142198698
 		{ &Z_Construct_UFunction_AEchoesShipPawn_OnRep_ShipStats, "OnRep_ShipStats" }, // 636055126
@@ -681,10 +777,10 @@ AEchoesShipPawn::~AEchoesShipPawn() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesShipPawn, AEchoesShipPawn::StaticClass, TEXT("AEchoesShipPawn"), &Z_Registration_Info_UClass_AEchoesShipPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesShipPawn), 4135906164U) },
+		{ Z_Construct_UClass_AEchoesShipPawn, AEchoesShipPawn::StaticClass, TEXT("AEchoesShipPawn"), &Z_Registration_Info_UClass_AEchoesShipPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesShipPawn), 3513169178U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_2000927536(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_4191918352(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

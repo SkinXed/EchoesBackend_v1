@@ -80,10 +80,10 @@ bool UEchoesInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDr
 
 	// Get target storage ID
 	FGuid TargetStorageId = InventoryComponent->StorageId;
-	AActor* TargetActor = CurrentViewedActor;
+	AActor* TargetActorLocal = CurrentViewedActor;
 
 	// Validate drop
-	if (!SourceActor || !TargetActor)
+	if (!SourceActor || !TargetActorLocal)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Cannot drop item: invalid source or target actor"));
 		OnMoveRequestFailed(TEXT("Invalid source or target actor"));
@@ -110,22 +110,20 @@ bool UEchoesInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDr
 		return false;
 	}
 
+	FOnItemMoveSuccess OnSuccess;
+	OnSuccess.BindDynamic(this, &UEchoesInventoryWidget::HandleMoveSuccess);
+
+	FOnInventoryOperationFailure OnFailure;
+	OnFailure.BindDynamic(this, &UEchoesInventoryWidget::HandleMoveFailure);
+
 	// Execute the move
 	SourceComponent->ServerOnly_MoveItem(
 		ItemData.AssetId,
-		TargetActor,
+		TargetActorLocal,
 		SourceActor,
 		Quantity,
-		FOnItemMoveSuccess::CreateLambda([this, ItemData]()
-		{
-			UE_LOG(LogTemp, Log, TEXT("Item move successful: %s"), *ItemData.TypeName);
-			// Inventory will be auto-refreshed via delegate
-		}),
-		FOnInventoryOperationFailure::CreateLambda([this, ItemData](const FString& Error)
-		{
-			UE_LOG(LogTemp, Error, TEXT("Item move failed: %s - %s"), *ItemData.TypeName, *Error);
-			OnMoveRequestFailed(Error);
-		})
+		OnSuccess,
+		OnFailure
 	);
 
 	return true;
@@ -139,14 +137,14 @@ void UEchoesInventoryWidget::RefreshInventory()
 		return;
 	}
 
+	FOnItemsFetched OnSuccess;
+	OnSuccess.BindDynamic(this, &UEchoesInventoryWidget::PopulateInventoryList);
+
+	FOnInventoryOperationFailure OnFailure;
+	OnFailure.BindDynamic(this, &UEchoesInventoryWidget::HandleFetchFailure);
+
 	// Fetch items from component
-	InventoryComponent->FetchItems(
-		FOnItemsFetched::CreateUObject(this, &UEchoesInventoryWidget::PopulateInventoryList),
-		FOnInventoryOperationFailure::CreateLambda([](const FString& Error)
-		{
-			UE_LOG(LogTemp, Error, TEXT("EchoesInventoryWidget: Failed to fetch items: %s"), *Error);
-		})
-	);
+	InventoryComponent->FetchItems(OnSuccess, OnFailure);
 }
 
 void UEchoesInventoryWidget::SetTargetActor(AActor* NewTargetActor)
@@ -213,6 +211,12 @@ void UEchoesInventoryWidget::UI_RequestMoveItem(AActor* TargetContainerActor, in
 		return;
 	}
 
+	FOnItemMoveSuccess OnSuccess;
+	OnSuccess.BindDynamic(this, &UEchoesInventoryWidget::HandleMoveSuccess);
+
+	FOnInventoryOperationFailure OnFailure;
+	OnFailure.BindDynamic(this, &UEchoesInventoryWidget::HandleMoveFailure);
+
 	// Call ServerOnly_MoveItem on the inventory component
 	// This should only be called on the server in a real game
 	InventoryComponent->ServerOnly_MoveItem(
@@ -220,16 +224,8 @@ void UEchoesInventoryWidget::UI_RequestMoveItem(AActor* TargetContainerActor, in
 		TargetContainerActor,
 		SourceActor,
 		Quantity,
-		FOnItemMoveSuccess::CreateLambda([this]()
-		{
-			UE_LOG(LogTemp, Log, TEXT("EchoesInventoryWidget: Item move successful"));
-			// Items will be auto-refreshed by the OnInventoryUpdated delegate
-		}),
-		FOnInventoryOperationFailure::CreateLambda([this](const FString& Error)
-		{
-			UE_LOG(LogTemp, Error, TEXT("EchoesInventoryWidget: Item move failed: %s"), *Error);
-			OnMoveRequestFailed(Error);
-		})
+		OnSuccess,
+		OnFailure
 	);
 }
 
@@ -326,4 +322,20 @@ void UEchoesInventoryWidget::UnbindInventoryComponent()
 	}
 
 	CurrentViewedActor = nullptr;
+}
+
+void UEchoesInventoryWidget::HandleMoveSuccess()
+{
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventoryWidget: Item move successful"));
+}
+
+void UEchoesInventoryWidget::HandleMoveFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Error, TEXT("EchoesInventoryWidget: Item move failed: %s"), *Error);
+	OnMoveRequestFailed(Error);
+}
+
+void UEchoesInventoryWidget::HandleFetchFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Error, TEXT("EchoesInventoryWidget: Failed to fetch items: %s"), *Error);
 }

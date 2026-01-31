@@ -24,7 +24,11 @@ struct FEchoesContainerItems;
 
 // ********** Begin Class UEchoesInventoryWidget ***************************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleFetchFailure); \
+	DECLARE_FUNCTION(execHandleMoveFailure); \
+	DECLARE_FUNCTION(execHandleMoveSuccess); \
 	DECLARE_FUNCTION(execOnItemSelectionChanged); \
+	DECLARE_FUNCTION(execPopulateInventoryList); \
 	DECLARE_FUNCTION(execOnInventoryUpdated); \
 	DECLARE_FUNCTION(execGetInventoryComponent); \
 	DECLARE_FUNCTION(execUI_RequestMoveItem); \

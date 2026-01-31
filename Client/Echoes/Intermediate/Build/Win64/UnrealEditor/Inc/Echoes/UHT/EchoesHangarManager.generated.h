@@ -17,9 +17,12 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 struct FEchoesShipFitting;
+struct FGuid;
 
 // ********** Begin Class AEchoesHangarManager *****************************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnShipFittingFailed); \
+	DECLARE_FUNCTION(execOnShipFittingReceived); \
 	DECLARE_FUNCTION(execOnFittingChanged); \
 	DECLARE_FUNCTION(execClearShipPreview); \
 	DECLARE_FUNCTION(execUpdateShipMesh); \

@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesCharacterSelectWidget.h"
-#include "Echoes/Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "UI/EchoesCharacterSelectWidget.h"
+#include "Core/Common/Networking/EchoesAuthSubsystem.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

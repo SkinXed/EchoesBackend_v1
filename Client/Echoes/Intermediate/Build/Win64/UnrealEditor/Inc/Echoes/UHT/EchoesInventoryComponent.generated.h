@@ -68,6 +68,8 @@ ECHOES_API void FOnInventoryUpdated_DelegateWrapper(const FMulticastScriptDelega
 
 // ********** Begin Class UEchoesInventoryComponent ************************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleMoveRefreshFailure); \
+	DECLARE_FUNCTION(execHandleMoveRefreshSuccess); \
 	DECLARE_FUNCTION(execInitializeStorage); \
 	DECLARE_FUNCTION(execServerOnly_StackAll); \
 	DECLARE_FUNCTION(execServerOnly_JettisonItem); \

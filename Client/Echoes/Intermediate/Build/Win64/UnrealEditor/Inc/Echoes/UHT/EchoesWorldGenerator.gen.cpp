@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Common/EchoesWorldGenerator.h"
-#include "Echoes/Core/Server/EchoesServerDiscoveryTypes.h"
+#include "Core/Common/EchoesWorldGenerator.h"
+#include "Core/Server/EchoesServerDiscoveryTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

@@ -19,14 +19,14 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 struct FAuthResponse;
 
 // ********** Begin Delegate FOnLoginSuccessEvent **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h_9_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h_11_DELEGATE \
 ECHOES_API void FOnLoginSuccessEvent_DelegateWrapper(const FMulticastScriptDelegate& OnLoginSuccessEvent, FAuthResponse const& AuthResponse);
 
 
 // ********** End Delegate FOnLoginSuccessEvent ****************************************************
 
 // ********** Begin Delegate FOnLoginFailureEvent **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h_10_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h_12_DELEGATE \
 ECHOES_API void FOnLoginFailureEvent_DelegateWrapper(const FMulticastScriptDelegate& OnLoginFailureEvent, const FString& ErrorMessage);
 
 
@@ -34,6 +34,8 @@ ECHOES_API void FOnLoginFailureEvent_DelegateWrapper(const FMulticastScriptDeleg
 
 // ********** Begin Class UEchoesLoginWidget *******************************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h_30_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnLoginFailure); \
+	DECLARE_FUNCTION(execOnLoginSuccess); \
 	DECLARE_FUNCTION(execOnPasswordCommitted); \
 	DECLARE_FUNCTION(execOnRegisterButtonClicked); \
 	DECLARE_FUNCTION(execOnLoginButtonClicked);

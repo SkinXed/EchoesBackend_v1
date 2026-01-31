@@ -476,7 +476,7 @@ protected:
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful,
-		const FGuid& ShipId,
+		FGuid ShipId,
 		FOnModuleFitted OnSuccess,
 		FOnInventoryFailure OnFailure);
 
@@ -487,7 +487,7 @@ protected:
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful,
-		const FGuid& ShipId,
+		FGuid ShipId,
 		FOnModuleUnfitted OnSuccess,
 		FOnInventoryFailure OnFailure);
 
@@ -538,6 +538,12 @@ private:
 	UPROPERTY()
 	TMap<int32, FGuid> CachedHangarIds;
 
+	FOnModuleFitted PendingModuleFitSuccess;
+	bool bHasPendingFitRefresh = false;
+
+	FOnModuleUnfitted PendingModuleUnfitSuccess;
+	bool bHasPendingUnfitRefresh = false;
+
 	/** HTTP module reference */
 	FHttpModule* Http;
 
@@ -577,4 +583,16 @@ private:
 	 * Populates both string-based cache and typed registry
 	 */
 	void BuildDefinitionCache();
+
+	UFUNCTION()
+	void HandleFitRefreshSuccess(const FEchoesShipFitting& Fitting);
+
+	UFUNCTION()
+	void HandleFitRefreshFailure(const FString& Error);
+
+	UFUNCTION()
+	void HandleUnfitRefreshSuccess(const FEchoesShipFitting& Fitting);
+
+	UFUNCTION()
+	void HandleUnfitRefreshFailure(const FString& Error);
 };

@@ -80,7 +80,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Server")
 	void ServerOnly_Register(
 		const FString& InstanceId,
-		int32 GamePort = 7777,
+		int32 InGamePort = 7777,
 		const FGuid& SolarSystemId = FGuid());
 
 	/**

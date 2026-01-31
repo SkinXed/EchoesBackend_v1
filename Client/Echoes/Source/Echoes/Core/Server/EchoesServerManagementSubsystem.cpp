@@ -126,7 +126,7 @@ void UEchoesServerManagementSubsystem::Deinitialize()
 
 void UEchoesServerManagementSubsystem::ServerOnly_Register(
 	const FString& InstanceId,
-	int32 GamePort,
+	int32 InGamePort,
 	const FGuid& SolarSystemId)
 {
 	if (!IsDedicatedServer())
@@ -151,12 +151,12 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 
 	// Store parameters
 	ServerInstanceId = InstanceId;
-	this->GamePort = GamePort;
+	GamePort = InGamePort;
 	CurrentSolarSystemId = SolarSystemId;
 
 	UE_LOG(LogEchoesServer, Log, TEXT("Starting server registration handshake..."));
 	UE_LOG(LogEchoesServer, Log, TEXT("  InstanceId: %s"), *InstanceId);
-	UE_LOG(LogEchoesServer, Log, TEXT("  GamePort: %d"), GamePort);
+	UE_LOG(LogEchoesServer, Log, TEXT("  GamePort: %d"), InGamePort);
 	UE_LOG(LogEchoesServer, Log, TEXT("  ServerType: %s"), *ServerType);
 	
 	if (IsRegionalCluster())
@@ -177,8 +177,8 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 	// For now, use localhost for development/testing
 	Request.PublicIP = TEXT("127.0.0.1");
 	
-	Request.GamePort = GamePort;
-	Request.WebPort = GamePort + 1; // TODO: Make WebPort independently configurable
+	Request.GamePort = InGamePort;
+	Request.WebPort = InGamePort + 1; // TODO: Make WebPort independently configurable
 	Request.MaxPlayers = 100;
 	Request.GameVersion = TEXT("1.0.0");
 
@@ -400,12 +400,12 @@ void UEchoesServerManagementSubsystem::OnRegisterResponseReceived(
 			{
 				// Store server ID and mark as registered
 				ServerId = RegisterResponse.ServerId;
-				NodeType = RegisterResponse.NodeType;
+				ServerType = RegisterResponse.NodeType;
 				bIsRegistered = true;
 
 				UE_LOG(LogEchoesServer, Log, TEXT("✓ SERVER REGISTRATION SUCCESSFUL"));
 				UE_LOG(LogEchoesServer, Log, TEXT("  ServerId: %s"), *ServerId.ToString());
-				UE_LOG(LogEchoesServer, Log, TEXT("  NodeType: %s"), *NodeType);
+				UE_LOG(LogEchoesServer, Log, TEXT("  ServerType: %s"), *ServerType);
 				UE_LOG(LogEchoesServer, Log, TEXT("  Message: %s"), *RegisterResponse.Message);
 
 				// Start heartbeat timer

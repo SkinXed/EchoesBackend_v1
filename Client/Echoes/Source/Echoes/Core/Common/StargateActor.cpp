@@ -9,7 +9,8 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "EchoesWorldGenerator.h"
-#include "../EchoesServerGameMode.h"
+#include "EchoesServerGameMode.h"
+#include "EchoesJumpManager.h"
 
 AStargateActor::AStargateActor()
 {
@@ -21,7 +22,7 @@ AStargateActor::AStargateActor()
 
 	// Set network cull distance for regional clusters
 	// 5 million units = reasonable visibility range for stargates
-	NetCullDistanceSquared = 25000000000000.0; // 5 million units squared
+	SetNetCullDistanceSquared(25000000000000.0); // 5 million units squared
 
 	// Create root component
 	USceneComponent* RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -398,7 +399,7 @@ void AStargateActor::InitiateJumpToTarget(APlayerController* PlayerController)
 	}
 }
 
-FVector AStargateActor::GetTargetGateLocationOnServer(const FGuid& TargetSystemId)
+FVector AStargateActor::GetTargetGateLocationOnServer(const FGuid& InTargetSystemId)
 {
 	// Get World Generator to look up system offset and find target gate
 	AEchoesWorldGenerator* WorldGenerator = nullptr;
@@ -416,7 +417,7 @@ FVector AStargateActor::GetTargetGateLocationOnServer(const FGuid& TargetSystemI
 	}
 
 	// Get system offset for target system
-	FVector TargetSystemOffset = WorldGenerator->GetSystemGlobalOffset(TargetSystemId);
+	FVector TargetSystemOffset = WorldGenerator->GetSystemGlobalOffset(InTargetSystemId);
 
 	// Find the target stargate in the target system that connects back to our system
 	// For now, we'll just return the system offset (star location)
@@ -427,7 +428,7 @@ FVector AStargateActor::GetTargetGateLocationOnServer(const FGuid& TargetSystemI
 	for (AActor* GateActor : AllGates)
 	{
 		AStargateActor* Gate = Cast<AStargateActor>(GateActor);
-		if (Gate && Gate->GetTargetSystemId() == TargetSystemId)
+		if (Gate && Gate->GetTargetSystemId() == InTargetSystemId)
 		{
 			// Found a gate that leads to target system - use its target location
 			// In a proper implementation, we'd find the gate IN the target system

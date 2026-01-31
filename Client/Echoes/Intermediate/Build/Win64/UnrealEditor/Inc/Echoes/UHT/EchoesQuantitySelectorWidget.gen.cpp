@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/UI/EchoesQuantitySelectorWidget.h"
+#include "UI/EchoesQuantitySelectorWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
