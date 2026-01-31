@@ -4,13 +4,57 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Http.h"
 #include "EchoesServerGameMode.generated.h"
 
 class UEchoesServerManagementSubsystem;
 class AEchoesWorldGenerator;
+class UEchoesInventorySubsystem;
 
 // Delegate for entry flow completion
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEntryFlowComplete);
+
+/**
+ * Character location data structure (mirrors backend CharacterLocationDto)
+ */
+USTRUCT(BlueprintType)
+struct FCharacterLocationData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FGuid CharacterId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	bool IsDocked = false;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	bool InWarp = false;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FGuid StationId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FString StationName;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FGuid SolarSystemId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FString SolarSystemName;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	double PositionX = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	double PositionY = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	double PositionZ = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int32 ActiveShipTypeId = 0;
+};
 
 /**
  * AEchoesServerGameMode
@@ -88,6 +132,24 @@ public:
 	void SpawnPlayerAtLocation(APlayerController* PlayerController);
 
 	/**
+	 * Query character location from backend API
+	 * @param CharacterId - Character GUID to query
+	 * @param Token - JWT authentication token
+	 * @param PlayerController - Player controller for spawn callback
+	 */
+	void QueryCharacterLocation(const FGuid& CharacterId, const FString& Token, APlayerController* PlayerController);
+
+	/**
+	 * Handle character location response from API
+	 */
+	void OnCharacterLocationReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful, APlayerController* PlayerController, FString Token);
+
+	/**
+	 * Perform spawn after location data is received
+	 */
+	void PerformSpawnWithLocationData(const FCharacterLocationData& LocationData, APlayerController* PlayerController);
+
+	/**
 	 * Extract login options from connection URL
 	 * @param Options - URL options string
 	 * @param OutToken - Extracted JWT token
@@ -98,13 +160,25 @@ public:
 
 	/**
 	 * Spawn player at station (docked state)
+	 * @param PC - Player controller
+	 * @param StationId - Station GUID
+	 * @param ShipTypeId - Active ship type ID for mesh lookup
 	 */
-	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId);
+	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId, int32 ShipTypeId);
 
 	/**
 	 * Spawn player in space
+	 * @param PC - Player controller
+	 * @param Position - World position
+	 * @param Rotation - World rotation
+	 * @param ShipTypeId - Active ship type ID for mesh lookup
 	 */
-	void SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation);
+	void SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation, int32 ShipTypeId);
+
+	/**
+	 * Get API base URL from configuration
+	 */
+	FString GetApiBaseUrl() const;
 
 protected:
 	// ==================== Internal Logic ====================
@@ -140,6 +214,13 @@ private:
 	/** Jump manager for intra-server jumps */
 	UPROPERTY()
 	class UEchoesJumpManager* JumpManager;
+
+	/** HTTP module reference */
+	FHttpModule* Http;
+
+	/** Inventory subsystem reference */
+	UPROPERTY()
+	UEchoesInventorySubsystem* InventorySubsystem;
 
 	// ==================== State ====================
 

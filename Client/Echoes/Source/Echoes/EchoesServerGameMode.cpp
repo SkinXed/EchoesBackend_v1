@@ -5,8 +5,15 @@
 #include "Core/Common/EchoesWorldGenerator.h"
 #include "Core/Common/EchoesJumpManager.h"
 #include "Core/Server/EchoesServerDiscoveryTypes.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "HttpModule.h"
+#include "Interfaces/IHttpResponse.h"
+#include "Json.h"
+#include "JsonUtilities.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "Misc/ConfigCacheIni.h"
 
 AEchoesServerGameMode::AEchoesServerGameMode()
 {
@@ -16,6 +23,9 @@ AEchoesServerGameMode::AEchoesServerGameMode()
 
 	// Create jump manager component
 	JumpManager = CreateDefaultSubobject<UEchoesJumpManager>(TEXT("JumpManager"));
+
+	// Get HTTP module
+	Http = &FHttpModule::Get();
 }
 
 void AEchoesServerGameMode::BeginPlay()
@@ -69,6 +79,17 @@ void AEchoesServerGameMode::BeginPlay()
 		else
 		{
 			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get ServerManagementSubsystem"));
+		}
+
+		// Get inventory subsystem reference
+		InventorySubsystem = GameInstance->GetSubsystem<UEchoesInventorySubsystem>();
+		if (InventorySubsystem)
+		{
+			UE_LOG(LogTemp, Log, TEXT("✓ InventorySubsystem found"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("⚠ InventorySubsystem not found"));
 		}
 	}
 	else
@@ -259,33 +280,178 @@ void AEchoesServerGameMode::SpawnPlayerAtLocation(APlayerController* PlayerContr
 	if (!ExtractLoginOptions(Options, Token, CharacterId))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("⚠ Could not extract character info from connection"));
+		UE_LOG(LogTemp, Warning, TEXT("  Using default spawn location as safety fallback"));
+		
+		// Safety fallback: spawn at default location
+		FVector SpawnLocation = FVector(0.0f, 0.0f, 1000.0f);
+		FRotator SpawnRotation = FRotator::ZeroRotator;
+		RestartPlayer(PlayerController);
+		
+		if (PlayerController->GetPawn())
+		{
+			PlayerController->GetPawn()->SetActorLocation(SpawnLocation);
+			UE_LOG(LogTemp, Log, TEXT("✓ Player spawned at safety fallback location"));
+			OnEntryFlowComplete.Broadcast();
+		}
+		return;
 	}
 
-	// TODO: Query backend for character location
-	// GET /api/character/{id}/location
-	// Response: { isDocked: bool, stationId?: guid, positionX/Y/Z: double }
+	UE_LOG(LogTemp, Log, TEXT("Extracted CharacterId: %s"), *CharacterId.ToString());
 
-	// For now, spawn at default location
-	FVector SpawnLocation = FVector(0.0f, 0.0f, 1000.0f);
-	FRotator SpawnRotation = FRotator::ZeroRotator;
-	
-	// Spawn default pawn
-	RestartPlayer(PlayerController);
-	
-	if (PlayerController->GetPawn())
+	// Query backend for character location
+	QueryCharacterLocation(CharacterId, Token, PlayerController);
+}
+
+void AEchoesServerGameMode::QueryCharacterLocation(const FGuid& CharacterId, const FString& Token, APlayerController* PlayerController)
+{
+	if (!Http || !PlayerController)
 	{
-		PlayerController->GetPawn()->SetActorLocation(SpawnLocation);
-		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned at default location"));
+		UE_LOG(LogTemp, Error, TEXT("✗ QueryCharacterLocation: Invalid parameters"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Querying character location from API..."));
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest> Request = Http->CreateRequest();
+	Request->SetVerb(TEXT("GET"));
+	Request->SetURL(GetApiBaseUrl() + FString::Printf(TEXT("/character/%s/location"), *CharacterId.ToString()));
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	Request->SetHeader(TEXT("Authorization"), TEXT("Bearer ") + Token);
+
+	// Set timeout (10 seconds)
+	Request->SetTimeout(10.0f);
+
+	// Bind response handler with player controller context
+	Request->OnProcessRequestComplete().BindUObject(
+		this,
+		&AEchoesServerGameMode::OnCharacterLocationReceived,
+		PlayerController,
+		Token);
+
+	// Send request
+	if (!Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to send character location request"));
 		
-		// TODO: Sync inventory component
-		// TODO: If docked, open station menu
-		
-		// Signal entry flow complete
-		OnEntryFlowComplete.Broadcast();
+		// Safety fallback
+		FVector SpawnLocation = FVector(0.0f, 0.0f, 1000.0f);
+		SpawnPlayerInSpace(PlayerController, SpawnLocation, FRotator::ZeroRotator, 0);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn player pawn"));
+		UE_LOG(LogTemp, Log, TEXT("✓ Character location request sent"));
+	}
+}
+
+void AEchoesServerGameMode::OnCharacterLocationReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	APlayerController* PlayerController,
+	FString Token)
+{
+	if (!PlayerController || !PlayerController->IsValidLowLevel())
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ PlayerController is invalid in location response"));
+		return;
+	}
+
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Character location request failed (timeout or network error)"));
+		UE_LOG(LogTemp, Warning, TEXT("  Spawning at safety fallback location"));
+		
+		// Safety fallback: spawn in default location
+		FVector SafetyLocation = FVector(0.0f, 0.0f, 1000.0f);
+		SpawnPlayerInSpace(PlayerController, SafetyLocation, FRotator::ZeroRotator, 0);
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	UE_LOG(LogTemp, Log, TEXT("Character location response: %d - %s"), ResponseCode, *ResponseContent);
+
+	if (ResponseCode != 200)
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Character location request failed with code %d"), ResponseCode);
+		
+		// Safety fallback
+		FVector SafetyLocation = FVector(0.0f, 0.0f, 1000.0f);
+		SpawnPlayerInSpace(PlayerController, SafetyLocation, FRotator::ZeroRotator, 0);
+		return;
+	}
+
+	// Parse JSON response
+	TSharedPtr<FJsonObject> JsonObject;
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+
+	if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to parse character location JSON"));
+		
+		// Safety fallback
+		FVector SafetyLocation = FVector(0.0f, 0.0f, 1000.0f);
+		SpawnPlayerInSpace(PlayerController, SafetyLocation, FRotator::ZeroRotator, 0);
+		return;
+	}
+
+	// Extract location data
+	FCharacterLocationData LocationData;
+	LocationData.IsDocked = JsonObject->GetBoolField(TEXT("isDocked"));
+	LocationData.InWarp = JsonObject->GetBoolField(TEXT("inWarp"));
+	LocationData.PositionX = JsonObject->GetNumberField(TEXT("positionX"));
+	LocationData.PositionY = JsonObject->GetNumberField(TEXT("positionY"));
+	LocationData.PositionZ = JsonObject->GetNumberField(TEXT("positionZ"));
+
+	if (JsonObject->HasField(TEXT("stationId")) && !JsonObject->GetStringField(TEXT("stationId")).IsEmpty())
+	{
+		FGuid::Parse(JsonObject->GetStringField(TEXT("stationId")), LocationData.StationId);
+	}
+
+	if (JsonObject->HasField(TEXT("stationName")))
+	{
+		LocationData.StationName = JsonObject->GetStringField(TEXT("stationName"));
+	}
+
+	// Get active ship type ID (query from inventory or default)
+	// For now, use a default ship type ID (will be improved with proper inventory query)
+	LocationData.ActiveShipTypeId = 670; // Default: Ibis (Caldari rookie ship)
+
+	UE_LOG(LogTemp, Log, TEXT("Location data: IsDocked=%s, Position=(%.1f, %.1f, %.1f), ShipTypeId=%d"),
+		LocationData.IsDocked ? TEXT("true") : TEXT("false"),
+		LocationData.PositionX, LocationData.PositionY, LocationData.PositionZ,
+		LocationData.ActiveShipTypeId);
+
+	// Perform spawn
+	PerformSpawnWithLocationData(LocationData, PlayerController);
+}
+
+void AEchoesServerGameMode::PerformSpawnWithLocationData(
+	const FCharacterLocationData& LocationData,
+	APlayerController* PlayerController)
+{
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ PerformSpawnWithLocationData: PlayerController is null"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Performing spawn with location data..."));
+
+	FVector SpawnPosition(LocationData.PositionX, LocationData.PositionY, LocationData.PositionZ);
+	FRotator SpawnRotation = FRotator::ZeroRotator;
+
+	if (LocationData.IsDocked)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Character is docked at station: %s"), *LocationData.StationName);
+		SpawnPlayerAtStation(PlayerController, LocationData.StationId, LocationData.ActiveShipTypeId);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Character is in space at position: %s"), *SpawnPosition.ToString());
+		SpawnPlayerInSpace(PlayerController, SpawnPosition, SpawnRotation, LocationData.ActiveShipTypeId);
 	}
 }
 
@@ -348,43 +514,88 @@ bool AEchoesServerGameMode::ExtractLoginOptions(const FString& Options, FString&
 	return bFoundToken && bFoundCharacterId;
 }
 
-void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId)
+void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId, int32 ShipTypeId)
 {
 	if (!PC)
 	{
+		UE_LOG(LogTemp, Error, TEXT("✗ SpawnPlayerAtStation: PlayerController is null"));
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Spawning player at station: %s"), *StationId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Spawning player at station: %s (ShipTypeId: %d)"), *StationId.ToString(), ShipTypeId);
+
+	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
+	const FEchoesItemDefinitionRow* ShipDef = nullptr;
+	if (InventorySubsystem)
+	{
+		ShipDef = InventorySubsystem->GetItemFromRegistry(ShipTypeId);
+		if (ShipDef)
+		{
+			UE_LOG(LogTemp, Log, TEXT("✓ Ship definition found: %s"), *ShipDef->DisplayName.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("⚠ Ship definition not found for TypeId %d"), ShipTypeId);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("⚠ InventorySubsystem not available for ship lookup"));
+	}
 
 	// TODO: Find StationActor by ID
 	// TODO: Call Station->DockPlayer(PC)
 	// TODO: Open station menu widget
 
-	// For now, just spawn pawn
+	// For now, spawn pawn in docked state
 	RestartPlayer(PC);
 
 	if (PC->GetPawn())
 	{
 		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned in docked state"));
+		
+		// TODO: Apply ship mesh from ShipDef->WorldMesh if available
+		// TODO: Sync inventory: InventorySubsystem->Inventory_FetchShips()
+		
 		OnEntryFlowComplete.Broadcast();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn player pawn at station"));
 	}
 }
 
-void AEchoesServerGameMode::SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation)
+void AEchoesServerGameMode::SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation, int32 ShipTypeId)
 {
 	if (!PC)
 	{
+		UE_LOG(LogTemp, Error, TEXT("✗ SpawnPlayerInSpace: PlayerController is null"));
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Spawning player in space at: %s"), *Position.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Spawning player in space at: %s (ShipTypeId: %d)"), *Position.ToString(), ShipTypeId);
 
-	// TODO: Spawn player's ship
-	// TODO: Set velocity and orientation
-	// TODO: Sync inventory
+	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
+	const FEchoesItemDefinitionRow* ShipDef = nullptr;
+	if (InventorySubsystem)
+	{
+		ShipDef = InventorySubsystem->GetItemFromRegistry(ShipTypeId);
+		if (ShipDef)
+		{
+			UE_LOG(LogTemp, Log, TEXT("✓ Ship definition found: %s"), *ShipDef->DisplayName.ToString());
+			UE_LOG(LogTemp, Log, TEXT("  Ship mesh: %s"), ShipDef->WorldMesh.IsNull() ? TEXT("None") : TEXT("Available"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("⚠ Ship definition not found for TypeId %d, using default pawn"), ShipTypeId);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("⚠ InventorySubsystem not available for ship lookup"));
+	}
 
-	// For now, just spawn pawn at position
+	// Spawn pawn at position
 	RestartPlayer(PC);
 
 	if (PC->GetPawn())
@@ -392,7 +603,57 @@ void AEchoesServerGameMode::SpawnPlayerInSpace(APlayerController* PC, const FVec
 		PC->GetPawn()->SetActorLocation(Position);
 		PC->GetPawn()->SetActorRotation(Rotation);
 		
+		// TODO: Apply ship mesh from ShipDef->WorldMesh if available
+		// This would require:
+		// 1. Getting the mesh component from the pawn
+		// 2. Async loading the mesh if not already loaded
+		// 3. Setting the mesh once loaded
+		// For example:
+		// if (ShipDef && !ShipDef->WorldMesh.IsNull())
+		// {
+		//     UStaticMeshComponent* MeshComp = PC->GetPawn()->FindComponentByClass<UStaticMeshComponent>();
+		//     if (MeshComp)
+		//     {
+		//         // Load mesh asynchronously
+		//         InventorySubsystem->AsyncLoadItemWorldMesh(
+		//             FString::FromInt(ShipTypeId),
+		//             FOnWorldMeshLoaded::CreateLambda([MeshComp](UStaticMesh* LoadedMesh) {
+		//                 if (MeshComp && LoadedMesh)
+		//                 {
+		//                     MeshComp->SetStaticMesh(LoadedMesh);
+		//                 }
+		//             })
+		//         );
+		//     }
+		// }
+		
 		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned in space"));
+		
+		// TODO: Sync inventory: InventorySubsystem->Inventory_FetchShips()
+		// TODO: Set velocity and orientation based on last saved state
+		
 		OnEntryFlowComplete.Broadcast();
 	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn player pawn in space"));
+	}
+}
+
+FString AEchoesServerGameMode::GetApiBaseUrl() const
+{
+	FString ApiBaseUrl;
+	
+	// Try to read from config
+	if (GConfig->GetString(
+		TEXT("/Script/Echoes.EchoesAuthSubsystem"),
+		TEXT("ApiBaseUrl"),
+		ApiBaseUrl,
+		GGameIni))
+	{
+		return ApiBaseUrl;
+	}
+
+	// Default to localhost
+	return TEXT("http://localhost:5116/api");
 }
