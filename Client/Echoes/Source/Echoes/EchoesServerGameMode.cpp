@@ -105,7 +105,15 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, player can spawn safely"));
+		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, spawning player..."));
+		
+		// Get character ID from player state or controller
+		// TODO: This should be retrieved from player authentication/connection data
+		// For now, we'll use a placeholder that should be set during connection
+		
+		// Request character location from API
+		// This will determine if player spawns at station or in space
+		SpawnPlayerAtLocation(NewPlayer);
 	}
 }
 
@@ -219,4 +227,47 @@ void AEchoesServerGameMode::TriggerWorldGeneration()
 
 	UE_LOG(LogTemp, Log, TEXT("Manual world generation trigger requested"));
 	InitializeWorldGeneration();
+}
+
+void AEchoesServerGameMode::SpawnPlayerAtLocation(APlayerController* PlayerController)
+{
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ SpawnPlayerAtLocation: PlayerController is null"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    SPAWNING PLAYER AT LOCATION                          ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+
+	// TODO: Get character ID from player state/connection data
+	// For now, this is a placeholder implementation
+	
+	// In a full implementation, this would:
+	// 1. Get character ID from PlayerController or PlayerState
+	// 2. Make HTTP request to /api/character/{id}/location
+	// 3. Parse response to determine if docked or in space
+	// 4. If docked:
+	//    - Set player to docking mode
+	//    - Open station menu widget (W_StationMenu)
+	//    - Position player at station location
+	// 5. If in space:
+	//    - Spawn player's ship at coordinates from API
+	//    - Set ship velocity and orientation
+	//    - Activate flight controls
+
+	UE_LOG(LogTemp, Warning, TEXT("⚠ SpawnPlayerAtLocation: Full implementation pending"));
+	UE_LOG(LogTemp, Warning, TEXT("  Required: Character ID from authentication"));
+	UE_LOG(LogTemp, Warning, TEXT("  Required: HTTP request to /api/character/{id}/location"));
+	UE_LOG(LogTemp, Warning, TEXT("  Required: Station menu widget integration"));
+	
+	// Default behavior: spawn at world origin for now
+	FVector SpawnLocation = FVector(0.0f, 0.0f, 1000.0f);
+	FRotator SpawnRotation = FRotator::ZeroRotator;
+	
+	PlayerController->SetActorLocation(SpawnLocation);
+	PlayerController->SetControlRotation(SpawnRotation);
+	
+	UE_LOG(LogTemp, Log, TEXT("✓ Player spawned at default location"));
 }

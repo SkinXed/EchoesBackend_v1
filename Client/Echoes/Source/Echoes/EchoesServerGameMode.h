@@ -72,6 +72,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Server", meta = (DevelopmentOnly))
 	void TriggerWorldGeneration();
 
+	/**
+	 * Spawn player at their last known location
+	 * Checks character location from API and spawns accordingly
+	 */
+	void SpawnPlayerAtLocation(APlayerController* PlayerController);
+
 protected:
 	// ==================== Internal Logic ====================
 
