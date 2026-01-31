@@ -230,7 +230,7 @@ void UEchoesCharacterSelectWidget::PopulateCharacterList(const TArray<FCharacter
 
 	for (const FCharacterInfo& CharInfo : Characters)
 	{
-		UCharacterListItem* ListItem = NewObject<UCharacterListItem>();
+		UCharacterListItem* ListItem = NewObject<UCharacterListItem>(this);
 		ListItem->CharacterInfo = CharInfo;
 		
 		// Determine race name (this should ideally come from backend)

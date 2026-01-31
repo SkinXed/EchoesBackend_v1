@@ -286,6 +286,7 @@ public class CharacterController : ControllerBase
             _context.Characters.Add(character);
 
             // Create character location at home station
+            // Note: Position coordinates will be set from station data when character spawns
             var characterLocation = new CharacterLocation
             {
                 Id = Guid.NewGuid(),
@@ -342,7 +343,7 @@ public class CharacterController : ControllerBase
     public async Task<ActionResult<CharacterLocationDto>> GetCharacterLocation(Guid id)
     {
         // Check for server secret if not authenticated as user
-        if (!User.Identity?.IsAuthenticated ?? false)
+        if (!(User.Identity?.IsAuthenticated ?? false))
         {
             if (!ValidateServerSecret())
             {

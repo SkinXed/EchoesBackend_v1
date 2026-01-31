@@ -97,49 +97,25 @@ namespace Echoes.API.Data.SeedData
         {
             Console.WriteLine("🔧 Updating race configs with actual station IDs...");
 
+            // Helper method to find high-security stations
+            async Task<Station?> FindHighSecurityStation(int skipCount)
+            {
+                return await context.Stations
+                    .Include(s => s.SolarSystem)
+                    .ThenInclude(ss => ss.Constellation)
+                    .ThenInclude(c => c.Region)
+                    .Where(s => s.SolarSystem.SecurityStatus >= 0.9 && 
+                               s.Type == Models.Enums.StationType.TradingHub)
+                    .OrderBy(s => Guid.NewGuid()) // Note: This is inefficient but simple for seeding
+                    .Skip(skipCount)
+                    .FirstOrDefaultAsync();
+            }
+
             // Find high-security starting stations for each race
-            // Caldari - The Forge region
-            var caldariStation = await context.Stations
-                .Include(s => s.SolarSystem)
-                .ThenInclude(ss => ss.Constellation)
-                .ThenInclude(c => c.Region)
-                .Where(s => s.SolarSystem.SecurityStatus >= 0.9 && 
-                           s.Type == Models.Enums.StationType.TradingHub)
-                .OrderBy(s => Guid.NewGuid())
-                .FirstOrDefaultAsync();
-
-            // Gallente - Essence region  
-            var gallenteStation = await context.Stations
-                .Include(s => s.SolarSystem)
-                .ThenInclude(ss => ss.Constellation)
-                .ThenInclude(c => c.Region)
-                .Where(s => s.SolarSystem.SecurityStatus >= 0.9 && 
-                           s.Type == Models.Enums.StationType.TradingHub)
-                .OrderBy(s => Guid.NewGuid())
-                .Skip(1)
-                .FirstOrDefaultAsync();
-
-            // Amarr - Domain region
-            var amarrStation = await context.Stations
-                .Include(s => s.SolarSystem)
-                .ThenInclude(ss => ss.Constellation)
-                .ThenInclude(c => c.Region)
-                .Where(s => s.SolarSystem.SecurityStatus >= 0.9 && 
-                           s.Type == Models.Enums.StationType.TradingHub)
-                .OrderBy(s => Guid.NewGuid())
-                .Skip(2)
-                .FirstOrDefaultAsync();
-
-            // Minmatar - Heimatar region
-            var minmatarStation = await context.Stations
-                .Include(s => s.SolarSystem)
-                .ThenInclude(ss => ss.Constellation)
-                .ThenInclude(c => c.Region)
-                .Where(s => s.SolarSystem.SecurityStatus >= 0.9 && 
-                           s.Type == Models.Enums.StationType.TradingHub)
-                .OrderBy(s => Guid.NewGuid())
-                .Skip(3)
-                .FirstOrDefaultAsync();
+            var caldariStation = await FindHighSecurityStation(0);
+            var gallenteStation = await FindHighSecurityStation(1);
+            var amarrStation = await FindHighSecurityStation(2);
+            var minmatarStation = await FindHighSecurityStation(3);
 
             // Update race configs
             var raceConfigs = await context.RaceConfigs.ToListAsync();
