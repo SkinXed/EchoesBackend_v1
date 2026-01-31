@@ -9,6 +9,9 @@
 class UEchoesServerManagementSubsystem;
 class AEchoesWorldGenerator;
 
+// Delegate for entry flow completion
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEntryFlowComplete);
+
 /**
  * AEchoesServerGameMode
  * 
@@ -34,6 +37,12 @@ class ECHOES_API AEchoesServerGameMode : public AGameModeBase
 
 public:
 	AEchoesServerGameMode();
+
+	// ==================== Entry Flow Delegate ====================
+
+	/** Fired when player is fully spawned and ready to play */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Entry")
+	FOnEntryFlowComplete OnEntryFlowComplete;
 
 protected:
 	// ==================== GameMode Lifecycle ====================
@@ -77,6 +86,25 @@ public:
 	 * Checks character location from API and spawns accordingly
 	 */
 	void SpawnPlayerAtLocation(APlayerController* PlayerController);
+
+	/**
+	 * Extract login options from connection URL
+	 * @param Options - URL options string
+	 * @param OutToken - Extracted JWT token
+	 * @param OutCharacterId - Extracted character ID
+	 * @return True if extraction successful
+	 */
+	bool ExtractLoginOptions(const FString& Options, FString& OutToken, FGuid& OutCharacterId);
+
+	/**
+	 * Spawn player at station (docked state)
+	 */
+	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId);
+
+	/**
+	 * Spawn player in space
+	 */
+	void SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation);
 
 protected:
 	// ==================== Internal Logic ====================

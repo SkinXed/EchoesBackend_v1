@@ -4,6 +4,7 @@
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
 #include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "JsonObjectConverter.h"
 
@@ -219,8 +220,16 @@ void UEchoesPreloadWidget::CompletePreload(ENextState NextState)
 
 FString UEchoesPreloadWidget::GetSavedToken() const
 {
-	// TODO: Implement LocalPlayerSettings integration
-	// For now, check AuthSubsystem
+	// Load from LocalPlayerSettings
+	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
+	
+	if (Settings && Settings->IsTokenValid())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Found valid saved token"));
+		return Settings->SavedAuthToken;
+	}
+	
+	// Fallback: check AuthSubsystem
 	if (AuthSubsystem)
 	{
 		return AuthSubsystem->Auth_GetToken();

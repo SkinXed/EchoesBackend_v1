@@ -107,13 +107,23 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 	{
 		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, spawning player..."));
 		
-		// Get character ID from player state or controller
-		// TODO: This should be retrieved from player authentication/connection data
-		// For now, we'll use a placeholder that should be set during connection
-		
-		// Request character location from API
-		// This will determine if player spawns at station or in space
-		SpawnPlayerAtLocation(NewPlayer);
+		// Extract login options from URL
+		FString Options = NewPlayer->PlayerState ? NewPlayer->PlayerState->SavedNetworkAddress : TEXT("");
+		FString Token;
+		FGuid CharacterId;
+
+		if (ExtractLoginOptions(Options, Token, CharacterId))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Extracted CharacterId: %s"), *CharacterId.ToString());
+			
+			// Spawn player at their saved location
+			SpawnPlayerAtLocation(NewPlayer);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Failed to extract login options, using default spawn"));
+			SpawnPlayerAtLocation(NewPlayer);
+		}
 	}
 }
 
@@ -241,33 +251,148 @@ void AEchoesServerGameMode::SpawnPlayerAtLocation(APlayerController* PlayerContr
 	UE_LOG(LogTemp, Log, TEXT("║    SPAWNING PLAYER AT LOCATION                          ║"));
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
 
-	// TODO: Get character ID from player state/connection data
-	// For now, this is a placeholder implementation
-	
-	// In a full implementation, this would:
-	// 1. Get character ID from PlayerController or PlayerState
-	// 2. Make HTTP request to /api/character/{id}/location
-	// 3. Parse response to determine if docked or in space
-	// 4. If docked:
-	//    - Set player to docking mode
-	//    - Open station menu widget (W_StationMenu)
-	//    - Position player at station location
-	// 5. If in space:
-	//    - Spawn player's ship at coordinates from API
-	//    - Set ship velocity and orientation
-	//    - Activate flight controls
+	// Extract character info from connection options
+	FString Options = PlayerController->PlayerState ? PlayerController->PlayerState->SavedNetworkAddress : TEXT("");
+	FString Token;
+	FGuid CharacterId;
 
-	UE_LOG(LogTemp, Warning, TEXT("⚠ SpawnPlayerAtLocation: Full implementation pending"));
-	UE_LOG(LogTemp, Warning, TEXT("  Required: Character ID from authentication"));
-	UE_LOG(LogTemp, Warning, TEXT("  Required: HTTP request to /api/character/{id}/location"));
-	UE_LOG(LogTemp, Warning, TEXT("  Required: Station menu widget integration"));
-	
-	// Default behavior: spawn at world origin for now
+	if (!ExtractLoginOptions(Options, Token, CharacterId))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Could not extract character info from connection"));
+	}
+
+	// TODO: Query backend for character location
+	// GET /api/character/{id}/location
+	// Response: { isDocked: bool, stationId?: guid, positionX/Y/Z: double }
+
+	// For now, spawn at default location
 	FVector SpawnLocation = FVector(0.0f, 0.0f, 1000.0f);
 	FRotator SpawnRotation = FRotator::ZeroRotator;
 	
-	PlayerController->SetActorLocation(SpawnLocation);
-	PlayerController->SetControlRotation(SpawnRotation);
+	// Spawn default pawn
+	RestartPlayer(PlayerController);
 	
-	UE_LOG(LogTemp, Log, TEXT("✓ Player spawned at default location"));
+	if (PlayerController->GetPawn())
+	{
+		PlayerController->GetPawn()->SetActorLocation(SpawnLocation);
+		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned at default location"));
+		
+		// TODO: Sync inventory component
+		// TODO: If docked, open station menu
+		
+		// Signal entry flow complete
+		OnEntryFlowComplete.Broadcast();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn player pawn"));
+	}
+}
+
+bool AEchoesServerGameMode::ExtractLoginOptions(const FString& Options, FString& OutToken, FGuid& OutCharacterId)
+{
+	// Parse URL options for Token and CharacterId
+	// Format: ?Token=xxx&CharacterId=yyy
+	
+	bool bFoundToken = false;
+	bool bFoundCharacterId = false;
+
+	// Extract Token
+	FString TokenKey = TEXT("Token=");
+	int32 TokenIndex = Options.Find(TokenKey);
+	if (TokenIndex != INDEX_NONE)
+	{
+		int32 StartIndex = TokenIndex + TokenKey.Len();
+		int32 EndIndex = Options.Find(TEXT("&"), ESearchCase::IgnoreCase, ESearchDir::FromStart, StartIndex);
+		
+		if (EndIndex == INDEX_NONE)
+		{
+			EndIndex = Options.Find(TEXT("?"), ESearchCase::IgnoreCase, ESearchDir::FromStart, StartIndex);
+		}
+		
+		if (EndIndex == INDEX_NONE)
+		{
+			EndIndex = Options.Len();
+		}
+
+		OutToken = Options.Mid(StartIndex, EndIndex - StartIndex);
+		bFoundToken = !OutToken.IsEmpty();
+	}
+
+	// Extract CharacterId
+	FString CharacterIdKey = TEXT("CharacterId=");
+	int32 CharIdIndex = Options.Find(CharacterIdKey);
+	if (CharIdIndex != INDEX_NONE)
+	{
+		int32 StartIndex = CharIdIndex + CharacterIdKey.Len();
+		int32 EndIndex = Options.Find(TEXT("&"), ESearchCase::IgnoreCase, ESearchDir::FromStart, StartIndex);
+		
+		if (EndIndex == INDEX_NONE)
+		{
+			EndIndex = Options.Find(TEXT("?"), ESearchCase::IgnoreCase, ESearchDir::FromStart, StartIndex);
+		}
+		
+		if (EndIndex == INDEX_NONE)
+		{
+			EndIndex = Options.Len();
+		}
+
+		FString CharIdStr = Options.Mid(StartIndex, EndIndex - StartIndex);
+		bFoundCharacterId = FGuid::Parse(CharIdStr, OutCharacterId);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("ExtractLoginOptions: Token=%s, CharacterId=%s"), 
+		bFoundToken ? TEXT("found") : TEXT("not found"),
+		bFoundCharacterId ? TEXT("found") : TEXT("not found"));
+
+	return bFoundToken && bFoundCharacterId;
+}
+
+void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId)
+{
+	if (!PC)
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning player at station: %s"), *StationId.ToString());
+
+	// TODO: Find StationActor by ID
+	// TODO: Call Station->DockPlayer(PC)
+	// TODO: Open station menu widget
+
+	// For now, just spawn pawn
+	RestartPlayer(PC);
+
+	if (PC->GetPawn())
+	{
+		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned in docked state"));
+		OnEntryFlowComplete.Broadcast();
+	}
+}
+
+void AEchoesServerGameMode::SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation)
+{
+	if (!PC)
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning player in space at: %s"), *Position.ToString());
+
+	// TODO: Spawn player's ship
+	// TODO: Set velocity and orientation
+	// TODO: Sync inventory
+
+	// For now, just spawn pawn at position
+	RestartPlayer(PC);
+
+	if (PC->GetPawn())
+	{
+		PC->GetPawn()->SetActorLocation(Position);
+		PC->GetPawn()->SetActorRotation(Rotation);
+		
+		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned in space"));
+		OnEntryFlowComplete.Broadcast();
+	}
 }

@@ -129,10 +129,10 @@ void UEchoesLoginWidget::OnLoginSuccess(const FAuthResponse& AuthResponse)
 	SetStatusText("Login successful!", FLinearColor::Green);
 
 	// Save token if Remember Me is checked
-	if (RememberMeCheckbox && RememberMeCheckbox->IsChecked())
+	if (RememberMeCheckbox && RememberMeCheckbox->IsChecked() && AuthSubsystem)
 	{
-		// TODO: Save token to LocalPlayerSettings
-		UE_LOG(LogTemp, Log, TEXT("Remember Me enabled, token should be saved"));
+		AuthSubsystem->SaveAuthToken(true);
+		UE_LOG(LogTemp, Log, TEXT("Saved token with Remember Me"));
 	}
 
 	// Broadcast to blueprint

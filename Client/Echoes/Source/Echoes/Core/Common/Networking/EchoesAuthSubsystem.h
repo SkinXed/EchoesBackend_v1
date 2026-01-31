@@ -88,6 +88,12 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FOnLoginFailure, const FString&, ErrorMessage)
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnRegisterSuccess, const FAuthResponse&, AuthResponse);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnRegisterFailure, const FString&, ErrorMessage);
 
+// New delegates for character operations
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterCreated, const FCharacterData&, CharacterData);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterCreationFailed, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnConnectInfoReceived, const FString&, ServerIP, int32, ServerPort);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConnectInfoFailed, const FString&, ErrorMessage);
+
 /**
  * Character data structure (mirrors C# CharacterDataDto)
  */
@@ -242,6 +248,71 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
 	void Auth_Logout();
 
+	// ==================== Token Persistence ====================
+
+	/**
+	 * Save authentication token to disk
+	 * @param bRememberMe - If true, saves token for next session
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
+	void SaveAuthToken(bool bRememberMe);
+
+	/**
+	 * Load authentication token from disk
+	 * @return True if token was loaded and is valid
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
+	bool LoadAuthToken();
+
+	/**
+	 * Clear saved authentication token
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
+	void ClearSavedToken();
+
+	// ==================== Character Operations ====================
+
+	/**
+	 * Create new character
+	 * @param CharacterName - Name for the new character
+	 * @param RaceId - Race ID (1=Caldari, 2=Gallente, 3=Amarr, 4=Minmatar)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
+	void CreateCharacter(const FString& CharacterName, int32 RaceId);
+
+	/**
+	 * Fetch character list from backend
+	 * Updates CurrentAuthResponse.Characters
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
+	void FetchCharacterList();
+
+	/**
+	 * Connect to world with selected character
+	 * Gets server connection info and initiates ClientTravel
+	 * @param CharacterId - Character to connect with
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
+	void ConnectToWorld(const FGuid& CharacterId);
+
+	// ==================== Delegates ====================
+
+	/** Fired when character is created successfully */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnCharacterCreated OnCharacterCreated;
+
+	/** Fired when character creation fails */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnCharacterCreationFailed OnCharacterCreationFailed;
+
+	/** Fired when connection info is received */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnConnectInfoReceived OnConnectInfoReceived;
+
+	/** Fired when connection info request fails */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnConnectInfoFailed OnConnectInfoFailed;
+
 	/**
 	 * Server RPC: Verify session token
 	 * Used by UE Server to validate player session with backend
@@ -287,6 +358,31 @@ protected:
 		bool bWasSuccessful,
 		TFunction<void(const FCharacterData&)> OnSuccess,
 		TFunction<void(const FString&)> OnFailure);
+
+	/**
+	 * Handle character creation response
+	 */
+	void OnCreateCharacterResponseReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful);
+
+	/**
+	 * Handle character list fetch response
+	 */
+	void OnFetchCharacterListResponseReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful);
+
+	/**
+	 * Handle connect info response
+	 */
+	void OnConnectInfoResponseReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		FGuid CharacterId);
 
 	// ==================== Helper Functions ====================
 
