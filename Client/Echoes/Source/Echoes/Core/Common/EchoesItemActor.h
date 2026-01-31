@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Core/Common/EchoesInteractableInterface.h"
-#include "Core/Common/EchoesItemDefinitions.h"
+#include "EchoesItemDefinitions.h"
 #include "EchoesItemActor.generated.h"
 
 // Forward declarations
@@ -97,10 +97,11 @@ public:
 	FGuid GetInstanceId() const { return InstanceId; }
 
 	/**
-	 * Get the item definition
+	 * Get the item definition data for Blueprints
+	 * @return Definition data if cached, otherwise default-constructed
 	 */
 	UFUNCTION(BlueprintPure, Category = "Echoes|Item")
-	const FEchoesItemDefinitionRow* GetItemDefinition() const { return CachedDefinition; }
+	FEchoesItemDefinitionRow GetItemDefinitionData() const;
 
 	/**
 	 * Get the inventory component
@@ -208,7 +209,7 @@ protected:
 
 private:
 	/** Cached item definition from subsystem */
-	const FEchoesItemDefinitionRow* CachedDefinition;
+	TOptional<FEchoesItemDefinitionRow> CachedDefinition;
 
 	/** Timer handle for lifetime despawn */
 	FTimerHandle LifetimeTimerHandle;

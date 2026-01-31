@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UI/EchoesWindowBase.h"
-#include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "../Core/Common/Networking/EchoesAuthSubsystem.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoginSuccessEvent, const FAuthResponse&, AuthResponse);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoginFailureEvent, const FString&, ErrorMessage);
+
 #include "EchoesLoginWidget.generated.h"
 
 class UEditableTextBox;
@@ -61,11 +65,11 @@ public:
 
 	/** Called when login is successful */
 	UPROPERTY(BlueprintAssignable, Category = "Echoes|Login")
-	FOnLoginSuccess OnLoginSuccessDelegate;
+	FOnLoginSuccessEvent OnLoginSuccessDelegate;
 
 	/** Called when login fails */
 	UPROPERTY(BlueprintAssignable, Category = "Echoes|Login")
-	FOnLoginFailure OnLoginFailureDelegate;
+	FOnLoginFailureEvent OnLoginFailureDelegate;
 
 protected:
 	// ==================== Button Handlers ====================

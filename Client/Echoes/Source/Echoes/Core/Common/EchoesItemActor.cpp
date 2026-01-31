@@ -53,7 +53,7 @@ AEchoesItemActor::AEchoesItemActor()
 	MaxRandomVelocity = 100.0f;
 	bIsContainer = true;
 	
-	CachedDefinition = nullptr;
+	CachedDefinition.Reset();
 	bMeshLoaded = false;
 }
 
@@ -164,7 +164,7 @@ float AEchoesItemActor::GetInteractionDistance_Implementation() const
 
 FText AEchoesItemActor::GetInteractionPrompt_Implementation() const
 {
-	if (CachedDefinition)
+	if (CachedDefinition.IsSet())
 	{
 		return FText::Format(
 			FText::FromString(TEXT("Open {0} [E]")),
@@ -232,6 +232,16 @@ float AEchoesItemActor::GetRemainingLifetime() const
 	return GetWorldTimerManager().GetTimerRemaining(LifetimeTimerHandle);
 }
 
+FEchoesItemDefinitionRow AEchoesItemActor::GetItemDefinitionData() const
+{
+	if (CachedDefinition.IsSet())
+	{
+		return CachedDefinition.GetValue();
+	}
+
+	return FEchoesItemDefinitionRow();
+}
+
 void AEchoesItemActor::OnRep_ItemId()
 {
 	// ItemId was replicated, load definition on client
@@ -263,17 +273,19 @@ void AEchoesItemActor::LoadItemDefinition()
 	}
 
 	// Get item definition
-	CachedDefinition = InvSubsystem->GetItemDefinition(ItemId);
-	if (!CachedDefinition)
+	FEchoesItemDefinitionRow Definition;
+	if (!InvSubsystem->TryGetItemDefinition(ItemId, Definition))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("EchoesItemActor: No definition found for item: %s"), *ItemId);
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("EchoesItemActor: Loaded definition for %s"), *CachedDefinition->DisplayName.ToString());
+	CachedDefinition = Definition;
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesItemActor: Loaded definition for %s"), *Definition.DisplayName.ToString());
 
 	// Load world mesh asynchronously
-	if (!CachedDefinition->WorldMesh.IsNull())
+	if (!Definition.WorldMesh.IsNull())
 	{
 		InvSubsystem->AsyncLoadItemWorldMesh(
 			ItemId,
@@ -289,7 +301,7 @@ void AEchoesItemActor::LoadItemDefinition()
 	if (bIsContainer && InventoryComponent)
 	{
 		// Use definition volume or default
-		float ContainerCapacity = CachedDefinition->UnitVolume * Quantity * 100.0f; // Scale for containers
+		float ContainerCapacity = Definition.UnitVolume * Quantity * 100.0f; // Scale for containers
 		
 		// If this has an InstanceId, it might already be in the database
 		if (InstanceId.IsValid())
@@ -337,7 +349,7 @@ void AEchoesItemActor::SetupPhysicsSimulation()
 	MeshComponent->SetSimulatePhysics(true);
 
 	// Set mass based on definition
-	if (CachedDefinition)
+	if (CachedDefinition.IsSet())
 	{
 		float TotalMass = CachedDefinition->UnitMass * Quantity;
 		MeshComponent->SetMassOverrideInKg(NAME_None, TotalMass, true);

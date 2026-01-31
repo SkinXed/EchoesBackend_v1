@@ -6,6 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "Echoes/Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "Echoes/Core/Common/EchoesItemDefinitions.h"
 #include "Engine/GameInstance.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -16,17 +17,24 @@ void EmptyLinkFunctionForGeneratedCodeEchoesInventorySubsystem() {}
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventorySubsystem();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventorySubsystem_NoRegister();
+ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature();
+ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnModuleFitted__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnModuleUnfitted__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnShipActivated__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnShipFittingReceived__DelegateSignature();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature();
+ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature();
+ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesItemDefinitionRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesModule();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipFitting();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipInstance();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipList();
+ENGINE_API UClass* Z_Construct_UClass_UDataTable_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UGameInstanceSubsystem();
+ENGINE_API UClass* Z_Construct_UClass_UStaticMesh_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_UTexture2D_NoRegister();
 UPackage* Z_Construct_UPackage__Script_Echoes();
 // ********** End Cross Module References **********************************************************
 
@@ -510,6 +518,94 @@ UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipFitting()
 }
 // ********** End ScriptStruct FEchoesShipFitting **************************************************
 
+// ********** Begin Delegate FOnIconLoaded *********************************************************
+struct Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics
+{
+	struct _Script_Echoes_eventOnIconLoaded_Parms
+	{
+		UTexture2D* LoadedIcon;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_LoadedIcon;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::NewProp_LoadedIcon = { "LoadedIcon", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnIconLoaded_Parms, LoadedIcon), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::NewProp_LoadedIcon,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_Echoes, nullptr, "OnIconLoaded__DelegateSignature", Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::_Script_Echoes_eventOnIconLoaded_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00120000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::_Script_Echoes_eventOnIconLoaded_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnIconLoaded_DelegateWrapper(const FScriptDelegate& OnIconLoaded, UTexture2D* LoadedIcon)
+{
+	struct _Script_Echoes_eventOnIconLoaded_Parms
+	{
+		UTexture2D* LoadedIcon;
+	};
+	_Script_Echoes_eventOnIconLoaded_Parms Parms;
+	Parms.LoadedIcon=LoadedIcon;
+	OnIconLoaded.ProcessDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FOnIconLoaded ***********************************************************
+
+// ********** Begin Delegate FOnWorldMeshLoaded ****************************************************
+struct Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics
+{
+	struct _Script_Echoes_eventOnWorldMeshLoaded_Parms
+	{
+		UStaticMesh* LoadedMesh;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_LoadedMesh;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::NewProp_LoadedMesh = { "LoadedMesh", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnWorldMeshLoaded_Parms, LoadedMesh), Z_Construct_UClass_UStaticMesh_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::NewProp_LoadedMesh,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_Echoes, nullptr, "OnWorldMeshLoaded__DelegateSignature", Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::_Script_Echoes_eventOnWorldMeshLoaded_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00120000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::_Script_Echoes_eventOnWorldMeshLoaded_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnWorldMeshLoaded_DelegateWrapper(const FScriptDelegate& OnWorldMeshLoaded, UStaticMesh* LoadedMesh)
+{
+	struct _Script_Echoes_eventOnWorldMeshLoaded_Parms
+	{
+		UStaticMesh* LoadedMesh;
+	};
+	_Script_Echoes_eventOnWorldMeshLoaded_Parms Parms;
+	Parms.LoadedMesh=LoadedMesh;
+	OnWorldMeshLoaded.ProcessDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FOnWorldMeshLoaded ******************************************************
+
 // ********** Begin Delegate FOnShipsReceived ******************************************************
 struct Z_Construct_UDelegateFunction_Echoes_OnShipsReceived__DelegateSignature_Statics
 {
@@ -728,6 +824,501 @@ void FOnModuleUnfitted_DelegateWrapper(const FScriptDelegate& OnModuleUnfitted)
 	OnModuleUnfitted.ProcessDelegate<UObject>(NULL);
 }
 // ********** End Delegate FOnModuleUnfitted *******************************************************
+
+// ********** Begin Delegate FOnHangarReceived *****************************************************
+struct Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics
+{
+	struct _Script_Echoes_eventOnHangarReceived_Parms
+	{
+		FGuid HangarStorageId;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HangarStorageId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_HangarStorageId;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::NewProp_HangarStorageId = { "HangarStorageId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnHangarReceived_Parms, HangarStorageId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HangarStorageId_MetaData), NewProp_HangarStorageId_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::NewProp_HangarStorageId,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FDelegateFunctionParams Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UPackage__Script_Echoes, nullptr, "OnHangarReceived__DelegateSignature", Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::PropPointers), sizeof(Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::_Script_Echoes_eventOnHangarReceived_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00520000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::_Script_Echoes_eventOnHangarReceived_Parms) < MAX_uint16);
+UFunction* Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUDelegateFunction(&ReturnFunction, Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnHangarReceived_DelegateWrapper(const FScriptDelegate& OnHangarReceived, FGuid const& HangarStorageId)
+{
+	struct _Script_Echoes_eventOnHangarReceived_Parms
+	{
+		FGuid HangarStorageId;
+	};
+	_Script_Echoes_eventOnHangarReceived_Parms Parms;
+	Parms.HangarStorageId=HangarStorageId;
+	OnHangarReceived.ProcessDelegate<UObject>(&Parms);
+}
+// ********** End Delegate FOnHangarReceived *******************************************************
+
+// ********** Begin Class UEchoesInventorySubsystem Function AsyncLoadItemIcon *********************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics
+{
+	struct EchoesInventorySubsystem_eventAsyncLoadItemIcon_Parms
+	{
+		FString ItemId;
+		FScriptDelegate OnLoaded;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Async load item icon texture\n\x09 * Prevents UI freezes when loading many icons\n\x09 * \n\x09 * @param ItemId - Item type ID as string\n\x09 * @param OnLoaded - Callback when texture is loaded\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Async load item icon texture\nPrevents UI freezes when loading many icons\n\n@param ItemId - Item type ID as string\n@param OnLoaded - Callback when texture is loaded" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ItemId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ItemId;
+	static const UECodeGen_Private::FDelegatePropertyParams NewProp_OnLoaded;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::NewProp_ItemId = { "ItemId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventAsyncLoadItemIcon_Parms, ItemId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemId_MetaData), NewProp_ItemId_MetaData) };
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::NewProp_OnLoaded = { "OnLoaded", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventAsyncLoadItemIcon_Parms, OnLoaded), Z_Construct_UDelegateFunction_Echoes_OnIconLoaded__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 918840736
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::NewProp_ItemId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::NewProp_OnLoaded,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "AsyncLoadItemIcon", Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::EchoesInventorySubsystem_eventAsyncLoadItemIcon_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::EchoesInventorySubsystem_eventAsyncLoadItemIcon_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execAsyncLoadItemIcon)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_ItemId);
+	P_GET_PROPERTY(FDelegateProperty,Z_Param_OnLoaded);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->AsyncLoadItemIcon(Z_Param_ItemId,FOnIconLoaded(Z_Param_OnLoaded));
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function AsyncLoadItemIcon ***********************
+
+// ********** Begin Class UEchoesInventorySubsystem Function AsyncLoadItemWorldMesh ****************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics
+{
+	struct EchoesInventorySubsystem_eventAsyncLoadItemWorldMesh_Parms
+	{
+		FString ItemId;
+		FScriptDelegate OnLoaded;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Async load item world mesh\n\x09 * Used for ejected items in space\n\x09 * \n\x09 * @param ItemId - Item type ID as string\n\x09 * @param OnLoaded - Callback when mesh is loaded\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Async load item world mesh\nUsed for ejected items in space\n\n@param ItemId - Item type ID as string\n@param OnLoaded - Callback when mesh is loaded" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ItemId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ItemId;
+	static const UECodeGen_Private::FDelegatePropertyParams NewProp_OnLoaded;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::NewProp_ItemId = { "ItemId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventAsyncLoadItemWorldMesh_Parms, ItemId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemId_MetaData), NewProp_ItemId_MetaData) };
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::NewProp_OnLoaded = { "OnLoaded", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventAsyncLoadItemWorldMesh_Parms, OnLoaded), Z_Construct_UDelegateFunction_Echoes_OnWorldMeshLoaded__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 1175307942
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::NewProp_ItemId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::NewProp_OnLoaded,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "AsyncLoadItemWorldMesh", Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::EchoesInventorySubsystem_eventAsyncLoadItemWorldMesh_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::EchoesInventorySubsystem_eventAsyncLoadItemWorldMesh_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execAsyncLoadItemWorldMesh)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_ItemId);
+	P_GET_PROPERTY(FDelegateProperty,Z_Param_OnLoaded);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->AsyncLoadItemWorldMesh(Z_Param_ItemId,FOnWorldMeshLoaded(Z_Param_OnLoaded));
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function AsyncLoadItemWorldMesh ******************
+
+// ********** Begin Class UEchoesInventorySubsystem Function GetItemDefinitionData *****************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics
+{
+	struct EchoesInventorySubsystem_eventGetItemDefinitionData_Parms
+	{
+		FString ItemId;
+		FEchoesItemDefinitionRow ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Try to get item definition by item ID for Blueprints\n\x09 * \n\x09 * @param ItemId - Item type ID as string (e.g., \"34\" for Tritanium)\n\x09 * @return Definition data if found, otherwise default-constructed\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Try to get item definition by item ID for Blueprints\n\n@param ItemId - Item type ID as string (e.g., \"34\" for Tritanium)\n@return Definition data if found, otherwise default-constructed" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ItemId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ItemId;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::NewProp_ItemId = { "ItemId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetItemDefinitionData_Parms, ItemId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemId_MetaData), NewProp_ItemId_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 987535441
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::NewProp_ItemId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "GetItemDefinitionData", Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::EchoesInventorySubsystem_eventGetItemDefinitionData_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::EchoesInventorySubsystem_eventGetItemDefinitionData_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execGetItemDefinitionData)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_ItemId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(FEchoesItemDefinitionRow*)Z_Param__Result=P_THIS->GetItemDefinitionData(Z_Param_ItemId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function GetItemDefinitionData *******************
+
+// ********** Begin Class UEchoesInventorySubsystem Function GetItemDefinitionDataByTypeId *********
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics
+{
+	struct EchoesInventorySubsystem_eventGetItemDefinitionDataByTypeId_Parms
+	{
+		int32 TypeId;
+		FEchoesItemDefinitionRow ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Get item definition by integer type ID for Blueprints\n\x09 * \n\x09 * @param TypeId - Item type ID as integer\n\x09 * @return Definition data if found, otherwise default-constructed\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Get item definition by integer type ID for Blueprints\n\n@param TypeId - Item type ID as integer\n@return Definition data if found, otherwise default-constructed" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_TypeId;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::NewProp_TypeId = { "TypeId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetItemDefinitionDataByTypeId_Parms, TypeId), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetItemDefinitionDataByTypeId_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 987535441
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::NewProp_TypeId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "GetItemDefinitionDataByTypeId", Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::EchoesInventorySubsystem_eventGetItemDefinitionDataByTypeId_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::EchoesInventorySubsystem_eventGetItemDefinitionDataByTypeId_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execGetItemDefinitionDataByTypeId)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_TypeId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(FEchoesItemDefinitionRow*)Z_Param__Result=P_THIS->GetItemDefinitionDataByTypeId(Z_Param_TypeId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function GetItemDefinitionDataByTypeId ***********
+
+// ********** Begin Class UEchoesInventorySubsystem Function GetItemFromRegistryData ***************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics
+{
+	struct EchoesInventorySubsystem_eventGetItemFromRegistryData_Parms
+	{
+		int32 TypeId;
+		FEchoesItemDefinitionRow ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Get item definition from typed registry by integer TypeId for Blueprints\n\x09 * \n\x09 * @param TypeId - Item type ID as integer\n\x09 * @return Definition data if found, otherwise default-constructed\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Get item definition from typed registry by integer TypeId for Blueprints\n\n@param TypeId - Item type ID as integer\n@return Definition data if found, otherwise default-constructed" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_TypeId;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::NewProp_TypeId = { "TypeId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetItemFromRegistryData_Parms, TypeId), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetItemFromRegistryData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 987535441
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::NewProp_TypeId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "GetItemFromRegistryData", Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::EchoesInventorySubsystem_eventGetItemFromRegistryData_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::EchoesInventorySubsystem_eventGetItemFromRegistryData_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execGetItemFromRegistryData)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_TypeId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(FEchoesItemDefinitionRow*)Z_Param__Result=P_THIS->GetItemFromRegistryData(Z_Param_TypeId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function GetItemFromRegistryData *****************
+
+// ********** Begin Class UEchoesInventorySubsystem Function GetPersonalHangarId *******************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics
+{
+	struct EchoesInventorySubsystem_eventGetPersonalHangarId_Parms
+	{
+		int32 StationId;
+		FGuid ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Get personal hangar ID for a specific station (synchronous)\n\x09 * Returns cached hangar ID if available, otherwise returns invalid GUID\n\x09 * Use Inventory_RequestPersonalHangar for async retrieval\n\x09 * \n\x09 * @param StationId - Station ID to get hangar for\n\x09 * @return Hangar storage ID (may be invalid if not cached)\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Get personal hangar ID for a specific station (synchronous)\nReturns cached hangar ID if available, otherwise returns invalid GUID\nUse Inventory_RequestPersonalHangar for async retrieval\n\n@param StationId - Station ID to get hangar for\n@return Hangar storage ID (may be invalid if not cached)" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_StationId;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::NewProp_StationId = { "StationId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetPersonalHangarId_Parms, StationId), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventGetPersonalHangarId_Parms, ReturnValue), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::NewProp_StationId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "GetPersonalHangarId", Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::EchoesInventorySubsystem_eventGetPersonalHangarId_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::EchoesInventorySubsystem_eventGetPersonalHangarId_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execGetPersonalHangarId)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_StationId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(FGuid*)Z_Param__Result=P_THIS->GetPersonalHangarId(Z_Param_StationId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function GetPersonalHangarId *********************
+
+// ********** Begin Class UEchoesInventorySubsystem Function HasItemDefinition *********************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics
+{
+	struct EchoesInventorySubsystem_eventHasItemDefinition_Parms
+	{
+		FString ItemId;
+		bool ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Check if item definition exists\n\x09 * \n\x09 * @param ItemId - Item type ID as string\n\x09 * @return True if definition exists in table\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Check if item definition exists\n\n@param ItemId - Item type ID as string\n@return True if definition exists in table" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ItemId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ItemId;
+	static void NewProp_ReturnValue_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::NewProp_ItemId = { "ItemId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventHasItemDefinition_Parms, ItemId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemId_MetaData), NewProp_ItemId_MetaData) };
+void Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+{
+	((EchoesInventorySubsystem_eventHasItemDefinition_Parms*)Obj)->ReturnValue = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(EchoesInventorySubsystem_eventHasItemDefinition_Parms), &Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::NewProp_ItemId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "HasItemDefinition", Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::EchoesInventorySubsystem_eventHasItemDefinition_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::EchoesInventorySubsystem_eventHasItemDefinition_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execHasItemDefinition)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_ItemId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(bool*)Z_Param__Result=P_THIS->HasItemDefinition(Z_Param_ItemId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function HasItemDefinition ***********************
+
+// ********** Begin Class UEchoesInventorySubsystem Function HasItemInRegistry *********************
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics
+{
+	struct EchoesInventorySubsystem_eventHasItemInRegistry_Parms
+	{
+		int32 TypeId;
+		bool ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory|ItemDefinitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Check if item exists in typed registry\n\x09 * \n\x09 * @param TypeId - Item type ID as integer\n\x09 * @return True if definition exists in registry\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Check if item exists in typed registry\n\n@param TypeId - Item type ID as integer\n@return True if definition exists in registry" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_TypeId;
+	static void NewProp_ReturnValue_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::NewProp_TypeId = { "TypeId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventHasItemInRegistry_Parms, TypeId), METADATA_PARAMS(0, nullptr) };
+void Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+{
+	((EchoesInventorySubsystem_eventHasItemInRegistry_Parms*)Obj)->ReturnValue = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(EchoesInventorySubsystem_eventHasItemInRegistry_Parms), &Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::NewProp_TypeId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "HasItemInRegistry", Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::EchoesInventorySubsystem_eventHasItemInRegistry_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::EchoesInventorySubsystem_eventHasItemInRegistry_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execHasItemInRegistry)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_TypeId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(bool*)Z_Param__Result=P_THIS->HasItemInRegistry(Z_Param_TypeId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function HasItemInRegistry ***********************
 
 // ********** Begin Class UEchoesInventorySubsystem Function Inventory_ClearCache ******************
 struct Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_ClearCache_Statics
@@ -1028,6 +1619,65 @@ DEFINE_FUNCTION(UEchoesInventorySubsystem::execInventory_GetCachedShips)
 }
 // ********** End Class UEchoesInventorySubsystem Function Inventory_GetCachedShips ****************
 
+// ********** Begin Class UEchoesInventorySubsystem Function Inventory_RequestPersonalHangar *******
+struct Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics
+{
+	struct EchoesInventorySubsystem_eventInventory_RequestPersonalHangar_Parms
+	{
+		int32 StationId;
+		FScriptDelegate OnSuccess;
+		FScriptDelegate OnFailure;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Inventory" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Request personal hangar storage ID at a station\n\x09 * Sends HTTP GET to /api/inventory/hangar/{stationId} with JWT token\n\x09 * Backend will return or create the player's personal hangar container\n\x09 * \n\x09 * @param StationId - Station ID to get hangar for\n\x09 * @param OnSuccess - Callback with hangar storage ID\n\x09 * @param OnFailure - Callback on request failure\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Request personal hangar storage ID at a station\nSends HTTP GET to /api/inventory/hangar/{stationId} with JWT token\nBackend will return or create the player's personal hangar container\n\n@param StationId - Station ID to get hangar for\n@param OnSuccess - Callback with hangar storage ID\n@param OnFailure - Callback on request failure" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_StationId;
+	static const UECodeGen_Private::FDelegatePropertyParams NewProp_OnSuccess;
+	static const UECodeGen_Private::FDelegatePropertyParams NewProp_OnFailure;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::NewProp_StationId = { "StationId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_RequestPersonalHangar_Parms, StationId), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_RequestPersonalHangar_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnHangarReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 479979742
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventorySubsystem_eventInventory_RequestPersonalHangar_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3872701800
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::NewProp_StationId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::NewProp_OnSuccess,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::NewProp_OnFailure,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesInventorySubsystem, nullptr, "Inventory_RequestPersonalHangar", Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::EchoesInventorySubsystem_eventInventory_RequestPersonalHangar_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::EchoesInventorySubsystem_eventInventory_RequestPersonalHangar_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesInventorySubsystem::execInventory_RequestPersonalHangar)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_StationId);
+	P_GET_PROPERTY(FDelegateProperty,Z_Param_OnSuccess);
+	P_GET_PROPERTY(FDelegateProperty,Z_Param_OnFailure);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->Inventory_RequestPersonalHangar(Z_Param_StationId,FOnHangarReceived(Z_Param_OnSuccess),FOnInventoryFailure(Z_Param_OnFailure));
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesInventorySubsystem Function Inventory_RequestPersonalHangar *********
+
 // ********** Begin Class UEchoesInventorySubsystem Function Inventory_SetActiveShip ***************
 struct Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_SetActiveShip_Statics
 {
@@ -1248,12 +1898,21 @@ void UEchoesInventorySubsystem::StaticRegisterNativesUEchoesInventorySubsystem()
 {
 	UClass* Class = UEchoesInventorySubsystem::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "AsyncLoadItemIcon", &UEchoesInventorySubsystem::execAsyncLoadItemIcon },
+		{ "AsyncLoadItemWorldMesh", &UEchoesInventorySubsystem::execAsyncLoadItemWorldMesh },
+		{ "GetItemDefinitionData", &UEchoesInventorySubsystem::execGetItemDefinitionData },
+		{ "GetItemDefinitionDataByTypeId", &UEchoesInventorySubsystem::execGetItemDefinitionDataByTypeId },
+		{ "GetItemFromRegistryData", &UEchoesInventorySubsystem::execGetItemFromRegistryData },
+		{ "GetPersonalHangarId", &UEchoesInventorySubsystem::execGetPersonalHangarId },
+		{ "HasItemDefinition", &UEchoesInventorySubsystem::execHasItemDefinition },
+		{ "HasItemInRegistry", &UEchoesInventorySubsystem::execHasItemInRegistry },
 		{ "Inventory_ClearCache", &UEchoesInventorySubsystem::execInventory_ClearCache },
 		{ "Inventory_FetchShipFitting", &UEchoesInventorySubsystem::execInventory_FetchShipFitting },
 		{ "Inventory_FetchShips", &UEchoesInventorySubsystem::execInventory_FetchShips },
 		{ "Inventory_GetActiveShip", &UEchoesInventorySubsystem::execInventory_GetActiveShip },
 		{ "Inventory_GetCachedFitting", &UEchoesInventorySubsystem::execInventory_GetCachedFitting },
 		{ "Inventory_GetCachedShips", &UEchoesInventorySubsystem::execInventory_GetCachedShips },
+		{ "Inventory_RequestPersonalHangar", &UEchoesInventorySubsystem::execInventory_RequestPersonalHangar },
 		{ "Inventory_SetActiveShip", &UEchoesInventorySubsystem::execInventory_SetActiveShip },
 		{ "UI_FitModule", &UEchoesInventorySubsystem::execUI_FitModule },
 		{ "UI_UnfitModule", &UEchoesInventorySubsystem::execUI_UnfitModule },
@@ -1320,19 +1979,64 @@ struct Z_Construct_UClass_UEchoesInventorySubsystem_Statics
 		{ "ToolTip", "Cached ship fitting (last fetched)" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CachedHangarIds_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Cached personal hangar IDs by station ID */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Cached personal hangar IDs by station ID" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ItemDefinitionsTable_MetaData[] = {
+		{ "AllowPrivateAccess", "true" },
+		{ "Category", "Item Definitions" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Data table containing item definitions\n\x09 * Maps TypeId to visual assets and metadata\n\x09 * Set this in Project Settings or Game Instance\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Data table containing item definitions\nMaps TypeId to visual assets and metadata\nSet this in Project Settings or Game Instance" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ItemTypeRegistry_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Typed item registry for type-safe access\n\x09 * Key: ItemTypeId (TypeId as integer), Value: Definition row\n\x09 * Provides strongly-typed access pattern for item definitions\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesInventorySubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Typed item registry for type-safe access\nKey: ItemTypeId (TypeId as integer), Value: Definition row\nProvides strongly-typed access pattern for item definitions" },
+#endif
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CachedShips_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_CachedShips;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CachedFitting;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_CachedHangarIds_ValueProp;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_CachedHangarIds_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_CachedHangarIds;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ItemDefinitionsTable;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ItemTypeRegistry_ValueProp;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_ItemTypeRegistry_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_ItemTypeRegistry;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemIcon, "AsyncLoadItemIcon" }, // 3625409161
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_AsyncLoadItemWorldMesh, "AsyncLoadItemWorldMesh" }, // 3306346290
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionData, "GetItemDefinitionData" }, // 2453761004
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemDefinitionDataByTypeId, "GetItemDefinitionDataByTypeId" }, // 2617795425
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetItemFromRegistryData, "GetItemFromRegistryData" }, // 1634449037
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_GetPersonalHangarId, "GetPersonalHangarId" }, // 2254671601
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemDefinition, "HasItemDefinition" }, // 2850417126
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_HasItemInRegistry, "HasItemInRegistry" }, // 1983660015
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_ClearCache, "Inventory_ClearCache" }, // 529228144
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShipFitting, "Inventory_FetchShipFitting" }, // 2873828685
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_FetchShips, "Inventory_FetchShips" }, // 2505205704
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetActiveShip, "Inventory_GetActiveShip" }, // 3294980606
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetCachedFitting, "Inventory_GetCachedFitting" }, // 576491551
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_GetCachedShips, "Inventory_GetCachedShips" }, // 1205811476
+		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_RequestPersonalHangar, "Inventory_RequestPersonalHangar" }, // 3170819074
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_Inventory_SetActiveShip, "Inventory_SetActiveShip" }, // 3980991257
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_UI_FitModule, "UI_FitModule" }, // 3371009046
 		{ &Z_Construct_UFunction_UEchoesInventorySubsystem_UI_UnfitModule, "UI_UnfitModule" }, // 175438068
@@ -1346,10 +2050,24 @@ struct Z_Construct_UClass_UEchoesInventorySubsystem_Statics
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedShips_Inner = { "CachedShips", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FEchoesShipInstance, METADATA_PARAMS(0, nullptr) }; // 219373969
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedShips = { "CachedShips", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventorySubsystem, CachedShips), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CachedShips_MetaData), NewProp_CachedShips_MetaData) }; // 219373969
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedFitting = { "CachedFitting", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventorySubsystem, CachedFitting), Z_Construct_UScriptStruct_FEchoesShipFitting, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CachedFitting_MetaData), NewProp_CachedFitting_MetaData) }; // 2094547099
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedHangarIds_ValueProp = { "CachedHangarIds", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedHangarIds_Key_KeyProp = { "CachedHangarIds_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedHangarIds = { "CachedHangarIds", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventorySubsystem, CachedHangarIds), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CachedHangarIds_MetaData), NewProp_CachedHangarIds_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemDefinitionsTable = { "ItemDefinitionsTable", nullptr, (EPropertyFlags)0x0040000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventorySubsystem, ItemDefinitionsTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemDefinitionsTable_MetaData), NewProp_ItemDefinitionsTable_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemTypeRegistry_ValueProp = { "ItemTypeRegistry", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 987535441
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemTypeRegistry_Key_KeyProp = { "ItemTypeRegistry_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemTypeRegistry = { "ItemTypeRegistry", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventorySubsystem, ItemTypeRegistry), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemTypeRegistry_MetaData), NewProp_ItemTypeRegistry_MetaData) }; // 987535441
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesInventorySubsystem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedShips_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedShips,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedFitting,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedHangarIds_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedHangarIds_Key_KeyProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_CachedHangarIds,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemDefinitionsTable,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemTypeRegistry_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemTypeRegistry_Key_KeyProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventorySubsystem_Statics::NewProp_ItemTypeRegistry,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesInventorySubsystem_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UEchoesInventorySubsystem_Statics::DependentSingletons[])() = {
@@ -1395,10 +2113,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FEchoesShipFitting::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipFitting_Statics::NewStructOps, TEXT("EchoesShipFitting"), &Z_Registration_Info_UScriptStruct_FEchoesShipFitting, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipFitting), 2094547099U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 1379557213U) },
+		{ Z_Construct_UClass_UEchoesInventorySubsystem, UEchoesInventorySubsystem::StaticClass, TEXT("UEchoesInventorySubsystem"), &Z_Registration_Info_UClass_UEchoesInventorySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventorySubsystem), 3672484356U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_1502455340(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_2939552473(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesInventorySubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

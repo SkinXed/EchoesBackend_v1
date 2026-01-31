@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Core/Common/EchoesInventoryComponent.h"
-#include "Core/Common/EchoesItemDefinitions.h"
+#include "../Core/Common/EchoesItemDefinitions.h"
 #include "EchoesInventoryItemObject.generated.h"
 
 // Forward declarations
@@ -93,12 +93,11 @@ public:
 	int32 GetTypeId() const { return ItemData.TypeId; }
 
 	/**
-	 * Get the item definition from subsystem
-	 * Returns visual assets and metadata
-	 * @return Item definition, or nullptr if not found
+	 * Get the item definition data for Blueprints
+	 * @return Definition data if cached, otherwise default-constructed
 	 */
 	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
-	const FEchoesItemDefinitionRow* GetItemDefinition() const { return CachedDefinition; }
+	FEchoesItemDefinitionRow GetItemDefinitionData() const;
 
 	/**
 	 * Get the display name from item definition (localized)
@@ -142,7 +141,7 @@ public:
 	 * @return True if definition was found and cached
 	 */
 	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
-	bool HasDefinition() const { return CachedDefinition != nullptr; }
+	bool HasDefinition() const { return CachedDefinition.IsSet(); }
 
 protected:
 	/** The wrapped inventory item data */
@@ -150,7 +149,7 @@ protected:
 	FEchoesInventoryItem ItemData;
 
 	/** Cached item definition from subsystem */
-	const FEchoesItemDefinitionRow* CachedDefinition;
+	TOptional<FEchoesItemDefinitionRow> CachedDefinition;
 
 	/** Reference to inventory subsystem for fetching definitions */
 	UPROPERTY()

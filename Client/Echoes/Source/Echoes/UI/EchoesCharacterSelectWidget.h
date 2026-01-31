@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/EchoesWindowBase.h"
-#include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "EchoesWindowBase.h"
+#include "../Core/Common/Networking/EchoesAuthSubsystem.h"
 #include "EchoesCharacterSelectWidget.generated.h"
 
 class UListView;
@@ -97,10 +97,6 @@ public:
 	/** Called when a character is selected */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
 	void OnCharacterSelected(FGuid CharacterId);
-
-	/** Called when character list is loaded */
-	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
-	FOnLoginSuccess OnCharactersLoaded;
 
 protected:
 	// ==================== Button Handlers ====================

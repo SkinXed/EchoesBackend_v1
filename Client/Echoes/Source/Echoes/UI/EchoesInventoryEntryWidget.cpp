@@ -88,22 +88,27 @@ void UEchoesInventoryEntryWidget::StartAsyncIconLoad()
 		return;
 	}
 
-	// Check if item has definition with icon
-	const FEchoesItemDefinitionRow* Definition = CurrentItemObject->GetItemDefinition();
-	if (!Definition || Definition->Icon.IsNull())
+	if (!CurrentItemObject->HasDefinition())
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryEntryWidget: No icon defined for item %d"), CurrentItemObject->GetTypeId());
+		return;
+	}
+
+	FEchoesItemDefinitionRow Definition = CurrentItemObject->GetItemDefinitionData();
+	if (Definition.Icon.IsNull())
 	{
 		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryEntryWidget: No icon defined for item %d"), CurrentItemObject->GetTypeId());
 		return;
 	}
 
 	// If icon is already loaded, use it immediately
-	if (Definition->Icon.IsValid())
+	if (Definition.Icon.IsValid())
 	{
 		if (ItemIcon)
 		{
-			ItemIcon->SetBrushFromTexture(Definition->Icon.Get());
+			ItemIcon->SetBrushFromTexture(Definition.Icon.Get());
 		}
-		OnIconLoaded(Definition->Icon.Get());
+		OnIconLoaded(Definition.Icon.Get());
 		return;
 	}
 
@@ -142,13 +147,34 @@ void UEchoesInventoryEntryWidget::HandleIconLoaded(UTexture2D* LoadedIcon)
 	OnIconLoaded(LoadedIcon);
 }
 
-void UEchoesInventoryEntryWidget::UpdateDisplay_Implementation(UEchoesInventoryItemObject* ItemObject)
+void UEchoesInventoryEntryWidget::UpdateDisplay(UEchoesInventoryItemObject* ItemObject)
 {
 	// Default implementation - can be overridden in Blueprint
 	// Base implementation already handled text updates in SetItemData
 	
 	// Icon loading would typically be handled here or in Blueprint
 	// For now, we leave this as a Blueprint override point
+}
+
+void UEchoesInventoryEntryWidget::OnEntrySelected()
+{
+}
+
+void UEchoesInventoryEntryWidget::OnEntryDeselected()
+{
+}
+
+bool UEchoesInventoryEntryWidget::HandleDragStarting(UEchoesInventoryItemObject* ItemObject, bool bIsShiftHeld)
+{
+	return true;
+}
+
+void UEchoesInventoryEntryWidget::OnIconLoaded(UTexture2D* LoadedIcon)
+{
+}
+
+void UEchoesInventoryEntryWidget::OnContextMenuActionExecuted(UEchoesInventoryItemObject* ItemObject, const FString& ActionId)
+{
 }
 
 FReply UEchoesInventoryEntryWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -170,11 +196,12 @@ FReply UEchoesInventoryEntryWidget::NativeOnMouseButtonDown(const FGeometry& InG
 	// Handle left mouse button for dragging
 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
+		PendingDragEvent = InMouseEvent;
 		// Check if Shift is held
 		bool bIsShiftHeld = InMouseEvent.IsShiftDown();
 
 		// Ask Blueprint if drag should start
-		if (OnDragStarting(CurrentItemObject, bIsShiftHeld))
+		if (HandleDragStarting(CurrentItemObject, bIsShiftHeld))
 		{
 			// Detect drag if pressed
 			Reply = Reply.DetectDrag(TakeWidget(), EKeys::LeftMouseButton);
@@ -276,7 +303,7 @@ void UEchoesInventoryEntryWidget::CreateDragOperationWithQuantity(
 	if (!InventoryWidget)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget"));
-		OnDragCancelled();
+		OnDragCancelled(PendingDragEvent, nullptr);
 		return;
 	}
 
@@ -285,7 +312,7 @@ void UEchoesInventoryEntryWidget::CreateDragOperationWithQuantity(
 	if (!SourceComponent)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Source inventory component not found"));
-		OnDragCancelled();
+		OnDragCancelled(PendingDragEvent, nullptr);
 		return;
 	}
 
@@ -332,7 +359,7 @@ void UEchoesInventoryEntryWidget::OnDragQuantityCancelled()
 {
 	bWaitingForDragQuantity = false;
 	UE_LOG(LogTemp, Log, TEXT("Drag quantity selection cancelled"));
-	OnDragCancelled();
+	OnDragCancelled(PendingDragEvent, nullptr);
 }
 
 void UEchoesInventoryEntryWidget::OnJettisonQuantitySelected(int64 SelectedQuantity)
@@ -498,19 +525,16 @@ TArray<FContextMenuAction> UEchoesInventoryEntryWidget::GetDefaultActionsForItem
 		true
 	));
 
-	// Check if item can be used/equipped
-	// This is a simplified check - full implementation would check item category
-	const FEchoesItemDefinitionRow* Definition = ItemObject->GetItemDefinition();
-	if (Definition)
+	if (ItemObject->HasDefinition())
 	{
-		// If it's a module or equipment, show Use/Fit option
-		FString Category = Definition->Category.ToString();
+		FEchoesItemDefinitionRow Definition = ItemObject->GetItemDefinitionData();
+		FString Category = Definition.Category.ToString();
 		if (Category.Contains(TEXT("Module")) || Category.Contains(TEXT("Equipment")))
 		{
 			Actions.Add(FContextMenuAction(
 				FText::FromString(TEXT("Fit to Ship")),
 				TEXT("fit"),
-				false // Disabled for now (stub)
+				false
 			));
 		}
 	}
@@ -636,7 +660,7 @@ void UEchoesInventoryEntryWidget::HandleContextMenuAction(const FString& ActionI
 	OnContextMenuActionExecuted(CurrentItemObject, ActionId);
 }
 
-void UEchoesInventoryEntryWidget::OnContextMenuRequested_Implementation(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions)
+void UEchoesInventoryEntryWidget::OnContextMenuRequested(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions)
 {
 	// Default implementation - Blueprint can override to customize actions
 }
