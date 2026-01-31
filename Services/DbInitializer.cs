@@ -251,6 +251,9 @@ public class DbInitializer : IDbInitializer
                 _logger.LogInformation($"✓ Shop items already exist ({shopItemCount} items)");
             }
 
+            // Seed race configs
+            await Data.SeedData.RaceConfigSeedData.SeedRaceConfigs(_context);
+
             _logger.LogInformation("✅ Database initialization complete");
         }
         catch (Exception ex)
