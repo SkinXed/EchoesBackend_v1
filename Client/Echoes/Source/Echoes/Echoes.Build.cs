@@ -17,13 +17,13 @@ public class Echoes : ModuleRules
 			"HTTP", // For HTTP requests
 			"Json", // For JSON parsing
 			"JsonUtilities", // For JSON utilities
-			"Niagara" // For Niagara VFX system
+			"Niagara", // For Niagara VFX system
+			"UMG", // For UMG widgets
+			"Slate", // For Slate UI
+			"SlateCore" // For Slate core functionality
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
-
-		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");

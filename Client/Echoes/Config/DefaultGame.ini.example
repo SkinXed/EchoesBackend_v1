@@ -1,0 +1,22 @@
+[/Script/EngineSettings.GameMapsSettings]
+GameDefaultMap=/Game/Maps/MainMenu.MainMenu
+EditorStartupMap=/Game/Maps/MainMenu.MainMenu
+GlobalDefaultGameMode=/Script/Echoes.EchoesGameModeBase
+GlobalDefaultServerGameMode=/Script/Echoes.EchoesServerGameMode
+
+[/Script/Echoes.EchoesGameSettings]
+; Backend API configuration
+; Development (local backend)
+ApiBaseUrl=http://localhost:5116
+; Production (replace with your actual API URL)
+; ApiBaseUrl=https://api.echoes-game.com
+
+; Inventory settings
+DefaultTransferDistance=250000.0
+MaxInventoryRefreshInterval=5.0
+
+[/Script/Engine.NetworkSettings]
+; Network optimization for MMO
+n.VerifyPeer=True
+net.MaxRepArraySize=1024
+net.MaxRepArrayMemory=262144
