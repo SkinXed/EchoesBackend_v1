@@ -1,0 +1,219 @@
+name: Overview List Integration
+description: Integrate Overview list with 3D radar and targeting system
+title: "[Feature]: Overview List Integration"
+labels: ["feature", "[UI/HUD]", "[C++] Engine", "P1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Overview List Integration
+        
+        Enhance the Overview panel with UListView integration, bracket synchronization, and advanced filtering.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      value: |
+        Improve the Overview panel to provide a comprehensive list of nearby entities with advanced features:
+        - UListView widget for efficient rendering
+        - Synchronization with 3D radar markers
+        - 3D bracket display on entities in space
+        - Column customization (show/hide, reorder)
+        - Custom overview tabs with saved filters
+        - Sort by multiple columns
+        - Color-coded rows based on standing/distance
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      value: |
+        - UE5 UListView widget
+        - 3D Tactical Radar (for synchronization)
+        - Target management system
+        - Entity subsystem
+        - 3D world rendering (for brackets)
+        - Material system (for bracket visualization)
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      value: |
+        ## Week 1: UListView Integration
+        - [ ] Create `UEchoesOverviewEntryWidget` class for list items
+        - [ ] Implement `IUserObjectListEntry` interface
+        - [ ] Set up data binding for entity properties
+        - [ ] Add multi-column support (Name, Distance, Type, Faction)
+        - [ ] Implement sorting by column (ascending/descending)
+        - [ ] Add row selection and highlighting
+        
+        ## Week 2: Column Customization
+        - [ ] Create column configuration UI
+        - [ ] Implement drag-and-drop column reordering
+        - [ ] Add show/hide column toggles
+        - [ ] Save column configuration to player profile
+        - [ ] Load saved configuration on startup
+        - [ ] Add "Reset to Default" option
+        
+        ## Week 3: Bracket System
+        - [ ] Create 3D bracket material
+        - [ ] Implement bracket component attached to entities
+        - [ ] Sync bracket visibility with Overview selection
+        - [ ] Inherit bracket color from Overview row
+        - [ ] Add distance-based scaling for brackets
+        - [ ] Implement bracket occlusion handling
+        
+        ## Week 4: Custom Tabs & Filters
+        - [ ] Create tab management UI
+        - [ ] Implement filter presets (Ships Only, Stations, All)
+        - [ ] Add custom filter builder (distance, type, standing)
+        - [ ] Save custom tabs to player profile
+        - [ ] Add tab switching hotkeys
+        - [ ] Implement filter caching for performance
+        
+        ## Week 5: Radar Synchronization
+        - [ ] Link Overview selection to radar highlighting
+        - [ ] Clicking radar marker selects in Overview
+        - [ ] Clicking Overview entry highlights on radar
+        - [ ] Bi-directional scroll sync (optional)
+        - [ ] Visual feedback for synchronized selection
+        
+        ## Testing & Polish
+        - [ ] Test with 100+ entities in Overview
+        - [ ] Verify sorting performance
+        - [ ] Test column customization persistence
+        - [ ] Bracket visibility testing
+        - [ ] Multiplayer synchronization testing
+        - [ ] Performance profiling and optimization
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-approach
+    attributes:
+      label: Technical Approach
+      value: |
+        ### UListView Data Structure
+        ```cpp
+        USTRUCT(BlueprintType)
+        struct FEchoesOverviewEntry
+        {
+            GENERATED_BODY()
+            
+            UPROPERTY(BlueprintReadOnly)
+            FGuid EntityId;
+            
+            UPROPERTY(BlueprintReadOnly)
+            FText EntityName;
+            
+            UPROPERTY(BlueprintReadOnly)
+            float Distance;
+            
+            UPROPERTY(BlueprintReadOnly)
+            FText EntityType;
+            
+            UPROPERTY(BlueprintReadOnly)
+            EFactionStanding Standing; // Friendly, Neutral, Hostile
+            
+            UPROPERTY(BlueprintReadOnly)
+            FLinearColor BracketColor;
+        };
+        ```
+        
+        ### 3D Bracket Rendering
+        - Use `UWidgetComponent` with world space positioning
+        - Material with distance fade-out
+        - Billboard orientation (always face camera)
+        - Color inheritance from Overview row
+        
+        ### Performance Optimization
+        - Virtual scrolling in UListView (only render visible items)
+        - Update frequency throttling (10-20 Hz)
+        - Dirty flag for entity changes
+        - Batch bracket updates
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Overview displays all nearby entities efficiently
+        - [ ] Columns can be shown/hidden and reordered
+        - [ ] Custom overview tabs save and load correctly
+        - [ ] 3D brackets appear on selected entities
+        - [ ] Clicking Overview entry highlights entity in 3D
+        - [ ] Clicking radar marker selects in Overview
+        - [ ] Sorting works on all columns
+        - [ ] Performance: 60 FPS with 100+ entities
+        - [ ] Configuration persists between sessions
+    validations:
+      required: true
+
+  - type: textarea
+    id: ui-mockup
+    attributes:
+      label: UI Layout
+      value: |
+        ```
+        ┌─────────────────────────────────────────────────────────────┐
+        │ Overview                                   [Custom Tabs ▼]  │
+        ├─────────────────────────────────────────────────────────────┤
+        │ [✓] Name  [✓] Distance  [✓] Type  [✓] Standing  [Settings] │
+        ├─────────────────────────────────────────────────────────────┤
+        │ ● Frigate "Alpha"      2.5 km    Frigate    Friendly       │
+        │ ● Station Jita IV      5.0 km    Station    Neutral        │
+        │ ● Cruiser "Enemy"      8.2 km    Cruiser    Hostile        │
+        │ ● Asteroid Belt 1     12.0 km    Asteroid   Neutral        │
+        │ ...                                                          │
+        └─────────────────────────────────────────────────────────────┘
+        
+        3D View:
+        - Selected entities have colored brackets around them
+        - Bracket color matches Overview row color
+        - Distance displayed next to bracket
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      value: |
+        - 3D Tactical Radar (for synchronization)
+        - Entity subsystem (for entity queries)
+        - Target management system
+        - Material system for 3D brackets
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - "Milestone 2: Visual & Tactical HUD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "1 week"
+        - "2 weeks"
+        - "3 weeks"
+        - "4 weeks"
+        - "5-8 weeks"
+      default: 4
+    validations:
+      required: true

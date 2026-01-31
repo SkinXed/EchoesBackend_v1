@@ -1,0 +1,163 @@
+name: 3D Tactical Radar Implementation
+description: Implement EVE-style 3D tactical radar for spatial awareness
+title: "[Feature]: 3D Tactical Radar"
+labels: ["feature", "[UI/HUD]", "[C++] Engine", "P1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 3D Tactical Radar Implementation
+        
+        Implement a 3D sphere representation of nearby space with entity markers, inspired by EVE Online's tactical overlay.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      value: |
+        Create a 3D tactical radar widget that displays nearby entities on a spherical projection. The radar should show:
+        - Entity markers scaled by distance
+        - Friend/Foe/Neutral color coding
+        - Click-to-target interaction
+        - Configurable range rings (5km, 10km, 50km)
+        - Optional rotation modes (camera-relative or fixed north)
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      value: |
+        - UE5 UMG Widget system
+        - Entity subsystem (for querying nearby objects)
+        - Target management system
+        - Material system (for 3D sphere visualization)
+        - Network replication (for multiplayer awareness)
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      value: |
+        ## Week 1-2: Core Radar Widget
+        - [ ] Create `UEchoesTacticalRadarWidget` class
+        - [ ] Design radar sphere mesh or material
+        - [ ] Implement entity marker positioning algorithm
+        - [ ] Add distance scaling logic (closer = larger markers)
+        - [ ] Create marker sprites for different entity types
+        
+        ## Week 3: Entity Integration
+        - [ ] Query nearby entities from subsystem
+        - [ ] Filter entities by configurable max range
+        - [ ] Update marker positions in real-time (Tick)
+        - [ ] Implement LOD system for performance
+        - [ ] Add entity culling for off-sphere entities
+        
+        ## Week 4: Polish and Features
+        - [ ] Implement color coding (Green=Friendly, Blue=Neutral, Red=Hostile)
+        - [ ] Add click-to-target interaction
+        - [ ] Create range ring overlays (5km, 10km, 50km)
+        - [ ] Add rotation mode toggle (camera-relative vs fixed north)
+        - [ ] Create settings menu for radar customization
+        - [ ] Performance optimization (target 60 FPS with 100+ entities)
+        
+        ## Testing & Polish
+        - [ ] Test with varying entity counts (10, 50, 100+)
+        - [ ] Verify accuracy of marker positions
+        - [ ] Test click interaction reliability
+        - [ ] Multiplayer testing
+        - [ ] Visual polish and shader effects
+        - [ ] Documentation and user guide
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-approach
+    attributes:
+      label: Technical Approach
+      value: |
+        ### Positioning Algorithm
+        ```cpp
+        // Convert 3D world position to 2D radar position
+        FVector2D WorldToRadarPosition(FVector WorldPos, FVector CenterPos, float RadarRadius)
+        {
+            FVector RelativePos = WorldPos - CenterPos;
+            float Distance = RelativePos.Size();
+            
+            // Normalize to radar scale
+            float RadarDist = FMath::Clamp(Distance / MaxRadarRange, 0.0f, 1.0f);
+            
+            // Project to 2D (top-down view)
+            FVector2D Direction = FVector2D(RelativePos.X, RelativePos.Y).GetSafeNormal();
+            
+            return Direction * RadarDist * RadarRadius;
+        }
+        ```
+        
+        ### Marker Sizing
+        - Base size: 10px
+        - Scale by distance: `Size = BaseSize * (1.0f - NormalizedDistance)`
+        - Minimum size: 5px (for distant objects)
+        - Maximum size: 20px (for very close objects)
+        
+        ### Performance Considerations
+        - Use object pooling for marker widgets
+        - Update frequency: 10 Hz (throttled)
+        - Spatial culling: Only show entities within max range
+        - LOD: Reduce marker detail for distant objects
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Radar displays all entities within configurable range
+        - [ ] Entity positions update in real-time
+        - [ ] Click on marker selects/targets entity
+        - [ ] Color coding correctly reflects faction standing
+        - [ ] Range rings visible and accurate
+        - [ ] Performance: 60 FPS with 100+ entities
+        - [ ] Works correctly in multiplayer
+        - [ ] Settings persist between sessions
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      value: |
+        - Entity subsystem for querying nearby objects
+        - Target management system (for click-to-target)
+        - Network replication for multiplayer
+        - Material system for sphere visualization
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - "Milestone 2: Visual & Tactical HUD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "1 week"
+        - "2 weeks"
+        - "3 weeks"
+        - "4 weeks"
+        - "5-8 weeks"
+      default: 3
+    validations:
+      required: true

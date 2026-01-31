@@ -1,0 +1,309 @@
+name: Directional Shields System
+description: Implement 4-vector directional shield damage system
+title: "[Feature]: Directional Shields"
+labels: ["feature", "[C++] Engine", "[.NET] Backend", "P2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Directional Shields System
+        
+        Implement EVE-style directional shields with 4 damage vectors (Front, Back, Left, Right).
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      value: |
+        Create a directional shield system where shields have separate HP pools for each direction:
+        - Front shield (forward arc, 90°)
+        - Back shield (rear arc, 90°)
+        - Left shield (port side, 90°)
+        - Right shield (starboard side, 90°)
+        
+        Damage is applied to the shield quadrant facing the attacker. When a quadrant depletes, damage bleeds through to armor.
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      value: |
+        - Combat system (damage application)
+        - Ship stats subsystem
+        - Module effects (shield hardeners, resistance)
+        - HUD (shield quadrant display)
+        - Backend API (stat calculation)
+        - Network replication
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      value: |
+        ## Phase 1: Backend Shield Calculation
+        - [ ] Add shield quadrant fields to `ship_instances` table
+          - `shield_front_hp`
+          - `shield_back_hp`
+          - `shield_left_hp`
+          - `shield_right_hp`
+        - [ ] Update `ShipStatsDto` to include quadrant values
+        - [ ] Implement shield resistance calculation per quadrant
+        - [ ] Add shield module effects (capacity, recharge, hardeners)
+        - [ ] Create API endpoint for shield damage application
+        - [ ] Unit tests for shield calculations
+        
+        ## Phase 2: UE5 Shield Component
+        - [ ] Create `UEchoesShieldComponent` class
+        - [ ] Define `FShieldQuadrant` struct (HP, MaxHP, Resistance)
+        - [ ] Implement shield quadrant array (Front, Back, Left, Right)
+        - [ ] Add `DetermineImpactQuadrant()` method
+          ```cpp
+          EShieldQuadrant DetermineImpactQuadrant(FVector DamageDirection)
+          {
+              // Calculate angle between ship forward and damage vector
+              float Angle = CalculateAngle(ShipForward, DamageDirection);
+              
+              if (Angle < 45° || Angle > 315°) return Front;
+              else if (Angle >= 45° && Angle < 135°) return Right;
+              else if (Angle >= 135° && Angle < 225°) return Back;
+              else return Left;
+          }
+          ```
+        - [ ] Implement `ApplyDamageToQuadrant()` method
+        - [ ] Add shield bleedthrough logic (when quadrant depletes)
+        - [ ] Implement shield recharge system
+          - Recharge rate per quadrant
+          - Delay before recharge starts
+          - Preferential recharge (lowest quadrant first)
+        
+        ## Phase 3: Combat Integration
+        - [ ] Update damage application to use directional shields
+        - [ ] Calculate attacker position relative to defender
+        - [ ] Apply damage to correct shield quadrant
+        - [ ] Implement bleedthrough to armor/hull
+        - [ ] Add shield resistance modifiers
+        - [ ] Network replication of shield states
+        
+        ## Phase 4: HUD Display
+        - [ ] Create shield quadrant widget
+        - [ ] Visual representation (4-way circular display)
+        - [ ] Color-coded quadrants (Green→Yellow→Red)
+        - [ ] Real-time HP percentage display
+        - [ ] Recharge animation
+        - [ ] Warning indicators for depleted quadrants
+        
+        ## Phase 5: Module Effects
+        - [ ] Shield extenders (+capacity, all quadrants)
+        - [ ] Shield hardeners (+resistance, all quadrants)
+        - [ ] Shield boosters (active repair)
+        - [ ] Auxiliary power cores (capacitor cost reduction)
+        - [ ] Shield power relays (recharge rate bonus)
+        
+        ## Testing & Balancing
+        - [ ] Unit tests for quadrant determination
+        - [ ] Integration tests with combat system
+        - [ ] Multiplayer testing (replication)
+        - [ ] Balance testing (TTK, tank effectiveness)
+        - [ ] Performance profiling
+        - [ ] Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-approach
+    attributes:
+      label: Technical Approach
+      value: |
+        ### Shield Quadrant Structure
+        ```cpp
+        USTRUCT(BlueprintType)
+        struct FShieldQuadrant
+        {
+            GENERATED_BODY()
+            
+            UPROPERTY(Replicated, BlueprintReadOnly)
+            float CurrentHP;
+            
+            UPROPERTY(BlueprintReadOnly)
+            float MaxHP;
+            
+            UPROPERTY(BlueprintReadOnly)
+            float Resistance; // 0.0 to 1.0 (0% to 100%)
+            
+            UPROPERTY(BlueprintReadOnly)
+            float RechargeRate; // HP per second
+        };
+        
+        UCLASS()
+        class UEchoesShieldComponent : public UActorComponent
+        {
+            GENERATED_BODY()
+            
+        public:
+            UPROPERTY(Replicated)
+            TArray<FShieldQuadrant> Quadrants; // [Front, Back, Left, Right]
+            
+            UFUNCTION(BlueprintCallable, Server, Reliable)
+            void Server_ApplyDamage(FVector DamageOrigin, float DamageAmount, EDamageType Type);
+            
+            EShieldQuadrant DetermineImpactQuadrant(FVector DamageDirection);
+            
+            void ApplyDamageToQuadrant(EShieldQuadrant Quadrant, float Damage);
+            
+            float CalculateResistance(EShieldQuadrant Quadrant, EDamageType Type);
+        };
+        ```
+        
+        ### Damage Application Formula
+        ```
+        1. Determine impact quadrant from attacker position
+        2. Calculate effective damage:
+           EffectiveDamage = RawDamage × (1.0 - Resistance)
+        3. Apply to quadrant HP:
+           QuadrantHP = max(0, QuadrantHP - EffectiveDamage)
+        4. Calculate bleedthrough if quadrant depleted:
+           Bleedthrough = EffectiveDamage - QuadrantHP
+           Apply Bleedthrough to Armor
+        ```
+        
+        ### Shield Recharge Logic
+        ```cpp
+        void UEchoesShieldComponent::TickRecharge(float DeltaTime)
+        {
+            if (TimeSinceLastDamage < RechargeDelay)
+                return;
+            
+            // Find lowest quadrant
+            int32 LowestIndex = FindLowestQuadrantIndex();
+            
+            // Recharge lowest quadrant first
+            float RechargeAmount = RechargeRate * DeltaTime;
+            Quadrants[LowestIndex].CurrentHP = FMath::Min(
+                Quadrants[LowestIndex].CurrentHP + RechargeAmount,
+                Quadrants[LowestIndex].MaxHP
+            );
+        }
+        ```
+        
+        ### Database Schema Changes
+        ```sql
+        ALTER TABLE ship_instances ADD COLUMN shield_front_hp DECIMAL(10, 2);
+        ALTER TABLE ship_instances ADD COLUMN shield_back_hp DECIMAL(10, 2);
+        ALTER TABLE ship_instances ADD COLUMN shield_left_hp DECIMAL(10, 2);
+        ALTER TABLE ship_instances ADD COLUMN shield_right_hp DECIMAL(10, 2);
+        
+        -- Module effects for shields
+        ALTER TABLE module_types ADD COLUMN shield_capacity_bonus DECIMAL(10, 2) DEFAULT 0;
+        ALTER TABLE module_types ADD COLUMN shield_resistance_bonus DECIMAL(10, 4) DEFAULT 0;
+        ALTER TABLE module_types ADD COLUMN shield_recharge_bonus DECIMAL(10, 2) DEFAULT 0;
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Damage is correctly applied to appropriate shield quadrant
+        - [ ] Shield quadrants have separate HP pools
+        - [ ] Depleted quadrants allow damage bleedthrough to armor
+        - [ ] Shield recharge works (delay + preferential lowest quadrant)
+        - [ ] HUD displays all 4 quadrants with real-time HP
+        - [ ] Shield modules affect quadrant stats correctly
+        - [ ] System replicates correctly in multiplayer
+        - [ ] Performance: <1ms per damage application
+        - [ ] Balanced: TTK feels appropriate
+    validations:
+      required: true
+
+  - type: textarea
+    id: hud-mockup
+    attributes:
+      label: HUD Visual Design
+      value: |
+        ```
+             Front [███████░░░] 75%
+                    ╱ ╲
+                   ╱   ╲
+        Left [█████████] 100%   [████░░░░░] 45% Right
+                   ╲   ╱
+                    ╲ ╱
+              Back [██░░░░░░░] 25%
+        
+        Color Coding:
+        - Green: > 70% HP
+        - Yellow: 30-70% HP
+        - Red: < 30% HP
+        - Flashing Red: 0% HP (depleted)
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: balancing-notes
+    attributes:
+      label: Balancing Considerations
+      value: |
+        ### Shield Capacity by Ship Class
+        - Frigate: 1,000 HP per quadrant (4,000 total)
+        - Cruiser: 3,000 HP per quadrant (12,000 total)
+        - Battleship: 8,000 HP per quadrant (32,000 total)
+        
+        ### Recharge Rates
+        - Base recharge: 10 HP/s per quadrant
+        - Recharge delay: 10 seconds after taking damage
+        - Shield modules can reduce delay and increase rate
+        
+        ### Resistance
+        - Base resistance: 0% (no innate resistance)
+        - Shield hardeners: +20-40% resistance per module
+        - Stacking penalty applies
+        
+        ### Combat TTK Targets
+        - Frigate vs Frigate: 30-60 seconds
+        - Cruiser vs Cruiser: 60-120 seconds
+        - Battleship vs Battleship: 180-300 seconds
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      value: |
+        - Combat system (damage application)
+        - Module effects system (for shield modules)
+        - HUD framework (for quadrant display)
+        - Network replication system
+        - Backend API (for stat calculations)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - "Milestone 5: Combat & PvP"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "1 week"
+        - "2 weeks"
+        - "3 weeks"
+        - "4 weeks"
+        - "5-8 weeks"
+        - "8-12 weeks"
+      default: 4
+    validations:
+      required: true
