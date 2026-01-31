@@ -53,6 +53,44 @@ For detailed setup instructions, see [QUICK_START.md](docs/QUICK_START.md)
 
 ---
 
+## 🌐 Web Portal / Dashboard
+
+**Pilot Personal Cabinet** for asset management and market statistics.
+
+### Overview
+The Web Portal provides pilots with a comprehensive dashboard to manage their in-game assets, view character information, and access market data without logging into the game client.
+
+### Features
+- 📊 **Character Dashboard** - View character stats, skills, and wallet balance
+- 🚢 **Fleet Management** - Browse ships, fittings, and hangar inventory
+- 📈 **Market Analytics** - Real-time market prices and trading history
+- 🔐 **Secure Authentication** - JWT-based login with same credentials as game client
+
+### Tech Stack
+- **Frontend**: Blazor WebAssembly (C# .NET 8.0)
+- **Backend**: ASP.NET Core Web API
+- **Authentication**: JWT tokens (shared with game client)
+- **Styling**: Modern responsive design
+
+### Access
+- **Local Development**: `http://localhost:5173` (after running the Blazor project)
+- **Production**: *[To be deployed]*
+
+### Quick Start
+```bash
+# Navigate to the web client
+cd EchoesOfImperial.Client
+
+# Run the development server
+dotnet run
+
+# Access the portal at http://localhost:5173
+```
+
+**Note:** The Web Portal uses the same backend API and authentication as the game client, ensuring data consistency across all platforms.
+
+---
+
 ## 📚 Documentation Hub
 
 ### 📋 Project Management
