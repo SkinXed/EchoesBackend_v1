@@ -160,6 +160,27 @@ protected:
 	 */
 	FVector2D ClampSize(const FVector2D& Size) const;
 
+	/**
+	 * Apply snapping logic to window position
+	 * Snaps to screen edges and other windows
+	 */
+	FVector2D ApplySnapping(const FVector2D& Position) const;
+
+	/**
+	 * Check if position should snap to screen edges
+	 */
+	FVector2D SnapToScreenEdges(const FVector2D& Position) const;
+
+	/**
+	 * Check if position should snap to other windows
+	 */
+	FVector2D SnapToOtherWindows(const FVector2D& Position) const;
+
+	/**
+	 * Get all other window instances in the same parent
+	 */
+	TArray<UEchoesWindowBase*> GetOtherWindows() const;
+
 	// ==================== Widget Bindings ====================
 
 	/** Title bar border (draggable area) */
@@ -215,6 +236,22 @@ protected:
 	/** Whether window can be dragged */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|Window|Config")
 	bool bCanDrag = true;
+
+	/** Enable window snapping to screen edges and other windows */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|Window|Config")
+	bool bEnableSnapping = true;
+
+	/** Distance threshold for snapping (in pixels) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|Window|Config")
+	float SnapThreshold = 15.0f;
+
+	/** Snap to screen edges */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|Window|Config")
+	bool bSnapToScreenEdges = true;
+
+	/** Snap to other windows */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|Window|Config")
+	bool bSnapToOtherWindows = true;
 
 private:
 	// ==================== Drag State ====================

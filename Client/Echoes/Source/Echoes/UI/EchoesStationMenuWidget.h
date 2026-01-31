@@ -117,6 +117,27 @@ protected:
 	void OnRepairButtonPressed();
 
 	/**
+	 * Open personal hangar window
+	 * Creates a new window with inventory widget showing hangar contents
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Station|UI")
+	void OpenPersonalHangar();
+
+	/**
+	 * Open ship cargo window
+	 * Creates a new window with inventory widget showing ship cargo
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Station|UI")
+	void OpenShipCargo();
+
+	/**
+	 * Request undock from server
+	 * Calls ServerRPC on StationActor
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Station|UI")
+	void RequestUndock();
+
+	/**
 	 * Blueprint event called when station menu is initialized
 	 * Override in Blueprint for custom initialization
 	 */

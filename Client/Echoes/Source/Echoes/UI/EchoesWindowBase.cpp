@@ -11,6 +11,8 @@
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/GameUserSettings.h"
+#include "Misc/ConfigCacheIni.h"
 
 UEchoesWindowBase::UEchoesWindowBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -149,6 +151,12 @@ FReply UEchoesWindowBase::NativeOnMouseMove(const FGeometry& InGeometry, const F
 		FVector2D MousePosition = InMouseEvent.GetScreenSpacePosition();
 		FVector2D NewPosition = MousePosition + DragOffset;
 		
+		// Apply snapping if enabled
+		if (bEnableSnapping)
+		{
+			NewPosition = ApplySnapping(NewPosition);
+		}
+		
 		// Clamp to screen bounds
 		NewPosition = ClampPositionToScreen(NewPosition);
 		
@@ -269,18 +277,30 @@ void UEchoesWindowBase::SaveWindowPosition()
 		return;
 	}
 
-	// TODO: Implement saving to player settings/config file
-	// For now, just log
 	FVector2D Position = GetWindowPosition();
 	FVector2D Size = GetWindowSize();
 	
-	UE_LOG(LogTemp, Log, TEXT("Saving window '%s' position: %s, size: %s"),
-		*WindowId, *Position.ToString(), *Size.ToString());
-
-	// Example implementation:
-	// - Save to GameUserSettings
-	// - Or save to custom config file
-	// - Or save to player profile database
+	// Save to game user settings
+	if (UGameUserSettings* Settings = UGameUserSettings::GetGameUserSettings())
+	{
+		// Use console variables for persistence
+		// Format: "WindowName.Position.X WindowName.Position.Y WindowName.Size.X WindowName.Size.Y"
+		FString ConfigSection = TEXT("Echoes.Windows");
+		FString PositionKey = FString::Printf(TEXT("%s.Position"), *WindowId);
+		FString SizeKey = FString::Printf(TEXT("%s.Size"), *WindowId);
+		
+		// Store as strings in config
+		FString PositionValue = FString::Printf(TEXT("%.2f,%.2f"), Position.X, Position.Y);
+		FString SizeValue = FString::Printf(TEXT("%.2f,%.2f"), Size.X, Size.Y);
+		
+		// Save to config file
+		GConfig->SetString(*ConfigSection, *PositionKey, *PositionValue, GGameUserSettingsIni);
+		GConfig->SetString(*ConfigSection, *SizeKey, *SizeValue, GGameUserSettingsIni);
+		GConfig->Flush(false, GGameUserSettingsIni);
+		
+		UE_LOG(LogTemp, Log, TEXT("Saved window '%s' position: %s, size: %s to config"),
+			*WindowId, *PositionValue, *SizeValue);
+	}
 }
 
 void UEchoesWindowBase::LoadWindowPosition()
@@ -290,16 +310,50 @@ void UEchoesWindowBase::LoadWindowPosition()
 		return;
 	}
 
-	// TODO: Implement loading from player settings/config file
-	// For now, use defaults
+	// Load from config file
+	FString ConfigSection = TEXT("Echoes.Windows");
+	FString PositionKey = FString::Printf(TEXT("%s.Position"), *WindowId);
+	FString SizeKey = FString::Printf(TEXT("%s.Size"), *WindowId);
 	
-	UE_LOG(LogTemp, Log, TEXT("Loading window '%s' position (using defaults for now)"), *WindowId);
-
-	// Example implementation:
-	// - Load from GameUserSettings
-	// - Or load from custom config file
-	// - Or load from player profile database
-	// - Then call SetWindowPosition() and SetWindowSize()
+	FString PositionValue;
+	FString SizeValue;
+	
+	if (GConfig->GetString(*ConfigSection, *PositionKey, PositionValue, GGameUserSettingsIni) &&
+	    GConfig->GetString(*ConfigSection, *SizeKey, SizeValue, GGameUserSettingsIni))
+	{
+		// Parse position
+		TArray<FString> PositionParts;
+		PositionValue.ParseIntoArray(PositionParts, TEXT(","));
+		
+		if (PositionParts.Num() == 2)
+		{
+			FVector2D LoadedPosition;
+			LoadedPosition.X = FCString::Atof(*PositionParts[0]);
+			LoadedPosition.Y = FCString::Atof(*PositionParts[1]);
+			
+			// Parse size
+			TArray<FString> SizeParts;
+			SizeValue.ParseIntoArray(SizeParts, TEXT(","));
+			
+			if (SizeParts.Num() == 2)
+			{
+				FVector2D LoadedSize;
+				LoadedSize.X = FCString::Atof(*SizeParts[0]);
+				LoadedSize.Y = FCString::Atof(*SizeParts[1]);
+				
+				// Apply loaded values
+				SetWindowPosition(LoadedPosition);
+				SetWindowSize(LoadedSize);
+				
+				UE_LOG(LogTemp, Log, TEXT("Loaded window '%s' position: %s, size: %s from config"),
+					*WindowId, *PositionValue, *SizeValue);
+				return;
+			}
+		}
+	}
+	
+	// If loading failed, use defaults
+	UE_LOG(LogTemp, Log, TEXT("No saved position for window '%s', using defaults"), *WindowId);
 }
 
 void UEchoesWindowBase::OnCloseButtonClicked()
@@ -431,4 +485,175 @@ void UEchoesWindowBase::InitializeWindowId()
 		WindowId = GetClass()->GetName();
 		UE_LOG(LogTemp, Log, TEXT("Auto-generated window ID: %s"), *WindowId);
 	}
+}
+
+FVector2D UEchoesWindowBase::ApplySnapping(const FVector2D& Position) const
+{
+	FVector2D SnappedPosition = Position;
+
+	// Snap to screen edges first
+	if (bSnapToScreenEdges)
+	{
+		SnappedPosition = SnapToScreenEdges(SnappedPosition);
+	}
+
+	// Then snap to other windows (if not snapped to screen)
+	if (bSnapToOtherWindows && SnappedPosition == Position)
+	{
+		SnappedPosition = SnapToOtherWindows(SnappedPosition);
+	}
+
+	return SnappedPosition;
+}
+
+FVector2D UEchoesWindowBase::SnapToScreenEdges(const FVector2D& Position) const
+{
+	// Get viewport size
+	APlayerController* PC = GetOwningPlayer();
+	if (!PC)
+	{
+		return Position;
+	}
+
+	int32 ViewportSizeX, ViewportSizeY;
+	PC->GetViewportSize(ViewportSizeX, ViewportSizeY);
+	FVector2D ViewportSize(ViewportSizeX, ViewportSizeY);
+	FVector2D WindowSize = GetWindowSize();
+
+	FVector2D SnappedPosition = Position;
+
+	// Snap to left edge
+	if (FMath::Abs(Position.X) < SnapThreshold)
+	{
+		SnappedPosition.X = 0.0f;
+		UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to left edge"), *WindowId);
+	}
+
+	// Snap to right edge
+	float RightEdge = ViewportSize.X - WindowSize.X;
+	if (FMath::Abs(Position.X - RightEdge) < SnapThreshold)
+	{
+		SnappedPosition.X = RightEdge;
+		UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to right edge"), *WindowId);
+	}
+
+	// Snap to top edge
+	if (FMath::Abs(Position.Y) < SnapThreshold)
+	{
+		SnappedPosition.Y = 0.0f;
+		UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to top edge"), *WindowId);
+	}
+
+	// Snap to bottom edge
+	float BottomEdge = ViewportSize.Y - WindowSize.Y;
+	if (FMath::Abs(Position.Y - BottomEdge) < SnapThreshold)
+	{
+		SnappedPosition.Y = BottomEdge;
+		UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to bottom edge"), *WindowId);
+	}
+
+	return SnappedPosition;
+}
+
+FVector2D UEchoesWindowBase::SnapToOtherWindows(const FVector2D& Position) const
+{
+	TArray<UEchoesWindowBase*> OtherWindows = GetOtherWindows();
+	if (OtherWindows.Num() == 0)
+	{
+		return Position;
+	}
+
+	FVector2D WindowSize = GetWindowSize();
+	FVector2D SnappedPosition = Position;
+	bool bSnapped = false;
+
+	for (UEchoesWindowBase* OtherWindow : OtherWindows)
+	{
+		if (!OtherWindow || OtherWindow == this)
+		{
+			continue;
+		}
+
+		FVector2D OtherPos = OtherWindow->GetWindowPosition();
+		FVector2D OtherSize = OtherWindow->GetWindowSize();
+
+		// Calculate edges
+		float ThisRight = Position.X + WindowSize.X;
+		float ThisBottom = Position.Y + WindowSize.Y;
+		float OtherRight = OtherPos.X + OtherSize.X;
+		float OtherBottom = OtherPos.Y + OtherSize.Y;
+
+		// Snap to left edge of other window (align right edge of this to left edge of other)
+		if (FMath::Abs(ThisRight - OtherPos.X) < SnapThreshold &&
+		    FMath::Abs(Position.Y - OtherPos.Y) < SnapThreshold * 2)
+		{
+			SnappedPosition.X = OtherPos.X - WindowSize.X;
+			bSnapped = true;
+			UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to left of '%s'"), 
+				*WindowId, *OtherWindow->WindowId);
+		}
+
+		// Snap to right edge of other window (align left edge of this to right edge of other)
+		if (FMath::Abs(Position.X - OtherRight) < SnapThreshold &&
+		    FMath::Abs(Position.Y - OtherPos.Y) < SnapThreshold * 2)
+		{
+			SnappedPosition.X = OtherRight;
+			bSnapped = true;
+			UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to right of '%s'"), 
+				*WindowId, *OtherWindow->WindowId);
+		}
+
+		// Snap to top edge of other window
+		if (FMath::Abs(ThisBottom - OtherPos.Y) < SnapThreshold &&
+		    FMath::Abs(Position.X - OtherPos.X) < SnapThreshold * 2)
+		{
+			SnappedPosition.Y = OtherPos.Y - WindowSize.Y;
+			bSnapped = true;
+			UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to top of '%s'"), 
+				*WindowId, *OtherWindow->WindowId);
+		}
+
+		// Snap to bottom edge of other window
+		if (FMath::Abs(Position.Y - OtherBottom) < SnapThreshold &&
+		    FMath::Abs(Position.X - OtherPos.X) < SnapThreshold * 2)
+		{
+			SnappedPosition.Y = OtherBottom;
+			bSnapped = true;
+			UE_LOG(LogTemp, Verbose, TEXT("Window '%s' snapped to bottom of '%s'"), 
+				*WindowId, *OtherWindow->WindowId);
+		}
+
+		if (bSnapped)
+		{
+			break; // Snap to first matching window
+		}
+	}
+
+	return SnappedPosition;
+}
+
+TArray<UEchoesWindowBase*> UEchoesWindowBase::GetOtherWindows() const
+{
+	TArray<UEchoesWindowBase*> OtherWindows;
+
+	UPanelWidget* Parent = GetParent();
+	if (!Parent)
+	{
+		return OtherWindows;
+	}
+
+	// Find all other EchoesWindowBase widgets in the same parent
+	for (int32 i = 0; i < Parent->GetChildrenCount(); ++i)
+	{
+		UWidget* Child = Parent->GetChildAt(i);
+		if (UEchoesWindowBase* WindowChild = Cast<UEchoesWindowBase>(Child))
+		{
+			if (WindowChild != this)
+			{
+				OtherWindows.Add(WindowChild);
+			}
+		}
+	}
+
+	return OtherWindows;
 }

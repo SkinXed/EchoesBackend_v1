@@ -186,7 +186,19 @@ void UEchoesInventorySubsystem::Inventory_ClearCache()
 {
 	CachedShips.Empty();
 	CachedFitting = FEchoesShipFitting();
+	CachedHangarIds.Empty();
 	UE_LOG(LogTemp, Log, TEXT("Inventory cache cleared"));
+}
+
+FGuid UEchoesInventorySubsystem::GetPersonalHangarId(int32 StationId) const
+{
+	if (const FGuid* CachedId = CachedHangarIds.Find(StationId))
+	{
+		return *CachedId;
+	}
+	
+	// Return invalid GUID if not cached
+	return FGuid();
 }
 
 void UEchoesInventorySubsystem::Inventory_RequestPersonalHangar(
@@ -906,6 +918,26 @@ void UEchoesInventorySubsystem::OnPersonalHangarReceived(
 			
 			if (FGuid::Parse(StorageIdStr, StorageId))
 			{
+				// Cache the hangar ID
+				// Extract station ID from request URL
+				FString RequestURL = Request->GetURL();
+				int32 StationId = 0;
+				
+				// Parse station ID from URL (format: .../hangar/{stationId})
+				int32 LastSlashIndex;
+				if (RequestURL.FindLastChar('/', LastSlashIndex))
+				{
+					FString StationIdStr = RequestURL.RightChop(LastSlashIndex + 1);
+					StationId = FCString::Atoi(*StationIdStr);
+					
+					if (StationId > 0)
+					{
+						CachedHangarIds.Add(StationId, StorageId);
+						UE_LOG(LogTemp, Log, TEXT("Cached hangar ID %s for station %d"),
+							*StorageId.ToString(), StationId);
+					}
+				}
+				
 				UE_LOG(LogTemp, Log, TEXT("Successfully retrieved personal hangar: %s"), *StorageId.ToString());
 				OnSuccess.ExecuteIfBound(StorageId);
 			}

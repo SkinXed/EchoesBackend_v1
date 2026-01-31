@@ -283,6 +283,17 @@ public:
 		FOnHangarReceived OnSuccess,
 		FOnInventoryFailure OnFailure);
 
+	/**
+	 * Get personal hangar ID for a specific station (synchronous)
+	 * Returns cached hangar ID if available, otherwise returns invalid GUID
+	 * Use Inventory_RequestPersonalHangar for async retrieval
+	 * 
+	 * @param StationId - Station ID to get hangar for
+	 * @return Hangar storage ID (may be invalid if not cached)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory")
+	FGuid GetPersonalHangarId(int32 StationId) const;
+
 	// ==================== Item Definitions System ====================
 
 	/**
@@ -476,6 +487,10 @@ private:
 	/** Cached ship fitting (last fetched) */
 	UPROPERTY()
 	FEchoesShipFitting CachedFitting;
+
+	/** Cached personal hangar IDs by station ID */
+	UPROPERTY()
+	TMap<int32, FGuid> CachedHangarIds;
 
 	/** HTTP module reference */
 	FHttpModule* Http;
