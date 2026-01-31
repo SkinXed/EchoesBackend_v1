@@ -1088,26 +1088,59 @@ bool UEchoesInventorySubsystem::HasItemDefinition(const FString& ItemId) const
 return GetItemDefinition(ItemId) != nullptr;
 }
 
+const FEchoesItemDefinitionRow* UEchoesInventorySubsystem::GetItemFromRegistry(int32 TypeId) const
+{
+	// Check typed registry first
+	if (const FEchoesItemDefinitionRow* Found = ItemTypeRegistry.Find(TypeId))
+	{
+		return Found;
+	}
+
+	// Return nullptr if not found
+	return nullptr;
+}
+
+bool UEchoesInventorySubsystem::HasItemInRegistry(int32 TypeId) const
+{
+	return ItemTypeRegistry.Contains(TypeId);
+}
+
 void UEchoesInventorySubsystem::BuildDefinitionCache()
 {
-DefinitionCache.Empty();
+	DefinitionCache.Empty();
+	ItemTypeRegistry.Empty();
 
-if (!ItemDefinitionsTable)
-{
-return;
-}
+	if (!ItemDefinitionsTable)
+	{
+		return;
+	}
 
-// Get all row names from the data table
-TArray<FName> RowNames = ItemDefinitionsTable->GetRowNames();
+	// Get all row names from the data table
+	TArray<FName> RowNames = ItemDefinitionsTable->GetRowNames();
 
-for (const FName& RowName : RowNames)
-{
-FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("BuildDefinitionCache"));
-if (Row)
-{
-DefinitionCache.Add(RowName.ToString(), Row);
-}
-}
+	for (const FName& RowName : RowNames)
+	{
+		FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("BuildDefinitionCache"));
+		if (Row)
+		{
+			// Add to string-based cache (legacy)
+			DefinitionCache.Add(RowName.ToString(), Row);
 
-UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Built definition cache with %d entries"), DefinitionCache.Num());
+			// Add to typed registry
+			// Parse RowName as integer TypeId
+			FString RowNameStr = RowName.ToString();
+			if (RowNameStr.IsNumeric())
+			{
+				int32 TypeId = FCString::Atoi(*RowNameStr);
+				ItemTypeRegistry.Add(TypeId, *Row);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("BuildDefinitionCache: Row name '%s' is not numeric, skipping typed registry"), *RowNameStr);
+			}
+		}
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Built definition cache with %d entries"), DefinitionCache.Num());
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Built typed registry with %d entries"), ItemTypeRegistry.Num());
 }
