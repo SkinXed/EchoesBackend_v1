@@ -259,6 +259,99 @@ namespace Echoes.API.Controllers
             }
         }
 
+        // POST: api/auth/validate-token
+        [HttpPost("validate-token")]
+        public async Task<ActionResult<TokenValidationDto>> ValidateToken([FromBody] ValidateTokenDto request)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.Token))
+                {
+                    return Ok(new TokenValidationDto { IsValid = false, Error = "Token is required" });
+                }
+
+                // Parse JWT token to extract claims
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"] ?? "YourSuperSecretKey123!");
+
+                try
+                {
+                    var validationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = true,
+                        ValidIssuer = _configuration["Jwt:Issuer"] ?? "EchoesAPI",
+                        ValidateAudience = true,
+                        ValidAudience = _configuration["Jwt:Audience"] ?? "EchoesClient",
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+
+                    var principal = tokenHandler.ValidateToken(request.Token, validationParameters, out var validatedToken);
+
+                    // Extract session ID from claims
+                    var sessionIdClaim = principal.FindFirst("SessionId")?.Value;
+                    if (string.IsNullOrEmpty(sessionIdClaim) || !Guid.TryParse(sessionIdClaim, out var sessionId))
+                    {
+                        return Ok(new TokenValidationDto { IsValid = false, Error = "Invalid session ID in token" });
+                    }
+
+                    // Check if session is still active
+                    var session = await _context.AccountSessions
+                        .Include(s => s.Account)
+                        .Include(s => s.Character)
+                        .FirstOrDefaultAsync(s => s.Id == sessionId && s.IsActive);
+
+                    if (session == null || session.ExpiresAt < DateTime.UtcNow)
+                    {
+                        return Ok(new TokenValidationDto { IsValid = false, Error = "Session expired or invalid" });
+                    }
+
+                    // Update last activity
+                    session.LastActivity = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+
+                    // Get characters for this account
+                    var characters = await _context.Characters
+                        .Where(c => c.AccountId == session.AccountId)
+                        .Select(c => new CharacterInfoDto
+                        {
+                            CharacterId = c.Id,
+                            Name = c.Name,
+                            WalletBalance = c.WalletBalance,
+                            CurrentShipId = c.ActiveShipItemId,
+                            IsMain = c.IsMain,
+                            IsOnline = c.IsOnline
+                        })
+                        .ToListAsync();
+
+                    return Ok(new TokenValidationDto
+                    {
+                        IsValid = true,
+                        AccountId = session.AccountId,
+                        CharacterId = session.CharacterId,
+                        CharacterName = session.Character.Name,
+                        Characters = characters
+                    });
+                }
+                catch (SecurityTokenException)
+                {
+                    return Ok(new TokenValidationDto { IsValid = false, Error = "Invalid token signature" });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error validating JWT token");
+                    return Ok(new TokenValidationDto { IsValid = false, Error = "Token validation failed" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in validate-token endpoint");
+                return StatusCode(500, new { error = "Internal server error" });
+            }
+        }
+
         // POST: api/auth/validate
         [HttpPost("validate")]
         public async Task<ActionResult<SessionValidationDto>> ValidateSession([FromBody] ValidateSessionDto request)

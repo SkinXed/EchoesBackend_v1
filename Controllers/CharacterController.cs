@@ -433,6 +433,78 @@ public class CharacterController : ControllerBase
     }
 
     /// <summary>
+    /// Get character connection info for regional server
+    /// GET /api/character/{id}/connect-info
+    /// </summary>
+    [HttpGet("{id}/connect-info")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<CharacterConnectInfoDto>> GetCharacterConnectInfo(Guid id)
+    {
+        try
+        {
+            // Check authentication
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value;
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var tokenCharacterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            // Verify the character belongs to the authenticated user
+            if (tokenCharacterId != id)
+            {
+                return Unauthorized(new { error = "Not authorized to access this character" });
+            }
+
+            var character = await _context.Characters
+                .Include(c => c.CurrentLocation)
+                .ThenInclude(cl => cl.SolarSystem)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (character == null)
+            {
+                return NotFound(new { error = "Character not found" });
+            }
+
+            // Get solar system for regional server assignment
+            var solarSystem = character.CurrentLocation?.SolarSystem;
+            string serverIP = "127.0.0.1"; // Default to localhost
+            int serverPort = 7777; // Default game port
+
+            // TODO: In production, query game server assignment based on solar system
+            // For now, return default local server
+            if (solarSystem != null)
+            {
+                // Logic to determine which regional server handles this system
+                // This would query a ServerNodes table or configuration
+                _logger.LogInformation("Character {CharacterId} connecting to system {SystemId}", 
+                    id, solarSystem.Id);
+            }
+
+            var connectInfo = new CharacterConnectInfoDto
+            {
+                CharacterId = id,
+                CharacterName = character.Name,
+                ServerIP = serverIP,
+                ServerPort = serverPort,
+                SystemId = solarSystem?.Id ?? Guid.Empty,
+                SystemName = solarSystem?.Name ?? "Unknown",
+                IsDocked = character.IsDocked,
+                StationId = character.CurrentLocation?.StationId,
+                ConnectionToken = Guid.NewGuid().ToString() // Generate one-time connection token
+            };
+
+            return Ok(connectInfo);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving character connect info {CharacterId}", id);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
     /// Undock character from station
     /// POST /api/character/undock
     /// </summary>

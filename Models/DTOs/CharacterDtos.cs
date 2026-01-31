@@ -191,4 +191,20 @@ namespace Echoes.API.Models.DTOs
         public int StartingSkillPoints { get; set; }
         public long StartingISK { get; set; }
     }
+
+    /// <summary>
+    /// Character connection info for regional server
+    /// </summary>
+    public class CharacterConnectInfoDto
+    {
+        public Guid CharacterId { get; set; }
+        public string CharacterName { get; set; } = string.Empty;
+        public string ServerIP { get; set; } = string.Empty;
+        public int ServerPort { get; set; }
+        public Guid SystemId { get; set; }
+        public string SystemName { get; set; } = string.Empty;
+        public bool IsDocked { get; set; }
+        public Guid? StationId { get; set; }
+        public string ConnectionToken { get; set; } = string.Empty;
+    }
 }
