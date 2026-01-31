@@ -5,6 +5,7 @@
 #include "UI/EchoesInventoryDragDrop.h"
 #include "UI/EchoesQuantitySelectorWidget.h"
 #include "UI/EchoesInventoryWidget.h"
+#include "UI/EchoesContextMenuWidget.h"
 #include "Core/Common/Networking/EchoesInventorySubsystem.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -154,8 +155,20 @@ FReply UEchoesInventoryEntryWidget::NativeOnMouseButtonDown(const FGeometry& InG
 {
 	FReply Reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
-	// Only handle left mouse button for dragging
-	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) && CurrentItemObject)
+	if (!CurrentItemObject)
+	{
+		return Reply;
+	}
+
+	// Handle right mouse button for context menu
+	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+	{
+		ShowContextMenu();
+		return FReply::Handled();
+	}
+
+	// Handle left mouse button for dragging
+	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
 		// Check if Shift is held
 		bool bIsShiftHeld = InMouseEvent.IsShiftDown();
@@ -272,4 +285,213 @@ UUserWidget* UEchoesInventoryEntryWidget::CreateDragVisual()
 	}
 
 	return DragVisual;
+}
+
+void UEchoesInventoryEntryWidget::ShowContextMenu()
+{
+	if (!CurrentItemObject)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot show context menu: no current item"));
+		return;
+	}
+
+	if (!ContextMenuClass)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot show context menu: ContextMenuClass not set"));
+		return;
+	}
+
+	// Get available actions for this item
+	TArray<FContextMenuAction> Actions = GetDefaultActionsForItem(CurrentItemObject);
+	
+	// Allow Blueprint to modify actions
+	OnContextMenuRequested(CurrentItemObject, Actions);
+
+	if (Actions.Num() == 0)
+	{
+		UE_LOG(LogTemp, Log, TEXT("No actions available for item: %s"), *CurrentItemObject->GetItemName());
+		return;
+	}
+
+	// Get inventory widget and component
+	UEchoesInventoryWidget* InventoryWidget = nullptr;
+	UWidget* ParentWidget = GetParent();
+	while (ParentWidget)
+	{
+		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
+		if (InventoryWidget)
+		{
+			break;
+		}
+		ParentWidget = ParentWidget->GetParent();
+	}
+
+	if (!InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget for context menu"));
+		return;
+	}
+
+	UEchoesInventoryComponent* Component = InventoryWidget->GetInventoryComponent();
+	if (!Component)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not find inventory component for context menu"));
+		return;
+	}
+
+	AActor* SourceActor = Component->GetOwner();
+	FGuid SourceStorageId = Component->StorageId;
+
+	// Create context menu
+	UEchoesContextMenuWidget* ContextMenu = CreateWidget<UEchoesContextMenuWidget>(GetWorld(), ContextMenuClass);
+	if (!ContextMenu)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to create context menu widget"));
+		return;
+	}
+
+	// Initialize menu
+	ContextMenu->InitializeMenu(CurrentItemObject, SourceStorageId, SourceActor, Actions);
+
+	// Bind to action selected delegate
+	ContextMenu->OnActionSelected.AddDynamic(this, &UEchoesInventoryEntryWidget::HandleContextMenuAction);
+
+	// Add to viewport
+	ContextMenu->AddToViewport(999); // High Z-order
+
+	UE_LOG(LogTemp, Log, TEXT("Context menu shown for item: %s, Actions: %d"),
+		*CurrentItemObject->GetItemName(), Actions.Num());
+}
+
+TArray<FContextMenuAction> UEchoesInventoryEntryWidget::GetDefaultActionsForItem(UEchoesInventoryItemObject* ItemObject)
+{
+	TArray<FContextMenuAction> Actions;
+
+	if (!ItemObject)
+	{
+		return Actions;
+	}
+
+	// Always available: Jettison (drop item)
+	Actions.Add(FContextMenuAction(
+		FText::FromString(TEXT("Jettison")),
+		TEXT("jettison"),
+		true
+	));
+
+	// Check if item can be used/equipped
+	// This is a simplified check - full implementation would check item category
+	const FEchoesItemDefinitionRow* Definition = ItemObject->GetItemDefinition();
+	if (Definition)
+	{
+		// If it's a module or equipment, show Use/Fit option
+		FString Category = Definition->Category.ToString();
+		if (Category.Contains(TEXT("Module")) || Category.Contains(TEXT("Equipment")))
+		{
+			Actions.Add(FContextMenuAction(
+				FText::FromString(TEXT("Fit to Ship")),
+				TEXT("fit"),
+				false // Disabled for now (stub)
+			));
+		}
+	}
+
+	// Stack All option (available for stackable items)
+	if (ItemObject->IsStackable())
+	{
+		Actions.Add(FContextMenuAction(
+			FText::FromString(TEXT("Stack All")),
+			TEXT("stack_all"),
+			true
+		));
+	}
+
+	// Additional actions can be added based on item type
+	// Examples: Repackage, Trash, Split Stack, etc.
+
+	return Actions;
+}
+
+void UEchoesInventoryEntryWidget::HandleContextMenuAction(const FString& ActionId)
+{
+	if (!CurrentItemObject)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Context menu action but no current item"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Handling context menu action: %s for item: %s"),
+		*ActionId, *CurrentItemObject->GetItemName());
+
+	// Get inventory component
+	UEchoesInventoryWidget* InventoryWidget = nullptr;
+	UWidget* ParentWidget = GetParent();
+	while (ParentWidget)
+	{
+		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
+		if (InventoryWidget)
+		{
+			break;
+		}
+		ParentWidget = ParentWidget->GetParent();
+	}
+
+	if (!InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget"));
+		return;
+	}
+
+	UEchoesInventoryComponent* Component = InventoryWidget->GetInventoryComponent();
+	if (!Component)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not find inventory component"));
+		return;
+	}
+
+	// Execute action
+	if (ActionId == TEXT("jettison"))
+	{
+		// Jettison item
+		Component->ServerOnly_JettisonItem(
+			CurrentItemObject->GetAssetId(),
+			0, // 0 = all quantity
+			FOnItemMoveSuccess::CreateLambda([this]()
+			{
+				UE_LOG(LogTemp, Log, TEXT("Item jettisoned successfully"));
+			}),
+			FOnInventoryOperationFailure::CreateLambda([this](const FString& Error)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to jettison item: %s"), *Error);
+			})
+		);
+	}
+	else if (ActionId == TEXT("fit"))
+	{
+		// Fit to ship (stub)
+		UE_LOG(LogTemp, Warning, TEXT("Fit to ship not implemented yet"));
+	}
+	else if (ActionId == TEXT("stack_all"))
+	{
+		// Stack all items of this type
+		Component->ServerOnly_StackAll(
+			CurrentItemObject->GetTypeId(),
+			FOnItemMoveSuccess::CreateLambda([this]()
+			{
+				UE_LOG(LogTemp, Log, TEXT("Items stacked successfully"));
+			}),
+			FOnInventoryOperationFailure::CreateLambda([this](const FString& Error)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to stack items: %s"), *Error);
+			})
+		);
+	}
+
+	// Notify Blueprint
+	OnContextMenuActionExecuted(CurrentItemObject, ActionId);
+}
+
+void UEchoesInventoryEntryWidget::OnContextMenuRequested_Implementation(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions)
+{
+	// Default implementation - Blueprint can override to customize actions
 }

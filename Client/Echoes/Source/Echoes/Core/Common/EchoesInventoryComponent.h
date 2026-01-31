@@ -187,6 +187,37 @@ public:
 		FOnItemMoveSuccess OnSuccess,
 		FOnInventoryOperationFailure OnFailure);
 
+	/**
+	 * SERVER ONLY: Jettison (drop) item from inventory
+	 * Removes item from inventory and spawns AEchoesItemActor in space
+	 * 
+	 * @param AssetId - ID of asset to jettison
+	 * @param Quantity - Quantity to jettison (0 = all)
+	 * @param OnSuccess - Callback on successful jettison
+	 * @param OnFailure - Callback on jettison failure
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|Server", meta = (DisplayName = "ServerOnly JettisonItem"))
+	void ServerOnly_JettisonItem(
+		const FGuid& AssetId,
+		int64 Quantity,
+		FOnItemMoveSuccess OnSuccess,
+		FOnInventoryOperationFailure OnFailure);
+
+	/**
+	 * SERVER ONLY: Stack all items of same type in this container
+	 * Combines all items with same TypeId into single stack
+	 * Sends POST /api/inventory/stack-all to backend
+	 * 
+	 * @param TypeId - Type ID to stack (0 = stack all types)
+	 * @param OnSuccess - Callback on successful stacking
+	 * @param OnFailure - Callback on stacking failure
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|Server", meta = (DisplayName = "ServerOnly StackAll"))
+	void ServerOnly_StackAll(
+		int32 TypeId,
+		FOnItemMoveSuccess OnSuccess,
+		FOnInventoryOperationFailure OnFailure);
+
 	// ==================== Visual Sync Delegate ====================
 
 	/**

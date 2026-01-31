@@ -339,6 +339,152 @@ bool UEchoesInventoryComponent::ParseItemsList(const FString& JsonString, FEchoe
 	return true;
 }
 
+void UEchoesInventoryComponent::ServerOnly_JettisonItem(
+	const FGuid& AssetId,
+	int64 Quantity,
+	FOnItemMoveSuccess OnSuccess,
+	FOnInventoryOperationFailure OnFailure)
+{
+	// Validate this is server
+	if (!GetWorld() || GetWorld()->GetNetMode() == NM_Client)
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: ServerOnly_JettisonItem called on client"));
+		OnFailure.ExecuteIfBound(TEXT("This operation must be executed on the server"));
+		return;
+	}
+
+	// Validate parameters
+	if (!AssetId.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: Invalid AssetId for jettison"));
+		OnFailure.ExecuteIfBound(TEXT("Invalid asset ID"));
+		return;
+	}
+
+	// Get auth token
+	FString Token = GetAuthToken();
+	if (Token.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: No auth token available for jettison"));
+		OnFailure.ExecuteIfBound(TEXT("Authentication required"));
+		return;
+	}
+
+	// Create request payload
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+	JsonObject->SetStringField(TEXT("assetId"), AssetId.ToString());
+	
+	if (Quantity > 0)
+	{
+		JsonObject->SetNumberField(TEXT("quantity"), Quantity);
+	}
+
+	FString JsonString;
+	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JsonString);
+	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+
+	// Create HTTP request
+	// TODO: Backend endpoint needs to be created: POST /api/inventory/jettison
+	// For now, we'll log the operation
+	FString Url = FString::Printf(TEXT("%s/api/inventory/jettison"), *GetApiBaseUrl());
+
+	UE_LOG(LogTemp, Log, TEXT("Jettison request: AssetId=%s, Quantity=%lld, URL=%s"),
+		*AssetId.ToString(), Quantity, *Url);
+
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
+	Request->SetVerb(TEXT("POST"));
+	Request->SetURL(Url);
+	Request->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *Token));
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	Request->SetContentAsString(JsonString);
+
+	// Bind response handler
+	Request->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesInventoryComponent::OnItemMoveResponse,
+		OnSuccess,
+		OnFailure);
+
+	// Send request
+	if (!Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: Failed to send jettison request"));
+		OnFailure.ExecuteIfBound(TEXT("Failed to send request"));
+	}
+}
+
+void UEchoesInventoryComponent::ServerOnly_StackAll(
+	int32 TypeId,
+	FOnItemMoveSuccess OnSuccess,
+	FOnInventoryOperationFailure OnFailure)
+{
+	// Validate this is server
+	if (!GetWorld() || GetWorld()->GetNetMode() == NM_Client)
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: ServerOnly_StackAll called on client"));
+		OnFailure.ExecuteIfBound(TEXT("This operation must be executed on the server"));
+		return;
+	}
+
+	// Validate storage ID
+	if (!StorageId.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: Invalid StorageId for stack all"));
+		OnFailure.ExecuteIfBound(TEXT("Invalid storage ID"));
+		return;
+	}
+
+	// Get auth token
+	FString Token = GetAuthToken();
+	if (Token.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: No auth token available for stack all"));
+		OnFailure.ExecuteIfBound(TEXT("Authentication required"));
+		return;
+	}
+
+	// Create request payload
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+	JsonObject->SetStringField(TEXT("storageId"), StorageId.ToString());
+	
+	if (TypeId > 0)
+	{
+		JsonObject->SetNumberField(TEXT("typeId"), TypeId);
+	}
+
+	FString JsonString;
+	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JsonString);
+	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+
+	// Create HTTP request
+	// TODO: Backend endpoint needs to be created: POST /api/inventory/stack-all
+	FString Url = FString::Printf(TEXT("%s/api/inventory/stack-all"), *GetApiBaseUrl());
+
+	UE_LOG(LogTemp, Log, TEXT("Stack all request: StorageId=%s, TypeId=%d, URL=%s"),
+		*StorageId.ToString(), TypeId, *Url);
+
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
+	Request->SetVerb(TEXT("POST"));
+	Request->SetURL(Url);
+	Request->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *Token));
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	Request->SetContentAsString(JsonString);
+
+	// Bind response handler
+	Request->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesInventoryComponent::OnItemMoveResponse,
+		OnSuccess,
+		OnFailure);
+
+	// Send request
+	if (!Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Error, TEXT("EchoesInventoryComponent: Failed to send stack all request"));
+		OnFailure.ExecuteIfBound(TEXT("Failed to send request"));
+	}
+}
+
 FString UEchoesInventoryComponent::GetAuthToken() const
 {
 	UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
+#include "UI/EchoesContextMenuWidget.h"
 #include "EchoesInventoryEntryWidget.generated.h"
 
 class UTextBlock;
@@ -80,6 +81,24 @@ protected:
 	void OnDragCancelled();
 
 	/**
+	 * Blueprint event called when context menu is requested
+	 * Override in Blueprint to customize available actions
+	 * @param ItemObject - Item for which context menu is requested
+	 * @param OutActions - Array of actions to display in menu
+	 */
+	UFUNCTION(BlueprintNativeEvent, Category = "Echoes|Inventory|UI")
+	void OnContextMenuRequested(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions);
+
+	/**
+	 * Blueprint event called when context menu action is executed
+	 * Override in Blueprint to handle custom actions
+	 * @param ItemObject - Item the action was performed on
+	 * @param ActionId - ID of the action executed
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	void OnContextMenuActionExecuted(UEchoesInventoryItemObject* ItemObject, const FString& ActionId);
+
+	/**
 	 * Update the visual display with item data
 	 * Override this in Blueprint to customize appearance
 	 */
@@ -115,6 +134,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
 	UTexture2D* PlaceholderIcon;
 
+	/** Context menu widget class */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
+	TSubclassOf<class UEchoesContextMenuWidget> ContextMenuClass;
+
 private:
 	/** Current item object being displayed */
 	UPROPERTY()
@@ -136,4 +159,23 @@ private:
 	 * @return Widget to display during drag
 	 */
 	UUserWidget* CreateDragVisual();
+
+	/**
+	 * Show context menu for current item
+	 */
+	void ShowContextMenu();
+
+	/**
+	 * Get default actions for item based on type
+	 * @param ItemObject - Item to get actions for
+	 * @return Array of available actions
+	 */
+	TArray<FContextMenuAction> GetDefaultActionsForItem(UEchoesInventoryItemObject* ItemObject);
+
+	/**
+	 * Handle context menu action selected
+	 * @param ActionId - ID of selected action
+	 */
+	UFUNCTION()
+	void HandleContextMenuAction(const FString& ActionId);
 };
