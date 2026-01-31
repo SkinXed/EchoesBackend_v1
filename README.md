@@ -49,7 +49,7 @@ dotnet run
 
 **API will be available at:** `http://localhost:5116`
 
-For detailed setup instructions, see [QUICK_START.md](QUICK_START.md)
+For detailed setup instructions, see [QUICK_START.md](docs/QUICK_START.md)
 
 ---
 
@@ -58,45 +58,54 @@ For detailed setup instructions, see [QUICK_START.md](QUICK_START.md)
 ### 📋 Project Management
 - **[📊 STATUS.md](docs/STATUS.md)** - Real-time project health dashboard
 - **[🗺️ ROADMAP.md](ROADMAP.md)** - 4-milestone development roadmap
-- **[🏛️ CORE_ARCHITECTURE_BIBLE.md](CORE_ARCHITECTURE_BIBLE.md)** - Complete architectural reference
+- **[🏛️ CORE_ARCHITECTURE_BIBLE.md](docs/architecture/CORE_ARCHITECTURE_BIBLE.md)** - Complete architectural reference
+- **[📖 PROJECT_ECHOES_V1_MANIFEST.md](docs/PROJECT_ECHOES_V1_MANIFEST.md)** - Project manifest
 
 ### 🏗️ Architecture
 - **[docs/architecture/NETWORKING_FLOW.md](docs/architecture/NETWORKING_FLOW.md)** - API endpoints and data flow
 - **[docs/architecture/RULES_OF_ENGAGEMENT.md](docs/architecture/RULES_OF_ENGAGEMENT.md)** - ⚠️ **Iron Rules** (naming, security, replication)
+- **[docs/architecture/AUTH_SYSTEM.md](docs/architecture/AUTH_SYSTEM.md)** - JWT authentication system
+- **[docs/architecture/AUTHENTICATION_CHARACTER_SYSTEM.md](docs/architecture/AUTHENTICATION_CHARACTER_SYSTEM.md)** - Character management
+- **[docs/architecture/COMPLETE_LOGIN_FLOW.md](docs/architecture/COMPLETE_LOGIN_FLOW.md)** - Login and entry pipeline
+- **[docs/architecture/ECHOES_V1_ARCHITECTURE.md](docs/architecture/ECHOES_V1_ARCHITECTURE.md)** - High-level architecture
+- **[docs/architecture/ENTRY_PIPELINE_COMPLETE.md](docs/architecture/ENTRY_PIPELINE_COMPLETE.md)** - Complete entry pipeline
+- **[docs/architecture/UNIVERSE_ARCHITECTURE.md](docs/architecture/UNIVERSE_ARCHITECTURE.md)** - Universe generation
 - **[docs/DATABASE/SCHEMA_OVERVIEW.md](docs/DATABASE/SCHEMA_OVERVIEW.md)** - Database schema and design
 
 ### 🎮 Gameplay Systems
 - **[docs/GAMEPLAY/SHIP_PHYSICS.md](docs/GAMEPLAY/SHIP_PHYSICS.md)** - Physics, damping, PD controller, warp mechanics
+- **[docs/gameplay/SHIP_PHYSICS_INTEGRATION.md](docs/gameplay/SHIP_PHYSICS_INTEGRATION.md)** - Ship stats integration
+- **[docs/gameplay/GAME_FLOW_SYSTEM.md](docs/gameplay/GAME_FLOW_SYSTEM.md)** - Complete game flow system
 - **[docs/systems/inventory/INVENTORY_LOGIC.md](docs/systems/inventory/INVENTORY_LOGIC.md)** - Volume math (V = Σ Qty×Vol), item movement
 - **[docs/systems/inventory/INVENTORY_ARCHITECTURE.md](docs/systems/inventory/INVENTORY_ARCHITECTURE.md)** - Inventory system architecture
 - **[docs/systems/inventory/INVENTORY_MASTER_MANIFEST.md](docs/systems/inventory/INVENTORY_MASTER_MANIFEST.md)** - Complete inventory implementation
 - **[docs/systems/inventory/ITEM_REGISTRY_IMPLEMENTATION.md](docs/systems/inventory/ITEM_REGISTRY_IMPLEMENTATION.md)** - Item types and registry
-- **[SHIP_PHYSICS_INTEGRATION.md](SHIP_PHYSICS_INTEGRATION.md)** - Ship stats integration
-- **[FITTING_SERVICE.md](FITTING_SERVICE.md)** - Ship fitting and mass calculation
+- **[docs/systems/inventory/HANGAR_IMPLEMENTATION.md](docs/systems/inventory/HANGAR_IMPLEMENTATION.md)** - Hangar UI and logic
+- **[docs/systems/inventory/IDENTITY_INVENTORY_SUBSYSTEMS.md](docs/systems/inventory/IDENTITY_INVENTORY_SUBSYSTEMS.md)** - Identity subsystems
+- **[docs/systems/ship/FITTING_SERVICE.md](docs/systems/ship/FITTING_SERVICE.md)** - Ship fitting and mass calculation
+- **[docs/systems/REGIONAL_CLUSTER_IMPLEMENTATION.md](docs/systems/REGIONAL_CLUSTER_IMPLEMENTATION.md)** - Regional cluster architecture
 
 ### 🎨 UI/UX
 - **[docs/ui_ux/HUD_MASTER_PLAN.md](docs/ui_ux/HUD_MASTER_PLAN.md)** - EVE-style HUD layout and implementation
 - **[docs/ui_ux/WINDOW_SYSTEM.md](docs/ui_ux/WINDOW_SYSTEM.md)** - Window snapping, Z-order, dragging
-- **[UI_UX_SYSTEM.md](UI_UX_SYSTEM.md)** - UI architecture overview
-- **[WINDOW_SYSTEM_IMPLEMENTATION.md](WINDOW_SYSTEM_IMPLEMENTATION.md)** - Window implementation details
-- **[CONTEXT_MENU_SYSTEM.md](CONTEXT_MENU_SYSTEM.md)** - Context menu system
-- **[HANGAR_IMPLEMENTATION.md](HANGAR_IMPLEMENTATION.md)** - Hangar UI
+- **[docs/ui_ux/UI_UX_SYSTEM.md](docs/ui_ux/UI_UX_SYSTEM.md)** - UI architecture overview
+- **[docs/ui_ux/WINDOW_SYSTEM_IMPLEMENTATION.md](docs/ui_ux/WINDOW_SYSTEM_IMPLEMENTATION.md)** - Window implementation details
+- **[docs/ui_ux/CONTEXT_MENU_SYSTEM.md](docs/ui_ux/CONTEXT_MENU_SYSTEM.md)** - Context menu system
+- **[docs/ui_ux/DRAG_DROP_SYSTEM.md](docs/ui_ux/DRAG_DROP_SYSTEM.md)** - Drag and drop system
+- **[docs/ui_ux/ADVANCED_WINDOW_FEATURES.md](docs/ui_ux/ADVANCED_WINDOW_FEATURES.md)** - Advanced window features
+- **[docs/ui_ux/STATION_MENU_IMPLEMENTATION.md](docs/ui_ux/STATION_MENU_IMPLEMENTATION.md)** - Station menu UI
 
 ### 🔐 Authentication & Identity
-- **[AUTH_SYSTEM.md](AUTH_SYSTEM.md)** - JWT authentication
-- **[AUTHENTICATION_CHARACTER_SYSTEM.md](AUTHENTICATION_CHARACTER_SYSTEM.md)** - Character management
-- **[IDENTITY_INVENTORY_SUBSYSTEMS.md](IDENTITY_INVENTORY_SUBSYSTEMS.md)** - Identity subsystems
-- **[COMPLETE_LOGIN_FLOW.md](COMPLETE_LOGIN_FLOW.md)** - Login and entry pipeline
+See Architecture section above for authentication documentation.
 
 ### 🌌 Universe & World
-- **[UNIVERSE_ARCHITECTURE.md](UNIVERSE_ARCHITECTURE.md)** - Universe generation
-- **[REGIONAL_CLUSTER_IMPLEMENTATION.md](REGIONAL_CLUSTER_IMPLEMENTATION.md)** - Regional server architecture
+See Architecture and Gameplay Systems sections above for universe documentation.
 
-### 📖 Legacy Documentation
-- **[ECHOES_V1_ARCHITECTURE.md](ECHOES_V1_ARCHITECTURE.md)** - Original high-level architecture
-- **[QUICK_START.md](QUICK_START.md)** - Quick start guide
-- **[FINAL_PROJECT_STATUS.md](FINAL_PROJECT_STATUS.md)** - Legacy status (see STATUS.md instead)
-- **[TECHNICAL_AUDIT_REPORT.md](TECHNICAL_AUDIT_REPORT.md)** - Technical audit
+### 📖 Reports & Status
+- **[docs/reports/FINAL_PROJECT_STATUS.md](docs/reports/FINAL_PROJECT_STATUS.md)** - Final project status
+- **[docs/reports/TECHNICAL_AUDIT_REPORT.md](docs/reports/TECHNICAL_AUDIT_REPORT.md)** - Technical audit
+- **[docs/reports/CROSS_LANGUAGE_SYNC_AUDIT.md](docs/reports/CROSS_LANGUAGE_SYNC_AUDIT.md)** - Cross-language sync audit
+- **[docs/reports/](docs/reports/)** - All implementation summaries and reports
 
 ---
 
@@ -191,7 +200,7 @@ docker-compose up -d
 ApiBaseUrl="http://localhost:5116/api"
 ```
 
-**📖 [Detailed Deployment Guide](QUICK_START.md)**
+**📖 [Detailed Deployment Guide](docs/QUICK_START.md)**
 
 ---
 
@@ -223,16 +232,44 @@ EchoesBackend_v1/
 │           └── UI/         # UI widgets
 ├── docs/                    # 📚 Documentation hub
 │   ├── STATUS.md           # Real-time project status
+│   ├── QUICK_START.md      # Quick start guide
+│   ├── PROJECT_ECHOES_V1_MANIFEST.md  # Project manifest
 │   ├── architecture/       # Architecture documentation
+│   │   ├── AUTH_SYSTEM.md
+│   │   ├── AUTHENTICATION_CHARACTER_SYSTEM.md
+│   │   ├── COMPLETE_LOGIN_FLOW.md
+│   │   ├── CORE_ARCHITECTURE_BIBLE.md
+│   │   ├── ECHOES_V1_ARCHITECTURE.md
+│   │   ├── ENTRY_PIPELINE_COMPLETE.md
+│   │   ├── UNIVERSE_ARCHITECTURE.md
 │   │   ├── NETWORKING_FLOW.md
 │   │   └── RULES_OF_ENGAGEMENT.md ⚠️ Iron Rules
 │   ├── systems/            # System-specific docs
 │   │   ├── inventory/      # Inventory system docs
-│   │   └── world/          # World generation docs
+│   │   │   ├── HANGAR_IMPLEMENTATION.md
+│   │   │   ├── IDENTITY_INVENTORY_SUBSYSTEMS.md
+│   │   │   └── INVENTORY_*.md
+│   │   ├── ship/           # Ship systems
+│   │   │   └── FITTING_SERVICE.md
+│   │   ├── REGIONAL_CLUSTER_*.md
+│   │   └── economy/, navigation/, gameplay/
 │   ├── ui_ux/              # UI/UX documentation
 │   │   ├── HUD_MASTER_PLAN.md
-│   │   └── WINDOW_SYSTEM.md
-│   ├── GAMEPLAY/           # Gameplay mechanics
+│   │   ├── WINDOW_SYSTEM.md
+│   │   ├── UI_UX_SYSTEM.md
+│   │   ├── WINDOW_SYSTEM_IMPLEMENTATION.md
+│   │   ├── CONTEXT_MENU_SYSTEM.md
+│   │   ├── DRAG_DROP_SYSTEM.md
+│   │   ├── ADVANCED_WINDOW_FEATURES.md
+│   │   └── STATION_MENU_IMPLEMENTATION.md
+│   ├── gameplay/           # Gameplay mechanics
+│   │   ├── SHIP_PHYSICS_INTEGRATION.md
+│   │   └── GAME_FLOW_SYSTEM.md
+│   ├── reports/            # Implementation reports and summaries
+│   │   ├── FINAL_PROJECT_STATUS.md
+│   │   ├── TECHNICAL_AUDIT_REPORT.md
+│   │   └── CROSS_LANGUAGE_SYNC_AUDIT.md
+│   ├── GAMEPLAY/           # Additional gameplay docs
 │   │   └── SHIP_PHYSICS.md
 │   └── DATABASE/           # Database documentation
 │       └── SCHEMA_OVERVIEW.md
@@ -432,7 +469,7 @@ All ship movement uses authentic UE5 physics (`AddForce`, angular velocity). No 
 - Planetary interaction
 - Full EVE-like HUD
 
-For detailed status, see [FINAL_PROJECT_STATUS.md](FINAL_PROJECT_STATUS.md)
+For detailed status, see [docs/reports/FINAL_PROJECT_STATUS.md](docs/reports/FINAL_PROJECT_STATUS.md)
 
 ---
 
@@ -440,7 +477,7 @@ For detailed status, see [FINAL_PROJECT_STATUS.md](FINAL_PROJECT_STATUS.md)
 
 - **Documentation**: This README and linked docs
 - **Issues**: Use GitHub issue templates
-- **Architecture Questions**: See `CORE_ARCHITECTURE_BIBLE.md`
+- **Architecture Questions**: See `docs/architecture/CORE_ARCHITECTURE_BIBLE.md`
 
 ---
 
