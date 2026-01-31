@@ -1,0 +1,65 @@
+name: Feature Request
+description: Request a new feature for the Echoes MMO backend
+title: "[Feature]: "
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+        Thank you for suggesting a new feature! Please provide as much detail as possible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the feature you'd like to see implemented
+      placeholder: |
+        What feature would you like to add?
+        What problem does it solve?
+        How should it work?
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      description: Which parts of the system does this feature affect?
+      placeholder: |
+        - Backend API endpoints
+        - Unreal Engine C++ client
+        - Database schema
+        - UI/HUD components
+        - Authentication/Authorization
+    validations:
+      required: false
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      description: High-level steps to implement this feature
+      placeholder: |
+        - [ ] Design database schema changes
+        - [ ] Implement backend API endpoints
+        - [ ] Create C++ client components
+        - [ ] Add UI elements
+        - [ ] Write tests
+        - [ ] Update documentation
+      value: |
+        - [ ] Design approach
+        - [ ] Implementation
+        - [ ] Testing
+        - [ ] Documentation
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or examples
+      placeholder: Links to similar features, mockups, or reference implementations
+    validations:
+      required: false
