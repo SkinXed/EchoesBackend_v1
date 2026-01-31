@@ -391,3 +391,88 @@ void AStationActor::ClientRPC_OpenStationMenu_Implementation(
 	// - Call InitializeStationMenu
 	// - Add to viewport with AddToViewport()
 }
+
+bool AStationActor::ServerRPC_RequestUndock_Validate(APlayerController* PlayerController)
+{
+	// Basic validation
+	return PlayerController != nullptr;
+}
+
+void AStationActor::ServerRPC_RequestUndock_Implementation(APlayerController* PlayerController)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerRPC_RequestUndock: Invalid PlayerController"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Undock request received from player '%s' at station '%s'"),
+		*PlayerController->GetName(), *StationName);
+
+	// Initiate undocking sequence
+	InitiateUndocking(PlayerController);
+}
+
+void AStationActor::InitiateUndocking(APlayerController* PlayerController)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("InitiateUndocking: Invalid PlayerController"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    INITIATING UNDOCKING SEQUENCE                        ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PlayerController->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Station: %s"), *StationName);
+
+	// Get player's pawn (if any)
+	APawn* CurrentPawn = PlayerController->GetPawn();
+	if (CurrentPawn)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Current pawn: %s"), *CurrentPawn->GetName());
+	}
+
+	// Calculate spawn position near station (100m away)
+	FVector StationLocation = GetActorLocation();
+	FVector SpawnOffset = FVector(10000.0f, 0.0f, 0.0f); // 100m in front of station
+	FVector SpawnLocation = StationLocation + SpawnOffset;
+	FRotator SpawnRotation = GetActorRotation();
+
+	UE_LOG(LogTemp, Log, TEXT("Spawn location: %s"), *SpawnLocation.ToString());
+
+	// TODO: Implement full undocking sequence:
+	// 1. Notify backend to update character state (POST /api/character/undock)
+	// 2. Spawn player's active ship at calculated position
+	// 3. Possess the ship
+	// 4. Remove player from station "instance"
+	// 5. Enable ship controls
+	// 6. Play undocking animation/effects
+
+	// Get game instance for backend communication
+	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
+	if (GameInstance && IsValid(GameInstance))
+	{
+		// TODO: Call backend undock endpoint
+		// This would require an HTTP subsystem or service
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Backend undock notification not implemented"));
+
+		// TODO: Spawn ship actor
+		// For now, just log what should happen
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Ship spawning not implemented"));
+		UE_LOG(LogTemp, Log, TEXT("Should spawn ship at: %s"), *SpawnLocation.ToString());
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("✓ Undocking sequence initiated (partial implementation)"));
+}

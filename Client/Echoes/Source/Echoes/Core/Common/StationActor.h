@@ -100,6 +100,19 @@ public:
 		const FString& InStationType,
 		const FGuid& InHangarStorageId);
 
+	/**
+	 * Server RPC to request undocking from station
+	 * Called from client when player clicks Undock button
+	 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerRPC_RequestUndock(APlayerController* PlayerController);
+
+	/**
+	 * Initiate undocking sequence for player
+	 * Spawns player ship in space near station
+	 */
+	void InitiateUndocking(APlayerController* PlayerController);
+
 protected:
 	// ==================== Components ====================
 
