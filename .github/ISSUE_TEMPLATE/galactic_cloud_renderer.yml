@@ -1,0 +1,305 @@
+name: Galactic Cloud Renderer
+description: Create actor that renders all star systems as 3D point cloud using ISM
+title: "[UI] Galactic Cloud Renderer"
+labels: ["feature", "[UI/HUD]", "[C++] Engine", "P1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Galactic Cloud Renderer Implementation
+        
+        Create an Actor that uses Instanced Static Meshes (ISM) to spawn points representing all star systems in 3D map space. Supports 10,000+ systems with color-coding by security status.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      value: |
+        Implement `AEchoesGalacticCloudRenderer` actor that:
+        - Uses UInstancedStaticMeshComponent for efficient rendering
+        - Spawns one instance per star system
+        - Colors instances by security status (0.0-1.0)
+        - Supports filtering and highlighting
+        - Handles click detection on instances
+        - Performs gracefully with 10,000+ instances
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      value: |
+        - Map Data Provider (data source)
+        - Map Camera Actor (viewing the cloud)
+        - Map Widget (UI overlay and controls)
+        - System Inspector (transition target)
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      value: |
+        ## Week 1: Actor Foundation & ISM Setup
+        - [ ] Create `AEchoesGalacticCloudRenderer` class (inherits AActor)
+        - [ ] Add `UInstancedStaticMeshComponent* SystemPointsISM`
+        - [ ] Create simple sphere static mesh for system points (100 tris)
+        - [ ] Create material with vertex color support
+        - [ ] Implement `BeginPlay()` to initialize ISM
+        - [ ] Add data storage: `TArray<FSystemMapData> SystemData`
+        
+        ## Week 2: Rendering & Color Coding
+        - [ ] Implement `RenderGalacticCloud()`
+          - Get system data from MapDataProvider
+          - Clear existing instances
+          - Add instance for each system at its galactic position
+          - Set custom data for color (security status)
+        - [ ] Implement security status → color conversion
+          ```cpp
+          FLinearColor GetSecurityColor(float SecurityStatus)
+          {
+              // High-sec: Green (1.0) to Yellow (0.5)
+              // Low-sec: Yellow (0.5) to Orange (0.1)
+              // Null-sec: Red (0.0)
+          }
+          ```
+        - [ ] Apply colors via `SetCustomDataValue()` on instances
+        - [ ] Create material that reads custom data for color
+        
+        ## Week 3: Interaction & Filtering
+        - [ ] Implement click detection on instances
+          - Override `NotifyActorOnClicked()`
+          - Trace from mouse to find clicked instance
+          - Get instance index
+          - Retrieve system data from index
+          - Broadcast event with system info
+        - [ ] Implement `UpdateSystemColors(FilterFunc)`
+          - Accept lambda/function for filtering
+          - Fade out or hide non-matching systems
+          - Highlight matching systems
+        - [ ] Add hover highlighting
+          - Detect mouse over instance
+          - Scale up hovered instance
+          - Show tooltip with system name
+        
+        ## Week 4: Optimization & Polish
+        - [ ] Implement LOD system
+          - Reduce instance complexity at distance
+          - Cull instances outside frustum
+        - [ ] Add search highlighting
+          - `HighlightSystem(FGuid SystemId)`
+          - Pulse animation on highlighted system
+        - [ ] Implement route visualization
+          - `DrawRouteLine(TArray<FGuid> Route)`
+          - Spline between systems
+          - Animated flow effect
+        - [ ] Performance profiling
+          - Target: 60 FPS with 10,000 instances
+          - Optimize material complexity
+          - Batch instance updates
+        - [ ] Blueprint exposure for designers
+        - [ ] Documentation and usage examples
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-approach
+    attributes:
+      label: Technical Approach
+      value: |
+        ### Instanced Static Mesh Architecture
+        
+        **Single Draw Call for All Systems:**
+        ```cpp
+        UCLASS()
+        class AEchoesGalacticCloudRenderer : public AActor
+        {
+            GENERATED_BODY()
+            
+        public:
+            AEchoesGalacticCloudRenderer();
+            
+            UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+            UInstancedStaticMeshComponent* SystemPointsISM;
+            
+            // Render all systems as point cloud
+            UFUNCTION(BlueprintCallable)
+            void RenderGalacticCloud();
+            
+            // Update colors based on filter
+            UFUNCTION(BlueprintCallable)
+            void UpdateSystemColors(TFunction<bool(const FSystemMapData&)> FilterFunc);
+            
+            // Handle instance click
+            virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
+            
+            // Event when system is clicked
+            DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSystemClicked, FGuid, SystemId);
+            UPROPERTY(BlueprintAssignable)
+            FOnSystemClicked OnSystemClicked;
+            
+        private:
+            UPROPERTY()
+            TArray<FSystemMapData> SystemData;
+            
+            // Instance index → System ID mapping
+            TMap<int32, FGuid> InstanceToSystemMap;
+            
+            FLinearColor GetSecurityColor(float SecurityStatus);
+        };
+        ```
+        
+        ### Color-Coded Rendering
+        
+        **Material Setup:**
+        - Vertex color input from instance custom data
+        - Emissive for glow effect
+        - Distance-based size scaling
+        
+        **Custom Data Layout:**
+        - CustomData[0] = R (Red channel)
+        - CustomData[1] = G (Green channel)
+        - CustomData[2] = B (Blue channel)
+        - CustomData[3] = Highlight intensity (0-1)
+        
+        ### Performance Optimization
+        
+        **GPU Instancing Benefits:**
+        - 10,000 systems = 1 draw call
+        - ~1 million triangles total (100 tris × 10,000)
+        - GPU handles all transformations
+        - Minimal CPU overhead
+        
+        **Culling Strategy:**
+        ```cpp
+        void UpdateVisibility()
+        {
+            // Frustum culling
+            FConvexVolume Frustum = GetCameraFrustum();
+            
+            for (int32 i = 0; i < SystemData.Num(); ++i)
+            {
+                bool bVisible = Frustum.IntersectPoint(SystemData[i].Position);
+                SystemPointsISM->UpdateInstanceVisibility(i, bVisible);
+            }
+        }
+        ```
+        
+        ### Click Detection
+        
+        ```cpp
+        void AEchoesGalacticCloudRenderer::NotifyActorOnClicked(FKey ButtonPressed)
+        {
+            // Get mouse position
+            APlayerController* PC = GetWorld()->GetFirstPlayerController();
+            FVector2D MousePosition;
+            PC->GetMousePosition(MousePosition.X, MousePosition.Y);
+            
+            // Trace to find instance
+            FHitResult HitResult;
+            PC->GetHitResultAtScreenPosition(MousePosition, ECC_Visibility, false, HitResult);
+            
+            if (HitResult.Actor == this && HitResult.Component == SystemPointsISM)
+            {
+                int32 InstanceIndex = HitResult.Item; // Instance index from hit
+                FGuid* SystemId = InstanceToSystemMap.Find(InstanceIndex);
+                
+                if (SystemId)
+                {
+                    OnSystemClicked.Broadcast(*SystemId);
+                }
+            }
+        }
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Actor renders all systems as point cloud using ISM
+        - [ ] Color coding by security status is accurate
+          - Green (1.0) → Yellow (0.5) → Orange (0.1) → Red (0.0)
+        - [ ] Click on system point triggers event with correct System ID
+        - [ ] Hover highlights system with scale effect
+        - [ ] Filter function correctly shows/hides systems
+        - [ ] Search highlighting works (pulse animation)
+        - [ ] Route visualization draws path between systems
+        - [ ] Performance: 60+ FPS with 10,000 systems
+        - [ ] Memory: < 50MB for all instances
+        - [ ] Works in multiplayer (no replication needed - UI only)
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual-design
+    attributes:
+      label: Visual Design & Materials
+      value: |
+        ### System Point Material
+        
+        **Material Properties:**
+        - Base mesh: Simple sphere (100 tris, 1m radius)
+        - Emissive color from vertex color (custom data)
+        - Glow intensity: 2.0
+        - Distance fade: Fade out beyond camera far plane
+        
+        **Material Graph:**
+        ```
+        VertexColor (from Custom Data)
+            ↓
+        [Multiply] × Emissive Intensity (2.0)
+            ↓
+        Emissive Color
+        
+        Distance to Camera
+            ↓
+        [Clamp] (10,000 to 100,000)
+            ↓
+        Opacity (for fade)
+        ```
+        
+        ### Highlight Effects
+        
+        **Hover:**
+        - Scale instance to 1.5x
+        - Increase emissive to 3.0
+        - Add outer glow ring
+        
+        **Selected:**
+        - Pulse animation (scale 1.0 to 1.3)
+        - Different color (cyan)
+        - Persistent until deselected
+        
+        **Route Systems:**
+        - Draw spline mesh between systems
+        - Animated texture scroll
+        - Arrows indicating direction
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - "Milestone 2: Visual & Tactical HUD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "1 week"
+        - "2 weeks"
+        - "3 weeks"
+        - "4 weeks"
+      default: 3  # Index 3 = "4 weeks" (zero-based)
+    validations:
+      required: true

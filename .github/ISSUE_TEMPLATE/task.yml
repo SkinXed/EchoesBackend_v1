@@ -1,0 +1,43 @@
+name: Task
+description: Technical task or maintenance work
+title: "[Task]: "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Technical Task
+        Use this template for technical tasks, maintenance, or refactoring work.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the task that needs to be completed
+      placeholder: |
+        What needs to be done?
+        Why is this task necessary?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this task is complete?
+      placeholder: |
+        - [ ] Specific outcome 1
+        - [ ] Specific outcome 2
+        - [ ] Tests pass
+        - [ ] Documentation updated
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other relevant information
+      placeholder: Links to related issues, documentation, or technical specifications
+    validations:
+      required: false
