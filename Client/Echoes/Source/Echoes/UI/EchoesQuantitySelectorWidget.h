@@ -44,6 +44,7 @@ public:
 	// UUserWidget interface
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual FReply NativeOnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 	// End of UUserWidget interface
 
 	/**
@@ -86,6 +87,12 @@ protected:
 	void OnCancelClicked();
 
 	/**
+	 * Handle max button clicked (sets quantity to maximum)
+	 */
+	UFUNCTION()
+	void OnMaxClicked();
+
+	/**
 	 * Handle slider value changed
 	 */
 	UFUNCTION()
@@ -117,6 +124,10 @@ protected:
 	/** Cancel button */
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget), Category = "Echoes|Inventory|UI")
 	UButton* CancelButton;
+
+	/** Max button (sets quantity to maximum) */
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget), Category = "Echoes|Inventory|UI")
+	UButton* MaxButton;
 
 	/** Quantity slider */
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget), Category = "Echoes|Inventory|UI")

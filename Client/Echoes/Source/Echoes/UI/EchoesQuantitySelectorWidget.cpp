@@ -29,6 +29,11 @@ void UEchoesQuantitySelectorWidget::NativeConstruct()
 		CancelButton->OnClicked.AddDynamic(this, &UEchoesQuantitySelectorWidget::OnCancelClicked);
 	}
 
+	if (MaxButton)
+	{
+		MaxButton->OnClicked.AddDynamic(this, &UEchoesQuantitySelectorWidget::OnMaxClicked);
+	}
+
 	// Bind slider event
 	if (QuantitySlider)
 	{
@@ -39,6 +44,13 @@ void UEchoesQuantitySelectorWidget::NativeConstruct()
 	if (QuantityInput)
 	{
 		QuantityInput->OnTextCommitted.AddDynamic(this, &UEchoesQuantitySelectorWidget::OnQuantityTextCommitted);
+	}
+
+	// Set focus to quantity input for immediate typing
+	if (QuantityInput)
+	{
+		QuantityInput->SetKeyboardFocus();
+		QuantityInput->SetUserFocus(GetOwningPlayer());
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("Quantity selector widget constructed"));
@@ -57,6 +69,11 @@ void UEchoesQuantitySelectorWidget::NativeDestruct()
 		CancelButton->OnClicked.RemoveDynamic(this, &UEchoesQuantitySelectorWidget::OnCancelClicked);
 	}
 
+	if (MaxButton)
+	{
+		MaxButton->OnClicked.RemoveDynamic(this, &UEchoesQuantitySelectorWidget::OnMaxClicked);
+	}
+
 	if (QuantitySlider)
 	{
 		QuantitySlider->OnValueChanged.RemoveDynamic(this, &UEchoesQuantitySelectorWidget::OnSliderValueChanged);
@@ -68,6 +85,25 @@ void UEchoesQuantitySelectorWidget::NativeDestruct()
 	}
 
 	Super::NativeDestruct();
+}
+
+FReply UEchoesQuantitySelectorWidget::NativeOnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
+	// Handle Enter key to confirm
+	if (InKeyEvent.GetKey() == EKeys::Enter || InKeyEvent.GetKey() == EKeys::NumPadEnter)
+	{
+		OnConfirmClicked();
+		return FReply::Handled();
+	}
+
+	// Handle Escape key to cancel
+	if (InKeyEvent.GetKey() == EKeys::Escape)
+	{
+		OnCancelClicked();
+		return FReply::Handled();
+	}
+
+	return Super::NativeOnKeyDown(MyGeometry, InKeyEvent);
 }
 
 void UEchoesQuantitySelectorWidget::InitializeSelector(int64 InMaxQuantity, const FString& InItemName)
@@ -116,6 +152,17 @@ void UEchoesQuantitySelectorWidget::OnCancelClicked()
 	
 	// Close widget
 	RemoveFromParent();
+}
+
+void UEchoesQuantitySelectorWidget::OnMaxClicked()
+{
+	// Set quantity to maximum
+	SelectedQuantity = MaxQuantity;
+	
+	// Update display
+	UpdateDisplay();
+	
+	UE_LOG(LogTemp, Log, TEXT("Max button clicked: %lld"), SelectedQuantity);
 }
 
 void UEchoesQuantitySelectorWidget::OnSliderValueChanged(float Value)

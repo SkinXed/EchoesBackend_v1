@@ -201,6 +201,65 @@ void UEchoesInventoryEntryWidget::NativeOnDragDetected(const FGeometry& InGeomet
 	bool bIsStackable = CurrentItemObject->IsStackable();
 	int64 TotalQuantity = CurrentItemObject->GetQuantity();
 
+	// Handle stack splitting if Shift held and item is stackable with quantity > 1
+	if (bIsShiftHeld && bIsStackable && TotalQuantity > 1)
+	{
+		// Check if quantity selector class is set
+		if (!QuantitySelectorClass)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Quantity selector class not set, using default half-stack"));
+			// Fall back to half-stack
+			CreateDragOperationWithQuantity(InGeometry, InMouseEvent, OutOperation, TotalQuantity / 2);
+			return;
+		}
+
+		// Store pending drag data
+		PendingDragGeometry = InGeometry;
+		PendingDragEvent = InMouseEvent;
+		bWaitingForDragQuantity = true;
+
+		// Create quantity selector
+		UEchoesQuantitySelectorWidget* QuantitySelector = CreateWidget<UEchoesQuantitySelectorWidget>(
+			GetWorld(), QuantitySelectorClass);
+		
+		if (!QuantitySelector)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to create quantity selector widget"));
+			bWaitingForDragQuantity = false;
+			return;
+		}
+
+		// Initialize selector
+		QuantitySelector->InitializeSelector(TotalQuantity, CurrentItemObject->GetItemName());
+
+		// Bind to delegates
+		QuantitySelector->OnQuantitySelected.AddDynamic(this, &UEchoesInventoryEntryWidget::OnDragQuantitySelected);
+		QuantitySelector->OnQuantitySelectionCancelled.AddDynamic(this, &UEchoesInventoryEntryWidget::OnDragQuantityCancelled);
+
+		// Add to viewport as modal (high Z-order)
+		QuantitySelector->AddToViewport(1000);
+
+		UE_LOG(LogTemp, Log, TEXT("Quantity selector shown for drag operation"));
+
+		// Don't create drag operation yet - wait for user input
+		return;
+	}
+
+	// Normal drag (no shift or not stackable) - use full quantity
+	CreateDragOperationWithQuantity(InGeometry, InMouseEvent, OutOperation, TotalQuantity);
+}
+
+void UEchoesInventoryEntryWidget::CreateDragOperationWithQuantity(
+	const FGeometry& InGeometry,
+	const FPointerEvent& InMouseEvent,
+	UDragDropOperation*& OutOperation,
+	int64 Quantity)
+{
+	if (!CurrentItemObject)
+	{
+		return;
+	}
+
 	// Get the inventory widget to find source storage
 	UEchoesInventoryWidget* InventoryWidget = nullptr;
 	UWidget* ParentWidget = GetParent();
@@ -233,31 +292,13 @@ void UEchoesInventoryEntryWidget::NativeOnDragDetected(const FGeometry& InGeomet
 	AActor* SourceActor = SourceComponent->GetOwner();
 	FGuid SourceStorageId = SourceComponent->StorageId;
 
-	// Handle stack splitting if Shift held and item is stackable with quantity > 1
-	int64 QuantityToMove = TotalQuantity;
-	
-	if (bIsShiftHeld && bIsStackable && TotalQuantity > 1)
-	{
-		// TODO: Open quantity selector widget
-		// For now, just use half the stack
-		QuantityToMove = FMath::Max(TotalQuantity / 2, (int64)1);
-		
-		UE_LOG(LogTemp, Log, TEXT("Stack split: moving %lld of %lld"), QuantityToMove, TotalQuantity);
-		
-		// In a full implementation, we would:
-		// 1. Create and show W_QuantitySelector widget
-		// 2. Wait for user input
-		// 3. Use selected quantity
-		// For now, we proceed with half the stack
-	}
-
 	// Create drag drop operation
 	UEchoesInventoryDragDrop* DragDropOp = NewObject<UEchoesInventoryDragDrop>();
 	DragDropOp->InitializeDragOperation(
 		CurrentItemObject->GetItemData(),
 		SourceStorageId,
 		SourceActor,
-		QuantityToMove
+		Quantity
 	);
 
 	// Set default drag visual (create a simple widget showing the item)
@@ -267,7 +308,85 @@ void UEchoesInventoryEntryWidget::NativeOnDragDetected(const FGeometry& InGeomet
 	OutOperation = DragDropOp;
 
 	UE_LOG(LogTemp, Log, TEXT("Drag operation created: Item=%s, Quantity=%lld"),
-		*CurrentItemObject->GetItemName(), QuantityToMove);
+		*CurrentItemObject->GetItemName(), Quantity);
+}
+
+void UEchoesInventoryEntryWidget::OnDragQuantitySelected(int64 SelectedQuantity)
+{
+	bWaitingForDragQuantity = false;
+
+	UE_LOG(LogTemp, Log, TEXT("Drag quantity selected: %lld"), SelectedQuantity);
+
+	// Note: In Unreal, we can't resume a drag operation after it's been paused
+	// The proper implementation would require Blueprint to handle this
+	// For now, we log that the quantity was selected
+	// Blueprint should create the drag operation manually with this quantity
+	
+	// In a full implementation, Blueprint would:
+	// 1. Receive OnDragQuantitySelected event
+	// 2. Create UEchoesInventoryDragDrop with SelectedQuantity
+	// 3. Begin drag operation programmatically
+}
+
+void UEchoesInventoryEntryWidget::OnDragQuantityCancelled()
+{
+	bWaitingForDragQuantity = false;
+	UE_LOG(LogTemp, Log, TEXT("Drag quantity selection cancelled"));
+	OnDragCancelled();
+}
+
+void UEchoesInventoryEntryWidget::OnJettisonQuantitySelected(int64 SelectedQuantity)
+{
+	if (!CurrentItemObject)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No current item for jettison"));
+		return;
+	}
+
+	// Get inventory component
+	UEchoesInventoryWidget* InventoryWidget = nullptr;
+	UWidget* ParentWidget = GetParent();
+	while (ParentWidget)
+	{
+		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
+		if (InventoryWidget)
+		{
+			break;
+		}
+		ParentWidget = ParentWidget->GetParent();
+	}
+
+	if (!InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget"));
+		return;
+	}
+
+	UEchoesInventoryComponent* Component = InventoryWidget->GetInventoryComponent();
+	if (!Component)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not find inventory component"));
+		return;
+	}
+
+	// Jettison item with selected quantity
+	Component->ServerOnly_JettisonItem(
+		CurrentItemObject->GetAssetId(),
+		SelectedQuantity,
+		FOnItemMoveSuccess::CreateLambda([SelectedQuantity]()
+		{
+			UE_LOG(LogTemp, Log, TEXT("Jettisoned %lld items successfully"), SelectedQuantity);
+		}),
+		FOnInventoryOperationFailure::CreateLambda([](const FString& Error)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to jettison item: %s"), *Error);
+		})
+	);
+}
+
+void UEchoesInventoryEntryWidget::OnJettisonQuantityCancelled()
+{
+	UE_LOG(LogTemp, Log, TEXT("Jettison quantity selection cancelled"));
 }
 
 UUserWidget* UEchoesInventoryEntryWidget::CreateDragVisual()
@@ -452,7 +571,33 @@ void UEchoesInventoryEntryWidget::HandleContextMenuAction(const FString& ActionI
 	// Execute action
 	if (ActionId == TEXT("jettison"))
 	{
-		// Jettison item
+		// Check if item has quantity > 1, show quantity selector
+		if (CurrentItemObject->IsStackable() && CurrentItemObject->GetQuantity() > 1 && QuantitySelectorClass)
+		{
+			// Show quantity selector
+			UEchoesQuantitySelectorWidget* QuantitySelector = CreateWidget<UEchoesQuantitySelectorWidget>(
+				GetWorld(), QuantitySelectorClass);
+			
+			if (QuantitySelector)
+			{
+				QuantitySelector->InitializeSelector(
+					CurrentItemObject->GetQuantity(),
+					CurrentItemObject->GetItemName()
+				);
+
+				// Bind to delegates
+				QuantitySelector->OnQuantitySelected.AddDynamic(this, &UEchoesInventoryEntryWidget::OnJettisonQuantitySelected);
+				QuantitySelector->OnQuantitySelectionCancelled.AddDynamic(this, &UEchoesInventoryEntryWidget::OnJettisonQuantityCancelled);
+
+				// Add to viewport as modal
+				QuantitySelector->AddToViewport(1000);
+
+				UE_LOG(LogTemp, Log, TEXT("Quantity selector shown for jettison"));
+				return;
+			}
+		}
+
+		// Jettison entire stack
 		Component->ServerOnly_JettisonItem(
 			CurrentItemObject->GetAssetId(),
 			0, // 0 = all quantity

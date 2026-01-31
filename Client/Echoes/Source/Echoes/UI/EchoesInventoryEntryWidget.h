@@ -138,6 +138,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
 	TSubclassOf<class UEchoesContextMenuWidget> ContextMenuClass;
 
+	/** Quantity selector widget class */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
+	TSubclassOf<class UEchoesQuantitySelectorWidget> QuantitySelectorClass;
+
 private:
 	/** Current item object being displayed */
 	UPROPERTY()
@@ -161,6 +165,16 @@ private:
 	UUserWidget* CreateDragVisual();
 
 	/**
+	 * Create drag operation with specified quantity
+	 * Helper method to avoid code duplication
+	 */
+	void CreateDragOperationWithQuantity(
+		const FGeometry& InGeometry,
+		const FPointerEvent& InMouseEvent,
+		UDragDropOperation*& OutOperation,
+		int64 Quantity);
+
+	/**
 	 * Show context menu for current item
 	 */
 	void ShowContextMenu();
@@ -178,4 +192,35 @@ private:
 	 */
 	UFUNCTION()
 	void HandleContextMenuAction(const FString& ActionId);
+
+	/**
+	 * Handle quantity selected for drag operation
+	 * @param SelectedQuantity - Quantity selected by user
+	 */
+	UFUNCTION()
+	void OnDragQuantitySelected(int64 SelectedQuantity);
+
+	/**
+	 * Handle quantity selection cancelled for drag operation
+	 */
+	UFUNCTION()
+	void OnDragQuantityCancelled();
+
+	/**
+	 * Handle quantity selected for jettison operation
+	 * @param SelectedQuantity - Quantity selected by user
+	 */
+	UFUNCTION()
+	void OnJettisonQuantitySelected(int64 SelectedQuantity);
+
+	/**
+	 * Handle quantity selection cancelled for jettison operation
+	 */
+	UFUNCTION()
+	void OnJettisonQuantityCancelled();
+
+	/** Stored data for pending drag operation */
+	FPointerEvent PendingDragEvent;
+	FGeometry PendingDragGeometry;
+	bool bWaitingForDragQuantity;
 };
