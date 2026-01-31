@@ -18,5 +18,8 @@ namespace Echoes.API.Services.Inventory
         // Volume calculations
         Task<decimal> CalculateContainerUsedVolumeAsync(Guid containerId);
         Task<bool> CanFitInContainerAsync(Guid containerId, int typeId, long quantity);
+
+        // Hangar operations
+        Task<ContainerDto> GetOrCreatePersonalHangarAsync(Guid ownerId, int stationId);
     }
 }

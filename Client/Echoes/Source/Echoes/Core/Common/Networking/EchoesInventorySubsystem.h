@@ -163,6 +163,7 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMess
 DECLARE_DYNAMIC_DELEGATE(FOnShipActivated);
 DECLARE_DYNAMIC_DELEGATE(FOnModuleFitted);
 DECLARE_DYNAMIC_DELEGATE(FOnModuleUnfitted);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnHangarReceived, const FGuid&, HangarStorageId);
 
 // Multicast delegates for UI updates
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnFittingChanged, const struct FEchoesShipFitting&);
@@ -266,6 +267,21 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory")
 	void Inventory_ClearCache();
+
+	/**
+	 * Request personal hangar storage ID at a station
+	 * Sends HTTP GET to /api/inventory/hangar/{stationId} with JWT token
+	 * Backend will return or create the player's personal hangar container
+	 * 
+	 * @param StationId - Station ID to get hangar for
+	 * @param OnSuccess - Callback with hangar storage ID
+	 * @param OnFailure - Callback on request failure
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory")
+	void Inventory_RequestPersonalHangar(
+		int32 StationId,
+		FOnHangarReceived OnSuccess,
+		FOnInventoryFailure OnFailure);
 
 	// ==================== Item Definitions System ====================
 
@@ -416,6 +432,16 @@ protected:
 		bool bWasSuccessful,
 		const FGuid& ShipId,
 		FOnModuleUnfitted OnSuccess,
+		FOnInventoryFailure OnFailure);
+
+	/**
+	 * Handle personal hangar request response from backend
+	 */
+	void OnPersonalHangarReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		FOnHangarReceived OnSuccess,
 		FOnInventoryFailure OnFailure);
 
 	// ==================== Helper Functions ====================

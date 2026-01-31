@@ -86,6 +86,20 @@ public:
 	 */
 	void NotifyBackendDocking(APlayerController* PlayerController);
 
+	/**
+	 * Client RPC to open station menu on player's screen
+	 * Called after successful docking
+	 * 
+	 * @param InStationName - Name of the station
+	 * @param InStationType - Type of the station
+	 * @param InHangarStorageId - Storage ID of player's personal hangar
+	 */
+	UFUNCTION(Client, Reliable)
+	void ClientRPC_OpenStationMenu(
+		const FString& InStationName,
+		const FString& InStationType,
+		const FGuid& InHangarStorageId);
+
 protected:
 	// ==================== Components ====================
 

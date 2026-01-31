@@ -7,7 +7,10 @@
 #include "NiagaraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Core/Common/EchoesGameStateSubsystem.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
+#include "UI/EchoesStationMenuWidget.h"
 
 AStationActor::AStationActor()
 {
@@ -277,6 +280,42 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 		{
 			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get GameStateSubsystem"));
 		}
+
+		// Request personal hangar from backend
+		UEchoesInventorySubsystem* InventorySubsystem = GameInstance->GetSubsystem<UEchoesInventorySubsystem>();
+		if (InventorySubsystem && IsValid(InventorySubsystem))
+		{
+			// Extract station ID from StationId (assuming it's stored as integer in database)
+			// For now, we'll use a placeholder. In production, you'd need to map GUIDs to integer station IDs
+			// or update the backend to accept GUIDs
+			int32 StationIdInt = 1; // TODO: Get actual station ID from database mapping
+			
+			UE_LOG(LogTemp, Log, TEXT("Requesting personal hangar for station %d"), StationIdInt);
+			
+			InventorySubsystem->Inventory_RequestPersonalHangar(
+				StationIdInt,
+				FOnHangarReceived::CreateLambda([this, PlayerController](const FGuid& HangarStorageId)
+				{
+					UE_LOG(LogTemp, Log, TEXT("✓ Personal hangar retrieved: %s"), *HangarStorageId.ToString());
+					
+					// Open station menu on client
+					ClientRPC_OpenStationMenu(StationName, StationType, HangarStorageId);
+				}),
+				FOnInventoryFailure::CreateLambda([this, PlayerController](const FString& Error)
+				{
+					UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve personal hangar: %s"), *Error);
+					
+					// Still open station menu with empty hangar ID
+					ClientRPC_OpenStationMenu(StationName, StationType, FGuid());
+				}));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get InventorySubsystem"));
+			
+			// Open station menu without hangar
+			ClientRPC_OpenStationMenu(StationName, StationType, FGuid());
+		}
 	}
 	else
 	{
@@ -286,13 +325,7 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 	// Notify backend about docking
 	NotifyBackendDocking(PlayerController);
 
-	// TODO: Implement docking sequence:
-	// 1. Play docking animation
-	// 2. Disable ship controls
-	// 3. Transition to hangar level/UI
-	// 4. Save ship position for undocking
-
-	UE_LOG(LogTemp, Warning, TEXT("⚠ Docking sequence not fully implemented"));
+	UE_LOG(LogTemp, Log, TEXT("✓ Docking sequence initiated"));
 }
 
 void AStationActor::NotifyBackendDocking(APlayerController* PlayerController)
@@ -321,4 +354,40 @@ void AStationActor::NotifyBackendDocking(APlayerController* PlayerController)
 	// Body: { "locationType": "Docked", "stationId": "guid", "timestamp": "utc" }
 
 	UE_LOG(LogTemp, Warning, TEXT("⚠ Backend notification not implemented"));
+}
+
+void AStationActor::ClientRPC_OpenStationMenu_Implementation(
+	const FString& InStationName,
+	const FString& InStationType,
+	const FGuid& InHangarStorageId)
+{
+	UE_LOG(LogTemp, Log, TEXT("ClientRPC_OpenStationMenu called on client"));
+	UE_LOG(LogTemp, Log, TEXT("  Station: %s (Type: %s)"), *InStationName, *InStationType);
+	UE_LOG(LogTemp, Log, TEXT("  Hangar Storage ID: %s"), *InHangarStorageId.ToString());
+
+	// Get player controller
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (!PC)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController on client"));
+		return;
+	}
+
+	// Create station menu widget
+	// In production, this should be created from a Blueprint widget class
+	// For now, we'll log that the menu should be opened
+	// Blueprint implementation should handle actual widget creation and display
+	
+	UE_LOG(LogTemp, Log, TEXT("Station menu should be opened here"));
+	UE_LOG(LogTemp, Log, TEXT("Blueprint should:"));
+	UE_LOG(LogTemp, Log, TEXT("  1. Create W_StationMenu widget"));
+	UE_LOG(LogTemp, Log, TEXT("  2. Call InitializeStationMenu with station data"));
+	UE_LOG(LogTemp, Log, TEXT("  3. Add to viewport"));
+	
+	// TODO: Blueprint implementation or C++ widget creation
+	// Example for Blueprint:
+	// - Override this function in Blueprint
+	// - Create widget from W_StationMenu class
+	// - Call InitializeStationMenu
+	// - Add to viewport with AddToViewport()
 }

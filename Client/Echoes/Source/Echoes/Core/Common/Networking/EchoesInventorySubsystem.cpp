@@ -189,6 +189,46 @@ void UEchoesInventorySubsystem::Inventory_ClearCache()
 	UE_LOG(LogTemp, Log, TEXT("Inventory cache cleared"));
 }
 
+void UEchoesInventorySubsystem::Inventory_RequestPersonalHangar(
+	int32 StationId,
+	FOnHangarReceived OnSuccess,
+	FOnInventoryFailure OnFailure)
+{
+	// Get JWT token from Auth subsystem
+	FString Token = GetAuthToken();
+	if (Token.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cannot request personal hangar: No valid JWT token"));
+		OnFailure.ExecuteIfBound(TEXT("Not logged in"));
+		return;
+	}
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest> Request = Http->CreateRequest();
+	Request->SetVerb(TEXT("GET"));
+	Request->SetURL(GetApiBaseUrl() + FString::Printf(TEXT("/inventory/hangar/%d"), StationId));
+	Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	Request->SetHeader(TEXT("Authorization"), TEXT("Bearer ") + Token);
+
+	// Bind response handler
+	Request->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesInventorySubsystem::OnPersonalHangarReceived,
+		OnSuccess,
+		OnFailure);
+
+	// Send request
+	if (!Request->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to send personal hangar request"));
+		OnFailure.ExecuteIfBound(TEXT("Failed to send request"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Requesting personal hangar from backend for station %d..."), StationId);
+	}
+}
+
 void UEchoesInventorySubsystem::OnShipsReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
@@ -831,6 +871,66 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	{
 		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Unexpected response code: %d"), ResponseCode);
 		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+	}
+}
+
+void UEchoesInventorySubsystem::OnPersonalHangarReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	FOnHangarReceived OnSuccess,
+	FOnInventoryFailure OnFailure)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Personal hangar request failed"));
+		OnFailure.ExecuteIfBound(TEXT("Request failed"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	UE_LOG(LogTemp, Log, TEXT("Personal hangar response: HTTP %d"), ResponseCode);
+
+	if (ResponseCode == 200)
+	{
+		// Parse JSON response
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			FString StorageIdStr = JsonObject->GetStringField(TEXT("storageId"));
+			FGuid StorageId;
+			
+			if (FGuid::Parse(StorageIdStr, StorageId))
+			{
+				UE_LOG(LogTemp, Log, TEXT("Successfully retrieved personal hangar: %s"), *StorageId.ToString());
+				OnSuccess.ExecuteIfBound(StorageId);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to parse storage ID: %s"), *StorageIdStr);
+				OnFailure.ExecuteIfBound(TEXT("Invalid storage ID format"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to parse personal hangar response"));
+			OnFailure.ExecuteIfBound(TEXT("Failed to parse response"));
+		}
+	}
+	else if (ResponseCode == 401)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Unauthorized: Invalid or expired token"));
+		OnFailure.ExecuteIfBound(TEXT("Authentication failed"));
+	}
+	else
+	{
+		FString ErrorMsg = FString::Printf(TEXT("HTTP %d: %s"), ResponseCode, *ResponseContent);
+		UE_LOG(LogTemp, Error, TEXT("Personal hangar request failed: %s"), *ErrorMsg);
+		OnFailure.ExecuteIfBound(ErrorMsg);
 	}
 }
 
