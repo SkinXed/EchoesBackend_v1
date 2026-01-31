@@ -93,7 +93,6 @@ public:
 	UEchoesInventoryComponent();
 	
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// ==================== Component Properties ====================
 
@@ -260,7 +259,4 @@ private:
 	/** Cached items list */
 	UPROPERTY()
 	FEchoesContainerItems CachedItems;
-
-	/** HTTP module reference */
-	FHttpModule* Http;
 };

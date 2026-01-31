@@ -10,7 +10,6 @@
 UEchoesInventoryComponent::UEchoesInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	Http = &FHttpModule::Get();
 }
 
 void UEchoesInventoryComponent::BeginPlay()
@@ -19,11 +18,6 @@ void UEchoesInventoryComponent::BeginPlay()
 	
 	// Initialize with empty cache
 	CachedItems = FEchoesContainerItems();
-}
-
-void UEchoesInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UEchoesInventoryComponent::InitializeStorage(const FGuid& InStorageId, float InCapacity)
@@ -61,7 +55,7 @@ void UEchoesInventoryComponent::FetchItems(
 		*GetApiBaseUrl(),
 		*StorageId.ToString());
 
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 	Request->SetVerb(TEXT("GET"));
 	Request->SetURL(Url);
 	Request->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *Token));
@@ -154,12 +148,12 @@ void UEchoesInventoryComponent::ServerOnly_MoveItem(
 	// Create request payload
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
 	JsonObject->SetStringField(TEXT("assetId"), AssetId.ToString());
-	JsonObject->SetStringField(TEXT("sourceLocationId"), StorageId.ToString());
 	JsonObject->SetStringField(TEXT("targetLocationId"), TargetInventory->StorageId.ToString());
+	JsonObject->SetNumberField(TEXT("targetFlag"), 0); // Default to Cargo flag
 	
 	if (Quantity > 0)
 	{
-		JsonObject->SetNumberField(TEXT("quantity"), Quantity);
+		JsonObject->SetNumberField(TEXT("splitQuantity"), Quantity);
 	}
 
 	FString JsonString;
@@ -167,9 +161,9 @@ void UEchoesInventoryComponent::ServerOnly_MoveItem(
 	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
 
 	// Create HTTP request
-	FString Url = FString::Printf(TEXT("%s/api/inventory/move"), *GetApiBaseUrl());
+	FString Url = FString::Printf(TEXT("%s/api/inventory/operations/move"), *GetApiBaseUrl());
 
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 	Request->SetVerb(TEXT("POST"));
 	Request->SetURL(Url);
 	Request->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *Token));
@@ -274,11 +268,12 @@ void UEchoesInventoryComponent::OnItemMoveResponse(
 				OnInventoryUpdated.Broadcast(Items);
 				OnSuccess.ExecuteIfBound();
 			}),
-			FOnInventoryOperationFailure::CreateLambda([OnFailure](const FString& Error)
+			FOnInventoryOperationFailure::CreateLambda([this, OnSuccess](const FString& Error)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("EchoesInventoryComponent: Failed to refresh after move: %s"), *Error);
 				// Still report success since the move itself succeeded
-				OnFailure.ExecuteIfBound(FString::Printf(TEXT("Move succeeded but refresh failed: %s"), *Error));
+				// Just log the warning and proceed with success
+				OnSuccess.ExecuteIfBound();
 			})
 		);
 	}

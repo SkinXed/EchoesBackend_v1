@@ -121,9 +121,9 @@ void UInventoryWidget::OnInventoryChanged(const FEchoesContainerItems& Items)
    - Fetches all items in a container
    - Returns: AssetListResponse with items, total count, and volume
 
-2. **POST /api/inventory/move**
+2. **POST /api/inventory/operations/move**
    - Moves items between containers
-   - Request body: MoveItemBetweenContainersRequest
+   - Request body: MoveItemRequest
    - Validates capacity and ownership
 
 ### Data Flow
