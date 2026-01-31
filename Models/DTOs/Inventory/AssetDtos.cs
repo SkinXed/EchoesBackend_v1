@@ -50,4 +50,13 @@ namespace Echoes.API.Models.DTOs.Inventory
         public int TotalCount { get; set; }
         public decimal TotalVolume { get; set; }
     }
+
+    public class MoveItemBetweenContainersRequest
+    {
+        public Guid AssetId { get; set; }
+        public Guid SourceLocationId { get; set; }
+        public Guid TargetLocationId { get; set; }
+        public long? Quantity { get; set; }
+        public string? Reason { get; set; }
+    }
 }
