@@ -679,10 +679,10 @@ The documentation has been fully organized and restructured for improved accessi
 - ✅ **Root Directory Cleaned** - Only essential files remain (README.md, ROADMAP.md, project files)
 - ✅ **36 Documentation Files Organized** - All markdown files moved from root to `/docs/` hierarchy
 - ✅ **Clear Categorization** - Documents sorted into logical folders:
-  - `/docs/architecture/` - 7 architecture and authentication documents
-  - `/docs/systems/inventory/` - 2 inventory system documents
+  - `/docs/architecture/` - 9 architecture and authentication documents
+  - `/docs/systems/inventory/` - 7 inventory system documents
   - `/docs/systems/ship/` - 1 ship systems document
-  - `/docs/ui_ux/` - 6 UI/UX documents
+  - `/docs/ui_ux/` - 8 UI/UX documents
   - `/docs/gameplay/` - 2 gameplay mechanics documents
   - `/docs/reports/` - 11 implementation reports and summaries
 
@@ -699,7 +699,7 @@ The documentation has been fully organized and restructured for improved accessi
 ├── QUICK_START.md
 ├── PROJECT_ECHOES_V1_MANIFEST.md
 ├── DOCUMENTATION_STRUCTURE.md
-├── architecture/       (7 files - Auth, Architecture, Networking)
+├── architecture/       (9 files - Auth, Architecture, Networking)
 ├── systems/
 │   ├── inventory/     (7 files - Hangar, Items, Inventory)
 │   ├── ship/          (1 file - Fitting Service)
