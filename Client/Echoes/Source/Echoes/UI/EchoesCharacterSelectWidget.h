@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/EchoesWindowBase.h"
 #include "Core/Common/Networking/EchoesAuthSubsystem.h"
 #include "EchoesCharacterSelectWidget.generated.h"
 
@@ -34,9 +34,10 @@ public:
  * 
  * Character selection UI widget for Echoes MMO
  * Displays list of player's characters and allows creation of new characters
+ * Inherits from UEchoesWindowBase for drag/focus support
  */
 UCLASS()
-class ECHOES_API UEchoesCharacterSelectWidget : public UUserWidget
+class ECHOES_API UEchoesCharacterSelectWidget : public UEchoesWindowBase
 {
 	GENERATED_BODY()
 

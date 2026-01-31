@@ -12,6 +12,9 @@ void UEchoesCharacterSelectWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	// Set window title
+	SetWindowTitle(FText::FromString("Character Selection"));
+
 	// Get auth subsystem
 	if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld()))
 	{

@@ -4,11 +4,15 @@
 #include "Components/EditableTextBox.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Components/CheckBox.h"
 #include "Kismet/GameplayStatics.h"
 
 void UEchoesLoginWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	// Set window title
+	SetWindowTitle(FText::FromString("Login"));
 
 	// Get auth subsystem
 	if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld()))
@@ -31,6 +35,12 @@ void UEchoesLoginWidget::NativeConstruct()
 	if (PasswordInput)
 	{
 		PasswordInput->OnTextCommitted.AddDynamic(this, &UEchoesLoginWidget::OnPasswordCommitted);
+	}
+
+	// Set Remember Me to checked by default
+	if (RememberMeCheckbox)
+	{
+		RememberMeCheckbox->SetIsChecked(true);
 	}
 
 	// Clear status text
@@ -117,6 +127,13 @@ void UEchoesLoginWidget::OnLoginSuccess(const FAuthResponse& AuthResponse)
 	SetUIEnabled(true);
 
 	SetStatusText("Login successful!", FLinearColor::Green);
+
+	// Save token if Remember Me is checked
+	if (RememberMeCheckbox && RememberMeCheckbox->IsChecked())
+	{
+		// TODO: Save token to LocalPlayerSettings
+		UE_LOG(LogTemp, Log, TEXT("Remember Me enabled, token should be saved"));
+	}
 
 	// Broadcast to blueprint
 	OnLoginSuccessDelegate.Broadcast(AuthResponse);

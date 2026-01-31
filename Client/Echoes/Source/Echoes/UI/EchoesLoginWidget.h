@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/EchoesWindowBase.h"
 #include "Core/Common/Networking/EchoesAuthSubsystem.h"
 #include "EchoesLoginWidget.generated.h"
 
 class UEditableTextBox;
 class UButton;
 class UTextBlock;
+class UCheckBox;
 
 /**
  * UEchoesLoginWidget
@@ -17,9 +18,10 @@ class UTextBlock;
  * Login UI widget for Echoes MMO
  * Provides email/username and password input fields
  * Integrates with UEchoesAuthSubsystem for authentication
+ * Inherits from UEchoesWindowBase for drag/focus support
  */
 UCLASS()
-class ECHOES_API UEchoesLoginWidget : public UUserWidget
+class ECHOES_API UEchoesLoginWidget : public UEchoesWindowBase
 {
 	GENERATED_BODY()
 
@@ -38,6 +40,10 @@ public:
 	/** Password input field */
 	UPROPERTY(meta = (BindWidget))
 	UEditableTextBox* PasswordInput;
+
+	/** Remember Me checkbox */
+	UPROPERTY(meta = (BindWidget))
+	UCheckBox* RememberMeCheckbox;
 
 	/** Login button */
 	UPROPERTY(meta = (BindWidget))
