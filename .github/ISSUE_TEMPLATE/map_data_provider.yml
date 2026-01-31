@@ -1,0 +1,236 @@
+name: Map Data Provider
+description: Create C++ subsystem to filter and provide map data from world registry
+title: "[Data] Map Data Provider"
+labels: ["feature", "[Data]", "[C++] Engine", "P1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Map Data Provider Implementation
+        
+        Create a C++ subsystem that filters data from the universal world registry specifically for map visualization. Returns only essential data: Name, Type, Location, ParentID.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      value: |
+        Implement `UEchoesMapDataProvider` subsystem that:
+        - Queries backend API for universe data
+        - Caches system and object information
+        - Filters data to return only map-relevant fields
+        - Provides efficient lookup methods (by ID, by name, by filter)
+        - Calculates jump routes between systems
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      value: |
+        - Backend API (`/api/universe/systems`, `/api/universe/system/{id}/objects`)
+        - Universe subsystem (existing world data)
+        - Navigation subsystem (route calculation)
+        - Map visualization actors (data consumers)
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      value: |
+        ## Week 1: Data Structures & Subsystem Foundation
+        - [ ] Define `FSystemMapData` struct
+          - SystemId (FGuid)
+          - SystemName (FText)
+          - Position (FVector) - Galactic coordinates
+          - SecurityStatus (float 0.0-1.0)
+          - RegionId (FGuid)
+          - ConnectedSystems (TArray<FGuid>)
+        - [ ] Define `FSystemObjectData` struct
+          - ObjectId (FGuid)
+          - ObjectName (FText)
+          - Type (enum: Star, Planet, Moon, Station, Stargate, Belt)
+          - Location (FVector) - System-local coordinates
+          - ParentId (FGuid) - Hierarchical relationship
+          - OrbitRadius (float)
+        - [ ] Create `UEchoesMapDataProvider` class (inherits UGameInstanceSubsystem)
+        - [ ] Add cached data storage (TArray, TMap)
+        
+        ## Week 2: API Integration
+        - [ ] Implement `RefreshSystemData()` 
+          - HTTP GET to `/api/universe/systems`
+          - Parse JSON response
+          - Populate CachedSystems array
+        - [ ] Implement `RefreshSystemObjectData(FGuid SystemId)`
+          - HTTP GET to `/api/universe/system/{id}/objects`
+          - Parse JSON response
+          - Store in CachedSystemObjects map
+        - [ ] Add error handling and retry logic
+        - [ ] Implement caching strategy (TTL, invalidation)
+        
+        ## Week 3: Query Methods
+        - [ ] Implement `GetAllSystems()` → TArray<FSystemMapData>
+        - [ ] Implement `GetFilteredSystems(float MinSec, float MaxSec)` → TArray<FSystemMapData>
+        - [ ] Implement `GetSystemObjects(FGuid SystemId)` → TArray<FSystemObjectData>
+          - Lazy load if not cached
+        - [ ] Implement `FindSystemByName(const FString& Name)` → FSystemMapData
+          - Case-insensitive search
+          - Partial name matching
+        - [ ] Implement `CalculateRoute(FGuid From, FGuid To)` → TArray<FGuid>
+          - Dijkstra's algorithm for shortest path
+          - Consider security status as weight
+        
+        ## Week 4: Optimization & Testing
+        - [ ] Add spatial indexing for faster lookups
+        - [ ] Implement pagination for large datasets
+        - [ ] Add Blueprint callable wrappers
+        - [ ] Unit tests for all public methods
+        - [ ] Performance testing (10,000+ systems)
+        - [ ] Memory profiling
+        - [ ] Documentation and code comments
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-approach
+    attributes:
+      label: Technical Approach
+      value: |
+        ### Data Filtering Strategy
+        
+        **From Backend (All Fields):**
+        ```cpp
+        struct FullSystemData {
+            FGuid Id;
+            FString Name;
+            FVector Position;
+            float SecurityStatus;
+            FGuid RegionId;
+            // ... 20+ other fields
+        };
+        ```
+        
+        **To Map (Essential Only):**
+        ```cpp
+        USTRUCT(BlueprintType)
+        struct FSystemMapData
+        {
+            GENERATED_BODY()
+            
+            UPROPERTY(BlueprintReadOnly)
+            FGuid SystemId;
+            
+            UPROPERTY(BlueprintReadOnly)
+            FText SystemName;
+            
+            UPROPERTY(BlueprintReadOnly)
+            FVector Position;
+            
+            UPROPERTY(BlueprintReadOnly)
+            float SecurityStatus;
+            
+            UPROPERTY(BlueprintReadOnly)
+            FGuid RegionId;
+            
+            UPROPERTY(BlueprintReadOnly)
+            TArray<FGuid> ConnectedSystems;
+        };
+        ```
+        
+        ### Caching Strategy
+        
+        - **Universe Data**: Cache on subsystem initialization
+        - **System Objects**: Lazy load on demand, cache for session
+        - **TTL**: 5 minutes for universe data, 15 minutes for system objects
+        - **Invalidation**: Manual refresh when player jumps systems
+        
+        ### Route Calculation
+        
+        ```cpp
+        TArray<FGuid> UEchoesMapDataProvider::CalculateRoute(FGuid FromSystemId, FGuid ToSystemId)
+        {
+            // Build graph from cached systems
+            TMap<FGuid, TArray<FGuid>> Graph;
+            for (const auto& System : CachedSystems)
+            {
+                Graph.Add(System.SystemId, System.ConnectedSystems);
+            }
+            
+            // Dijkstra's shortest path
+            return FindShortestPath(Graph, FromSystemId, ToSystemId);
+        }
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Subsystem successfully fetches all systems from backend
+        - [ ] Data structures contain only essential fields (Name, Type, Location, ParentID)
+        - [ ] System objects load on-demand without blocking
+        - [ ] Route calculation returns valid path between any two connected systems
+        - [ ] Filter methods correctly filter by security status
+        - [ ] Search finds systems by partial name match
+        - [ ] Performance: < 16ms for GetAllSystems() with 10,000 systems
+        - [ ] Memory: < 10MB for 10,000 cached systems
+        - [ ] All methods callable from Blueprint
+        - [ ] Unit tests pass with 100% coverage
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-requirements
+    attributes:
+      label: Backend API Requirements
+      value: |
+        ### Required Endpoints
+        
+        **1. Get All Systems**
+        ```
+        GET /api/universe/systems
+        Response: Array of system objects
+        Fields needed: id, name, position, security_status, region_id, connected_systems
+        ```
+        
+        **2. Get System Objects**
+        ```
+        GET /api/universe/system/{id}/objects
+        Response: Array of celestial objects in system
+        Fields needed: id, name, type, location, parent_id, orbit_radius
+        ```
+        
+        **3. Calculate Route (Optional - can be client-side)**
+        ```
+        GET /api/navigation/route?from={id}&to={id}
+        Response: Array of system IDs representing path
+        ```
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - "Milestone 2: Visual & Tactical HUD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "1 week"
+        - "2 weeks"
+        - "3 weeks"
+        - "4 weeks"
+      default: 3
+    validations:
+      required: true

@@ -1,0 +1,403 @@
+name: System Inspector
+description: Implement focus switching logic for transitioning from galaxy view to system view
+title: "[UI] System Inspector"
+labels: ["feature", "[UI/HUD]", "[C++] Engine", "P1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## System Inspector Implementation
+        
+        Implement the logic for switching focus between Universe Map (galactic cloud) and System Map (detailed system view). When a system is selected, hide the star cloud and spawn visual meshes for planets and stations within that specific system.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      value: |
+        Implement `AEchoesSystemInspector` actor that:
+        - Manages transition from Galaxy View to System View
+        - Hides galactic cloud when focusing on a system
+        - Spawns planets, moons, stations, and other celestial objects
+        - Applies logarithmic distance scaling for usable navigation
+        - Handles hierarchical object placement (Star → Planets → Moons → Stations)
+        - Allows return to Galaxy View
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-systems
+    attributes:
+      label: Related Systems
+      value: |
+        - Galactic Cloud Renderer (needs to be hidden/shown)
+        - Map Data Provider (source of system object data)
+        - Map Camera Actor (camera transitions and positioning)
+        - Map Widget (UI state management)
+        - Navigation Subsystem (warp destination selection)
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      value: |
+        ## Week 1: Actor Foundation & State Management
+        - [ ] Create `AEchoesSystemInspector` class (inherits AActor)
+        - [ ] Define `ESystemMapState` enum (Hidden, GalaxyView, SystemView, Transitioning)
+        - [ ] Add state management
+          ```cpp
+          ESystemMapState CurrentState;
+          FGuid CurrentSystemId;
+          bool bIsTransitioning;
+          ```
+        - [ ] Implement `FocusOnSystem(FGuid SystemId, float Duration)`
+          - Set state to Transitioning
+          - Store target system ID
+          - Trigger camera animation
+          - Hide galaxy cloud
+          - Spawn system objects
+        - [ ] Implement `ReturnToGalaxy(float Duration)`
+          - Reverse transition
+          - Show galaxy cloud
+          - Despawn system objects
+        
+        ## Week 2: Object Spawning & Hierarchical Placement
+        - [ ] Implement `SpawnSystemObjects(FGuid SystemId)`
+          - Get objects from MapDataProvider
+          - Sort by hierarchy (Star → Planets → Moons → Stations)
+          - Apply logarithmic distance scaling
+          - Spawn visual meshes using ISM
+        - [ ] Create object type-specific spawning:
+          - `SpawnStar()` - Central glowing sphere
+          - `SpawnPlanets()` - Orbiting spheres with textures
+          - `SpawnMoons()` - Sub-orbits around planets
+          - `SpawnStations()` - Models at orbital positions
+          - `SpawnStargates()` - At system edges
+          - `SpawnAsteroidBelts()` - Orbital rings
+        - [ ] Implement logarithmic scaling
+          ```cpp
+          FVector CalculateScaledPosition(FVector RealPos, float ScaleFactor)
+          {
+              float Distance = RealPos.Size();
+              float ScaledDist = FMath::LogX(10.0f, 1.0f + Distance / 1000.0f) * ScaleFactor;
+              return RealPos.GetSafeNormal() * ScaledDist * 1000.0f;
+          }
+          ```
+        
+        ## Week 3: Visual Elements & Interaction
+        - [ ] Add orbital path visualization
+          - Draw circles for planet orbits
+          - Use spline meshes or line rendering
+          - Subtle color coding by orbit level
+        - [ ] Implement object selection
+          - Click detection on celestial objects
+          - Show info panel for selected object
+          - Highlight selected object
+        - [ ] Add labels for objects
+          - Billboard widgets with object names
+          - Distance indicators
+          - Service icons for stations
+        - [ ] Implement double-click warp destination
+          - Detect double-click on station/stargate
+          - Set as navigation destination
+          - Close map and initiate warp
+        
+        ## Week 4: Transitions & Polish
+        - [ ] Implement smooth camera transitions
+          - Ease-in-out animation from galaxy to system
+          - Zoom effect with position interpolation
+          - Rotation to face system
+        - [ ] Add fade effects
+          - Galaxy fades out during transition (0.5s)
+          - System fades in after spawn (0.5s)
+          - Smooth opacity transitions
+        - [ ] Implement background switching
+          - Coordinate with MapCameraActor
+          - Switch Scene Capture focus
+          - Update render target
+        - [ ] Performance optimization
+          - Instance pooling for reused meshes
+          - LOD for distant objects
+          - Culling based on camera frustum
+        - [ ] Polish and visual effects
+          - Particle systems for stars
+          - Glow effects on stations
+          - Atmospheric effects on planets
+        - [ ] Testing and bug fixes
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-approach
+    attributes:
+      label: Technical Approach
+      value: |
+        ### State Machine
+        
+        ```cpp
+        UENUM(BlueprintType)
+        enum class ESystemMapState : uint8
+        {
+            Hidden,         // Map not visible
+            GalaxyView,     // Showing galactic cloud
+            SystemView,     // Showing system details
+            Transitioning   // Animating between views
+        };
+        
+        UCLASS()
+        class AEchoesSystemInspector : public AActor
+        {
+            GENERATED_BODY()
+            
+        public:
+            // Focus on specific system
+            UFUNCTION(BlueprintCallable)
+            void FocusOnSystem(FGuid SystemId, float TransitionDuration = 1.0f);
+            
+            // Return to galaxy view
+            UFUNCTION(BlueprintCallable)
+            void ReturnToGalaxy(float TransitionDuration = 1.0f);
+            
+            // Current state
+            UPROPERTY(BlueprintReadOnly)
+            ESystemMapState CurrentState;
+            
+            // Events
+            DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSystemFocused, FGuid, SystemId);
+            UPROPERTY(BlueprintAssignable)
+            FOnSystemFocused OnSystemFocused;
+            
+            DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReturnedToGalaxy);
+            UPROPERTY(BlueprintAssignable)
+            FOnReturnedToGalaxy OnReturnedToGalaxy;
+            
+        private:
+            // Spawned objects
+            UPROPERTY()
+            TArray<UInstancedStaticMeshComponent*> SpawnedObjectISMs;
+            
+            UPROPERTY()
+            TArray<UWidgetComponent*> SpawnedLabels;
+            
+            // Animation
+            void TickTransition(float DeltaTime);
+            float TransitionProgress;
+            float TransitionDuration;
+            
+            // Object management
+            void SpawnSystemObjects(FGuid SystemId);
+            void DespawnSystemObjects();
+            FVector CalculateScaledPosition(FVector RealPosition, float ScaleFactor);
+        };
+        ```
+        
+        ### Logarithmic Distance Scaling
+        
+        **Problem:**
+        Real astronomical distances make navigation impractical in a game map.
+        - 1 AU = 150 million km
+        - Planets can be 30+ AU from the sun
+        - Distances of billions of km are unworkable
+        
+        **Solution:**
+        Logarithmic scaling compresses large distances while preserving relative positions.
+        
+        ```cpp
+        FVector AEchoesSystemInspector::CalculateScaledPosition(FVector RealPosition, float ScaleFactor)
+        {
+            float RealDistance = RealPosition.Size();
+            
+            // Don't scale very close objects (< 1000 km)
+            if (RealDistance < 1000.0f)
+            {
+                return RealPosition;
+            }
+            
+            // Logarithmic scaling: log₁₀(1 + distance/1000)
+            float ScaledDistance = FMath::LogX(10.0f, 1.0f + RealDistance / 1000.0f) * ScaleFactor;
+            
+            // Maintain direction, apply scaled distance
+            return RealPosition.GetSafeNormal() * ScaledDistance * 1000.0f;
+        }
+        ```
+        
+        **Example Scaling (ScaleFactor = 1000):**
+        ```
+        Real Distance           Scaled Distance
+        ─────────────────────────────────────────
+        1 AU (150M km)      →  4,176 km (viewable)
+        5 AU (750M km)      →  5,869 km (viewable)
+        20 AU (3B km)       →  7,324 km (viewable)
+        100 AU (15B km)     →  8,000 km (viewable)
+        ```
+        
+        ### Hierarchical Object Placement
+        
+        ```cpp
+        void AEchoesSystemInspector::SpawnSystemObjects(FGuid SystemId)
+        {
+            // Get data
+            auto MapData = GetGameInstance()->GetSubsystem<UEchoesMapDataProvider>();
+            TArray<FSystemObjectData> Objects = MapData->GetSystemObjects(SystemId);
+            
+            // Sort by hierarchy
+            Objects.Sort([](const FSystemObjectData& A, const FSystemObjectData& B) {
+                // Star (0) < Planet (1) < Moon (2) < Station (3)
+                return (int32)A.Type < (int32)B.Type;
+            });
+            
+            // Spawn in order
+            for (const auto& Object : Objects)
+            {
+                switch (Object.Type)
+                {
+                    case ESystemObjectType::Star:
+                        SpawnStar(Object);
+                        break;
+                    case ESystemObjectType::Planet:
+                        SpawnPlanet(Object);
+                        break;
+                    case ESystemObjectType::Moon:
+                        SpawnMoon(Object);
+                        break;
+                    case ESystemObjectType::Station:
+                        SpawnStation(Object);
+                        break;
+                    case ESystemObjectType::Stargate:
+                        SpawnStargate(Object);
+                        break;
+                    case ESystemObjectType::AsteroidBelt:
+                        SpawnAsteroidBelt(Object);
+                        break;
+                }
+            }
+        }
+        ```
+        
+        ### Transition Animation
+        
+        ```cpp
+        void AEchoesSystemInspector::FocusOnSystem(FGuid SystemId, float Duration)
+        {
+            if (CurrentState == ESystemMapState::SystemView)
+            {
+                // Already in system view, switch systems
+                DespawnSystemObjects();
+            }
+            
+            CurrentState = ESystemMapState::Transitioning;
+            TransitionDuration = Duration;
+            TransitionProgress = 0.0f;
+            
+            // Start camera animation (coordinated with MapCameraActor)
+            auto MapCamera = GetMapCameraActor();
+            MapCamera->TransitionToSystemView(SystemId, Duration);
+            
+            // Fade out galaxy (async)
+            auto CloudRenderer = GetGalacticCloudRenderer();
+            CloudRenderer->FadeOut(Duration * 0.5f);
+            
+            // Spawn system after delay
+            FTimerHandle SpawnTimer;
+            GetWorld()->GetTimerManager().SetTimer(SpawnTimer, [this, SystemId]() {
+                SpawnSystemObjects(SystemId);
+                CurrentState = ESystemMapState::SystemView;
+                OnSystemFocused.Broadcast(SystemId);
+            }, Duration * 0.6f, false);
+        }
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Clicking system in Galaxy View initiates transition
+        - [ ] Galaxy cloud fades out smoothly during transition
+        - [ ] System objects spawn with correct hierarchical positions
+        - [ ] Logarithmic scaling makes planets viewable at reasonable distances
+        - [ ] Star is at center, planets in orbits, moons around planets
+        - [ ] Stations visible at correct orbital positions
+        - [ ] Orbital paths visualized as circles/ellipses
+        - [ ] Clicking object selects it and shows info
+        - [ ] Double-clicking station sets warp destination
+        - [ ] Return to Galaxy View reverses all changes
+        - [ ] Transition animations are smooth (60 FPS)
+        - [ ] No performance degradation with 50+ objects in system
+        - [ ] Works correctly in multiplayer (UI-only, no replication)
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual-effects
+    attributes:
+      label: Visual Effects & Polish
+      value: |
+        ### Transition Effects
+        
+        **Galaxy → System:**
+        1. Camera zooms toward selected system (1.0s ease-in-out)
+        2. Galaxy cloud fades to 0% opacity (0.5s)
+        3. System objects spawn (instant, at 0.2s into transition)
+        4. System objects fade from 0% to 100% (0.5s)
+        5. Camera settles on system center
+        
+        **System → Galaxy:**
+        1. System objects fade out (0.3s)
+        2. Camera zooms out to galaxy view (1.0s)
+        3. Galaxy cloud fades in (0.5s)
+        4. System objects despawn after fade complete
+        
+        ### Object Visual Design
+        
+        **Star:**
+        - Large glowing sphere at origin
+        - Emissive material (brightness 10.0)
+        - Particle corona effect
+        
+        **Planets:**
+        - Textured spheres at scaled orbital distances
+        - Subtle atmosphere glow
+        - Rotation animation
+        
+        **Moons:**
+        - Smaller spheres orbiting planets
+        - Same style as planets
+        
+        **Stations:**
+        - Detailed 3D models
+        - Service indicator icons
+        - Docking range sphere (transparent)
+        
+        **Orbital Paths:**
+        - Thin circular lines
+        - Subtle glow
+        - Color-coded by orbit level (innermost brighter)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - "Milestone 2: Visual & Tactical HUD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-duration
+    attributes:
+      label: Estimated Duration
+      options:
+        - "1 week"
+        - "2 weeks"
+        - "3 weeks"
+        - "4 weeks"
+      default: 3
+    validations:
+      required: true
