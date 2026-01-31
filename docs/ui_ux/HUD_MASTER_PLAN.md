@@ -205,7 +205,7 @@ Real astronomical distances compressed for usability:
 **Problem to Solve:**
 - Opening map shouldn't move player's ship
 - No physics interaction with map objects
-- No level loading or network sync
+- No level loading or network synchronization
 - Instant access, no performance hit
 
 **Solution: Hidden Miniature Universe**

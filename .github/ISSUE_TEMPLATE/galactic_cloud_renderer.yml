@@ -300,6 +300,6 @@ body:
         - "2 weeks"
         - "3 weeks"
         - "4 weeks"
-      default: 3
+      default: 3  # Index 3 = "4 weeks" (zero-based)
     validations:
       required: true

@@ -291,7 +291,7 @@ struct FSystemObjectData
 
 ```cpp
 UCLASS()
-class UEchoesMapDataProvider : public UGameInstanceSubsystem
+class ECHOES_API UEchoesMapDataProvider : public UGameInstanceSubsystem
 {
     GENERATED_BODY()
     
@@ -634,27 +634,33 @@ FVector EaseInOutCubic(FVector Start, FVector End, float t)
 
 ### Planned Features
 
-1. **3D Holographic Mode**
+**Priority Legend:** P0 (Critical), P1 (High), P2 (Medium), P3 (Low)
+
+1. **3D Holographic Mode** (P2 - Milestone 5)
    - Full 3D navigation in VR-style
    - Hand gestures for manipulation
    - Immersive "bridge" experience
+   - Timeline: 8-10 weeks post-Milestone 4
 
-2. **Real-Time Updates**
+2. **Real-Time Updates** (P1 - Milestone 3)
    - Live player positions (fleet members)
    - Dynamic system security changes
    - Active war zones highlighted
+   - Timeline: Integrated with combat system
 
-3. **Strategic Overlays**
+3. **Strategic Overlays** (P2 - Milestone 6)
    - Sovereignty map (territory control)
    - Resource distribution
    - NPC faction influence
    - Trade route efficiency
+   - Timeline: Post-corporation system
 
-4. **Customization**
+4. **Customization** (P3 - Post-Launch)
    - User-defined color schemes
    - Filter presets
    - Custom info panels
    - Hotkey configuration
+   - Timeline: Based on user feedback
 
 ---
 
