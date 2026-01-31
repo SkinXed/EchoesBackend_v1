@@ -16,6 +16,208 @@
 
 ---
 
+## Именование вселенной: Регионы, Системы, Станции, Фракции
+
+### Текущая ситуация
+
+В проекте используются сущности вселенной, которые содержат явные или неявные отсылки к EVE Online:
+
+#### Фракции (Factions)
+Текущие названия в `Models/Config/UniverseConfig.cs`:
+- **Caldari State** → Нужна альтернатива
+- **Gallente Federation** → Нужна альтернатива
+- **Amarr Empire** → Нужна альтернатива
+- **Minmatar Republic** → Нужна альтернатива
+- **Pirate Factions** → Можно оставить или изменить на "Outlaws"
+
+#### Регионы (Regions)
+Текущие домашние регионы фракций:
+- **The Forge** (Caldari) → Нужна альтернатива
+- **Essence** (Gallente) → Нужна альтернатива
+- **Domain** (Amarr) → Нужна альтернатива
+- **Heimatar** (Minmatar) → Нужна альтернатива
+
+#### Системы (Solar Systems)
+В `NamingConfig.SystemNameWords` используются названия из EVE:
+- Jita, Amarr, Dodixie, Rens, Hek, Niarja, Uedama и другие
+
+#### Станции (Stations)
+В `NamingConfig.StationNameWords` присутствуют EVE-термины:
+- Jita, Amarr, Dodixie, Tash-Murkon, Caldari, Gallente, Minmatar, Concord
+
+---
+
+### Таблица соответствия для вселенной
+
+| Категория | Текущее название (EVE) | Альтернатива для Echoes | Обоснование |
+|-----------|------------------------|------------------------|-------------|
+| **Фракция 1** | Caldari State | **Azure Coalition** / **Stellar Consortium** / **Titanforge Alliance** | Корпоративная милитаристическая фракция. |
+| **Фракция 2** | Gallente Federation | **Nebula Union** / **Liberty Alliance** / **Free Worlds League** | Демократическая и инновационная фракция. |
+| **Фракция 3** | Amarr Empire | **Radiant Dominion** / **Golden Throne** / **Eternal Empire** | Религиозная традиционалистская фракция. |
+| **Фракция 4** | Minmatar Republic | **Nomad Clans** / **Free Tribes** / **Pathfinder Republic** | Кочевая и стойкая фракция. |
+| **Фракция 5** | Pirate Factions | **Outlaws** / **Renegades** / **Raider Cartels** | Различные преступные группировки. |
+| **Регион 1** | The Forge | **Industrial Core** / **Titanforge Expanse** / **Manufacturing Hub** | Промышленный центр. |
+| **Регион 2** | Essence | **Liberty Sector** / **Democratic Zone** / **Free Space** | Центр демократии. |
+| **Регион 3** | Domain | **Sacred Realm** / **Throne Worlds** / **Sanctum Space** | Религиозный центр. |
+| **Регион 4** | Heimatar | **Wanderer's Path** / **Tribal Reaches** / **Nomad Territory** | Кочевые земли. |
+| **Системы** | Jita, Amarr, Dodixie и т.д. | Генерируемые уникальные названия из `NamingConfig` | Использовать только оригинальные слова: Acheron, Borealis, Draco, Nova и т.д. |
+| **Станции** | Jita 4-4, Amarr Trade Hub | System-based: "Alpha Station", "Trade Hub Prime" | Привязка к системе, а не к EVE-локациям. |
+
+---
+
+### Стратегия миграции для вселенной
+
+#### Этап 1: Подготовка данных
+
+**Файлы для изменения**:
+```
+Models/Config/UniverseConfig.cs
+  └── FactionsConfig.Factions (список фракций)
+  └── FactionConfig (название, описание, домашний регион)
+  └── NamingConfig.SystemNameWords (убрать EVE-названия)
+  └── NamingConfig.StationNameWords (убрать EVE-названия)
+```
+
+**Действия**:
+1. Создать mapping-файл для перевода старых названий в новые
+2. Обновить конфигурацию фракций в `appsettings.json`
+3. Подготовить миграцию БД для обновления существующих данных
+
+#### Этап 2: Обновление конфигурации
+
+**Пример изменений в `UniverseConfig.cs`**:
+
+```csharp
+// БЫЛО:
+new FactionConfig
+{
+    Id = 1,
+    Name = "Caldari State",
+    Description = "Corporation-driven militaristic faction",
+    HomeRegionName = "The Forge",
+}
+
+// СТАЛО:
+new FactionConfig
+{
+    Id = 1,
+    Name = "Azure Coalition",
+    Description = "Corporation-driven militaristic faction with advanced technology",
+    HomeRegionName = "Industrial Core",
+}
+```
+
+#### Этап 3: Миграция существующих данных
+
+**SQL скрипт для обновления**:
+```sql
+-- Обновление названий фракций в регионах
+UPDATE "Regions" 
+SET "Description" = REPLACE("Description", 'Caldari State', 'Azure Coalition')
+WHERE "FactionId" = 1;
+
+-- Обновление названий в системах
+UPDATE "SolarSystems"
+SET "Description" = REPLACE("Description", 'The Forge', 'Industrial Core')
+WHERE "FactionId" = 1;
+
+-- Обновление станций
+UPDATE "Stations"
+SET "Name" = REPLACE("Name", 'Caldari', 'Azure')
+WHERE "FactionId" = 1;
+```
+
+#### Этап 4: Обновление генератора имен
+
+**Изменения в `NamingConfig`**:
+
+```csharp
+// УДАЛИТЬ эти слова из SystemNameWords:
+// "Jita", "Amarr", "Dodixie", "Rens", "Hek"
+
+// ДОБАВИТЬ больше нейтральных слов:
+public List<string> SystemNameWords { get; set; } = new()
+{
+    "Acheron", "Borealis", "Caelum", "Draco", "Eridanus", "Fornax",
+    "Nova", "Pulsar", "Quasar", "Stellar", "Cosmic", "Nebula",
+    "Horizon", "Zenith", "Apex", "Vertex", "Radiant", "Eclipse",
+    "Aurora", "Solstice", "Equinox", "Meridian", "Parallax"
+};
+
+// ОБНОВИТЬ StationNameWords:
+public List<string> StationNameWords { get; set; } = new()
+{
+    "Trade", "Hub", "Central", "Orbital", "Prime", "Alpha", "Beta",
+    "Nexus", "Gateway", "Exchange", "Commerce", "Industrial", "Tech",
+    "Science", "Research", "Military", "Defense", "Outpost"
+};
+```
+
+---
+
+### Где находятся данные вселенной
+
+#### База данных (PostgreSQL)
+```
+Tables:
+  - Regions (FactionId, Name, Description)
+  - Constellations (FactionId, Name)
+  - SolarSystems (FactionId, Name, Description)
+  - Stations (FactionId, Name)
+```
+
+#### Backend (C#)
+```
+Models/Config/UniverseConfig.cs
+  └── FactionsConfig
+  └── NamingConfig
+  
+Services/UniverseGeneration/UniverseGenerator.cs
+  └── GenerateRegionName()
+  └── GenerateSystemName()
+  └── GenerateStationName()
+```
+
+#### Seed Data
+```
+Data/SeedData/RaceConfigSeedData.cs
+  └── Starting locations and faction references
+```
+
+---
+
+### Контрольный список миграции
+
+**Конфигурация**:
+- [ ] Обновить `FactionsConfig.Factions` в `UniverseConfig.cs`
+- [ ] Очистить `NamingConfig.SystemNameWords` от EVE-названий
+- [ ] Очистить `NamingConfig.StationNameWords` от EVE-названий
+- [ ] Добавить новые уникальные слова для генерации
+
+**База данных**:
+- [ ] Создать миграцию для обновления существующих названий
+- [ ] Обновить `Description` полей в регионах и системах
+- [ ] Обновить имена станций
+- [ ] Создать бэкап перед миграцией
+
+**Код генерации**:
+- [ ] Обновить методы генерации имен в `UniverseGenerator.cs`
+- [ ] Удалить хардкод EVE-названий
+- [ ] Добавить комментарии о новой именной схеме
+
+**Тестирование**:
+- [ ] Сгенерировать тестовую вселенную с новыми названиями
+- [ ] Проверить уникальность новых имен
+- [ ] Убедиться, что API возвращает новые названия
+- [ ] Обновить документацию API
+
+**Документация**:
+- [ ] Обновить README с новыми названиями фракций
+- [ ] Обновить схему базы данных
+- [ ] Создать mapping-документ для разработчиков
+
+---
+
 ## План «Великого Рефакторинга» в Бэкенде
 
 Чтобы не сломать базу данных и логику, делай это в три этапа:
