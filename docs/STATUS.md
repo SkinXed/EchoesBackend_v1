@@ -23,8 +23,9 @@
 | **Ship Physics** | ⚠️ **Testing** | 70% | Critical | PD-Torque implemented, fine-tuning needed |
 | **HUD Framework** | ❌ **Planned** | 5% | High | Design complete, implementation queued |
 | **Fitting System** | ⚠️ **In Progress** | 15% | High | Mass calculation done, module effects pending |
-| **Combat System** | ❌ **Not Started** | 0% | Medium | Waiting for HUD and targeting |
-| **Market System** | ❌ **Not Started** | 0% | Low | Milestone 4 |
+| **Warp Mechanics** | ⚠️ **Drafted** | 0% | High | Design complete, implementation pending |
+| **Combat System** | ⚠️ **Drafted** | 0% | High | Design complete, targeting system pending |
+| **Market System** | ⚠️ **Drafted** | 0% | High | Order book design complete, Milestone 4 |
 | **Mining System** | ❌ **Not Started** | 0% | Low | Milestone 4 |
 
 ---
@@ -319,6 +320,86 @@ ShipFittingService.CalculateShipStats()
 **Timeline:**
 - **Target Start:** Post-Milestone 3 (20+ weeks)
 - **Estimated Completion:** Milestone 4
+
+---
+
+## 📋 System Backlog (High Priority)
+
+### 10. Warp Mechanics System ⚠️ **Drafted**
+
+**Status:** Design complete, awaiting implementation  
+**Priority:** High  
+**Milestone:** 3 - Fitting & Ship Attributes
+
+**Description:**
+Four-state warp system (Idle → Aligning → Warping → Exiting) for faster-than-light travel. Ships must align to destination and reach 75% velocity before entering warp.
+
+**Key Features:**
+- ❌ Alignment mechanics (rotation + acceleration)
+- ❌ Warp speed calculation by ship class
+- ❌ Entry/exit state transitions
+- ❌ Distance-based warp timing
+- ❌ Visual effects (tunnel vision, warp streaks)
+- ❌ Backend logging and validation
+
+**Documentation:** `/docs/systems/gameplay/WARP_MECHANICS.md`
+
+**Implementation Estimate:** 4-6 weeks  
+**Dependencies:** Ship Physics, Navigation System
+
+---
+
+### 11. Combat & Targeting System ⚠️ **Drafted**
+
+**Status:** Design complete, awaiting implementation  
+**Priority:** High  
+**Milestone:** 3 - Fitting & Ship Attributes
+
+**Description:**
+EVE-style target locking where lock time is determined by target's Signature Radius vs attacker's Scan Resolution. Larger ships lock slower but can lock multiple targets.
+
+**Key Features:**
+- ❌ Target locking state machine
+- ❌ Lock time calculation (Signature vs Scan Resolution)
+- ❌ Multiple target management (3-7 based on ship)
+- ❌ Range mechanics (optimal, falloff)
+- ❌ Damage application formulas
+- ❌ Module bonuses (Target Painters, Sensor Boosters)
+
+**Documentation:** `/docs/systems/gameplay/COMBAT_SYSTEM.md`
+
+**Implementation Estimate:** 6-8 weeks  
+**Dependencies:** HUD Framework, Targeting UI, Ship Physics
+
+---
+
+### 12. Market System ⚠️ **Drafted**
+
+**Status:** Design complete, awaiting implementation  
+**Priority:** High  
+**Milestone:** 4 - Industrial Loop
+
+**Description:**
+Player-driven economy using order book model. Buy and sell orders matched automatically. Tight integration with InventorySubsystem for item transfers.
+
+**Key Features:**
+- ❌ Order book (buy/sell orders)
+- ❌ Order matching engine
+- ❌ Market escrow system
+- ❌ Broker fees and sales tax
+- ❌ Price history tracking
+- ❌ InventorySubsystem integration
+- ❌ Regional markets
+
+**Database Tables:**
+- ❌ MarketOrders
+- ❌ MarketTransactions
+- ❌ MarketPriceHistory
+
+**Documentation:** `/docs/systems/economy/MARKET_ARCHITECTURAL_DRAFT.md`
+
+**Implementation Estimate:** 8-12 weeks  
+**Dependencies:** Inventory System, Economy Backend
 
 ---
 
