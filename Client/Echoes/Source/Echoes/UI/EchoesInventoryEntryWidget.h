@@ -36,6 +36,11 @@ public:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	// End of IUserObjectListEntry interface
 
+	// UUserWidget interface
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	// End of UUserWidget interface
+
 	/**
 	 * Set the item data to display
 	 * Called automatically by ListView when item is set
@@ -58,6 +63,21 @@ protected:
 	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
 	void OnEntryDeselected();
+
+	/**
+	 * Blueprint event called when drag is about to start
+	 * Override in Blueprint to customize drag behavior
+	 * @return True to allow drag, false to cancel
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	bool OnDragStarting(UEchoesInventoryItemObject* ItemObject, bool bIsShiftHeld);
+
+	/**
+	 * Blueprint event called when drag is cancelled
+	 * Override in Blueprint for custom behavior
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	void OnDragCancelled();
 
 	/**
 	 * Update the visual display with item data
@@ -110,4 +130,10 @@ private:
 	 */
 	UFUNCTION()
 	void HandleIconLoaded(UTexture2D* LoadedIcon);
+
+	/**
+	 * Create visual widget for drag operation
+	 * @return Widget to display during drag
+	 */
+	UUserWidget* CreateDragVisual();
 };
