@@ -146,10 +146,12 @@ void UEchoesInventoryComponent::ServerOnly_MoveItem(
 	}
 
 	// Create request payload
+	// targetFlag indicates where in the target container to place the item
+	// 0 = Cargo (general storage), see InventoryFlag enum in backend
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
 	JsonObject->SetStringField(TEXT("assetId"), AssetId.ToString());
 	JsonObject->SetStringField(TEXT("targetLocationId"), TargetInventory->StorageId.ToString());
-	JsonObject->SetNumberField(TEXT("targetFlag"), 0); // Default to Cargo flag
+	JsonObject->SetNumberField(TEXT("targetFlag"), 0); // InventoryFlag::Cargo
 	
 	if (Quantity > 0)
 	{
@@ -356,8 +358,19 @@ FString UEchoesInventoryComponent::GetAuthToken() const
 
 FString UEchoesInventoryComponent::GetApiBaseUrl() const
 {
-	// Default to localhost for development
-	// This should be configurable via game settings
+	// Try to read from config file first
+	FString ConfigUrl;
+	if (GConfig)
+	{
+		GConfig->GetString(TEXT("/Script/Echoes.EchoesGameSettings"), TEXT("ApiBaseUrl"), ConfigUrl, GGameIni);
+	}
+	
+	// Return config URL if valid, otherwise use localhost for development
+	if (!ConfigUrl.IsEmpty())
+	{
+		return ConfigUrl;
+	}
+	
 	return TEXT("http://localhost:5116");
 }
 

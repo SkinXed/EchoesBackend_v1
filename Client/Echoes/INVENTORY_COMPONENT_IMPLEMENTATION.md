@@ -150,9 +150,23 @@ float MaxTransferDistance = 250000.0f; // In Unreal units (cm)
 
 ### API Configuration
 
-The component uses GetApiBaseUrl() which returns:
-- Default: http://localhost:5116
-- Should be configured via game settings or config file
+The component uses GetApiBaseUrl() which:
+1. First checks GConfig for ApiBaseUrl setting in [/Script/Echoes.EchoesGameSettings]
+2. Falls back to http://localhost:5116 for development
+
+To configure the API URL, add to your DefaultGame.ini:
+
+```ini
+[/Script/Echoes.EchoesGameSettings]
+ApiBaseUrl=https://api.echoes-game.com
+```
+
+Or for local development:
+
+```ini
+[/Script/Echoes.EchoesGameSettings]
+ApiBaseUrl=http://localhost:5116
+```
 
 ## Persistence
 
