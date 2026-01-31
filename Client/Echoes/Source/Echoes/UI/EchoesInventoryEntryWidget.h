@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
+#include "UI/EchoesContextMenuWidget.h"
 #include "EchoesInventoryEntryWidget.generated.h"
 
 class UTextBlock;
@@ -36,6 +37,11 @@ public:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	// End of IUserObjectListEntry interface
 
+	// UUserWidget interface
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	// End of UUserWidget interface
+
 	/**
 	 * Set the item data to display
 	 * Called automatically by ListView when item is set
@@ -58,6 +64,39 @@ protected:
 	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
 	void OnEntryDeselected();
+
+	/**
+	 * Blueprint event called when drag is about to start
+	 * Override in Blueprint to customize drag behavior
+	 * @return True to allow drag, false to cancel
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	bool OnDragStarting(UEchoesInventoryItemObject* ItemObject, bool bIsShiftHeld);
+
+	/**
+	 * Blueprint event called when drag is cancelled
+	 * Override in Blueprint for custom behavior
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	void OnDragCancelled();
+
+	/**
+	 * Blueprint event called when context menu is requested
+	 * Override in Blueprint to customize available actions
+	 * @param ItemObject - Item for which context menu is requested
+	 * @param OutActions - Array of actions to display in menu
+	 */
+	UFUNCTION(BlueprintNativeEvent, Category = "Echoes|Inventory|UI")
+	void OnContextMenuRequested(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions);
+
+	/**
+	 * Blueprint event called when context menu action is executed
+	 * Override in Blueprint to handle custom actions
+	 * @param ItemObject - Item the action was performed on
+	 * @param ActionId - ID of the action executed
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	void OnContextMenuActionExecuted(UEchoesInventoryItemObject* ItemObject, const FString& ActionId);
 
 	/**
 	 * Update the visual display with item data
@@ -95,6 +134,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
 	UTexture2D* PlaceholderIcon;
 
+	/** Context menu widget class */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
+	TSubclassOf<class UEchoesContextMenuWidget> ContextMenuClass;
+
+	/** Quantity selector widget class */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
+	TSubclassOf<class UEchoesQuantitySelectorWidget> QuantitySelectorClass;
+
 private:
 	/** Current item object being displayed */
 	UPROPERTY()
@@ -110,4 +157,70 @@ private:
 	 */
 	UFUNCTION()
 	void HandleIconLoaded(UTexture2D* LoadedIcon);
+
+	/**
+	 * Create visual widget for drag operation
+	 * @return Widget to display during drag
+	 */
+	UUserWidget* CreateDragVisual();
+
+	/**
+	 * Create drag operation with specified quantity
+	 * Helper method to avoid code duplication
+	 */
+	void CreateDragOperationWithQuantity(
+		const FGeometry& InGeometry,
+		const FPointerEvent& InMouseEvent,
+		UDragDropOperation*& OutOperation,
+		int64 Quantity);
+
+	/**
+	 * Show context menu for current item
+	 */
+	void ShowContextMenu();
+
+	/**
+	 * Get default actions for item based on type
+	 * @param ItemObject - Item to get actions for
+	 * @return Array of available actions
+	 */
+	TArray<FContextMenuAction> GetDefaultActionsForItem(UEchoesInventoryItemObject* ItemObject);
+
+	/**
+	 * Handle context menu action selected
+	 * @param ActionId - ID of selected action
+	 */
+	UFUNCTION()
+	void HandleContextMenuAction(const FString& ActionId);
+
+	/**
+	 * Handle quantity selected for drag operation
+	 * @param SelectedQuantity - Quantity selected by user
+	 */
+	UFUNCTION()
+	void OnDragQuantitySelected(int64 SelectedQuantity);
+
+	/**
+	 * Handle quantity selection cancelled for drag operation
+	 */
+	UFUNCTION()
+	void OnDragQuantityCancelled();
+
+	/**
+	 * Handle quantity selected for jettison operation
+	 * @param SelectedQuantity - Quantity selected by user
+	 */
+	UFUNCTION()
+	void OnJettisonQuantitySelected(int64 SelectedQuantity);
+
+	/**
+	 * Handle quantity selection cancelled for jettison operation
+	 */
+	UFUNCTION()
+	void OnJettisonQuantityCancelled();
+
+	/** Stored data for pending drag operation */
+	FPointerEvent PendingDragEvent;
+	FGeometry PendingDragGeometry;
+	bool bWaitingForDragQuantity;
 };

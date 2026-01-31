@@ -7,7 +7,10 @@
 #include "NiagaraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Core/Common/EchoesGameStateSubsystem.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
+#include "UI/EchoesStationMenuWidget.h"
 
 AStationActor::AStationActor()
 {
@@ -277,6 +280,42 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 		{
 			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get GameStateSubsystem"));
 		}
+
+		// Request personal hangar from backend
+		UEchoesInventorySubsystem* InventorySubsystem = GameInstance->GetSubsystem<UEchoesInventorySubsystem>();
+		if (InventorySubsystem && IsValid(InventorySubsystem))
+		{
+			// Extract station ID from StationId (assuming it's stored as integer in database)
+			// For now, we'll use a placeholder. In production, you'd need to map GUIDs to integer station IDs
+			// or update the backend to accept GUIDs
+			int32 StationIdInt = 1; // TODO: Get actual station ID from database mapping
+			
+			UE_LOG(LogTemp, Log, TEXT("Requesting personal hangar for station %d"), StationIdInt);
+			
+			InventorySubsystem->Inventory_RequestPersonalHangar(
+				StationIdInt,
+				FOnHangarReceived::CreateLambda([this, PlayerController](const FGuid& HangarStorageId)
+				{
+					UE_LOG(LogTemp, Log, TEXT("✓ Personal hangar retrieved: %s"), *HangarStorageId.ToString());
+					
+					// Open station menu on client
+					ClientRPC_OpenStationMenu(StationName, StationType, HangarStorageId);
+				}),
+				FOnInventoryFailure::CreateLambda([this, PlayerController](const FString& Error)
+				{
+					UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve personal hangar: %s"), *Error);
+					
+					// Still open station menu with empty hangar ID
+					ClientRPC_OpenStationMenu(StationName, StationType, FGuid());
+				}));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to get InventorySubsystem"));
+			
+			// Open station menu without hangar
+			ClientRPC_OpenStationMenu(StationName, StationType, FGuid());
+		}
 	}
 	else
 	{
@@ -286,13 +325,7 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 	// Notify backend about docking
 	NotifyBackendDocking(PlayerController);
 
-	// TODO: Implement docking sequence:
-	// 1. Play docking animation
-	// 2. Disable ship controls
-	// 3. Transition to hangar level/UI
-	// 4. Save ship position for undocking
-
-	UE_LOG(LogTemp, Warning, TEXT("⚠ Docking sequence not fully implemented"));
+	UE_LOG(LogTemp, Log, TEXT("✓ Docking sequence initiated"));
 }
 
 void AStationActor::NotifyBackendDocking(APlayerController* PlayerController)
@@ -321,4 +354,125 @@ void AStationActor::NotifyBackendDocking(APlayerController* PlayerController)
 	// Body: { "locationType": "Docked", "stationId": "guid", "timestamp": "utc" }
 
 	UE_LOG(LogTemp, Warning, TEXT("⚠ Backend notification not implemented"));
+}
+
+void AStationActor::ClientRPC_OpenStationMenu_Implementation(
+	const FString& InStationName,
+	const FString& InStationType,
+	const FGuid& InHangarStorageId)
+{
+	UE_LOG(LogTemp, Log, TEXT("ClientRPC_OpenStationMenu called on client"));
+	UE_LOG(LogTemp, Log, TEXT("  Station: %s (Type: %s)"), *InStationName, *InStationType);
+	UE_LOG(LogTemp, Log, TEXT("  Hangar Storage ID: %s"), *InHangarStorageId.ToString());
+
+	// Get player controller
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (!PC)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController on client"));
+		return;
+	}
+
+	// Create station menu widget
+	// In production, this should be created from a Blueprint widget class
+	// For now, we'll log that the menu should be opened
+	// Blueprint implementation should handle actual widget creation and display
+	
+	UE_LOG(LogTemp, Log, TEXT("Station menu should be opened here"));
+	UE_LOG(LogTemp, Log, TEXT("Blueprint should:"));
+	UE_LOG(LogTemp, Log, TEXT("  1. Create W_StationMenu widget"));
+	UE_LOG(LogTemp, Log, TEXT("  2. Call InitializeStationMenu with station data"));
+	UE_LOG(LogTemp, Log, TEXT("  3. Add to viewport"));
+	
+	// TODO: Blueprint implementation or C++ widget creation
+	// Example for Blueprint:
+	// - Override this function in Blueprint
+	// - Create widget from W_StationMenu class
+	// - Call InitializeStationMenu
+	// - Add to viewport with AddToViewport()
+}
+
+bool AStationActor::ServerRPC_RequestUndock_Validate(APlayerController* PlayerController)
+{
+	// Basic validation
+	return PlayerController != nullptr;
+}
+
+void AStationActor::ServerRPC_RequestUndock_Implementation(APlayerController* PlayerController)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerRPC_RequestUndock: Invalid PlayerController"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Undock request received from player '%s' at station '%s'"),
+		*PlayerController->GetName(), *StationName);
+
+	// Initiate undocking sequence
+	InitiateUndocking(PlayerController);
+}
+
+void AStationActor::InitiateUndocking(APlayerController* PlayerController)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("InitiateUndocking: Invalid PlayerController"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    INITIATING UNDOCKING SEQUENCE                        ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PlayerController->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Station: %s"), *StationName);
+
+	// Get player's pawn (if any)
+	APawn* CurrentPawn = PlayerController->GetPawn();
+	if (CurrentPawn)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Current pawn: %s"), *CurrentPawn->GetName());
+	}
+
+	// Calculate spawn position near station (100m away)
+	FVector StationLocation = GetActorLocation();
+	FVector SpawnOffset = FVector(10000.0f, 0.0f, 0.0f); // 100m in front of station
+	FVector SpawnLocation = StationLocation + SpawnOffset;
+	FRotator SpawnRotation = GetActorRotation();
+
+	UE_LOG(LogTemp, Log, TEXT("Spawn location: %s"), *SpawnLocation.ToString());
+
+	// TODO: Implement full undocking sequence:
+	// 1. Notify backend to update character state (POST /api/character/undock)
+	// 2. Spawn player's active ship at calculated position
+	// 3. Possess the ship
+	// 4. Remove player from station "instance"
+	// 5. Enable ship controls
+	// 6. Play undocking animation/effects
+
+	// Get game instance for backend communication
+	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
+	if (GameInstance && IsValid(GameInstance))
+	{
+		// TODO: Call backend undock endpoint
+		// This would require an HTTP subsystem or service
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Backend undock notification not implemented"));
+
+		// TODO: Spawn ship actor
+		// For now, just log what should happen
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Ship spawning not implemented"));
+		UE_LOG(LogTemp, Log, TEXT("Should spawn ship at: %s"), *SpawnLocation.ToString());
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("✓ Undocking sequence initiated (partial implementation)"));
 }

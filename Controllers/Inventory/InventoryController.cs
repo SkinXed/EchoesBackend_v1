@@ -162,6 +162,34 @@ namespace Echoes.API.Controllers.Inventory
             return Ok(new { containerId, usedVolume = volume });
         }
 
+        /// <summary>
+        /// Get personal hangar storage ID for the authenticated player at a specific station
+        /// Returns the container ID of the player's personal hangar at the station
+        /// If hangar doesn't exist, creates it automatically
+        /// </summary>
+        [HttpGet("hangar/{stationId}")]
+        public async Task<ActionResult<object>> GetPersonalHangar(int stationId)
+        {
+            try
+            {
+                var actorId = GetActorId();
+                var hangar = await _inventoryService.GetOrCreatePersonalHangarAsync(actorId, stationId);
+                
+                return Ok(new 
+                { 
+                    storageId = hangar.ContainerId,
+                    name = hangar.Name,
+                    maxVolume = hangar.MaxVolume,
+                    usedVolume = hangar.UsedVolume,
+                    availableVolume = hangar.AvailableVolume
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
         private Guid GetActorId()
         {
             // Extract actor ID from JWT claims

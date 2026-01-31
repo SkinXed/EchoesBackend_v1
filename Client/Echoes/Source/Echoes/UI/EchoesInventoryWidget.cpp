@@ -2,9 +2,11 @@
 
 #include "UI/EchoesInventoryWidget.h"
 #include "UI/EchoesInventoryItemObject.h"
+#include "UI/EchoesInventoryDragDrop.h"
 #include "Components/ListView.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 UEchoesInventoryWidget::UEchoesInventoryWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -50,6 +52,83 @@ void UEchoesInventoryWidget::NativeDestruct()
 	UnbindInventoryComponent();
 
 	Super::NativeDestruct();
+}
+
+bool UEchoesInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	// Check if this is an inventory drag drop operation
+	UEchoesInventoryDragDrop* DragDropOp = Cast<UEchoesInventoryDragDrop>(InOperation);
+	if (!DragDropOp)
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("Drop operation is not an inventory drag drop"));
+		return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+	}
+
+	// Check if we have a valid target inventory component
+	if (!InventoryComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot drop item: no target inventory component"));
+		OnMoveRequestFailed(TEXT("No target inventory component"));
+		return false;
+	}
+
+	// Get source information from drag operation
+	FEchoesInventoryItem ItemData = DragDropOp->GetItemData();
+	FGuid SourceStorageId = DragDropOp->GetSourceStorageId();
+	AActor* SourceActor = DragDropOp->GetSourceActor();
+	int64 Quantity = DragDropOp->GetQuantity();
+
+	// Get target storage ID
+	FGuid TargetStorageId = InventoryComponent->StorageId;
+	AActor* TargetActor = CurrentViewedActor;
+
+	// Validate drop
+	if (!SourceActor || !TargetActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot drop item: invalid source or target actor"));
+		OnMoveRequestFailed(TEXT("Invalid source or target actor"));
+		return false;
+	}
+
+	// Don't allow dropping on same container
+	if (SourceStorageId == TargetStorageId)
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("Cannot drop item on same container"));
+		return false;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Item dropped: %s, Quantity: %lld, Source: %s, Target: %s"),
+		*ItemData.TypeName, Quantity, *SourceStorageId.ToString(), *TargetStorageId.ToString());
+
+	// Call ServerOnly_MoveItem on the source component
+	// We need to find the source component
+	UEchoesInventoryComponent* SourceComponent = SourceActor->FindComponentByClass<UEchoesInventoryComponent>();
+	if (!SourceComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cannot find source inventory component"));
+		OnMoveRequestFailed(TEXT("Source inventory component not found"));
+		return false;
+	}
+
+	// Execute the move
+	SourceComponent->ServerOnly_MoveItem(
+		ItemData.AssetId,
+		TargetActor,
+		SourceActor,
+		Quantity,
+		FOnItemMoveSuccess::CreateLambda([this, ItemData]()
+		{
+			UE_LOG(LogTemp, Log, TEXT("Item move successful: %s"), *ItemData.TypeName);
+			// Inventory will be auto-refreshed via delegate
+		}),
+		FOnInventoryOperationFailure::CreateLambda([this, ItemData](const FString& Error)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Item move failed: %s - %s"), *ItemData.TypeName, *Error);
+			OnMoveRequestFailed(Error);
+		})
+	);
+
+	return true;
 }
 
 void UEchoesInventoryWidget::RefreshInventory()

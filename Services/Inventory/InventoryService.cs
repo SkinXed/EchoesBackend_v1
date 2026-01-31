@@ -292,5 +292,42 @@ namespace Echoes.API.Services.Inventory
             _context.AssetLogs.Add(log);
         }
 
+        public async Task<ContainerDto> GetOrCreatePersonalHangarAsync(Guid ownerId, int stationId)
+        {
+            // Try to find existing personal hangar for this player at this station
+            var existingHangar = await _context.Containers
+                .FirstOrDefaultAsync(c => 
+                    c.OwnerId == ownerId && 
+                    c.StationId == stationId && 
+                    c.ContainerType == "Hangar");
+
+            if (existingHangar != null)
+            {
+                _logger.LogInformation("Found existing hangar {HangarId} for owner {OwnerId} at station {StationId}", 
+                    existingHangar.ContainerId, ownerId, stationId);
+                return InventoryMapper.MapToContainerDto(existingHangar);
+            }
+
+            // Create new personal hangar
+            var newHangar = new Container
+            {
+                OwnerId = ownerId,
+                ContainerType = "Hangar",
+                Name = $"Personal Hangar - Station {stationId}",
+                MaxVolume = null, // Unlimited storage for station hangars
+                StationId = stationId,
+                IsAccessible = true,
+                AccessLevel = 0
+            };
+
+            _context.Containers.Add(newHangar);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Created new hangar {HangarId} for owner {OwnerId} at station {StationId}", 
+                newHangar.ContainerId, ownerId, stationId);
+
+            return InventoryMapper.MapToContainerDto(newHangar);
+        }
+
     }
 }

@@ -256,4 +256,64 @@ public class CharacterController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
+
+    /// <summary>
+    /// Undock character from station
+    /// POST /api/character/undock
+    /// </summary>
+    [HttpPost("undock")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult> Undock()
+    {
+        try
+        {
+            // Extract character ID from JWT token
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var characterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            var character = await _context.Characters
+                .Include(c => c.ActiveShip)
+                .FirstOrDefaultAsync(c => c.Id == characterId);
+
+            if (character == null)
+            {
+                return NotFound(new { error = "Character not found" });
+            }
+
+            if (!character.IsDocked)
+            {
+                return BadRequest(new { error = "Character is not docked" });
+            }
+
+            if (character.ActiveShipItemId == null)
+            {
+                return BadRequest(new { error = "No active ship selected" });
+            }
+
+            // Update character state to undocked
+            character.IsDocked = false;
+            character.InWarp = false;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Character {CharacterId} undocked from station", characterId);
+
+            return Ok(new { 
+                message = "Undocked successfully",
+                isDocked = false,
+                activeShipId = character.ActiveShipItemId
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error undocking character");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
 }

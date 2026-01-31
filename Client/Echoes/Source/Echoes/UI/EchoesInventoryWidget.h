@@ -42,6 +42,7 @@ public:
 	// UUserWidget interface
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	// End of UUserWidget interface
 
 	/**

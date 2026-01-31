@@ -86,6 +86,33 @@ public:
 	 */
 	void NotifyBackendDocking(APlayerController* PlayerController);
 
+	/**
+	 * Client RPC to open station menu on player's screen
+	 * Called after successful docking
+	 * 
+	 * @param InStationName - Name of the station
+	 * @param InStationType - Type of the station
+	 * @param InHangarStorageId - Storage ID of player's personal hangar
+	 */
+	UFUNCTION(Client, Reliable)
+	void ClientRPC_OpenStationMenu(
+		const FString& InStationName,
+		const FString& InStationType,
+		const FGuid& InHangarStorageId);
+
+	/**
+	 * Server RPC to request undocking from station
+	 * Called from client when player clicks Undock button
+	 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerRPC_RequestUndock(APlayerController* PlayerController);
+
+	/**
+	 * Initiate undocking sequence for player
+	 * Spawns player ship in space near station
+	 */
+	void InitiateUndocking(APlayerController* PlayerController);
+
 protected:
 	// ==================== Components ====================
 
