@@ -6,6 +6,9 @@
 #include "StarActor.h"
 #include "StationActor.h"
 #include "StargateActor.h"
+#include "AsteroidBeltActor.h"
+#include "AnomalyActor.h"
+#include "WormholeActor.h"
 #include "Engine/World.h"
 #include "Engine/DataTable.h"
 #include "Kismet/GameplayStatics.h"
@@ -19,6 +22,7 @@ AEchoesWorldGenerator::AEchoesWorldGenerator()
 	bAlwaysRelevant = true;
 
 	bWorldGenerated = false;
+	bIsRegionalCluster = false;
 }
 
 void AEchoesWorldGenerator::BeginPlay()
@@ -41,12 +45,16 @@ void AEchoesWorldGenerator::BeginPlay()
 		ServerManagementSubsystem = GameInstance->GetSubsystem<UEchoesServerManagementSubsystem>();
 		if (ServerManagementSubsystem)
 		{
-			// Subscribe to OnServerConfigReceived delegate
+			// Subscribe to both delegates
 			ServerManagementSubsystem->OnServerConfigReceived.AddDynamic(
 				this,
 				&AEchoesWorldGenerator::OnServerConfigReceived);
 
-			UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Successfully subscribed to OnServerConfigReceived"));
+			ServerManagementSubsystem->OnRegionalClusterConfigReceived.AddDynamic(
+				this,
+				&AEchoesWorldGenerator::OnRegionalClusterConfigReceived);
+
+			UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Successfully subscribed to config delegates"));
 		}
 		else
 		{
@@ -74,6 +82,9 @@ void AEchoesWorldGenerator::OnServerConfigReceived(const FServerSystemConfig& Co
 	UE_LOG(LogTemp, Log, TEXT("Planets: %d"), Config.Planets.Num());
 	UE_LOG(LogTemp, Log, TEXT("Stations: %d"), Config.Stations.Num());
 	UE_LOG(LogTemp, Log, TEXT("Stargates: %d"), Config.Stargates.Num());
+	UE_LOG(LogTemp, Log, TEXT("Asteroid Belts: %d"), Config.AsteroidBelts.Num());
+	UE_LOG(LogTemp, Log, TEXT("Anomalies: %d"), Config.Anomalies.Num());
+	UE_LOG(LogTemp, Log, TEXT("Wormholes: %d"), Config.Wormholes.Num());
 
 	// Clear any existing world
 	if (bWorldGenerated)
@@ -91,6 +102,32 @@ void AEchoesWorldGenerator::OnServerConfigReceived(const FServerSystemConfig& Co
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
 }
 
+void AEchoesWorldGenerator::OnRegionalClusterConfigReceived(const FServerRegionalClusterConfig& RegionalConfig)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║   ECHOES WORLD GENERATOR - REGIONAL CLUSTER CONFIG      ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Region: %s (%s)"), *RegionalConfig.RegionName, *RegionalConfig.RegionCode);
+	UE_LOG(LogTemp, Log, TEXT("Systems: %d"), RegionalConfig.Systems.Num());
+	UE_LOG(LogTemp, Log, TEXT("Total Planets: %d"), RegionalConfig.TotalPlanets);
+	UE_LOG(LogTemp, Log, TEXT("Total Stargates: %d"), RegionalConfig.TotalStargates);
+	UE_LOG(LogTemp, Log, TEXT("Total Stations: %d"), RegionalConfig.TotalStations);
+
+	// Generate the regional cluster
+	ServerOnly_GenerateRegionalCluster(RegionalConfig);
+
+	bWorldGenerated = true;
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    REGIONAL CLUSTER GENERATION COMPLETE                 ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+}
+
 void AEchoesWorldGenerator::ServerOnly_GenerateWorld(const FServerSystemConfig& Config)
 {
 	if (!HasAuthority())
@@ -101,22 +138,81 @@ void AEchoesWorldGenerator::ServerOnly_GenerateWorld(const FServerSystemConfig& 
 
 	UE_LOG(LogTemp, Log, TEXT("Beginning world generation for system: %s"), *Config.SystemName);
 
+	bIsRegionalCluster = false;
+
+	// Generate single system at origin
+	GenerateSingleSystem(Config, FVector::ZeroVector);
+
+	UE_LOG(LogTemp, Log, TEXT("World generation completed. Total actors spawned: %d"), SpawnedActors.Num());
+}
+
+void AEchoesWorldGenerator::ServerOnly_GenerateRegionalCluster(const FServerRegionalClusterConfig& RegionalConfig)
+{
+	if (!HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ServerOnly_GenerateRegionalCluster called on client - ignoring"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Beginning regional cluster generation for region: %s"), *RegionalConfig.RegionName);
+
+	bIsRegionalCluster = true;
+	CachedRegionalConfig = RegionalConfig;
+
+	// Clear system offsets map
+	SystemOffsets.Empty();
+
+	// Iterate through all systems in the region
+	for (const FServerSystemConfig& SystemConfig : RegionalConfig.Systems)
+	{
+		// Calculate global offset for this system based on its DB coordinates
+		FVector SystemOffset = CalculateSystemGlobalOffset(
+			SystemConfig.PositionX,
+			SystemConfig.PositionY,
+			SystemConfig.PositionZ
+		);
+
+		// Store offset for later lookups (for stargate jumps)
+		SystemOffsets.Add(SystemConfig.SystemId, SystemOffset);
+
+		UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+		UE_LOG(LogTemp, Log, TEXT("║    GENERATING SYSTEM: %-35s║"), *SystemConfig.SystemName);
+		UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+		UE_LOG(LogTemp, Log, TEXT("  DB Coordinates: [%lld, %lld, %lld]"), 
+			SystemConfig.PositionX, SystemConfig.PositionY, SystemConfig.PositionZ);
+		UE_LOG(LogTemp, Log, TEXT("  Global Offset: [%.0f, %.0f, %.0f]"), 
+			SystemOffset.X, SystemOffset.Y, SystemOffset.Z);
+		UE_LOG(LogTemp, Log, TEXT("  Planets: %d, Stations: %d, Stargates: %d"), 
+			SystemConfig.Planets.Num(), SystemConfig.Stations.Num(), SystemConfig.Stargates.Num());
+
+		// Generate this system at its calculated offset
+		GenerateSingleSystem(SystemConfig, SystemOffset);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Regional cluster generation completed. Total actors spawned: %d"), SpawnedActors.Num());
+	UE_LOG(LogTemp, Log, TEXT("Systems generated: %d"), RegionalConfig.Systems.Num());
+}
+
+void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Config, const FVector& SystemOffset)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
 	// Optional: Async load assets before spawning (optimization)
 	// AsyncLoadAssetsForConfig(Config);
 
-	// Spawn star at system center
-	SpawnStar(Config);
+	// Spawn star at system center (with offset)
+	SpawnStar(Config, SystemOffset);
 
-	// Spawn all planets
-	SpawnPlanets(Config.Planets);
-
-	// Spawn all stations
-	SpawnStations(Config.Stations);
-
-	// Spawn all stargates
-	SpawnStargates(Config.Stargates);
-
-	UE_LOG(LogTemp, Log, TEXT("World generation completed. Total actors spawned: %d"), SpawnedActors.Num());
+	// Spawn all objects in the system (with offset)
+	SpawnPlanets(Config.Planets, SystemOffset);
+	SpawnStations(Config.Stations, SystemOffset);
+	SpawnStargates(Config.Stargates, SystemOffset);
+	SpawnAsteroidBelts(Config.AsteroidBelts, SystemOffset);
+	SpawnAnomalies(Config.Anomalies, SystemOffset);
+	SpawnWormholes(Config.Wormholes, SystemOffset);
 }
 
 void AEchoesWorldGenerator::ServerOnly_ClearWorld()
@@ -140,7 +236,7 @@ void AEchoesWorldGenerator::ServerOnly_ClearWorld()
 	bWorldGenerated = false;
 }
 
-void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config)
+void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config, const FVector& SystemOffset)
 {
 	if (!StarActorClass)
 	{
@@ -150,8 +246,8 @@ void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config)
 
 	UE_LOG(LogTemp, Log, TEXT("Spawning star: %s (Class: %s)"), *Config.SystemName, *Config.StarClass);
 
-	// Star is always at origin (0,0,0)
-	FVector StarLocation = FVector::ZeroVector;
+	// Star is at system offset (which is ZeroVector for single-system mode)
+	FVector StarLocation = SystemOffset;
 	FRotator StarRotation = FRotator::ZeroRotator;
 
 	// Spawn parameters
@@ -166,15 +262,16 @@ void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config)
 		StarRotation,
 		SpawnParams);
 
-	if (Star)
+	if (Star && IsValid(Star))
 	{
 		// Get visual data from data table
 		FStarVisualRow* VisualData = GetStarVisualData(Config.StarClass);
+		FStarVisualRow DefaultVisualData; // Stack allocation for default
+		
 		if (!VisualData)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No visual data found for star class: %s"), *Config.StarClass);
-			// Use default visual data
-			VisualData = new FStarVisualRow();
+			UE_LOG(LogTemp, Warning, TEXT("No visual data found for star class: %s, using defaults"), *Config.StarClass);
+			VisualData = &DefaultVisualData;
 		}
 
 		// Initialize star
@@ -195,7 +292,7 @@ void AEchoesWorldGenerator::SpawnStar(const FServerSystemConfig& Config)
 	}
 }
 
-void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
+void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, const FVector& SystemOffset)
 {
 	if (!PlanetActorClass)
 	{
@@ -208,7 +305,7 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
 	for (const FPlanetConfig& PlanetConfig : Planets)
 	{
 		// Convert coordinates from km to Unreal units
-		FVector PlanetLocation = ConvertCoordinates(
+		FVector PlanetLocation = SystemOffset + ConvertCoordinates(
 			PlanetConfig.PositionX,
 			PlanetConfig.PositionY,
 			PlanetConfig.PositionZ);
@@ -227,14 +324,16 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
 			PlanetRotation,
 			SpawnParams);
 
-		if (Planet)
+		if (Planet && IsValid(Planet))
 		{
 			// Get visual data from data table
 			FPlanetVisualRow* VisualData = GetPlanetVisualData(PlanetConfig.Type);
+			FPlanetVisualRow DefaultVisualData; // Stack allocation for default
+			
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for planet type: %s"), *PlanetConfig.Type);
-				VisualData = new FPlanetVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for planet type: %s, using defaults"), *PlanetConfig.Type);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed from planet ID for variation
@@ -261,7 +360,7 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets)
 	}
 }
 
-void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations)
+void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations, const FVector& SystemOffset)
 {
 	if (!StationActorClass)
 	{
@@ -274,7 +373,7 @@ void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations
 	for (const FStationConfig& StationConfig : Stations)
 	{
 		// Convert coordinates
-		FVector StationLocation = ConvertCoordinates(
+		FVector StationLocation = SystemOffset + ConvertCoordinates(
 			StationConfig.PositionX,
 			StationConfig.PositionY,
 			StationConfig.PositionZ);
@@ -293,14 +392,16 @@ void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations
 			StationRotation,
 			SpawnParams);
 
-		if (Station)
+		if (Station && IsValid(Station))
 		{
 			// Get visual data from data table
 			FStationVisualRow* VisualData = GetStationVisualData(StationConfig.StationType);
+			FStationVisualRow DefaultVisualData; // Stack allocation for default
+			
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for station type: %s"), *StationConfig.StationType);
-				VisualData = new FStationVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for station type: %s, using defaults"), *StationConfig.StationType);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Generate seed
@@ -326,7 +427,7 @@ void AEchoesWorldGenerator::SpawnStations(const TArray<FStationConfig>& Stations
 	}
 }
 
-void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Stargates)
+void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Stargates, const FVector& SystemOffset)
 {
 	if (!StargateActorClass)
 	{
@@ -339,7 +440,7 @@ void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Starga
 	for (const FStargateConfig& GateConfig : Stargates)
 	{
 		// Convert coordinates
-		FVector GateLocation = ConvertCoordinates(
+		FVector GateLocation = SystemOffset + ConvertCoordinates(
 			static_cast<int64>(GateConfig.PositionX * 1000.0f), // Convert to km if in AU
 			static_cast<int64>(GateConfig.PositionY * 1000.0f),
 			static_cast<int64>(GateConfig.PositionZ * 1000.0f));
@@ -358,14 +459,16 @@ void AEchoesWorldGenerator::SpawnStargates(const TArray<FStargateConfig>& Starga
 			GateRotation,
 			SpawnParams);
 
-		if (Stargate)
+		if (Stargate && IsValid(Stargate))
 		{
 			// Get visual data from data table
 			FStargateVisualRow* VisualData = GetStargateVisualData(GateConfig.Model);
+			FStargateVisualRow DefaultVisualData; // Stack allocation for default
+			
 			if (!VisualData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("No visual data found for stargate model: %s"), *GateConfig.Model);
-				VisualData = new FStargateVisualRow();
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for stargate model: %s, using defaults"), *GateConfig.Model);
+				VisualData = &DefaultVisualData;
 			}
 
 			// Initialize stargate
@@ -514,4 +617,302 @@ void AEchoesWorldGenerator::AsyncLoadAssetsForConfig(const FServerSystemConfig& 
 	//     this, &AEchoesWorldGenerator::OnAssetsLoaded));
 
 	UE_LOG(LogTemp, Verbose, TEXT("Async asset loading not yet implemented - using direct references"));
+}
+
+void AEchoesWorldGenerator::SpawnAsteroidBelts(const TArray<FAsteroidBeltConfig>& AsteroidBelts, const FVector& SystemOffset)
+{
+	if (!AsteroidBeltActorClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AsteroidBeltActorClass is not set!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning %d asteroid belts..."), AsteroidBelts.Num());
+
+	for (const FAsteroidBeltConfig& BeltConfig : AsteroidBelts)
+	{
+		// Convert coordinates
+		FVector BeltLocation = SystemOffset + ConvertCoordinates(
+			BeltConfig.PositionX,
+			BeltConfig.PositionY,
+			BeltConfig.PositionZ);
+
+		FRotator BeltRotation = FRotator::ZeroRotator;
+
+		// Spawn parameters
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		// Spawn asteroid belt actor
+		AAsteroidBeltActor* AsteroidBelt = GetWorld()->SpawnActor<AAsteroidBeltActor>(
+			AsteroidBeltActorClass,
+			BeltLocation,
+			BeltRotation,
+			SpawnParams);
+
+		if (AsteroidBelt && IsValid(AsteroidBelt))
+		{
+			// Get visual data from data table
+			FAsteroidBeltVisualRow* VisualData = GetAsteroidBeltVisualData(TEXT("Default"));
+			FAsteroidBeltVisualRow DefaultVisualData;
+			if (!VisualData)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for asteroid belt, using defaults"));
+				VisualData = &DefaultVisualData;
+			}
+
+			// Generate seed from belt ID
+			int32 Seed = GenerateSeedFromGuid(BeltConfig.Id);
+
+			// Calculate belt radius from database value or use default
+			// Default: 100,000 km = 100,000,000 m in world space
+			float BeltRadius = 100000.0f * UniverseToWorldScale * 100000.0f;
+
+			// Initialize asteroid belt
+			AsteroidBelt->InitializeAsteroidBelt(
+				BeltConfig.Id,
+				BeltConfig.Name,
+				Seed,
+				BeltRadius,
+				1000, // Default asteroid count
+				*VisualData);
+
+			SpawnedActors.Add(AsteroidBelt);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Asteroid Belt spawned: %s at (%s)"),
+				*BeltConfig.Name, *BeltLocation.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn asteroid belt: %s"), *BeltConfig.Name);
+		}
+	}
+}
+
+void AEchoesWorldGenerator::SpawnAnomalies(const TArray<FAnomalyConfig>& Anomalies, const FVector& SystemOffset)
+{
+	if (!AnomalyActorClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AnomalyActorClass is not set!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning %d anomalies..."), Anomalies.Num());
+
+	for (const FAnomalyConfig& AnomalyConfig : Anomalies)
+	{
+		// Convert coordinates
+		FVector AnomalyLocation = SystemOffset + ConvertCoordinates(
+			AnomalyConfig.PositionX,
+			AnomalyConfig.PositionY,
+			AnomalyConfig.PositionZ);
+
+		FRotator AnomalyRotation = FRotator::ZeroRotator;
+
+		// Spawn parameters
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		// Spawn anomaly actor
+		AAnomalyActor* Anomaly = GetWorld()->SpawnActor<AAnomalyActor>(
+			AnomalyActorClass,
+			AnomalyLocation,
+			AnomalyRotation,
+			SpawnParams);
+
+		if (Anomaly && IsValid(Anomaly))
+		{
+			// Get visual data from data table based on anomaly type
+			FAnomalyVisualRow* VisualData = GetAnomalyVisualData(AnomalyConfig.Type);
+			FAnomalyVisualRow DefaultVisualData;
+			if (!VisualData)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for anomaly type: %s, using defaults"), *AnomalyConfig.Type);
+				VisualData = &DefaultVisualData;
+			}
+
+			// Generate seed from anomaly ID
+			int32 Seed = GenerateSeedFromGuid(AnomalyConfig.Id);
+
+			// Initialize anomaly
+			Anomaly->InitializeAnomaly(
+				AnomalyConfig.Id,
+				AnomalyConfig.Name,
+				AnomalyConfig.Type,
+				AnomalyConfig.Difficulty,
+				Seed,
+				*VisualData);
+
+			SpawnedActors.Add(Anomaly);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Anomaly spawned: %s (Type: %s, Difficulty: %s) at (%s)"),
+				*AnomalyConfig.Name, *AnomalyConfig.Type, *AnomalyConfig.Difficulty, *AnomalyLocation.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn anomaly: %s"), *AnomalyConfig.Name);
+		}
+	}
+}
+
+void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormholes, const FVector& SystemOffset)
+{
+	if (!WormholeActorClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("WormholeActorClass is not set!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spawning %d wormholes..."), Wormholes.Num());
+
+	for (const FWormholeConfig& WormholeConfig : Wormholes)
+	{
+		// Convert coordinates
+		FVector WormholeLocation = SystemOffset + ConvertCoordinates(
+			WormholeConfig.PositionX,
+			WormholeConfig.PositionY,
+			WormholeConfig.PositionZ);
+
+		FRotator WormholeRotation = FRotator::ZeroRotator;
+
+		// Spawn parameters
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		// Spawn wormhole actor
+		AWormholeActor* Wormhole = GetWorld()->SpawnActor<AWormholeActor>(
+			WormholeActorClass,
+			WormholeLocation,
+			WormholeRotation,
+			SpawnParams);
+
+		if (Wormhole && IsValid(Wormhole))
+		{
+			// Get visual data from data table
+			FWormholeVisualRow* VisualData = GetWormholeVisualData(TEXT("Default"));
+			FWormholeVisualRow DefaultVisualData;
+			if (!VisualData)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No visual data found for wormhole, using defaults"));
+				VisualData = &DefaultVisualData;
+			}
+
+			// Generate seed from wormhole ID
+			int32 Seed = GenerateSeedFromGuid(WormholeConfig.Id);
+
+			// Initialize wormhole
+			Wormhole->InitializeWormhole(
+				WormholeConfig.Id,
+				WormholeConfig.Name,
+				WormholeConfig.TargetSystemId,
+				Seed,
+				*VisualData);
+
+			SpawnedActors.Add(Wormhole);
+
+			UE_LOG(LogTemp, Log, TEXT("✓ Wormhole spawned: %s -> System %s at (%s)"),
+				*WormholeConfig.Name, *WormholeConfig.TargetSystemId.ToString(), *WormholeLocation.ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn wormhole: %s"), *WormholeConfig.Name);
+		}
+	}
+}
+
+FAsteroidBeltVisualRow* AEchoesWorldGenerator::GetAsteroidBeltVisualData(const FString& BeltType)
+{
+	if (!AsteroidBeltDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AsteroidBeltDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*BeltType);
+	FAsteroidBeltVisualRow* Row = AsteroidBeltDataTable->FindRow<FAsteroidBeltVisualRow>(RowName, TEXT("GetAsteroidBeltVisualData"));
+	
+	if (!Row)
+	{
+		Row = AsteroidBeltDataTable->FindRow<FAsteroidBeltVisualRow>(FName(TEXT("Default")), TEXT("GetAsteroidBeltVisualData"));
+	}
+
+	return Row;
+}
+
+FAnomalyVisualRow* AEchoesWorldGenerator::GetAnomalyVisualData(const FString& AnomalyType)
+{
+	if (!AnomalyDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AnomalyDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*AnomalyType);
+	FAnomalyVisualRow* Row = AnomalyDataTable->FindRow<FAnomalyVisualRow>(RowName, TEXT("GetAnomalyVisualData"));
+	
+	if (!Row)
+	{
+		Row = AnomalyDataTable->FindRow<FAnomalyVisualRow>(FName(TEXT("Default")), TEXT("GetAnomalyVisualData"));
+	}
+
+	return Row;
+}
+
+FWormholeVisualRow* AEchoesWorldGenerator::GetWormholeVisualData(const FString& WormholeClass)
+{
+	if (!WormholeDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("WormholeDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*WormholeClass);
+	FWormholeVisualRow* Row = WormholeDataTable->FindRow<FWormholeVisualRow>(RowName, TEXT("GetWormholeVisualData"));
+	
+	if (!Row)
+	{
+		Row = WormholeDataTable->FindRow<FWormholeVisualRow>(FName(TEXT("Default")), TEXT("GetWormholeVisualData"));
+	}
+
+	return Row;
+}
+
+// ==================== Regional Cluster Helpers ====================
+
+FVector AEchoesWorldGenerator::CalculateSystemGlobalOffset(int64 PosX, int64 PosY, int64 PosZ) const
+{
+// Convert DB coordinates to world coordinates using RegionDistanceScale
+// Uses double precision to handle large distances (LWC support)
+double OffsetX = static_cast<double>(PosX) * RegionDistanceScale;
+double OffsetY = static_cast<double>(PosY) * RegionDistanceScale;
+double OffsetZ = static_cast<double>(PosZ) * RegionDistanceScale;
+
+return FVector(OffsetX, OffsetY, OffsetZ);
+}
+
+bool AEchoesWorldGenerator::IsSystemOnThisServer(const FGuid& SystemId) const
+{
+if (!bIsRegionalCluster)
+{
+// Single system mode - check against current system
+return false; // TODO: Compare with current system ID
+}
+
+// Regional cluster mode - check if system is in our cached config
+return SystemOffsets.Contains(SystemId);
+}
+
+FVector AEchoesWorldGenerator::GetSystemGlobalOffset(const FGuid& SystemId) const
+{
+const FVector* Offset = SystemOffsets.Find(SystemId);
+if (Offset)
+{
+return *Offset;
+}
+
+UE_LOG(LogTemp, Warning, TEXT("System ID not found in SystemOffsets map: %s"), *SystemId.ToString());
+return FVector::ZeroVector;
 }

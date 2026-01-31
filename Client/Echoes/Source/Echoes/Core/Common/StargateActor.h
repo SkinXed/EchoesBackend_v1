@@ -54,6 +54,47 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Echoes|Stargate")
 	bool IsOperational() const { return bIsOperational; }
 
+	UFUNCTION(BlueprintPure, Category = "Echoes|Stargate")
+	FString GetTargetSystemName() const { return TargetSystemName; }
+
+	// ==================== Jump Logic ====================
+
+	/**
+	 * Called when ship enters jump trigger zone
+	 */
+	UFUNCTION()
+	void OnJumpTriggerBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	/**
+	 * Server RPC to request jump to target system
+	 * Validates ship readiness and initiates travel
+	 */
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerRPC_RequestJump(APlayerController* PlayerController);
+
+	/**
+	 * Check if ship is ready to jump (not in combat, has energy, etc.)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Stargate")
+	bool IsShipReadyToJump(AActor* Ship) const;
+
+	/**
+	 * Initiate jump sequence for player
+	 * Called after validation on server
+	 */
+	void InitiateJumpToTarget(APlayerController* PlayerController);
+
+	/**
+	 * Get the location of the target gate on this server (for local jumps)
+	 */
+	FVector GetTargetGateLocationOnServer(const FGuid& TargetSystemId);
+
 protected:
 	// ==================== Components ====================
 
@@ -68,6 +109,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAudioComponent* AmbientAudioComponent;
+
+	/** Jump trigger zone - detects ships entering for jump */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UBoxComponent* JumpTriggerZone;
 
 	// ==================== Gate Data (Replicated) ====================
 

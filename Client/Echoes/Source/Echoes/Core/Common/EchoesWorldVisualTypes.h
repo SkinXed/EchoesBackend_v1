@@ -199,3 +199,137 @@ struct FStargateVisualRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
 	FLinearColor GateLightColor = FLinearColor(0.0f, 0.5f, 1.0f, 1.0f);
 };
+
+/**
+ * Visual configuration for asteroid belts
+ * Defines individual asteroid meshes and environmental effects
+ */
+USTRUCT(BlueprintType)
+struct FAsteroidBeltVisualRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** Array of asteroid mesh variants for procedural distribution */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroids")
+	TArray<TSoftObjectPtr<UStaticMesh>> AsteroidMeshes;
+
+	/** Array of material instances for asteroid variation */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroids")
+	TArray<TSoftObjectPtr<UMaterialInstance>> AsteroidMaterials;
+
+	/** Cloud/Dust particle effects (Niagara) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
+	TSoftObjectPtr<UNiagaraSystem> DustCloudVFX;
+
+	/** Ambient audio loop for the belt */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	TSoftObjectPtr<USoundBase> AmbientSound;
+
+	/** Density multiplier for asteroid distribution (0.1 to 2.0) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distribution")
+	float DensityMultiplier = 1.0f;
+
+	/** Scale range for asteroids (min-max) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distribution")
+	FVector2D AsteroidScaleRange = FVector2D(0.5f, 2.0f);
+
+	/** Color tint for mineral-rich asteroids */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	FLinearColor MineralTint = FLinearColor::White;
+};
+
+/**
+ * Visual configuration for anomalies
+ * Defines site visuals based on anomaly type and difficulty
+ */
+USTRUCT(BlueprintType)
+struct FAnomalyVisualRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** Central structure or debris mesh */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
+	TSoftObjectPtr<UStaticMesh> CenterMesh;
+
+	/** Center mesh material */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
+	TSoftObjectPtr<UMaterialInstance> CenterMaterial;
+
+	/** Scanning signature VFX (visible when scanned) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scanning")
+	TSoftObjectPtr<UNiagaraSystem> SignatureVFX;
+
+	/** Icon or marker for difficulty level */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Difficulty")
+	TSoftObjectPtr<UMaterialInstance> DifficultyIconMaterial;
+
+	/** Type-specific particle effects (combat beams, data streams, gas clouds, etc.) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TypeEffects")
+	TSoftObjectPtr<UNiagaraSystem> TypeSpecificVFX;
+
+	/** Ambient sound for the anomaly */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	TSoftObjectPtr<USoundBase> AmbientSound;
+
+	/** Warning sound when entering danger zone */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	TSoftObjectPtr<USoundBase> WarningSound;
+
+	/** Glow color for anomaly signature */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	FLinearColor SignatureColor = FLinearColor(1.0f, 0.5f, 0.0f, 1.0f);
+
+	/** Detection radius multiplier */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scanning")
+	float DetectionRadiusMultiplier = 1.0f;
+};
+
+/**
+ * Visual configuration for wormholes
+ * Defines unique effects and distortions for wormhole entrances
+ */
+USTRUCT(BlueprintType)
+struct FWormholeVisualRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** Wormhole entrance mesh (optional structural ring) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
+	TSoftObjectPtr<UStaticMesh> EntranceMesh;
+
+	/** Entrance mesh material */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
+	TSoftObjectPtr<UMaterialInstance> EntranceMaterial;
+
+	/** Main wormhole VFX (event horizon, spatial distortion) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	TSoftObjectPtr<UNiagaraSystem> WormholeVFX;
+
+	/** Post-process material for space-time distortion effect */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distortion")
+	TSoftObjectPtr<UMaterialInstance> DistortionMaterial;
+
+	/** Entrance activation sound */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	TSoftObjectPtr<USoundBase> EntranceSound;
+
+	/** Exit/jump sound */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	TSoftObjectPtr<USoundBase> ExitSound;
+
+	/** Ambient hum/rumble loop */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	TSoftObjectPtr<USoundBase> AmbientSound;
+
+	/** Base color for the wormhole (will be modified by TargetSystemId) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	FLinearColor BaseColor = FLinearColor(0.2f, 0.6f, 1.0f, 1.0f);
+
+	/** Instability VFX (for unstable wormholes) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	TSoftObjectPtr<UNiagaraSystem> InstabilityVFX;
+
+	/** Intensity of spatial distortion (0.0 to 1.0) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distortion")
+	float DistortionIntensity = 0.5f;
+};
