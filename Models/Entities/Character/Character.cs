@@ -46,6 +46,12 @@ namespace Echoes.API.Models.Entities.Character
 
         // Текущая локация
         //public Guid? CurrentLocationId { get; set; }
+        
+        /// <summary>
+        /// Home station ID where character spawns by default (assigned based on race)
+        /// </summary>
+        [ForeignKey("HomeStationId")]
+        public Guid? HomeStationId { get; set; }
 
         // Настройки
         public string SettingsJson { get; set; } = "{}";

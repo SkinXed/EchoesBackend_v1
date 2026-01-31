@@ -135,7 +135,76 @@ namespace Echoes.API.Models.DTOs
     public class CreateCharacterRequest
     {
         public string Name { get; set; } = string.Empty;
-        public string Race { get; set; } = "Caldari"; // Caldari, Gallente, Amarr, Minmatar
+        public int RaceId { get; set; } = 1; // 1=Caldari, 2=Gallente, 3=Amarr, 4=Minmatar
         public int PortraitId { get; set; } = 1;
+        public int BloodlineId { get; set; } = 1;
+        public int AncestryId { get; set; } = 1;
+    }
+    
+    /// <summary>
+    /// Response DTO for character list
+    /// </summary>
+    public class CharacterListDto
+    {
+        public Guid CharacterId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int RaceId { get; set; }
+        public string RaceName { get; set; } = string.Empty;
+        public long WalletBalance { get; set; }
+        public bool IsMain { get; set; }
+        public bool IsOnline { get; set; }
+        public bool IsDocked { get; set; }
+        public Guid? HomeStationId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastLogin { get; set; }
+    }
+    
+    /// <summary>
+    /// Character location DTO for spawn logic
+    /// </summary>
+    public class CharacterLocationDto
+    {
+        public Guid CharacterId { get; set; }
+        public bool IsDocked { get; set; }
+        public bool InWarp { get; set; }
+        public Guid? StationId { get; set; }
+        public string? StationName { get; set; }
+        public Guid? SolarSystemId { get; set; }
+        public string? SolarSystemName { get; set; }
+        public double PositionX { get; set; }
+        public double PositionY { get; set; }
+        public double PositionZ { get; set; }
+    }
+    
+    /// <summary>
+    /// Race configuration DTO
+    /// </summary>
+    public class RaceConfigDto
+    {
+        public int RaceId { get; set; }
+        public string RaceName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string RaceBonuses { get; set; } = string.Empty;
+        public Guid StartingSystemId { get; set; }
+        public Guid StartingStationId { get; set; }
+        public int DefaultShipTypeId { get; set; }
+        public int StartingSkillPoints { get; set; }
+        public long StartingISK { get; set; }
+    }
+
+    /// <summary>
+    /// Character connection info for regional server
+    /// </summary>
+    public class CharacterConnectInfoDto
+    {
+        public Guid CharacterId { get; set; }
+        public string CharacterName { get; set; } = string.Empty;
+        public string ServerIP { get; set; } = string.Empty;
+        public int ServerPort { get; set; }
+        public Guid SystemId { get; set; }
+        public string SystemName { get; set; } = string.Empty;
+        public bool IsDocked { get; set; }
+        public Guid? StationId { get; set; }
+        public string ConnectionToken { get; set; } = string.Empty;
     }
 }

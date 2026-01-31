@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EchoesAuthSubsystem.h"
+#include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Json.h"
@@ -467,4 +468,328 @@ FString UEchoesAuthSubsystem::GetServerSecret() const
 
 	// Default secret (should be changed in production)
 	return TEXT("UE5-Server-Secret-Change-Me-In-Production");
+}
+
+// ==================== Token Persistence ====================
+
+void UEchoesAuthSubsystem::SaveAuthToken(bool bRememberMe)
+{
+	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
+	
+	if (Settings)
+	{
+		Settings->SavedAuthToken = JWTToken;
+		Settings->SavedAccountId = CurrentAuthResponse.AccountId;
+		Settings->SavedCharacterId = CurrentAuthResponse.CharacterId;
+		Settings->TokenSavedAt = FDateTime::UtcNow();
+		Settings->TokenExpiresAt = CurrentAuthResponse.ExpiresAt;
+		Settings->bRememberMe = bRememberMe;
+
+		if (UEchoesLocalPlayerSettings::SaveSettings(Settings))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Saved auth token to disk (RememberMe=%s)"), bRememberMe ? TEXT("true") : TEXT("false"));
+		}
+	}
+}
+
+bool UEchoesAuthSubsystem::LoadAuthToken()
+{
+	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
+	
+	if (Settings && Settings->IsTokenValid())
+	{
+		JWTToken = Settings->SavedAuthToken;
+		CurrentAuthResponse.AccountId = Settings->SavedAccountId;
+		CurrentAuthResponse.CharacterId = Settings->SavedCharacterId;
+		CurrentAuthResponse.ExpiresAt = Settings->TokenExpiresAt;
+		CurrentAuthResponse.Token = Settings->SavedAuthToken;
+		CurrentAuthResponse.Success = true;
+
+		UE_LOG(LogTemp, Log, TEXT("Loaded valid auth token from disk"));
+		return true;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("No valid auth token found on disk"));
+	return false;
+}
+
+void UEchoesAuthSubsystem::ClearSavedToken()
+{
+	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
+	
+	if (Settings)
+	{
+		Settings->Clear();
+		UEchoesLocalPlayerSettings::SaveSettings(Settings);
+		UE_LOG(LogTemp, Log, TEXT("Cleared saved auth token"));
+	}
+}
+
+// ==================== Character Operations ====================
+
+void UEchoesAuthSubsystem::CreateCharacter(const FString& CharacterName, int32 RaceId)
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HTTP module not available"));
+		OnCharacterCreationFailed.Broadcast(TEXT("HTTP module not available"));
+		return;
+	}
+
+	if (JWTToken.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not authenticated"));
+		OnCharacterCreationFailed.Broadcast(TEXT("Not authenticated"));
+		return;
+	}
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
+	HttpRequest->SetVerb(TEXT("POST"));
+	HttpRequest->SetURL(GetApiBaseUrl() + TEXT("/character"));
+	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	HttpRequest->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *JWTToken));
+
+	// Create JSON body
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+	JsonObject->SetStringField(TEXT("name"), CharacterName);
+	JsonObject->SetNumberField(TEXT("raceId"), RaceId);
+	JsonObject->SetNumberField(TEXT("portraitId"), 1);
+
+	FString JsonString;
+	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JsonString);
+	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+
+	HttpRequest->SetContentAsString(JsonString);
+
+	// Bind response callback
+	HttpRequest->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesAuthSubsystem::OnCreateCharacterResponseReceived);
+
+	// Send request
+	HttpRequest->ProcessRequest();
+	UE_LOG(LogTemp, Log, TEXT("Creating character: %s (RaceId: %d)"), *CharacterName, RaceId);
+}
+
+void UEchoesAuthSubsystem::OnCreateCharacterResponseReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Character creation request failed"));
+		OnCharacterCreationFailed.Broadcast(TEXT("Network error"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	if (ResponseCode == 201 || ResponseCode == 200)
+	{
+		// Parse character data
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			FCharacterData CharacterData;
+			if (ParseCharacterData(ResponseContent, CharacterData))
+			{
+				UE_LOG(LogTemp, Log, TEXT("Character created successfully: %s"), *CharacterData.Name);
+				OnCharacterCreated.Broadcast(CharacterData);
+				
+				// Refresh character list
+				FetchCharacterList();
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Character creation failed: %d - %s"), ResponseCode, *ResponseContent);
+		
+		// Try to parse error message
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+		FString ErrorMsg = TEXT("Character creation failed");
+		
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			if (JsonObject->HasField(TEXT("error")))
+			{
+				ErrorMsg = JsonObject->GetStringField(TEXT("error"));
+			}
+		}
+
+		OnCharacterCreationFailed.Broadcast(ErrorMsg);
+	}
+}
+
+void UEchoesAuthSubsystem::FetchCharacterList()
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HTTP module not available"));
+		return;
+	}
+
+	if (JWTToken.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not authenticated"));
+		return;
+	}
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
+	HttpRequest->SetVerb(TEXT("GET"));
+	HttpRequest->SetURL(GetApiBaseUrl() + TEXT("/character/list"));
+	HttpRequest->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *JWTToken));
+
+	// Bind response callback
+	HttpRequest->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesAuthSubsystem::OnFetchCharacterListResponseReceived);
+
+	// Send request
+	HttpRequest->ProcessRequest();
+	UE_LOG(LogTemp, Log, TEXT("Fetching character list"));
+}
+
+void UEchoesAuthSubsystem::OnFetchCharacterListResponseReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Character list fetch failed"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	if (ResponseCode == 200)
+	{
+		// Parse character array
+		TArray<TSharedPtr<FJsonValue>> JsonArray;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+
+		if (FJsonSerializer::Deserialize(Reader, JsonArray))
+		{
+			CurrentAuthResponse.Characters.Empty();
+
+			for (const TSharedPtr<FJsonValue>& JsonValue : JsonArray)
+			{
+				TSharedPtr<FJsonObject> CharObj = JsonValue->AsObject();
+				if (CharObj.IsValid())
+				{
+					FCharacterInfo CharInfo;
+					
+					FString CharIdStr = CharObj->GetStringField(TEXT("characterId"));
+					FGuid::Parse(CharIdStr, CharInfo.CharacterId);
+					
+					CharInfo.Name = CharObj->GetStringField(TEXT("name"));
+					CharInfo.WalletBalance = (int64)CharObj->GetNumberField(TEXT("walletBalance"));
+					CharInfo.IsMain = CharObj->GetBoolField(TEXT("isMain"));
+					CharInfo.IsOnline = CharObj->GetBoolField(TEXT("isOnline"));
+
+					CurrentAuthResponse.Characters.Add(CharInfo);
+				}
+			}
+
+			UE_LOG(LogTemp, Log, TEXT("Fetched %d characters"), CurrentAuthResponse.Characters.Num());
+		}
+	}
+}
+
+void UEchoesAuthSubsystem::ConnectToWorld(const FGuid& CharacterId)
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HTTP module not available"));
+		OnConnectInfoFailed.Broadcast(TEXT("HTTP module not available"));
+		return;
+	}
+
+	if (JWTToken.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not authenticated"));
+		OnConnectInfoFailed.Broadcast(TEXT("Not authenticated"));
+		return;
+	}
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
+	HttpRequest->SetVerb(TEXT("GET"));
+	HttpRequest->SetURL(GetApiBaseUrl() + FString::Printf(TEXT("/character/%s/connect-info"), *CharacterId.ToString()));
+	HttpRequest->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *JWTToken));
+
+	// Bind response callback
+	HttpRequest->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesAuthSubsystem::OnConnectInfoResponseReceived,
+		CharacterId);
+
+	// Send request
+	HttpRequest->ProcessRequest();
+	UE_LOG(LogTemp, Log, TEXT("Requesting connect info for character: %s"), *CharacterId.ToString());
+}
+
+void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	FGuid CharacterId)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Connect info request failed"));
+		OnConnectInfoFailed.Broadcast(TEXT("Network error"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	if (ResponseCode == 200)
+	{
+		// Parse connect info
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			FString ServerIP = JsonObject->GetStringField(TEXT("serverIP"));
+			int32 ServerPort = (int32)JsonObject->GetNumberField(TEXT("serverPort"));
+
+			UE_LOG(LogTemp, Log, TEXT("Connect info received: %s:%d"), *ServerIP, ServerPort);
+
+			// Update current character ID
+			CurrentAuthResponse.CharacterId = CharacterId;
+
+			// Broadcast event
+			OnConnectInfoReceived.Broadcast(ServerIP, ServerPort);
+
+			// Perform ClientTravel
+			if (UWorld* World = GetWorld())
+			{
+				if (APlayerController* PC = World->GetFirstPlayerController())
+				{
+					FString ConnectURL = FString::Printf(TEXT("%s:%d?Token=%s&CharacterId=%s"),
+						*ServerIP, ServerPort, *JWTToken, *CharacterId.ToString());
+
+					UE_LOG(LogTemp, Log, TEXT("Traveling to: %s"), *ConnectURL);
+					PC->ClientTravel(ConnectURL, TRAVEL_Absolute);
+				}
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Connect info failed: %d - %s"), ResponseCode, *ResponseContent);
+		OnConnectInfoFailed.Broadcast(TEXT("Failed to get connection info"));
+	}
 }

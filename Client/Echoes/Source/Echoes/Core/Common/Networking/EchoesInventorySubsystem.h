@@ -344,6 +344,25 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|ItemDefinitions")
 	bool HasItemDefinition(const FString& ItemId) const;
 
+	/**
+	 * Get item definition from typed registry by integer TypeId
+	 * Provides type-safe access to item definitions
+	 * 
+	 * @param TypeId - Item type ID as integer
+	 * @return Pointer to item definition, or nullptr if not found
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
+	const FEchoesItemDefinitionRow* GetItemFromRegistry(int32 TypeId) const;
+
+	/**
+	 * Check if item exists in typed registry
+	 * 
+	 * @param TypeId - Item type ID as integer
+	 * @return True if definition exists in registry
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|ItemDefinitions")
+	bool HasItemInRegistry(int32 TypeId) const;
+
 	// ==================== UI Wrapper Functions ====================
 
 	/**
@@ -513,12 +532,22 @@ private:
 
 	/**
 	 * Cache of loaded item definitions for quick access
-	 * Key: ItemId (TypeId as string), Value: Definition row
+	 * Key: ItemId (TypeId as string), Value: Definition row pointer
+	 * Legacy cache maintained for backward compatibility
 	 */
 	TMap<FString, const FEchoesItemDefinitionRow*> DefinitionCache;
 
 	/**
+	 * Typed item registry for type-safe access
+	 * Key: ItemTypeId (TypeId as integer), Value: Definition row
+	 * Provides strongly-typed access pattern for item definitions
+	 */
+	UPROPERTY()
+	TMap<int32, FEchoesItemDefinitionRow> ItemTypeRegistry;
+
+	/**
 	 * Build definition cache from data table
+	 * Populates both string-based cache and typed registry
 	 */
 	void BuildDefinitionCache();
 };

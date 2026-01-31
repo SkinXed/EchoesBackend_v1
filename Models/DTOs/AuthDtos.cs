@@ -171,4 +171,22 @@ namespace Echoes.API.Models.DTOs
         [Required]
         public string Code { get; set; } = string.Empty;
     }
+
+    // DTO для валидации JWT токена
+    public class ValidateTokenDto
+    {
+        [Required]
+        public string Token { get; set; } = string.Empty;
+    }
+
+    // DTO для ответа валидации токена
+    public class TokenValidationDto
+    {
+        public bool IsValid { get; set; }
+        public string Error { get; set; } = string.Empty;
+        public Guid AccountId { get; set; }
+        public Guid CharacterId { get; set; }
+        public string CharacterName { get; set; } = string.Empty;
+        public List<CharacterInfoDto> Characters { get; set; } = new List<CharacterInfoDto>();
+    }
 }

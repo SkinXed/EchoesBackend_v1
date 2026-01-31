@@ -163,6 +163,52 @@ public class CharacterController : ControllerBase
     }
 
     /// <summary>
+    /// Get all characters for the authenticated account
+    /// GET /api/character/list
+    /// </summary>
+    [HttpGet("list")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<List<CharacterListDto>>> GetCharacters()
+    {
+        try
+        {
+            // Extract account ID from JWT token
+            var accountIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(accountIdClaim) || !Guid.TryParse(accountIdClaim, out var accountId))
+            {
+                return Unauthorized(new { error = "Invalid token - no account ID" });
+            }
+
+            var characters = await _context.Characters
+                .Where(c => c.AccountId == accountId)
+                .Select(c => new CharacterListDto
+                {
+                    CharacterId = c.Id,
+                    Name = c.Name,
+                    RaceId = c.RaceId,
+                    RaceName = GetRaceName(c.RaceId),
+                    WalletBalance = c.WalletBalance,
+                    IsMain = c.IsMain,
+                    IsOnline = c.IsOnline,
+                    IsDocked = c.IsDocked,
+                    HomeStationId = c.HomeStationId,
+                    CreatedAt = c.CreatedAt,
+                    LastLogin = c.LastLogin
+                })
+                .ToListAsync();
+
+            return Ok(characters);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving characters");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
     /// Create a new character for the authenticated account
     /// POST /api/character
     /// </summary>
@@ -175,8 +221,7 @@ public class CharacterController : ControllerBase
         try
         {
             // Extract account ID from JWT token
-            var accountIdClaim = User.FindFirst("AccountId")?.Value
-                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var accountIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(accountIdClaim) || !Guid.TryParse(accountIdClaim, out var accountId))
             {
@@ -198,16 +243,24 @@ public class CharacterController : ControllerBase
                 return BadRequest(new { error = "Character name already taken" });
             }
 
-            // Validate race
-            var validRaces = new[] { "Caldari", "Gallente", "Amarr", "Minmatar" };
-            if (!validRaces.Contains(request.Race))
+            // Validate race ID (1-4 for the main races)
+            if (request.RaceId < 1 || request.RaceId > 4)
             {
-                return BadRequest(new { error = "Invalid race. Must be one of: Caldari, Gallente, Amarr, Minmatar" });
+                return BadRequest(new { error = "Invalid race ID. Must be 1 (Caldari), 2 (Gallente), 3 (Amarr), or 4 (Minmatar)" });
             }
 
-            // Get or create default starting ship (Rookie Ship)
-            var rookieShip = await _context.Items
-                .FirstOrDefaultAsync(i => i.Name.Contains("Rookie") && i.Category == "Ship");
+            // Get race configuration
+            var raceConfig = await _context.RaceConfigs
+                .FirstOrDefaultAsync(rc => rc.RaceId == request.RaceId);
+
+            if (raceConfig == null)
+            {
+                return BadRequest(new { error = $"Race configuration not found for RaceId {request.RaceId}" });
+            }
+
+            // Get or create default starting ship
+            var startingShip = await _context.ItemTypesInventory
+                .FirstOrDefaultAsync(i => i.TypeId == raceConfig.DefaultShipTypeId);
 
             // Create new character
             var character = new Models.Entities.Character.Character
@@ -215,12 +268,14 @@ public class CharacterController : ControllerBase
                 Id = Guid.NewGuid(),
                 AccountId = accountId,
                 Name = request.Name,
-                Race = request.Race,
-                PortraitId = request.PortraitId > 0 ? request.PortraitId : 1,
-                WalletBalance = 5000000, // Starting ISK
-                SecurityStatus = 0.0,
+                RaceId = request.RaceId,
+                BloodlineId = request.BloodlineId,
+                AncestryId = request.AncestryId,
+                HomeStationId = raceConfig.StartingStationId,
+                WalletBalance = raceConfig.StartingISK,
+                SecurityStatus = 0.0f,
                 TotalSkillPoints = 0,
-                UnallocatedSkillPoints = 50000, // Starting skill points
+                UnallocatedSkillPoints = raceConfig.StartingSkillPoints,
                 IsOnline = false,
                 IsDocked = true,
                 InWarp = false,
@@ -229,16 +284,37 @@ public class CharacterController : ControllerBase
             };
 
             _context.Characters.Add(character);
+
+            // Create character location at home station
+            // Note: Position coordinates will be set from station data when character spawns
+            var characterLocation = new CharacterLocation
+            {
+                Id = Guid.NewGuid(),
+                CharacterId = character.Id,
+                StationId = raceConfig.StartingStationId,
+                SolarSystemId = raceConfig.StartingSystemId,
+                LocationType = Models.Enums.LocationType.Docked,
+                IsDocked = true,
+                InWarp = false,
+                LastUpdate = DateTime.UtcNow
+            };
+
+            _context.CharacterLocations.Add(characterLocation);
+
+            // TODO: Create default ship in inventory
+            // This should be implemented when inventory system is finalized
+
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Created new character {CharacterName} for account {AccountId}", 
-                character.Name, accountId);
+            _logger.LogInformation("Created new character {CharacterName} (Race: {RaceId}) for account {AccountId}", 
+                character.Name, character.RaceId, accountId);
 
             var characterData = new CharacterDataDto
             {
                 CharacterId = character.Id,
                 Name = character.Name,
                 AccountId = character.AccountId,
+                RaceId = character.RaceId,
                 WalletBalance = character.WalletBalance,
                 SecurityStatus = character.SecurityStatus,
                 CurrentShipId = character.ActiveShipItemId,
@@ -253,6 +329,177 @@ public class CharacterController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating character");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Get character location (for spawn logic)
+    /// GET /api/character/{id}/location
+    /// </summary>
+    [HttpGet("{id}/location")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CharacterLocationDto>> GetCharacterLocation(Guid id)
+    {
+        // Check for server secret if not authenticated as user
+        if (!(User.Identity?.IsAuthenticated ?? false))
+        {
+            if (!ValidateServerSecret())
+            {
+                return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
+            }
+        }
+
+        try
+        {
+            var character = await _context.Characters
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (character == null)
+            {
+                return NotFound(new { error = "Character not found" });
+            }
+
+            var location = await _context.CharacterLocations
+                .Include(cl => cl.Station)
+                .Include(cl => cl.SolarSystem)
+                .FirstOrDefaultAsync(cl => cl.CharacterId == id);
+
+            if (location == null)
+            {
+                // If no location exists, create one at home station
+                if (character.HomeStationId.HasValue)
+                {
+                    var homeStation = await _context.Stations
+                        .Include(s => s.SolarSystem)
+                        .FirstOrDefaultAsync(s => s.Id == character.HomeStationId.Value);
+
+                    if (homeStation != null)
+                    {
+                        return Ok(new CharacterLocationDto
+                        {
+                            CharacterId = id,
+                            IsDocked = true,
+                            InWarp = false,
+                            StationId = homeStation.Id,
+                            StationName = homeStation.Name,
+                            SolarSystemId = homeStation.SolarSystemId,
+                            SolarSystemName = homeStation.SolarSystem?.Name ?? "Unknown",
+                            PositionX = homeStation.PositionX,
+                            PositionY = homeStation.PositionY,
+                            PositionZ = homeStation.PositionZ
+                        });
+                    }
+                }
+
+                return NotFound(new { error = "Character location not found" });
+            }
+
+            var locationDto = new CharacterLocationDto
+            {
+                CharacterId = id,
+                IsDocked = location.IsDocked,
+                InWarp = location.InWarp,
+                StationId = location.StationId,
+                StationName = location.Station?.Name,
+                SolarSystemId = location.SolarSystemId,
+                SolarSystemName = location.SolarSystem?.Name,
+                PositionX = location.PositionX,
+                PositionY = location.PositionY,
+                PositionZ = location.PositionZ
+            };
+
+            return Ok(locationDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving character location {CharacterId}", id);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    // Helper method to get race name
+    private string GetRaceName(int raceId)
+    {
+        return raceId switch
+        {
+            1 => "Caldari",
+            2 => "Gallente",
+            3 => "Amarr",
+            4 => "Minmatar",
+            _ => "Unknown"
+        };
+    }
+
+    /// <summary>
+    /// Get character connection info for regional server
+    /// GET /api/character/{id}/connect-info
+    /// </summary>
+    [HttpGet("{id}/connect-info")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<CharacterConnectInfoDto>> GetCharacterConnectInfo(Guid id)
+    {
+        try
+        {
+            // Check authentication
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value;
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var tokenCharacterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            // Verify the character belongs to the authenticated user
+            if (tokenCharacterId != id)
+            {
+                return Unauthorized(new { error = "Not authorized to access this character" });
+            }
+
+            var character = await _context.Characters
+                .Include(c => c.CurrentLocation)
+                .ThenInclude(cl => cl.SolarSystem)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (character == null)
+            {
+                return NotFound(new { error = "Character not found" });
+            }
+
+            // Get solar system for regional server assignment
+            var solarSystem = character.CurrentLocation?.SolarSystem;
+            string serverIP = "127.0.0.1"; // Default to localhost
+            int serverPort = 7777; // Default game port
+
+            // TODO: In production, query game server assignment based on solar system
+            // For now, return default local server
+            if (solarSystem != null)
+            {
+                // Logic to determine which regional server handles this system
+                // This would query a ServerNodes table or configuration
+                _logger.LogInformation("Character {CharacterId} connecting to system {SystemId}", 
+                    id, solarSystem.Id);
+            }
+
+            var connectInfo = new CharacterConnectInfoDto
+            {
+                CharacterId = id,
+                CharacterName = character.Name,
+                ServerIP = serverIP,
+                ServerPort = serverPort,
+                SystemId = solarSystem?.Id ?? Guid.Empty,
+                SystemName = solarSystem?.Name ?? "Unknown",
+                IsDocked = character.IsDocked,
+                StationId = character.CurrentLocation?.StationId,
+                ConnectionToken = Guid.NewGuid().ToString() // Generate one-time connection token
+            };
+
+            return Ok(connectInfo);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving character connect info {CharacterId}", id);
             return StatusCode(500, new { error = "Internal server error" });
         }
     }

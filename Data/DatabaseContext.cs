@@ -61,6 +61,9 @@ namespace Echoes.API.Data
         
         // Shop entities
         public DbSet<ShopItem> ShopItems { get; set; }
+        
+        // Configuration entities
+        public DbSet<Models.Config.RaceConfig> RaceConfigs { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
