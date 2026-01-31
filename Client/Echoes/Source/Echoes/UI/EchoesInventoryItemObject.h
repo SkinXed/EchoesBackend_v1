@@ -5,7 +5,12 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Core/Common/EchoesInventoryComponent.h"
+#include "Core/Common/EchoesItemDefinitions.h"
 #include "EchoesInventoryItemObject.generated.h"
+
+// Forward declarations
+class UEchoesInventorySubsystem;
+class UTexture2D;
 
 /**
  * UEchoesInventoryItemObject
@@ -87,8 +92,73 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
 	int32 GetTypeId() const { return ItemData.TypeId; }
 
+	/**
+	 * Get the item definition from subsystem
+	 * Returns visual assets and metadata
+	 * @return Item definition, or nullptr if not found
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	const FEchoesItemDefinitionRow* GetItemDefinition() const { return CachedDefinition; }
+
+	/**
+	 * Get the display name from item definition (localized)
+	 * Falls back to TypeName if definition not found
+	 * @return Display name
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	FText GetDisplayName() const;
+
+	/**
+	 * Get the description from item definition (localized)
+	 * @return Description text
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	FText GetDescription() const;
+
+	/**
+	 * Get calculated total volume (Quantity * UnitVolume from definition)
+	 * Uses definition's UnitVolume if available, otherwise uses ItemData.Volume
+	 * @return Total volume in m³
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	float GetCalculatedTotalVolume() const;
+
+	/**
+	 * Get unit volume from item definition
+	 * @return Volume per unit in m³
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	float GetUnitVolume() const;
+
+	/**
+	 * Get total mass (Quantity * UnitMass from definition)
+	 * @return Total mass in kg
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	float GetTotalMass() const;
+
+	/**
+	 * Check if item definition is loaded
+	 * @return True if definition was found and cached
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|UI")
+	bool HasDefinition() const { return CachedDefinition != nullptr; }
+
 protected:
 	/** The wrapped inventory item data */
 	UPROPERTY()
 	FEchoesInventoryItem ItemData;
+
+	/** Cached item definition from subsystem */
+	const FEchoesItemDefinitionRow* CachedDefinition;
+
+	/** Reference to inventory subsystem for fetching definitions */
+	UPROPERTY()
+	UEchoesInventorySubsystem* InventorySubsystem;
+
+	/**
+	 * Fetch item definition from subsystem
+	 * Called during initialization
+	 */
+	void FetchItemDefinition();
 };

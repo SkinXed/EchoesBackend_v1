@@ -66,6 +66,13 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category = "Echoes|Inventory|UI")
 	void UpdateDisplay(UEchoesInventoryItemObject* ItemObject);
 
+	/**
+	 * Called when icon is asynchronously loaded
+	 * Override in Blueprint to handle icon updates
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
+	void OnIconLoaded(UTexture2D* LoadedIcon);
+
 	// Widget bindings (can be set in UMG)
 	
 	/** Image widget for item icon */
@@ -84,8 +91,23 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget), Category = "Echoes|Inventory|UI")
 	UTextBlock* VolumeText;
 
+	/** Optional: Placeholder icon shown while loading */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Echoes|Inventory|UI")
+	UTexture2D* PlaceholderIcon;
+
 private:
 	/** Current item object being displayed */
 	UPROPERTY()
 	UEchoesInventoryItemObject* CurrentItemObject;
+
+	/**
+	 * Start async icon loading for current item
+	 */
+	void StartAsyncIconLoad();
+
+	/**
+	 * Handle icon loaded callback
+	 */
+	UFUNCTION()
+	void HandleIconLoaded(UTexture2D* LoadedIcon);
 };

@@ -5,7 +5,14 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Http.h"
+#include "Core/Common/EchoesItemDefinitions.h"
+#include "Engine/StreamableManager.h"
 #include "EchoesInventorySubsystem.generated.h"
+
+// Forward declarations
+class UDataTable;
+class UTexture2D;
+class UStaticMesh;
 
 /**
  * Ship instance structure (mirrors C# ShipInstanceDto)
@@ -147,6 +154,9 @@ struct FEchoesShipFitting
 };
 
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnIconLoaded, UTexture2D*, LoadedIcon);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnWorldMeshLoaded, UStaticMesh*, LoadedMesh);
+
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipsReceived, const FEchoesShipList&, ShipList);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShipFittingReceived, const FEchoesShipFitting&, Fitting);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnInventoryFailure, const FString&, ErrorMessage);
@@ -256,6 +266,56 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory")
 	void Inventory_ClearCache();
+
+	// ==================== Item Definitions System ====================
+
+	/**
+	 * Get item definition by item ID (TypeId from database)
+	 * Returns visual assets and metadata for the item
+	 * 
+	 * @param ItemId - Item type ID as string (e.g., "34" for Tritanium)
+	 * @return Item definition row, or nullptr if not found
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
+	const FEchoesItemDefinitionRow* GetItemDefinition(const FString& ItemId) const;
+
+	/**
+	 * Get item definition by integer type ID
+	 * 
+	 * @param TypeId - Item type ID as integer
+	 * @return Item definition row, or nullptr if not found
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
+	const FEchoesItemDefinitionRow* GetItemDefinitionByTypeId(int32 TypeId) const;
+
+	/**
+	 * Async load item icon texture
+	 * Prevents UI freezes when loading many icons
+	 * 
+	 * @param ItemId - Item type ID as string
+	 * @param OnLoaded - Callback when texture is loaded
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
+	void AsyncLoadItemIcon(const FString& ItemId, FOnIconLoaded OnLoaded);
+
+	/**
+	 * Async load item world mesh
+	 * Used for ejected items in space
+	 * 
+	 * @param ItemId - Item type ID as string
+	 * @param OnLoaded - Callback when mesh is loaded
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
+	void AsyncLoadItemWorldMesh(const FString& ItemId, FOnWorldMeshLoaded OnLoaded);
+
+	/**
+	 * Check if item definition exists
+	 * 
+	 * @param ItemId - Item type ID as string
+	 * @return True if definition exists in table
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Inventory|ItemDefinitions")
+	bool HasItemDefinition(const FString& ItemId) const;
 
 	// ==================== UI Wrapper Functions ====================
 
@@ -393,4 +453,31 @@ private:
 
 	/** HTTP module reference */
 	FHttpModule* Http;
+
+	// ==================== Item Definitions ====================
+
+	/**
+	 * Data table containing item definitions
+	 * Maps TypeId to visual assets and metadata
+	 * Set this in Project Settings or Game Instance
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Definitions", meta = (AllowPrivateAccess = "true"))
+	UDataTable* ItemDefinitionsTable;
+
+	/**
+	 * Streamable manager for async asset loading
+	 * Prevents freezes when loading icons and meshes
+	 */
+	FStreamableManager StreamableManager;
+
+	/**
+	 * Cache of loaded item definitions for quick access
+	 * Key: ItemId (TypeId as string), Value: Definition row
+	 */
+	TMap<FString, const FEchoesItemDefinitionRow*> DefinitionCache;
+
+	/**
+	 * Build definition cache from data table
+	 */
+	void BuildDefinitionCache();
 };

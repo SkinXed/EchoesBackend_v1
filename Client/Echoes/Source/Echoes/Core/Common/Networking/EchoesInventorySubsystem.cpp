@@ -13,6 +13,17 @@ void UEchoesInventorySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	Http = &FHttpModule::Get();
 
+	// Build item definition cache if table is set
+	if (ItemDefinitionsTable)
+	{
+		BuildDefinitionCache();
+		UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Loaded %d item definitions"), DefinitionCache.Num());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: No ItemDefinitionsTable set"));
+	}
+
 	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem initialized"));
 }
 
@@ -821,4 +832,150 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Unexpected response code: %d"), ResponseCode);
 		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
 	}
+}
+
+// ==================== Item Definitions System ====================
+
+const FEchoesItemDefinitionRow* UEchoesInventorySubsystem::GetItemDefinition(const FString& ItemId) const
+{
+// Check cache first
+if (const FEchoesItemDefinitionRow* const* CachedDef = DefinitionCache.Find(ItemId))
+{
+return *CachedDef;
+}
+
+// If not in cache and table exists, try to find it
+if (ItemDefinitionsTable)
+{
+FName RowName(*ItemId);
+const FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("GetItemDefinition"));
+return Row;
+}
+
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item definition not found for ID: %s"), *ItemId);
+return nullptr;
+}
+
+const FEchoesItemDefinitionRow* UEchoesInventorySubsystem::GetItemDefinitionByTypeId(int32 TypeId) const
+{
+return GetItemDefinition(FString::FromInt(TypeId));
+}
+
+void UEchoesInventorySubsystem::AsyncLoadItemIcon(const FString& ItemId, FOnIconLoaded OnLoaded)
+{
+const FEchoesItemDefinitionRow* Definition = GetItemDefinition(ItemId);
+if (!Definition)
+{
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Cannot load icon - item definition not found: %s"), *ItemId);
+OnLoaded.ExecuteIfBound(nullptr);
+return;
+}
+
+// If icon is null, return null immediately
+if (Definition->Icon.IsNull())
+{
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item %s has no icon defined"), *ItemId);
+OnLoaded.ExecuteIfBound(nullptr);
+return;
+}
+
+// If already loaded, return immediately
+if (Definition->Icon.IsValid())
+{
+OnLoaded.ExecuteIfBound(Definition->Icon.Get());
+return;
+}
+
+// Load asynchronously
+FSoftObjectPath IconPath = Definition->Icon.ToSoftObjectPath();
+TSharedPtr<FStreamableHandle> Handle = StreamableManager.RequestAsyncLoad(
+IconPath,
+[OnLoaded, IconPath]()
+{
+UTexture2D* LoadedIcon = Cast<UTexture2D>(IconPath.ResolveObject());
+if (LoadedIcon)
+{
+UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Icon loaded: %s"), *IconPath.ToString());
+}
+else
+{
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Failed to load icon: %s"), *IconPath.ToString());
+}
+OnLoaded.ExecuteIfBound(LoadedIcon);
+}
+);
+}
+
+void UEchoesInventorySubsystem::AsyncLoadItemWorldMesh(const FString& ItemId, FOnWorldMeshLoaded OnLoaded)
+{
+const FEchoesItemDefinitionRow* Definition = GetItemDefinition(ItemId);
+if (!Definition)
+{
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Cannot load mesh - item definition not found: %s"), *ItemId);
+OnLoaded.ExecuteIfBound(nullptr);
+return;
+}
+
+// If mesh is null, return null immediately
+if (Definition->WorldMesh.IsNull())
+{
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item %s has no world mesh defined"), *ItemId);
+OnLoaded.ExecuteIfBound(nullptr);
+return;
+}
+
+// If already loaded, return immediately
+if (Definition->WorldMesh.IsValid())
+{
+OnLoaded.ExecuteIfBound(Definition->WorldMesh.Get());
+return;
+}
+
+// Load asynchronously
+FSoftObjectPath MeshPath = Definition->WorldMesh.ToSoftObjectPath();
+TSharedPtr<FStreamableHandle> Handle = StreamableManager.RequestAsyncLoad(
+MeshPath,
+[OnLoaded, MeshPath]()
+{
+UStaticMesh* LoadedMesh = Cast<UStaticMesh>(MeshPath.ResolveObject());
+if (LoadedMesh)
+{
+UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: World mesh loaded: %s"), *MeshPath.ToString());
+}
+else
+{
+UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Failed to load world mesh: %s"), *MeshPath.ToString());
+}
+OnLoaded.ExecuteIfBound(LoadedMesh);
+}
+);
+}
+
+bool UEchoesInventorySubsystem::HasItemDefinition(const FString& ItemId) const
+{
+return GetItemDefinition(ItemId) != nullptr;
+}
+
+void UEchoesInventorySubsystem::BuildDefinitionCache()
+{
+DefinitionCache.Empty();
+
+if (!ItemDefinitionsTable)
+{
+return;
+}
+
+// Get all row names from the data table
+TArray<FName> RowNames = ItemDefinitionsTable->GetRowNames();
+
+for (const FName& RowName : RowNames)
+{
+FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("BuildDefinitionCache"));
+if (Row)
+{
+DefinitionCache.Add(RowName.ToString(), Row);
+}
+}
+
+UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Built definition cache with %d entries"), DefinitionCache.Num());
 }

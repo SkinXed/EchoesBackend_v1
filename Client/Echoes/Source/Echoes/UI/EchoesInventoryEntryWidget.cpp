@@ -2,8 +2,11 @@
 
 #include "UI/EchoesInventoryEntryWidget.h"
 #include "UI/EchoesInventoryItemObject.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
+#include "Engine/Texture2D.h"
+#include "Engine/GameInstance.h"
 
 void UEchoesInventoryEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
@@ -27,10 +30,10 @@ void UEchoesInventoryEntryWidget::SetItemData(UEchoesInventoryItemObject* ItemOb
 
 	CurrentItemObject = ItemObject;
 
-	// Update text displays
+	// Update text displays - use item definition data if available
 	if (ItemNameText)
 	{
-		ItemNameText->SetText(FText::FromString(ItemObject->GetItemName()));
+		ItemNameText->SetText(ItemObject->GetDisplayName());
 	}
 
 	if (QuantityText)
@@ -52,11 +55,85 @@ void UEchoesInventoryEntryWidget::SetItemData(UEchoesInventoryItemObject* ItemOb
 
 	if (VolumeText)
 	{
+		// Use calculated volume from item definition
 		VolumeText->SetText(FText::FromString(ItemObject->GetFormattedTotalVolume()));
+	}
+
+	// Set placeholder icon while loading the real one
+	if (ItemIcon)
+	{
+		if (PlaceholderIcon)
+		{
+			ItemIcon->SetBrushFromTexture(PlaceholderIcon);
+		}
+		
+		// Start async icon loading
+		StartAsyncIconLoad();
 	}
 
 	// Call the Blueprint implementable event for custom display updates
 	UpdateDisplay(ItemObject);
+}
+
+void UEchoesInventoryEntryWidget::StartAsyncIconLoad()
+{
+	if (!CurrentItemObject)
+	{
+		return;
+	}
+
+	// Check if item has definition with icon
+	const FEchoesItemDefinitionRow* Definition = CurrentItemObject->GetItemDefinition();
+	if (!Definition || Definition->Icon.IsNull())
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryEntryWidget: No icon defined for item %d"), CurrentItemObject->GetTypeId());
+		return;
+	}
+
+	// If icon is already loaded, use it immediately
+	if (Definition->Icon.IsValid())
+	{
+		if (ItemIcon)
+		{
+			ItemIcon->SetBrushFromTexture(Definition->Icon.Get());
+		}
+		OnIconLoaded(Definition->Icon.Get());
+		return;
+	}
+
+	// Get inventory subsystem for async loading
+	UGameInstance* GameInstance = GetGameInstance();
+	if (!GameInstance)
+	{
+		return;
+	}
+
+	UEchoesInventorySubsystem* InventorySubsystem = GameInstance->GetSubsystem<UEchoesInventorySubsystem>();
+	if (!InventorySubsystem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventoryEntryWidget: No inventory subsystem available"));
+		return;
+	}
+
+	// Start async load
+	FString ItemIdStr = FString::FromInt(CurrentItemObject->GetTypeId());
+	InventorySubsystem->AsyncLoadItemIcon(
+		ItemIdStr,
+		FOnIconLoaded::CreateUObject(this, &UEchoesInventoryEntryWidget::HandleIconLoaded)
+	);
+}
+
+void UEchoesInventoryEntryWidget::HandleIconLoaded(UTexture2D* LoadedIcon)
+{
+	if (LoadedIcon && ItemIcon)
+	{
+		ItemIcon->SetBrushFromTexture(LoadedIcon);
+		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryEntryWidget: Icon loaded for item %d"), 
+			CurrentItemObject ? CurrentItemObject->GetTypeId() : 0);
+	}
+
+	// Notify Blueprint
+	OnIconLoaded(LoadedIcon);
 }
 
 void UEchoesInventoryEntryWidget::UpdateDisplay_Implementation(UEchoesInventoryItemObject* ItemObject)
