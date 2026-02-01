@@ -262,6 +262,41 @@ public class CharacterController : ControllerBase
             var startingShip = await _context.ItemTypesInventory
                 .FirstOrDefaultAsync(i => i.TypeId == raceConfig.DefaultShipTypeId);
 
+            // Resolve starting station and solar system
+            var startingStation = await _context.Stations
+                .FirstOrDefaultAsync(s => s.Id == raceConfig.StartingStationId);
+
+            if (startingStation == null)
+            {
+                // TODO: Fix race_configs.StartingStationId values. This fallback is for testing only.
+                startingStation = await _context.Stations
+                    .FirstOrDefaultAsync(s => s.SolarSystemId != Guid.Empty);
+
+                if (startingStation == null)
+                {
+                    return BadRequest(new { error = "Starting station not found for selected race" });
+                }
+            }
+
+            Guid startingSystemId = raceConfig.StartingSystemId;
+            if (startingSystemId == Guid.Empty)
+            {
+                if (startingStation.SolarSystemId == Guid.Empty)
+                {
+                    return BadRequest(new { error = "Starting station has no solar system" });
+                }
+
+                startingSystemId = startingStation.SolarSystemId;
+            }
+
+            var solarSystemExists = await _context.SolarSystems
+                .AnyAsync(s => s.Id == startingSystemId);
+
+            if (!solarSystemExists)
+            {
+                return BadRequest(new { error = "Starting solar system not found for selected race" });
+            }
+
             // Create new character
             var character = new Models.Entities.Character.Character
             {
@@ -271,7 +306,7 @@ public class CharacterController : ControllerBase
                 RaceId = request.RaceId,
                 BloodlineId = request.BloodlineId,
                 AncestryId = request.AncestryId,
-                HomeStationId = raceConfig.StartingStationId,
+                HomeStationId = startingStation.Id,
                 WalletBalance = raceConfig.StartingISK,
                 SecurityStatus = 0.0f,
                 TotalSkillPoints = 0,
@@ -291,8 +326,8 @@ public class CharacterController : ControllerBase
             {
                 Id = Guid.NewGuid(),
                 CharacterId = character.Id,
-                StationId = raceConfig.StartingStationId,
-                SolarSystemId = raceConfig.StartingSystemId,
+                StationId = startingStation.Id,
+                SolarSystemId = startingSystemId,
                 LocationType = Models.Enums.LocationType.Docked,
                 IsDocked = true,
                 InWarp = false,

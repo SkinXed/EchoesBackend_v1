@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EchoesWindowBase.h"
+#include "Blueprint/UserWidget.h"
 #include "../Core/Common/Networking/EchoesAuthSubsystem.h"
 #include "EchoesCharacterSelectWidget.generated.h"
 
@@ -12,6 +12,9 @@ class UButton;
 class UTextBlock;
 class UEditableTextBox;
 class UComboBoxString;
+class UProgressBar;
+class UEchoesAuthSubsystem;
+class UWidget;
 
 /**
  * Character list item data
@@ -37,7 +40,7 @@ public:
  * Inherits from UEchoesWindowBase for drag/focus support
  */
 UCLASS()
-class ECHOES_API UEchoesCharacterSelectWidget : public UEchoesWindowBase
+class ECHOES_API UEchoesCharacterSelectWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -91,6 +94,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* CancelCreateButton;
+
+	UPROPERTY(meta = (BindWidget, OptionalWidget = true))
+	UWidget* CreationPanel;
 
 	// ==================== Blueprint Events ====================
 
@@ -177,4 +183,10 @@ private:
 
 	/** Is operation in progress? */
 	bool bOperationInProgress = false;
+
+	UFUNCTION()
+	void HandleCharacterCreated(const FCharacterData& CharacterData);
+
+	UFUNCTION()
+	void HandleCharacterCreationFailed(const FString& ErrorMessage);
 };

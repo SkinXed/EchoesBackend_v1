@@ -275,6 +275,16 @@ public:
 		TFunction<void(const FCharacterData&)> OnSuccess,
 		TFunction<void(const FString&)> OnFailure);
 
+	/**
+	 * Set auth session data from token validation
+	 */
+	void SetAuthSession(
+		const FString& Token,
+		const FGuid& AccountId,
+		const FGuid& CharacterId,
+		const FString& CharacterName,
+		const TArray<FCharacterInfo>& Characters);
+
 protected:
 	// ==================== HTTP Request Handlers ====================
 

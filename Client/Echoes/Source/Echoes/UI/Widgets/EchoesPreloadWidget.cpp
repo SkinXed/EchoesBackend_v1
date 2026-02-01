@@ -189,10 +189,41 @@ void UEchoesPreloadWidget::OnTokenValidationResponse(FHttpRequestPtr Request, FH
 		{
 			UE_LOG(LogTemp, Log, TEXT("Token validated successfully"));
 
+			FGuid AccountId;
+			FGuid CharacterId;
+			FGuid::Parse(JsonObject->GetStringField(TEXT("accountId")), AccountId);
+			FGuid::Parse(JsonObject->GetStringField(TEXT("characterId")), CharacterId);
+			FString CharacterName = JsonObject->GetStringField(TEXT("characterName"));
+
+			TArray<FCharacterInfo> Characters;
+			const TArray<TSharedPtr<FJsonValue>>* CharactersArray;
+			if (JsonObject->TryGetArrayField(TEXT("characters"), CharactersArray))
+			{
+				for (const TSharedPtr<FJsonValue>& CharValue : *CharactersArray)
+				{
+					const TSharedPtr<FJsonObject>& CharObj = CharValue->AsObject();
+					if (CharObj.IsValid())
+					{
+						FCharacterInfo CharInfo;
+						FGuid::Parse(CharObj->GetStringField(TEXT("characterId")), CharInfo.CharacterId);
+						CharInfo.Name = CharObj->GetStringField(TEXT("name"));
+						CharInfo.WalletBalance = CharObj->GetNumberField(TEXT("walletBalance"));
+						if (CharObj->HasField(TEXT("currentShipId")) && !CharObj->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
+						{
+							CharInfo.CurrentShipId = CharObj->GetNumberField(TEXT("currentShipId"));
+						}
+						CharInfo.IsMain = CharObj->GetBoolField(TEXT("isMain"));
+						CharInfo.IsOnline = CharObj->GetBoolField(TEXT("isOnline"));
+						Characters.Add(CharInfo);
+					}
+				}
+			}
+
+			AuthSubsystem->SetAuthSession(SavedToken, AccountId, CharacterId, CharacterName, Characters);
+
 			UpdateStatus("Welcome back!", 1.0f);
 			CurrentState = EPreloadState::Success;
 
-			// Задержка для красоты
 			FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(
 				TimerHandle,

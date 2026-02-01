@@ -793,3 +793,22 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 		OnConnectInfoFailed.Broadcast(TEXT("Failed to get connection info"));
 	}
 }
+
+void UEchoesAuthSubsystem::SetAuthSession(
+	const FString& Token,
+	const FGuid& AccountId,
+	const FGuid& CharacterId,
+	const FString& CharacterName,
+	const TArray<FCharacterInfo>& Characters)
+{
+	JWTToken = Token;
+	CurrentAuthResponse = FAuthResponse();
+	CurrentAuthResponse.Success = true;
+	CurrentAuthResponse.Token = Token;
+	CurrentAuthResponse.AccountId = AccountId;
+	CurrentAuthResponse.CharacterId = CharacterId;
+	CurrentAuthResponse.CharacterName = CharacterName;
+	CurrentAuthResponse.Characters = Characters;
+
+	UE_LOG(LogTemp, Log, TEXT("AuthSubsystem: Session cached. Characters=%d"), Characters.Num());
+}
