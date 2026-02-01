@@ -1,4 +1,5 @@
 using Echoes.API.Models.Config;
+using Echoes.API.Models.Entities.Universe;
 using Microsoft.EntityFrameworkCore;
 
 namespace Echoes.API.Data.SeedData

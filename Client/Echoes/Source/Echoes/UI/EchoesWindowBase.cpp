@@ -18,7 +18,7 @@ UEchoesWindowBase::UEchoesWindowBase(const FObjectInitializer& ObjectInitializer
 	: Super(ObjectInitializer)
 {
 	// Enable mouse events
-	bIsFocusable = true;
+	SetIsFocusable(true);
 }
 
 void UEchoesWindowBase::NativeConstruct()

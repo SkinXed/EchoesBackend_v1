@@ -308,6 +308,11 @@ namespace Echoes.API.Controllers
                         return Ok(new TokenValidationDto { IsValid = false, Error = "Session expired or invalid" });
                     }
 
+                    if (!session.CharacterId.HasValue || session.Character == null)
+                    {
+                        return Ok(new TokenValidationDto { IsValid = false, Error = "Session has no character" });
+                    }
+
                     // Update last activity
                     session.LastActivity = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
@@ -330,7 +335,7 @@ namespace Echoes.API.Controllers
                     {
                         IsValid = true,
                         AccountId = session.AccountId,
-                        CharacterId = session.CharacterId,
+                        CharacterId = session.CharacterId.Value,
                         CharacterName = session.Character.Name,
                         Characters = characters
                     });

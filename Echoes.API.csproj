@@ -34,7 +34,6 @@
 
   <ItemGroup>
     <ProjectReference Include="EchoesOfImperial.Shared\EchoesOfImperial.Shared.csproj" />
-    <ProjectReference Include="EchoesOfImperial.Client\EchoesOfImperial.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,24 +54,5 @@
     <EmbeddedResource Remove="Client\**" />
     <None Remove="Client\**" />
   </ItemGroup>
-
-  <!-- Build and publish Blazor client to API wwwroot -->
-  <Target Name="PublishBlazorClient" AfterTargets="Build">
-    <!-- Clean and create wwwroot directory -->
-    <RemoveDir Directories="$(MSBuildProjectDirectory)/wwwroot" />
-    <MakeDir Directories="$(MSBuildProjectDirectory)/wwwroot" />
-    
-    <!-- Publish the Blazor client to a temp directory -->
-    <Exec Command="dotnet publish $(MSBuildProjectDirectory)/EchoesOfImperial.Client/EchoesOfImperial.Client.csproj -c $(Configuration) -o $(MSBuildProjectDirectory)/temp-blazor-publish" />
-    
-    <!-- Copy all files from temp publish wwwroot to API wwwroot -->
-    <ItemGroup>
-      <BlazorPublishedFiles Include="$(MSBuildProjectDirectory)/temp-blazor-publish/wwwroot/**/*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(BlazorPublishedFiles)" DestinationFolder="$(MSBuildProjectDirectory)/wwwroot/%(RecursiveDir)" />
-    
-    <!-- Clean up temp directory -->
-    <RemoveDir Directories="$(MSBuildProjectDirectory)/temp-blazor-publish" />
-  </Target>
 
 </Project>

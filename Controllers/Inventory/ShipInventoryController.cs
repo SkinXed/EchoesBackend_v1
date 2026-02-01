@@ -57,7 +57,7 @@ public class ShipInventoryController : ControllerBase
                     Name = s.Name,
                     ShipTypeId = s.ShipTypeId,
                     ShipTypeName = s.ShipType.Name,
-                    Mass = s.ShipType.BaseMass,
+                    Mass = (float)s.ShipType.BaseMass,
                     LocationSystemId = s.LocationSystemId,
                     LocationName = "", // TODO: Get from system data
                     IsActive = s.IsActive,
@@ -110,9 +110,9 @@ public class ShipInventoryController : ControllerBase
             }
 
             // Calculate total mass and bonuses
-            float totalMass = ship.ShipType.BaseMass;
-            float totalThrust = ship.ShipType.BaseThrust;
-            float inertiaMod = ship.ShipType.BaseInertiaMultiplier;
+            float totalMass = (float)ship.ShipType.BaseMass;
+            float totalThrust = (float)ship.ShipType.Thrust;
+            float inertiaMod = (float)ship.ShipType.InertiaMultiplier;
             float rotationBonus = 0f;
             float maxVelMod = 1.0f;
 
@@ -120,11 +120,11 @@ public class ShipInventoryController : ControllerBase
 
             foreach (var module in ship.FittedModules)
             {
-                totalMass += module.Mass;
-                totalThrust += module.ThrustBonus;
-                inertiaMod *= module.InertiaModifier;
-                rotationBonus += module.RotationBonus;
-                maxVelMod *= module.MaxVelocityModifier;
+                totalMass += (float)module.Mass;
+                totalThrust += (float)module.ThrustBonus;
+                inertiaMod *= (float)module.InertiaModifier;
+                rotationBonus += (float)module.RotationBonus;
+                maxVelMod *= (float)module.MaxVelocityModifier;
 
                 modules.Add(new ModuleInstanceDto
                 {
@@ -134,11 +134,11 @@ public class ShipInventoryController : ControllerBase
                     Slot = module.Slot,
                     SlotIndex = module.SlotIndex,
                     IsOnline = module.IsOnline,
-                    Mass = module.Mass,
-                    ThrustBonus = module.ThrustBonus,
-                    InertiaModifier = module.InertiaModifier,
-                    RotationBonus = module.RotationBonus,
-                    MaxVelocityModifier = module.MaxVelocityModifier
+                    Mass = (float)module.Mass,
+                    ThrustBonus = (float)module.ThrustBonus,
+                    InertiaModifier = (float)module.InertiaModifier,
+                    RotationBonus = (float)module.RotationBonus,
+                    MaxVelocityModifier = (float)module.MaxVelocityModifier
                 });
             }
 
@@ -148,12 +148,12 @@ public class ShipInventoryController : ControllerBase
                 ShipName = ship.Name,
                 ShipTypeId = ship.ShipTypeId,
                 ShipTypeName = ship.ShipType.Name,
-                BaseMass = ship.ShipType.BaseMass,
+                BaseMass = (float)ship.ShipType.BaseMass,
                 TotalMass = totalMass,
                 Thrust = totalThrust,
-                MaxVelocity = ship.ShipType.BaseMaxVelocity * maxVelMod,
+                MaxVelocity = (float)ship.ShipType.MaxVelocity * maxVelMod,
                 InertiaMultiplier = inertiaMod,
-                RotationTorque = ship.ShipType.BaseRotationTorque + rotationBonus,
+                RotationTorque = (float)ship.ShipType.RotationSpeed + rotationBonus,
                 Modules = modules
             };
 
@@ -348,11 +348,16 @@ public class ShipInventoryController : ControllerBase
 
             // Verify module belongs to character
             var module = await _context.ShipInstanceModules
-                .FirstOrDefaultAsync(m => m.Id == moduleId && m.CharacterId == characterId);
+                .FirstOrDefaultAsync(m => m.Id == moduleId);
 
             if (module == null)
             {
                 return NotFound(new { error = "Module not found or does not belong to you" });
+            }
+
+            if (module.ShipInstanceId.HasValue && module.ShipInstanceId != shipId)
+            {
+                return BadRequest(new { error = "Module is already fitted to another ship" });
             }
 
             // Validate slot type
@@ -364,7 +369,7 @@ public class ShipInventoryController : ControllerBase
 
             // Check if slot is already occupied
             var existingModuleInSlot = ship.FittedModules
-                .FirstOrDefault(m => m.SlotType == request.SlotType && m.SlotIndex == request.SlotIndex);
+                .FirstOrDefault(m => m.Slot == request.SlotType && m.SlotIndex == request.SlotIndex);
 
             if (existingModuleInSlot != null)
             {
@@ -377,7 +382,7 @@ public class ShipInventoryController : ControllerBase
 
             // Update module
             module.ShipInstanceId = shipId;
-            module.SlotType = request.SlotType;
+            module.Slot = request.SlotType;
             module.SlotIndex = request.SlotIndex;
             module.IsOnline = true;
 
@@ -438,7 +443,6 @@ public class ShipInventoryController : ControllerBase
             var module = await _context.ShipInstanceModules
                 .FirstOrDefaultAsync(m => 
                     m.Id == moduleId && 
-                    m.CharacterId == characterId && 
                     m.ShipInstanceId == shipId);
 
             if (module == null)
@@ -448,8 +452,8 @@ public class ShipInventoryController : ControllerBase
 
             // Unfit the module (return to cargo)
             module.ShipInstanceId = null;
-            module.SlotType = null;
-            module.SlotIndex = null;
+            module.Slot = string.Empty;
+            module.SlotIndex = 0;
             module.IsOnline = false;
 
             await _context.SaveChangesAsync();

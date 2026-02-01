@@ -14,7 +14,7 @@ namespace Echoes.API.Models.Entities.Inventory
 
         [Column("ship_instance_id")]
         [ForeignKey(nameof(ShipInstance))]
-        public Guid ShipInstanceId { get; set; }
+        public Guid? ShipInstanceId { get; set; }
 
         /// <summary>
         /// Module type ID from static data
@@ -77,6 +77,6 @@ namespace Echoes.API.Models.Entities.Inventory
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation properties
-        public virtual ShipInstance ShipInstance { get; set; } = null!;
+        public virtual ShipInstance? ShipInstance { get; set; } = null!;
     }
 }
