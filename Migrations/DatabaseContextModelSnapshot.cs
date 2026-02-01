@@ -22,6 +22,55 @@ namespace Echoes.API.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Echoes.API.Models.Config.RaceConfig", b =>
+                {
+                    b.Property<int>("RaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RaceId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DefaultShipTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("RaceBonuses")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("RaceName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<long>("StartingISK")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("StartingSkillPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("StartingStationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StartingSystemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("RaceId");
+
+                    b.ToTable("race_configs");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Account", b =>
                 {
                     b.Property<Guid>("AccountId")
@@ -525,6 +574,9 @@ namespace Echoes.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<Guid?>("HomeStationId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("InWarp")
                         .HasColumnType("boolean");
@@ -2275,6 +2327,10 @@ namespace Echoes.API.Migrations
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("base_cpu");
 
+                    b.Property<decimal>("BaseMass")
+                        .HasColumnType("numeric")
+                        .HasColumnName("base_mass");
+
                     b.Property<decimal>("BasePowergrid")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)")
@@ -2322,9 +2378,17 @@ namespace Echoes.API.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("high_slots");
 
+                    b.Property<decimal>("InertiaMultiplier")
+                        .HasColumnType("numeric")
+                        .HasColumnName("inertia_multiplier");
+
                     b.Property<int>("LowSlots")
                         .HasColumnType("integer")
                         .HasColumnName("low_slots");
+
+                    b.Property<decimal>("MaxVelocity")
+                        .HasColumnType("numeric")
+                        .HasColumnName("max_velocity");
 
                     b.Property<int>("MediumSlots")
                         .HasColumnType("integer")
@@ -2344,6 +2408,10 @@ namespace Echoes.API.Migrations
                     b.Property<int>("RigSlots")
                         .HasColumnType("integer")
                         .HasColumnName("rig_slots");
+
+                    b.Property<decimal>("RotationSpeed")
+                        .HasColumnType("numeric")
+                        .HasColumnName("rotation_speed");
 
                     b.Property<decimal>("ShieldResistanceEm")
                         .HasPrecision(5, 3)
@@ -2404,11 +2472,19 @@ namespace Echoes.API.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("tech_level");
 
+                    b.Property<decimal>("Thrust")
+                        .HasColumnType("numeric")
+                        .HasColumnName("thrust");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<decimal>("WarpSpeed")
+                        .HasColumnType("numeric")
+                        .HasColumnName("warp_speed");
 
                     b.HasKey("ShipTypeId");
 
@@ -2459,6 +2535,114 @@ namespace Echoes.API.Migrations
                     b.HasIndex("ShipAssetId");
 
                     b.ToTable("ship_fittings");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipInstance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("character_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool>("IsDocked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_docked");
+
+                    b.Property<Guid?>("LocationSystemId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("location_system_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("ShipTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ship_type_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("ShipTypeId");
+
+                    b.ToTable("ship_instances");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipInstanceModule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<decimal>("InertiaModifier")
+                        .HasColumnType("numeric")
+                        .HasColumnName("inertia_modifier");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_online");
+
+                    b.Property<decimal>("Mass")
+                        .HasColumnType("numeric")
+                        .HasColumnName("mass");
+
+                    b.Property<decimal>("MaxVelocityModifier")
+                        .HasColumnType("numeric")
+                        .HasColumnName("max_velocity_modifier");
+
+                    b.Property<int>("ModuleTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("module_type_id");
+
+                    b.Property<decimal>("RotationBonus")
+                        .HasColumnType("numeric")
+                        .HasColumnName("rotation_bonus");
+
+                    b.Property<Guid?>("ShipInstanceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ship_instance_id");
+
+                    b.Property<string>("Slot")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("slot");
+
+                    b.Property<int>("SlotIndex")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot_index");
+
+                    b.Property<decimal>("ThrustBonus")
+                        .HasColumnType("numeric")
+                        .HasColumnName("thrust_bonus");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipInstanceId");
+
+                    b.ToTable("ship_instance_modules");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Shop.ShopItem", b =>
@@ -3758,6 +3942,34 @@ namespace Echoes.API.Migrations
                     b.Navigation("ShipAsset");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipInstance", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.Character", "Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.Ship", "ShipType")
+                        .WithMany()
+                        .HasForeignKey("ShipTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+
+                    b.Navigation("ShipType");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipInstanceModule", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Inventory.ShipInstance", "ShipInstance")
+                        .WithMany("FittedModules")
+                        .HasForeignKey("ShipInstanceId");
+
+                    b.Navigation("ShipInstance");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Universe.AsteroidBelt", b =>
                 {
                     b.HasOne("Echoes.API.Models.Entities.Universe.SolarSystem", "SolarSystem")
@@ -4000,6 +4212,11 @@ namespace Echoes.API.Migrations
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipFitting", b =>
+                {
+                    b.Navigation("FittedModules");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Inventory.ShipInstance", b =>
                 {
                     b.Navigation("FittedModules");
                 });

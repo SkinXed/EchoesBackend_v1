@@ -16,7 +16,16 @@ using System.Net;
 using System.Text;
 using System.Threading.RateLimiting;
 
-var builder = WebApplication.CreateBuilder(args);
+var contentRoot = Directory.GetCurrentDirectory();
+var apiWebRootPath = Path.Combine(contentRoot, "api-webroot");
+Directory.CreateDirectory(apiWebRootPath);
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = contentRoot,
+    WebRootPath = apiWebRootPath
+});
 
 // ==============================================
 // 0. KESTREL CONFIGURATION (Must be before building app)
@@ -332,8 +341,13 @@ else
 
 // 4.2. Middleware pipeline
 //app.UseHttpsRedirection();
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+var webRootPath = app.Environment.WebRootPath;
+if (Directory.Exists(webRootPath))
+{
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
+}
+
 app.UseRouting();
 app.UseResponseCaching(); // Должен быть до UseAuthorization
 app.UseCors("AllowAll");
@@ -464,7 +478,10 @@ app.Map("/error", () => Results.Problem("An error occurred on the server"));
 app.MapControllers();
 
 // 4.6. Fallback to Blazor app for client-side routing
-app.MapFallbackToFile("index.html");
+if (Directory.Exists(webRootPath))
+{
+    app.MapFallbackToFile("index.html");
+}
 
 // ==============================================
 // 5. DATABASE AND UNIVERSE INITIALIZATION
@@ -783,3 +800,5 @@ async Task PrintDetailedStatsAsync(IUniverseGenerator universeGenerator)
         Console.WriteLine($"⚠️ Detailed statistics unavailable: {ex.Message}");
     }
 }
+
+builder.WebHost.UseContentRoot(Path.GetDirectoryName(typeof(Program).Assembly.Location)!);
