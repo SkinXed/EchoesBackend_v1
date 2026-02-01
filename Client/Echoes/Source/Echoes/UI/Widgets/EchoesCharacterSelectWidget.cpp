@@ -161,9 +161,15 @@ void UEchoesCharacterSelectWidget::OnRaceSelectionChanged(FString SelectedItem, 
 
 void UEchoesCharacterSelectWidget::OnCharacterSelected(FGuid CharacterId)
 {
-	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: OnCharacterSelected %s"), *CharacterId.ToString());
-	SetStatusText("Loading character...", FLinearColor::Yellow);
-	UE_LOG(LogTemp, Warning, TEXT("Character selected: %s"), *CharacterId.ToString());
+	SetStatusText("Initiating Warp Drive...", FLinearColor::Green);
+	
+	// Формируем URL параметры для GameMode сервера
+	FString Options = "?CharacterId=" + CharacterId.ToString();
+	
+	UE_LOG(LogTemp, Log, TEXT("UI: Travel to GalaxyMap with Options: %s"), *Options);
+
+	// Абсолютный переход (Travel)
+	UGameplayStatics::OpenLevel(this, FName("GalaxyMap"), true, Options);
 }
 
 void UEchoesCharacterSelectWidget::LoadCharacters()
