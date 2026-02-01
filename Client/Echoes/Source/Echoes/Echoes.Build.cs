@@ -1,41 +1,49 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-using UnrealBuildTool;
+﻿using UnrealBuildTool;
+using System.IO;
 
 public class Echoes : ModuleRules
 {
-	public Echoes(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+    public Echoes(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicIncludePaths.AddRange(new string[] {
-			ModuleDirectory
-		});
+        // 1. БАЗОВЫЕ МОДУЛИ
+        PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "EnhancedInput",
+            "HTTP",
+            "Json",
+            "JsonUtilities",
+            "Niagara",
+            "UMG",
+            "Slate",
+            "SlateCore"
+        });
 
-		PrivateIncludePaths.AddRange(new string[] {
-			ModuleDirectory
-		});
+        // 2. АВТОМАТИЧЕСКИЙ БИНДИНГ ПУТЕЙ
+        // Добавляем корневую директорию модуля
+        PublicIncludePaths.Add(ModuleDirectory);
 
-		PublicDependencyModuleNames.AddRange(new string[] { 
-			"Core", 
-			"CoreUObject", 
-			"Engine", 
-			"InputCore",
-			"EnhancedInput", // For Enhanced Input System
-			"HTTP", // For HTTP requests
-			"Json", // For JSON parsing
-			"JsonUtilities", // For JSON utilities
-			"Niagara", // For Niagara VFX system
-			"UMG", // For UMG widgets
-			"Slate", // For Slate UI
-			"SlateCore" // For Slate core functionality
-		});
+        // Рекурсивно сканируем Core и UI, чтобы все подпапки (Server, Client, Widgets и т.д.) 
+        // были доступны по короткому имени файла в #include
+        AddAllSubdirectories(Path.Combine(ModuleDirectory, "Core"));
+        AddAllSubdirectories(Path.Combine(ModuleDirectory, "UI"));
+    }
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
-		
-		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
+    // Вспомогательная функция для чистой архитектуры: 
+    // Добавляет папку и все её подпапки в пути инклудов
+    private void AddAllSubdirectories(string StartDir)
+    {
+        if (!Directory.Exists(StartDir)) return;
 
-		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
-	}
+        PublicIncludePaths.Add(StartDir);
+
+        foreach (string Dir in Directory.GetDirectories(StartDir, "*", SearchOption.AllDirectories))
+        {
+            PublicIncludePaths.Add(Dir);
+        }
+    }
 }

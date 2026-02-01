@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesShipTypes.h"
+#include "EchoesShipTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -46,7 +46,7 @@ struct Z_Construct_UEnum_Echoes_EWarpState_Statics
 		{ "Exiting.Name", "EWarpState::Exiting" },
 		{ "Idle.DisplayName", "Idle" },
 		{ "Idle.Name", "EWarpState::Idle" },
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Warp state enum - mirrors ship warp lifecycle\nUsed by movement component to track warp progression" },
 #endif
@@ -102,7 +102,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Ship statistics struct\n * MIRRORS C# ShipStatsDto - Keep in sync with backend!\n * Used to initialize ship physics from backend data\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship statistics struct\nMIRRORS C# ShipStatsDto - Keep in sync with backend!\nUsed to initialize ship physics from backend data" },
 #endif
@@ -112,7 +112,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Total mass including base mass and all module masses (kg) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Total mass including base mass and all module masses (kg)" },
 #endif
@@ -122,7 +122,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Base mass without modules (kg) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Base mass without modules (kg)" },
 #endif
@@ -132,7 +132,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Thrust force in Newtons */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Thrust force in Newtons" },
 #endif
@@ -142,7 +142,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum rotation speed in degrees per second */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum rotation speed in degrees per second" },
 #endif
@@ -152,7 +152,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum warp speed multiplier (AU/s) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum warp speed multiplier (AU/s)" },
 #endif
@@ -162,7 +162,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Inertia multiplier affecting acceleration/deceleration */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Inertia multiplier affecting acceleration/deceleration" },
 #endif
@@ -172,7 +172,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum velocity in meters per second */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum velocity in meters per second" },
 #endif
@@ -182,7 +182,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Agility modifier (lower is more agile) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Agility modifier (lower is more agile)" },
 #endif
@@ -192,7 +192,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ship instance ID from backend */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship instance ID from backend" },
 #endif
@@ -202,7 +202,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ship instance name */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship instance name" },
 #endif
@@ -212,7 +212,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ship type ID from backend */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship type ID from backend" },
 #endif
@@ -222,7 +222,7 @@ struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ship type name */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesShipTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship type name" },
 #endif
@@ -298,19 +298,19 @@ UScriptStruct* Z_Construct_UScriptStruct_FEchoesShipStats()
 // ********** End ScriptStruct FEchoesShipStats ****************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h__Script_Echoes_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EWarpState_StaticEnum, TEXT("EWarpState"), &Z_Registration_Info_UEnum_EWarpState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3995642217U) },
+		{ EWarpState_StaticEnum, TEXT("EWarpState"), &Z_Registration_Info_UEnum_EWarpState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 1203776617U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FEchoesShipStats::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipStats_Statics::NewStructOps, TEXT("EchoesShipStats"), &Z_Registration_Info_UScriptStruct_FEchoesShipStats, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipStats), 652073936U) },
+		{ FEchoesShipStats::StaticStruct, Z_Construct_UScriptStruct_FEchoesShipStats_Statics::NewStructOps, TEXT("EchoesShipStats"), &Z_Registration_Info_UScriptStruct_FEchoesShipStats, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesShipStats), 2315152803U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h__Script_Echoes_3684901931(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h__Script_Echoes_3893100305(TEXT("/Script/Echoes"),
 	nullptr, 0,
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h__Script_Echoes_Statics::ScriptStructInfo),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h__Script_Echoes_Statics::EnumInfo));
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h__Script_Echoes_Statics::ScriptStructInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h__Script_Echoes_Statics::EnumInfo));
 // ********** End Registration *********************************************************************
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

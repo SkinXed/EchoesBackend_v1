@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesItemActor.h"
-#include "Core/Common/EchoesItemDefinitions.h"
+#include "EchoesItemActor.h"
+#include "EchoesItemDefinitions.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -40,7 +40,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetInstanceId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the instance ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the instance ID" },
 #endif
@@ -88,7 +88,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the inventory component\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the inventory component" },
 #endif
@@ -139,7 +139,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item definition data for Blueprints\n\x09 * @return Definition data if cached, otherwise default-constructed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item definition data for Blueprints\n@return Definition data if cached, otherwise default-constructed" },
 #endif
@@ -149,7 +149,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesItemActor_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 987535441
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesItemActor_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 590939204
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::NewProp_ReturnValue,
 };
@@ -187,7 +187,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetItemId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item type ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item type ID" },
 #endif
@@ -235,7 +235,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetRemainingLifetime_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get remaining lifetime in seconds\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get remaining lifetime in seconds" },
 #endif
@@ -283,7 +283,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_IsContainer_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if this is a container (has inventory)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if this is a container (has inventory)" },
 #endif
@@ -338,7 +338,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_OnItemInitialized_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when item is initialized\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when item is initialized" },
 #endif
@@ -366,7 +366,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_OnLifetimeExpired_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle lifetime expiration\n\x09 * Destroys the actor when lifetime expires\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle lifetime expiration\nDestroys the actor when lifetime expires" },
 #endif
@@ -405,7 +405,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_OnMeshLoaded_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle mesh loaded callback\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle mesh loaded callback" },
 #endif
@@ -462,7 +462,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_OnPlayerInteracted_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when player interacts\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when player interacts" },
 #endif
@@ -498,7 +498,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_OnRep_ItemId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Replication notification */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Replication notification" },
 #endif
@@ -542,7 +542,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_ServerOnly_InitializeItem_Statics
 #endif
 		{ "CPP_Default_Quantity", "1" },
 		{ "DisplayName", "ServerOnly InitializeItem" },
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "SERVER ONLY: Initialize the item actor with item definition\nLoads mesh asynchronously and configures components\n\n@param ItemId - Item type ID from database (as string)\n@param InstanceId - Unique instance ID for this spawned item\n@param Quantity - Quantity of items in this container" },
 #endif
@@ -605,7 +605,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_SetLifetime_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set the item lifetime before auto-despawn\n\x09 * \n\x09 * @param LifetimeSeconds - Time in seconds (default: 7200 = 2 hours)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set the item lifetime before auto-despawn\n\n@param LifetimeSeconds - Time in seconds (default: 7200 = 2 hours)" },
 #endif
@@ -696,8 +696,8 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AEchoesItemActor\n * \n * Universal actor for representing items and containers in space\n * Can represent:\n * - Ejected loot containers\n * - Jettisoned cargo\n * - Wrecks with loot\n * - Deployable containers\n * \n * Features:\n * - Dynamic mesh loading based on item definition\n * - Physics simulation for drifting in space\n * - Inventory storage via UEchoesInventoryComponent\n * - Interaction system for looting\n * - Replication for multiplayer\n * - Auto-despawn after configurable lifetime\n * \n * Architecture:\n * - Server spawns and initializes\n * - Mesh loads asynchronously\n * - Physics enabled for realistic drift\n * - Players can interact within range\n * - Inventory synced via component\n * - Auto-cleanup after lifetime expires\n */" },
 #endif
-		{ "IncludePath", "Core/Common/EchoesItemActor.h" },
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "IncludePath", "Core/Common/Actor/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AEchoesItemActor\n\nUniversal actor for representing items and containers in space\nCan represent:\n- Ejected loot containers\n- Jettisoned cargo\n- Wrecks with loot\n- Deployable containers\n\nFeatures:\n- Dynamic mesh loading based on item definition\n- Physics simulation for drifting in space\n- Inventory storage via UEchoesInventoryComponent\n- Interaction system for looting\n- Replication for multiplayer\n- Auto-despawn after configurable lifetime\n\nArchitecture:\n- Server spawns and initializes\n- Mesh loads asynchronously\n- Physics enabled for realistic drift\n- Players can interact within range\n- Inventory synced via component\n- Auto-cleanup after lifetime expires" },
 #endif
@@ -708,7 +708,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 		{ "Comment", "/** Visual mesh component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual mesh component" },
 #endif
@@ -719,7 +719,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 		{ "Comment", "/** Interaction collision sphere */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Interaction collision sphere" },
 #endif
@@ -730,7 +730,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 		{ "Comment", "/** Inventory storage component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Inventory storage component" },
 #endif
@@ -740,7 +740,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Item type ID from database (replicated) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Item type ID from database (replicated)" },
 #endif
@@ -750,7 +750,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Instance ID for this spawned item (replicated) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Instance ID for this spawned item (replicated)" },
 #endif
@@ -760,7 +760,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Quantity of items (for stacks) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Quantity of items (for stacks)" },
 #endif
@@ -770,7 +770,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum interaction distance (in cm) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum interaction distance (in cm)" },
 #endif
@@ -780,7 +780,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Lifetime before auto-despawn (in seconds, 0 = never despawn) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Lifetime before auto-despawn (in seconds, 0 = never despawn)" },
 #endif
@@ -790,7 +790,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether to enable physics simulation */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether to enable physics simulation" },
 #endif
@@ -800,7 +800,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether to apply initial random velocity */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether to apply initial random velocity" },
 #endif
@@ -810,7 +810,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum random velocity magnitude (cm/s) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum random velocity magnitude (cm/s)" },
 #endif
@@ -820,7 +820,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether this item is a container with inventory */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/EchoesItemActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether this item is a container with inventory" },
 #endif
@@ -844,19 +844,19 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AEchoesItemActor_GetInstanceId, "GetInstanceId" }, // 1247060346
-		{ &Z_Construct_UFunction_AEchoesItemActor_GetInventoryComponent, "GetInventoryComponent" }, // 2070979764
-		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData, "GetItemDefinitionData" }, // 2766042347
-		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemId, "GetItemId" }, // 725325789
-		{ &Z_Construct_UFunction_AEchoesItemActor_GetRemainingLifetime, "GetRemainingLifetime" }, // 3756903387
-		{ &Z_Construct_UFunction_AEchoesItemActor_IsContainer, "IsContainer" }, // 2376058612
-		{ &Z_Construct_UFunction_AEchoesItemActor_OnItemInitialized, "OnItemInitialized" }, // 3097694575
-		{ &Z_Construct_UFunction_AEchoesItemActor_OnLifetimeExpired, "OnLifetimeExpired" }, // 4212119958
-		{ &Z_Construct_UFunction_AEchoesItemActor_OnMeshLoaded, "OnMeshLoaded" }, // 3055086339
-		{ &Z_Construct_UFunction_AEchoesItemActor_OnPlayerInteracted, "OnPlayerInteracted" }, // 3060250139
-		{ &Z_Construct_UFunction_AEchoesItemActor_OnRep_ItemId, "OnRep_ItemId" }, // 1259217287
-		{ &Z_Construct_UFunction_AEchoesItemActor_ServerOnly_InitializeItem, "ServerOnly_InitializeItem" }, // 671087272
-		{ &Z_Construct_UFunction_AEchoesItemActor_SetLifetime, "SetLifetime" }, // 3021001973
+		{ &Z_Construct_UFunction_AEchoesItemActor_GetInstanceId, "GetInstanceId" }, // 1615804162
+		{ &Z_Construct_UFunction_AEchoesItemActor_GetInventoryComponent, "GetInventoryComponent" }, // 2265469994
+		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData, "GetItemDefinitionData" }, // 2042292768
+		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemId, "GetItemId" }, // 1301040648
+		{ &Z_Construct_UFunction_AEchoesItemActor_GetRemainingLifetime, "GetRemainingLifetime" }, // 902725964
+		{ &Z_Construct_UFunction_AEchoesItemActor_IsContainer, "IsContainer" }, // 917759758
+		{ &Z_Construct_UFunction_AEchoesItemActor_OnItemInitialized, "OnItemInitialized" }, // 2593125715
+		{ &Z_Construct_UFunction_AEchoesItemActor_OnLifetimeExpired, "OnLifetimeExpired" }, // 1110833736
+		{ &Z_Construct_UFunction_AEchoesItemActor_OnMeshLoaded, "OnMeshLoaded" }, // 632261601
+		{ &Z_Construct_UFunction_AEchoesItemActor_OnPlayerInteracted, "OnPlayerInteracted" }, // 2337259976
+		{ &Z_Construct_UFunction_AEchoesItemActor_OnRep_ItemId, "OnRep_ItemId" }, // 4233860821
+		{ &Z_Construct_UFunction_AEchoesItemActor_ServerOnly_InitializeItem, "ServerOnly_InitializeItem" }, // 1025483997
+		{ &Z_Construct_UFunction_AEchoesItemActor_SetLifetime, "SetLifetime" }, // 997031406
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static const UECodeGen_Private::FImplementedInterfaceParams InterfaceParams[];
@@ -910,7 +910,7 @@ UObject* (*const Z_Construct_UClass_AEchoesItemActor_Statics::DependentSingleton
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AEchoesItemActor_Statics::DependentSingletons) < 16);
 const UECodeGen_Private::FImplementedInterfaceParams Z_Construct_UClass_AEchoesItemActor_Statics::InterfaceParams[] = {
-	{ Z_Construct_UClass_UEchoesInteractableInterface_NoRegister, (int32)VTABLE_OFFSET(AEchoesItemActor, IEchoesInteractableInterface), false },  // 2005703613
+	{ Z_Construct_UClass_UEchoesInteractableInterface_NoRegister, (int32)VTABLE_OFFSET(AEchoesItemActor, IEchoesInteractableInterface), false },  // 3329931218
 };
 const UECodeGen_Private::FClassParams Z_Construct_UClass_AEchoesItemActor_Statics::ClassParams = {
 	&AEchoesItemActor::StaticClass,
@@ -953,14 +953,14 @@ AEchoesItemActor::~AEchoesItemActor() {}
 // ********** End Class AEchoesItemActor ***********************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesItemActor, AEchoesItemActor::StaticClass, TEXT("AEchoesItemActor"), &Z_Registration_Info_UClass_AEchoesItemActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesItemActor), 3064193951U) },
+		{ Z_Construct_UClass_AEchoesItemActor, AEchoesItemActor::StaticClass, TEXT("AEchoesItemActor"), &Z_Registration_Info_UClass_AEchoesItemActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesItemActor), 85587305U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemActor_h__Script_Echoes_1028386781(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_2806046699(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

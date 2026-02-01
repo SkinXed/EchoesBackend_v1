@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesQuantitySelectorWidget.h"
+#include "EchoesQuantitySelectorWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -37,7 +37,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnQuantitySelected__DelegateSignatur
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Delegate for quantity selection\n" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate for quantity selection" },
 #endif
@@ -80,7 +80,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnQuantitySelectionCancelled__Delega
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
@@ -114,7 +114,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_GetSelectedQuantity_S
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the currently selected quantity\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the currently selected quantity" },
 #endif
@@ -163,7 +163,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_InitializeSelector_St
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize the selector with max quantity\n\x09 * @param InMaxQuantity - Maximum quantity available\n\x09 * @param InItemName - Name of item being split\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize the selector with max quantity\n@param InMaxQuantity - Maximum quantity available\n@param InItemName - Name of item being split" },
 #endif
@@ -214,7 +214,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnCancelClicked_Stati
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle cancel button clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle cancel button clicked" },
 #endif
@@ -249,7 +249,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnConfirmClicked_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle confirm button clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle confirm button clicked" },
 #endif
@@ -284,7 +284,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnMaxClicked_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle max button clicked (sets quantity to maximum)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle max button clicked (sets quantity to maximum)" },
 #endif
@@ -324,7 +324,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnQuantityTextCommitt
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle text committed in quantity input\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle text committed in quantity input" },
 #endif
@@ -382,7 +382,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnSelectorInitialized
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when selector is initialized\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when selector is initialized" },
 #endif
@@ -414,7 +414,7 @@ struct Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnSliderValueChanged_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle slider value changed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle slider value changed" },
 #endif
@@ -501,8 +501,8 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesQuantitySelectorWidget\n * \n * Modal widget for selecting quantity when splitting item stacks\n * Displays when Shift+Drag is used on stackable items\n * \n * Features:\n * - Slider for quick selection\n * - Text input for precise amount\n * - Min: 1, Max: item quantity\n * - Confirm/Cancel buttons\n * \n * Usage:\n * - Create when Shift held during drag start\n * - Set max quantity from item\n * - Wait for user confirmation or cancellation\n * - Use selected quantity in drag operation\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesQuantitySelectorWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 		{ "ObjectInitializerConstructorDeclared", "" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesQuantitySelectorWidget\n\nModal widget for selecting quantity when splitting item stacks\nDisplays when Shift+Drag is used on stackable items\n\nFeatures:\n- Slider for quick selection\n- Text input for precise amount\n- Min: 1, Max: item quantity\n- Confirm/Cancel buttons\n\nUsage:\n- Create when Shift held during drag start\n- Set max quantity from item\n- Wait for user confirmation or cancellation\n- Use selected quantity in drag operation" },
@@ -513,7 +513,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when quantity is confirmed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when quantity is confirmed" },
 #endif
@@ -523,7 +523,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when selection is cancelled\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when selection is cancelled" },
 #endif
@@ -535,7 +535,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Confirm button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Confirm button" },
 #endif
@@ -547,7 +547,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Cancel button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cancel button" },
 #endif
@@ -559,7 +559,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Max button (sets quantity to maximum) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Max button (sets quantity to maximum)" },
 #endif
@@ -571,7 +571,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Quantity slider */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Quantity slider" },
 #endif
@@ -583,7 +583,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Quantity text input */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Quantity text input" },
 #endif
@@ -595,7 +595,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Display for selected quantity */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Display for selected quantity" },
 #endif
@@ -607,7 +607,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Display for max quantity */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Display for max quantity" },
 #endif
@@ -619,7 +619,7 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 		{ "Comment", "/** Display for item name */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesQuantitySelectorWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesQuantitySelectorWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Display for item name" },
 #endif
@@ -638,14 +638,14 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_GetSelectedQuantity, "GetSelectedQuantity" }, // 2433366242
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_InitializeSelector, "InitializeSelector" }, // 3980089014
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnCancelClicked, "OnCancelClicked" }, // 201294588
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnConfirmClicked, "OnConfirmClicked" }, // 2718895111
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnMaxClicked, "OnMaxClicked" }, // 2265883696
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnQuantityTextCommitted, "OnQuantityTextCommitted" }, // 1625699557
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnSelectorInitialized, "OnSelectorInitialized" }, // 2519910695
-		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnSliderValueChanged, "OnSliderValueChanged" }, // 1506785327
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_GetSelectedQuantity, "GetSelectedQuantity" }, // 1785794948
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_InitializeSelector, "InitializeSelector" }, // 2530607171
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnCancelClicked, "OnCancelClicked" }, // 1231937249
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnConfirmClicked, "OnConfirmClicked" }, // 393341385
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnMaxClicked, "OnMaxClicked" }, // 3835228507
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnQuantityTextCommitted, "OnQuantityTextCommitted" }, // 2933469631
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnSelectorInitialized, "OnSelectorInitialized" }, // 4189699400
+		{ &Z_Construct_UFunction_UEchoesQuantitySelectorWidget_OnSliderValueChanged, "OnSliderValueChanged" }, // 667179824
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -653,8 +653,8 @@ struct Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_OnQuantitySelected = { "OnQuantitySelected", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, OnQuantitySelected), Z_Construct_UDelegateFunction_Echoes_OnQuantitySelected__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnQuantitySelected_MetaData), NewProp_OnQuantitySelected_MetaData) }; // 4013708809
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_OnQuantitySelectionCancelled = { "OnQuantitySelectionCancelled", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, OnQuantitySelectionCancelled), Z_Construct_UDelegateFunction_Echoes_OnQuantitySelectionCancelled__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnQuantitySelectionCancelled_MetaData), NewProp_OnQuantitySelectionCancelled_MetaData) }; // 1971856612
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_OnQuantitySelected = { "OnQuantitySelected", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, OnQuantitySelected), Z_Construct_UDelegateFunction_Echoes_OnQuantitySelected__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnQuantitySelected_MetaData), NewProp_OnQuantitySelected_MetaData) }; // 4245836858
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_OnQuantitySelectionCancelled = { "OnQuantitySelectionCancelled", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, OnQuantitySelectionCancelled), Z_Construct_UDelegateFunction_Echoes_OnQuantitySelectionCancelled__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnQuantitySelectionCancelled_MetaData), NewProp_OnQuantitySelectionCancelled_MetaData) }; // 265818890
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_ConfirmButton = { "ConfirmButton", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, ConfirmButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ConfirmButton_MetaData), NewProp_ConfirmButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_CancelButton = { "CancelButton", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, CancelButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CancelButton_MetaData), NewProp_CancelButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesQuantitySelectorWidget_Statics::NewProp_MaxButton = { "MaxButton", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesQuantitySelectorWidget, MaxButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxButton_MetaData), NewProp_MaxButton_MetaData) };
@@ -709,14 +709,14 @@ UEchoesQuantitySelectorWidget::~UEchoesQuantitySelectorWidget() {}
 // ********** End Class UEchoesQuantitySelectorWidget **********************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesQuantitySelectorWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesQuantitySelectorWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesQuantitySelectorWidget, UEchoesQuantitySelectorWidget::StaticClass, TEXT("UEchoesQuantitySelectorWidget"), &Z_Registration_Info_UClass_UEchoesQuantitySelectorWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesQuantitySelectorWidget), 2134500597U) },
+		{ Z_Construct_UClass_UEchoesQuantitySelectorWidget, UEchoesQuantitySelectorWidget::StaticClass, TEXT("UEchoesQuantitySelectorWidget"), &Z_Registration_Info_UClass_UEchoesQuantitySelectorWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesQuantitySelectorWidget), 3916642501U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesQuantitySelectorWidget_h__Script_Echoes_3064003455(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesQuantitySelectorWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesQuantitySelectorWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesQuantitySelectorWidget_h__Script_Echoes_4215581015(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesQuantitySelectorWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesQuantitySelectorWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

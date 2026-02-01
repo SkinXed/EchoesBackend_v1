@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "UI/EchoesInventoryItemObject.h"
+// IWYU pragma: private, include "UI/Logic/EchoesInventoryItemObject.h"
 
 #ifdef ECHOES_EchoesInventoryItemObject_generated_h
 #error "EchoesInventoryItemObject.generated.h already included, missing '#pragma once' in EchoesInventoryItemObject.h"
@@ -21,7 +21,7 @@ struct FEchoesItemDefinitionRow;
 struct FGuid;
 
 // ********** Begin Class UEchoesInventoryItemObject ***********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execHasDefinition); \
 	DECLARE_FUNCTION(execGetTotalMass); \
 	DECLARE_FUNCTION(execGetUnitVolume); \
@@ -42,7 +42,7 @@ struct FGuid;
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventoryItemObject_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesInventoryItemObject(); \
 	friend struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics; \
@@ -53,7 +53,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesInventoryItemObject)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesInventoryItemObject(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -65,13 +65,13 @@ public: \
 	NO_API virtual ~UEchoesInventoryItemObject();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_26_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_26_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h_29_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h_29_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -81,6 +81,6 @@ class UEchoesInventoryItemObject;
 // ********** End Class UEchoesInventoryItemObject *************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

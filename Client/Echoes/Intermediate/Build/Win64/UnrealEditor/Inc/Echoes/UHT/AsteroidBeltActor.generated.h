@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/AsteroidBeltActor.h"
+// IWYU pragma: private, include "Core/Common/Actor/AsteroidBeltActor.h"
 
 #ifdef ECHOES_AsteroidBeltActor_generated_h
 #error "AsteroidBeltActor.generated.h already included, missing '#pragma once' in AsteroidBeltActor.h"
@@ -20,7 +20,7 @@ struct FAsteroidBeltVisualRow;
 struct FGuid;
 
 // ********** Begin Class AAsteroidBeltActor *******************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execGetBeltName); \
 	DECLARE_FUNCTION(execGetBeltId); \
 	DECLARE_FUNCTION(execInitializeAsteroidBelt);
@@ -28,7 +28,7 @@ struct FGuid;
 
 ECHOES_API UClass* Z_Construct_UClass_AAsteroidBeltActor_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAAsteroidBeltActor(); \
 	friend struct Z_Construct_UClass_AAsteroidBeltActor_Statics; \
@@ -46,7 +46,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AAsteroidBeltActor(AAsteroidBeltActor&&) = delete; \
 	AAsteroidBeltActor(const AAsteroidBeltActor&) = delete; \
@@ -56,13 +56,13 @@ public: \
 	NO_API virtual ~AAsteroidBeltActor();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_26_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_26_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h_29_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h_29_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -72,6 +72,6 @@ class AAsteroidBeltActor;
 // ********** End Class AAsteroidBeltActor *********************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

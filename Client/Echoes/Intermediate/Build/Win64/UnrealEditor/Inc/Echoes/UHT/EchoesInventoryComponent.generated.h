@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesInventoryComponent.h"
+// IWYU pragma: private, include "Core/Common/Components/EchoesInventoryComponent.h"
 
 #ifdef ECHOES_EchoesInventoryComponent_generated_h
 #error "EchoesInventoryComponent.generated.h already included, missing '#pragma once' in EchoesInventoryComponent.h"
@@ -21,7 +21,7 @@ struct FEchoesContainerItems;
 struct FGuid;
 
 // ********** Begin ScriptStruct FEchoesInventoryItem **********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_17_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_17_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FEchoesInventoryItem_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct();
 
@@ -30,7 +30,7 @@ struct FEchoesInventoryItem;
 // ********** End ScriptStruct FEchoesInventoryItem ************************************************
 
 // ********** Begin ScriptStruct FEchoesContainerItems *********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_47_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_47_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FEchoesContainerItems_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct();
 
@@ -39,35 +39,35 @@ struct FEchoesContainerItems;
 // ********** End ScriptStruct FEchoesContainerItems ***********************************************
 
 // ********** Begin Delegate FOnItemsFetched *******************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_60_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_60_DELEGATE \
 ECHOES_API void FOnItemsFetched_DelegateWrapper(const FScriptDelegate& OnItemsFetched, FEchoesContainerItems const& Items);
 
 
 // ********** End Delegate FOnItemsFetched *********************************************************
 
 // ********** Begin Delegate FOnItemMoveSuccess ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_61_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_61_DELEGATE \
 ECHOES_API void FOnItemMoveSuccess_DelegateWrapper(const FScriptDelegate& OnItemMoveSuccess);
 
 
 // ********** End Delegate FOnItemMoveSuccess ******************************************************
 
 // ********** Begin Delegate FOnInventoryOperationFailure ******************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_62_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_62_DELEGATE \
 ECHOES_API void FOnInventoryOperationFailure_DelegateWrapper(const FScriptDelegate& OnInventoryOperationFailure, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnInventoryOperationFailure ********************************************
 
 // ********** Begin Delegate FOnInventoryUpdated ***************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_65_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_65_DELEGATE \
 ECHOES_API void FOnInventoryUpdated_DelegateWrapper(const FMulticastScriptDelegate& OnInventoryUpdated, FEchoesContainerItems const& Items);
 
 
 // ********** End Delegate FOnInventoryUpdated *****************************************************
 
 // ********** Begin Class UEchoesInventoryComponent ************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execHandleMoveRefreshFailure); \
 	DECLARE_FUNCTION(execHandleMoveRefreshSuccess); \
 	DECLARE_FUNCTION(execInitializeStorage); \
@@ -82,7 +82,7 @@ ECHOES_API void FOnInventoryUpdated_DelegateWrapper(const FMulticastScriptDelega
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventoryComponent_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesInventoryComponent(); \
 	friend struct Z_Construct_UClass_UEchoesInventoryComponent_Statics; \
@@ -93,7 +93,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesInventoryComponent)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UEchoesInventoryComponent(UEchoesInventoryComponent&&) = delete; \
 	UEchoesInventoryComponent(const UEchoesInventoryComponent&) = delete; \
@@ -103,13 +103,13 @@ public: \
 	NO_API virtual ~UEchoesInventoryComponent();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_85_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_85_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h_88_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h_88_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -119,6 +119,6 @@ class UEchoesInventoryComponent;
 // ********** End Class UEchoesInventoryComponent **************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

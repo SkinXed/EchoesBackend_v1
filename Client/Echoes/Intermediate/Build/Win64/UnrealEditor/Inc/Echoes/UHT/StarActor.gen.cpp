@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/StarActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "StarActor.h"
+#include "EchoesWorldVisualTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -34,7 +34,7 @@ struct Z_Construct_UFunction_AStarActor_GetLuminosity_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Star" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_ReturnValue;
@@ -79,7 +79,7 @@ struct Z_Construct_UFunction_AStarActor_GetStarClass_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Getters ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Getters ====================" },
 #endif
@@ -124,7 +124,7 @@ struct Z_Construct_UFunction_AStarActor_GetTemperature_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Star" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_ReturnValue;
@@ -173,7 +173,7 @@ struct Z_Construct_UFunction_AStarActor_InitializeStar_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize star from configuration data\n\x09 * \n\x09 * @param InStarClass - Star classification (e.g., \"G2V\", \"M5\", \"K0\")\n\x09 * @param InTemperature - Surface temperature in Kelvin\n\x09 * @param InLuminosity - Luminosity relative to Sol\n\x09 * @param InRadius - Star radius in km\n\x09 * @param InVisualData - Visual configuration from data table\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize star from configuration data\n\n@param InStarClass - Star classification (e.g., \"G2V\", \"M5\", \"K0\")\n@param InTemperature - Surface temperature in Kelvin\n@param InLuminosity - Luminosity relative to Sol\n@param InRadius - Star radius in km\n@param InVisualData - Visual configuration from data table" },
 #endif
@@ -197,7 +197,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStarActor_Ini
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InTemperature = { "InTemperature", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InTemperature), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InLuminosity = { "InLuminosity", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InLuminosity), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InRadius = { "InRadius", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InRadius), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InVisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 2749687722
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InVisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 71317364
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStarActor_InitializeStar_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InStarClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InTemperature,
@@ -236,7 +236,7 @@ struct Z_Construct_UFunction_AStarActor_OnRep_StarData_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -309,8 +309,8 @@ struct Z_Construct_UClass_AStarActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AStarActor\n * \n * Represents a star in the Echoes universe\n * Central light source for the solar system\n * Spawned by AEchoesWorldGenerator based on backend configuration\n */" },
 #endif
-		{ "IncludePath", "Core/Common/StarActor.h" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "IncludePath", "Core/Common/Actor/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AStarActor\n\nRepresents a star in the Echoes universe\nCentral light source for the solar system\nSpawned by AEchoesWorldGenerator based on backend configuration" },
 #endif
@@ -321,7 +321,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 		{ "Comment", "/** Star mesh component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Star mesh component" },
 #endif
@@ -332,7 +332,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 		{ "Comment", "/** Point light for illumination */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Point light for illumination" },
 #endif
@@ -343,7 +343,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 		{ "Comment", "/** Corona particle system (Legacy Cascade) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Corona particle system (Legacy Cascade)" },
 #endif
@@ -354,7 +354,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 		{ "Comment", "/** Corona VFX (Niagara) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Corona VFX (Niagara)" },
 #endif
@@ -364,7 +364,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Star classification (e.g., \"G2V\" for Sun-like) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Star classification (e.g., \"G2V\" for Sun-like)" },
 #endif
@@ -374,7 +374,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Surface temperature in Kelvin */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Surface temperature in Kelvin" },
 #endif
@@ -384,7 +384,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Luminosity relative to Sol (1.0 = Sun) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Luminosity relative to Sol (1.0 = Sun)" },
 #endif
@@ -394,7 +394,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Star radius in km */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Star radius in km" },
 #endif
@@ -404,7 +404,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Visual configuration data */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StarActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StarActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration data" },
 #endif
@@ -422,11 +422,11 @@ struct Z_Construct_UClass_AStarActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AStarActor_GetLuminosity, "GetLuminosity" }, // 768789339
-		{ &Z_Construct_UFunction_AStarActor_GetStarClass, "GetStarClass" }, // 464171982
-		{ &Z_Construct_UFunction_AStarActor_GetTemperature, "GetTemperature" }, // 3992855739
-		{ &Z_Construct_UFunction_AStarActor_InitializeStar, "InitializeStar" }, // 131551449
-		{ &Z_Construct_UFunction_AStarActor_OnRep_StarData, "OnRep_StarData" }, // 2238584330
+		{ &Z_Construct_UFunction_AStarActor_GetLuminosity, "GetLuminosity" }, // 1965264837
+		{ &Z_Construct_UFunction_AStarActor_GetStarClass, "GetStarClass" }, // 3453151592
+		{ &Z_Construct_UFunction_AStarActor_GetTemperature, "GetTemperature" }, // 3057400580
+		{ &Z_Construct_UFunction_AStarActor_InitializeStar, "InitializeStar" }, // 3486438617
+		{ &Z_Construct_UFunction_AStarActor_OnRep_StarData, "OnRep_StarData" }, // 1102302679
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -442,7 +442,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AStarActor_Static
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_Temperature = { "Temperature", "OnRep_StarData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, Temperature), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Temperature_MetaData), NewProp_Temperature_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_Luminosity = { "Luminosity", "OnRep_StarData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, Luminosity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Luminosity_MetaData), NewProp_Luminosity_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_Radius = { "Radius", "OnRep_StarData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, Radius), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Radius_MetaData), NewProp_Radius_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, VisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 2749687722
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, VisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 71317364
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AStarActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStarActor_Statics::NewProp_StarMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStarActor_Statics::NewProp_StarLightComponent,
@@ -503,14 +503,14 @@ AStarActor::~AStarActor() {}
 // ********** End Class AStarActor *****************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStarActor, AStarActor::StaticClass, TEXT("AStarActor"), &Z_Registration_Info_UClass_AStarActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStarActor), 690897678U) },
+		{ Z_Construct_UClass_AStarActor, AStarActor::StaticClass, TEXT("AStarActor"), &Z_Registration_Info_UClass_AStarActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStarActor), 2252490510U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h__Script_Echoes_3018062380(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_3072243917(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

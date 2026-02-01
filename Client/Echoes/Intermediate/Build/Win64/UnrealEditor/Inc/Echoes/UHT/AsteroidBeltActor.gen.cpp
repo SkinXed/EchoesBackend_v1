@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/AsteroidBeltActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "AsteroidBeltActor.h"
+#include "EchoesWorldVisualTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -38,7 +38,7 @@ struct Z_Construct_UFunction_AAsteroidBeltActor_GetBeltId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the belt's unique ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the belt's unique ID" },
 #endif
@@ -86,7 +86,7 @@ struct Z_Construct_UFunction_AAsteroidBeltActor_GetBeltName_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the belt's name\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the belt's name" },
 #endif
@@ -139,7 +139,7 @@ struct Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize asteroid belt from server configuration\n\x09 * \n\x09 * @param BeltId - Unique identifier of the belt\n\x09 * @param BeltName - Name of the belt\n\x09 * @param Seed - Procedural generation seed (from database)\n\x09 * @param BeltRadius - Radius of the belt in world units\n\x09 * @param AsteroidCount - Number of asteroids to spawn\n\x09 * @param VisualData - Visual configuration from data table\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize asteroid belt from server configuration\n\n@param BeltId - Unique identifier of the belt\n@param BeltName - Name of the belt\n@param Seed - Procedural generation seed (from database)\n@param BeltRadius - Radius of the belt in world units\n@param AsteroidCount - Number of asteroids to spawn\n@param VisualData - Visual configuration from data table" },
 #endif
@@ -168,7 +168,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AAsteroidBeltA
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_Seed = { "Seed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AsteroidBeltActor_eventInitializeAsteroidBelt_Parms, Seed), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_BeltRadius = { "BeltRadius", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AsteroidBeltActor_eventInitializeAsteroidBelt_Parms, BeltRadius), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_AsteroidCount = { "AsteroidCount", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AsteroidBeltActor_eventInitializeAsteroidBelt_Parms, AsteroidCount), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AsteroidBeltActor_eventInitializeAsteroidBelt_Parms, VisualData), Z_Construct_UScriptStruct_FAsteroidBeltVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 816970460
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AsteroidBeltActor_eventInitializeAsteroidBelt_Parms, VisualData), Z_Construct_UScriptStruct_FAsteroidBeltVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 2143765835
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_BeltId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt_Statics::NewProp_BeltName,
@@ -251,8 +251,8 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AAsteroidBeltActor\n * \n * Represents an asteroid belt in a solar system\n * Uses Hierarchical Instanced Static Mesh Component (HISM) for efficient rendering\n * Supports procedural placement based on seed for deterministic generation\n * Individual asteroids have collision for mining gameplay\n * \n * Key Features:\n * - Optimized rendering with HISM (thousands of asteroids with minimal performance cost)\n * - Procedural distribution using seed from database\n * - Resource information for mining gameplay\n * - Collision detection for asteroid-ship interactions\n * - VFX for dust clouds and ambient effects\n */" },
 #endif
-		{ "IncludePath", "Core/Common/AsteroidBeltActor.h" },
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "IncludePath", "Core/Common/Actor/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AAsteroidBeltActor\n\nRepresents an asteroid belt in a solar system\nUses Hierarchical Instanced Static Mesh Component (HISM) for efficient rendering\nSupports procedural placement based on seed for deterministic generation\nIndividual asteroids have collision for mining gameplay\n\nKey Features:\n- Optimized rendering with HISM (thousands of asteroids with minimal performance cost)\n- Procedural distribution using seed from database\n- Resource information for mining gameplay\n- Collision detection for asteroid-ship interactions\n- VFX for dust clouds and ambient effects" },
 #endif
@@ -264,7 +264,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 		{ "Comment", "/** Root scene component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Root scene component" },
 #endif
@@ -276,7 +276,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 		{ "Comment", "/** Hierarchical Instanced Static Mesh Component for asteroids (highly optimized) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Hierarchical Instanced Static Mesh Component for asteroids (highly optimized)" },
 #endif
@@ -288,7 +288,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 		{ "Comment", "/** Optional: Niagara component for dust cloud effects */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional: Niagara component for dust cloud effects" },
 #endif
@@ -300,7 +300,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 		{ "Comment", "/** Audio component for ambient sound */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Audio component for ambient sound" },
 #endif
@@ -311,7 +311,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique ID of this asteroid belt */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique ID of this asteroid belt" },
 #endif
@@ -322,7 +322,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Name of the asteroid belt */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Name of the asteroid belt" },
 #endif
@@ -333,7 +333,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Procedural generation seed */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Procedural generation seed" },
 #endif
@@ -344,7 +344,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Belt radius in world units */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Belt radius in world units" },
 #endif
@@ -355,7 +355,7 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Number of asteroids in the belt */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AsteroidBeltActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AsteroidBeltActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Number of asteroids in the belt" },
 #endif
@@ -373,9 +373,9 @@ struct Z_Construct_UClass_AAsteroidBeltActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AAsteroidBeltActor_GetBeltId, "GetBeltId" }, // 2108119204
-		{ &Z_Construct_UFunction_AAsteroidBeltActor_GetBeltName, "GetBeltName" }, // 818061847
-		{ &Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt, "InitializeAsteroidBelt" }, // 1536594701
+		{ &Z_Construct_UFunction_AAsteroidBeltActor_GetBeltId, "GetBeltId" }, // 4172072018
+		{ &Z_Construct_UFunction_AAsteroidBeltActor_GetBeltName, "GetBeltName" }, // 736573256
+		{ &Z_Construct_UFunction_AAsteroidBeltActor_InitializeAsteroidBelt, "InitializeAsteroidBelt" }, // 4193438482
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -448,14 +448,14 @@ AAsteroidBeltActor::~AAsteroidBeltActor() {}
 // ********** End Class AAsteroidBeltActor *********************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AAsteroidBeltActor, AAsteroidBeltActor::StaticClass, TEXT("AAsteroidBeltActor"), &Z_Registration_Info_UClass_AAsteroidBeltActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AAsteroidBeltActor), 2962751562U) },
+		{ Z_Construct_UClass_AAsteroidBeltActor, AAsteroidBeltActor::StaticClass, TEXT("AAsteroidBeltActor"), &Z_Registration_Info_UClass_AAsteroidBeltActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AAsteroidBeltActor), 606323186U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h__Script_Echoes_1617245266(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AsteroidBeltActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h__Script_Echoes_3787159645(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AsteroidBeltActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

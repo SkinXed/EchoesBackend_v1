@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/Networking/EchoesIdentitySubsystem.h"
+#include "EchoesIdentitySubsystem.h"
 #include "Engine/GameInstance.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS

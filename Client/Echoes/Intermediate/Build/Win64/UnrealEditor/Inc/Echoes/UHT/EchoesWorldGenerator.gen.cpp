@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesWorldGenerator.h"
-#include "Core/Server/EchoesServerDiscoveryTypes.h"
+#include "EchoesWorldGenerator.h"
+#include "EchoesServerDiscoveryTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -50,7 +50,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_CalculateSystemGlobalOffset_S
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Calculate global offset for a system based on its DB coordinates\n\x09 * Uses RegionDistanceScale to separate systems by billions of units\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Calculate global offset for a system based on its DB coordinates\nUses RegionDistanceScale to separate systems by billions of units" },
 #endif
@@ -113,7 +113,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_ConvertCoordinates_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Convert database coordinates (km) to Unreal world coordinates (cm)\n\x09 * Note: This is for objects WITHIN a system, not system positions\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Convert database coordinates (km) to Unreal world coordinates (cm)\nNote: This is for objects WITHIN a system, not system positions" },
 #endif
@@ -174,7 +174,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_GetSystemGlobalOffset_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the global offset for a specific system\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the global offset for a specific system" },
 #endif
@@ -229,7 +229,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_IsRegionalCluster_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if this is a regional cluster server\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if this is a regional cluster server" },
 #endif
@@ -283,7 +283,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_IsSystemOnThisServer_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if a system ID is hosted on this server\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if a system ID is hosted on this server" },
 #endif
@@ -342,7 +342,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_OnRegionalClusterConfigReceiv
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when regional cluster configuration is received from backend\n\x09 * Triggers multi-system world generation (RegionalCluster mode)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when regional cluster configuration is received from backend\nTriggers multi-system world generation (RegionalCluster mode)" },
 #endif
@@ -393,7 +393,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_OnServerConfigReceived_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when server configuration is received from backend\n\x09 * Triggers world generation process (DedicatedSystem mode)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when server configuration is received from backend\nTriggers world generation process (DedicatedSystem mode)" },
 #endif
@@ -442,7 +442,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_ClearWorld_Statics
 		{ "Comment", "/**\n\x09 * Clear all spawned actors\n\x09 */" },
 #endif
 		{ "DevelopmentOnly", "" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Clear all spawned actors" },
 #endif
@@ -483,7 +483,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_GenerateRegionalCl
 		{ "Comment", "/**\n\x09 * Manual trigger for regional cluster world generation (for testing)\n\x09 * In production, this is called automatically via OnRegionalClusterConfigReceived\n\x09 */" },
 #endif
 		{ "DevelopmentOnly", "" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Manual trigger for regional cluster world generation (for testing)\nIn production, this is called automatically via OnRegionalClusterConfigReceived" },
 #endif
@@ -536,7 +536,7 @@ struct Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_GenerateWorld_Stat
 		{ "Comment", "/**\n\x09 * Manual trigger for world generation (for testing)\n\x09 * In production, this is called automatically via OnServerConfigReceived\n\x09 */" },
 #endif
 		{ "DevelopmentOnly", "" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Manual trigger for world generation (for testing)\nIn production, this is called automatically via OnServerConfigReceived" },
 #endif
@@ -629,8 +629,8 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AEchoesWorldGenerator\n * \n * Master world generation system for Echoes universe\n * Builds solar systems based on JSON configuration from backend\n * \n * Architecture:\n * - Subscribes to OnServerConfigReceived delegate from UEchoesServerManagementSubsystem\n * - Server-only generation (HasAuthority())\n * - Uses Data Tables for visual asset mapping\n * - Implements coordinate scaling (UniverseToWorldScale)\n * - Async asset loading with UStreamableManager\n * - Seed-based procedural variation\n * - Full replication support\n * \n * Workflow:\n * 1. BeginPlay: Subscribe to OnServerConfigReceived\n * 2. OnConfigReceived: Parse configuration and spawn celestial objects\n * 3. For each object:\n *    - Look up visual data in corresponding DataTable\n *    - Convert coordinates using UniverseToWorldScale\n *    - Spawn replicated actor\n *    - Initialize with configuration data\n */" },
 #endif
-		{ "IncludePath", "Core/Common/EchoesWorldGenerator.h" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "IncludePath", "Core/Common/World/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AEchoesWorldGenerator\n\nMaster world generation system for Echoes universe\nBuilds solar systems based on JSON configuration from backend\n\nArchitecture:\n- Subscribes to OnServerConfigReceived delegate from UEchoesServerManagementSubsystem\n- Server-only generation (HasAuthority())\n- Uses Data Tables for visual asset mapping\n- Implements coordinate scaling (UniverseToWorldScale)\n- Async asset loading with UStreamableManager\n- Seed-based procedural variation\n- Full replication support\n\nWorkflow:\n1. BeginPlay: Subscribe to OnServerConfigReceived\n2. OnConfigReceived: Parse configuration and spawn celestial objects\n3. For each object:\n   - Look up visual data in corresponding DataTable\n   - Convert coordinates using UniverseToWorldScale\n   - Spawn replicated actor\n   - Initialize with configuration data" },
 #endif
@@ -640,7 +640,7 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Universe to World Scale Constant\n\x09 * Converts database coordinates (km or AU) to Unreal Units (cm)\n\x09 * \n\x09 * Default: 1 km = 100 cm (1:100,000 scale)\n\x09 * This prevents floating-point precision issues at astronomical distances\n\x09 * \n\x09 * Example: Planet at 150,000,000 km (1 AU) -> 150,000 cm (1,500 m) in Unreal\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Universe to World Scale Constant\nConverts database coordinates (km or AU) to Unreal Units (cm)\n\nDefault: 1 km = 100 cm (1:100,000 scale)\nThis prevents floating-point precision issues at astronomical distances\n\nExample: Planet at 150,000,000 km (1 AU) -> 150,000 cm (1,500 m) in Unreal" },
 #endif
@@ -650,7 +650,7 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Regional distance scale for separating multiple systems\n\x09 * Each system gets offset by its DB coordinates * this scale\n\x09 * \n\x09 * Default: 1,000,000,000 (1 billion units)\n\x09 * Prevents visual and physics interference between systems\n\x09 * Supports Large World Coordinates (LWC) with double precision\n\x09 * \n\x09 * Example: System at DB coords (10, 0, 0) -> offset (10B, 0, 0) Unreal Units\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Regional distance scale for separating multiple systems\nEach system gets offset by its DB coordinates * this scale\n\nDefault: 1,000,000,000 (1 billion units)\nPrevents visual and physics interference between systems\nSupports Large World Coordinates (LWC) with double precision\n\nExample: System at DB coords (10, 0, 0) -> offset (10B, 0, 0) Unreal Units" },
 #endif
@@ -660,74 +660,74 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Data Tables for visual asset mapping\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Data Tables for visual asset mapping" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StarDataTable_MetaData[] = {
 		{ "Category", "Generation|DataTables" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StationDataTable_MetaData[] = {
 		{ "Category", "Generation|DataTables" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StargateDataTable_MetaData[] = {
 		{ "Category", "Generation|DataTables" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AsteroidBeltDataTable_MetaData[] = {
 		{ "Category", "Generation|DataTables" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AnomalyDataTable_MetaData[] = {
 		{ "Category", "Generation|DataTables" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_WormholeDataTable_MetaData[] = {
 		{ "Category", "Generation|DataTables" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PlanetActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Actor classes to spawn\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Actor classes to spawn" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StarActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StationActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StargateActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AsteroidBeltActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AnomalyActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_WormholeActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SpawnedActors_MetaData[] = {
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Spawned Actors Tracking ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Spawned Actors Tracking ====================" },
 #endif
@@ -736,7 +736,7 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to server management subsystem */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldGenerator.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to server management subsystem" },
 #endif
@@ -764,16 +764,16 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_CalculateSystemGlobalOffset, "CalculateSystemGlobalOffset" }, // 2814234832
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ConvertCoordinates, "ConvertCoordinates" }, // 2708998777
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_GetSystemGlobalOffset, "GetSystemGlobalOffset" }, // 4187531833
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_IsRegionalCluster, "IsRegionalCluster" }, // 378134878
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_IsSystemOnThisServer, "IsSystemOnThisServer" }, // 179645896
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_OnRegionalClusterConfigReceived, "OnRegionalClusterConfigReceived" }, // 1570808026
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_OnServerConfigReceived, "OnServerConfigReceived" }, // 606799889
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_ClearWorld, "ServerOnly_ClearWorld" }, // 731750622
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_GenerateRegionalCluster, "ServerOnly_GenerateRegionalCluster" }, // 1788599337
-		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_GenerateWorld, "ServerOnly_GenerateWorld" }, // 285391290
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_CalculateSystemGlobalOffset, "CalculateSystemGlobalOffset" }, // 813554391
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ConvertCoordinates, "ConvertCoordinates" }, // 1536993781
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_GetSystemGlobalOffset, "GetSystemGlobalOffset" }, // 569495849
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_IsRegionalCluster, "IsRegionalCluster" }, // 3799502681
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_IsSystemOnThisServer, "IsSystemOnThisServer" }, // 1455589772
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_OnRegionalClusterConfigReceived, "OnRegionalClusterConfigReceived" }, // 977793651
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_OnServerConfigReceived, "OnServerConfigReceived" }, // 2692976101
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_ClearWorld, "ServerOnly_ClearWorld" }, // 2369405539
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_GenerateRegionalCluster, "ServerOnly_GenerateRegionalCluster" }, // 2905640590
+		{ &Z_Construct_UFunction_AEchoesWorldGenerator_ServerOnly_GenerateWorld, "ServerOnly_GenerateWorld" }, // 944296355
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -855,14 +855,14 @@ AEchoesWorldGenerator::~AEchoesWorldGenerator() {}
 // ********** End Class AEchoesWorldGenerator ******************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldGenerator_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesWorldGenerator, AEchoesWorldGenerator::StaticClass, TEXT("AEchoesWorldGenerator"), &Z_Registration_Info_UClass_AEchoesWorldGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesWorldGenerator), 512106339U) },
+		{ Z_Construct_UClass_AEchoesWorldGenerator, AEchoesWorldGenerator::StaticClass, TEXT("AEchoesWorldGenerator"), &Z_Registration_Info_UClass_AEchoesWorldGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesWorldGenerator), 1427787739U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldGenerator_h__Script_Echoes_1634199232(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldGenerator_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldGenerator_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_1851897804(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

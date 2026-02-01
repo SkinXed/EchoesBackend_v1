@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Http.h"
-#include "../EchoesItemDefinitions.h"
+#include "EchoesItemDefinitions.h"
 #include "Engine/StreamableManager.h"
 #include "EchoesInventorySubsystem.generated.h"
 

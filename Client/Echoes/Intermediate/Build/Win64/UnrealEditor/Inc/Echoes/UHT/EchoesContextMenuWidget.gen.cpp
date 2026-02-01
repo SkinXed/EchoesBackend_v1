@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesContextMenuWidget.h"
+#include "EchoesContextMenuWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -35,7 +35,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked_Static
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -101,14 +101,14 @@ struct Z_Construct_UClass_UEchoesContextMenuActionButton_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
-		{ "IncludePath", "UI/EchoesContextMenuWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionId_MetaData[] = {
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OwnerWidget_MetaData[] = {
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ActionId;
@@ -116,7 +116,7 @@ struct Z_Construct_UClass_UEchoesContextMenuActionButton_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked, "HandleClicked" }, // 2861169340
+		{ &Z_Construct_UFunction_UEchoesContextMenuActionButton_HandleClicked, "HandleClicked" }, // 1888534003
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -176,7 +176,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnContextMenuActionSelected__Delegat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Delegate for context menu action\n" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate for context menu action" },
 #endif
@@ -235,7 +235,7 @@ struct Z_Construct_UScriptStruct_FContextMenuAction_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Context menu action definition\n */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Context menu action definition" },
 #endif
@@ -245,7 +245,7 @@ struct Z_Construct_UScriptStruct_FContextMenuAction_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Display name of the action */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Display name of the action" },
 #endif
@@ -255,7 +255,7 @@ struct Z_Construct_UScriptStruct_FContextMenuAction_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Internal action identifier */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Internal action identifier" },
 #endif
@@ -265,7 +265,7 @@ struct Z_Construct_UScriptStruct_FContextMenuAction_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether this action is currently enabled */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether this action is currently enabled" },
 #endif
@@ -275,7 +275,7 @@ struct Z_Construct_UScriptStruct_FContextMenuAction_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Tooltip text */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Tooltip text" },
 #endif
@@ -340,7 +340,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_CloseMenu_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Close the context menu\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Close the context menu" },
 #endif
@@ -380,7 +380,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_GetItemObject_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item this menu is for\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item this menu is for" },
 #endif
@@ -428,7 +428,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the source actor\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the source actor" },
 #endif
@@ -476,7 +476,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceStorageId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the source storage ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the source storage ID" },
 #endif
@@ -523,7 +523,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle action button clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle action button clicked" },
 #endif
@@ -578,7 +578,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize context menu with item and actions\n\x09 * @param InItemObject - Item the menu is for\n\x09 * @param InSourceStorageId - Storage ID where item is located\n\x09 * @param InSourceActor - Actor containing the item\n\x09 * @param InActions - Available actions for this item\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize context menu with item and actions\n@param InItemObject - Item the menu is for\n@param InSourceStorageId - Storage ID where item is located\n@param InSourceActor - Actor containing the item\n@param InActions - Available actions for this item" },
 #endif
@@ -601,8 +601,8 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InItemObject = { "InItemObject", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventInitializeMenu_Parms, InItemObject), Z_Construct_UClass_UEchoesInventoryItemObject_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InSourceStorageId = { "InSourceStorageId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventInitializeMenu_Parms, InSourceStorageId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InSourceStorageId_MetaData), NewProp_InSourceStorageId_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InSourceActor = { "InSourceActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventInitializeMenu_Parms, InSourceActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InActions_Inner = { "InActions", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FContextMenuAction, METADATA_PARAMS(0, nullptr) }; // 2369989439
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InActions = { "InActions", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventInitializeMenu_Parms, InActions), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InActions_MetaData), NewProp_InActions_MetaData) }; // 2369989439
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InActions_Inner = { "InActions", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FContextMenuAction, METADATA_PARAMS(0, nullptr) }; // 2124518370
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InActions = { "InActions", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesContextMenuWidget_eventInitializeMenu_Parms, InActions), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InActions_MetaData), NewProp_InActions_MetaData) }; // 2124518370
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InItemObject,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu_Statics::NewProp_InSourceStorageId,
@@ -650,7 +650,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuClosed_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event when menu is closed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event when menu is closed" },
 #endif
@@ -685,7 +685,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuInitialized_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event when menu is initialized\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event when menu is initialized" },
 #endif
@@ -714,7 +714,7 @@ struct Z_Construct_UFunction_UEchoesContextMenuWidget_PositionAtMouse_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Position the menu at mouse cursor with smart bounds checking\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Position the menu at mouse cursor with smart bounds checking" },
 #endif
@@ -792,8 +792,8 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesContextMenuWidget\n * \n * Dynamic context menu for inventory items\n * Displays available actions based on item type\n * \n * Features:\n * - Dynamic action button generation\n * - Smart positioning (stays within screen bounds)\n * - Auto-closes on focus loss or outside click\n * - Server-validated actions\n * - Singleton-like behavior (one menu at a time)\n * \n * Usage:\n * - Create when right-clicking inventory item\n * - Initialize with item data and available actions\n * - Position at mouse cursor\n * - Handle action callbacks\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesContextMenuWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 		{ "ObjectInitializerConstructorDeclared", "" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesContextMenuWidget\n\nDynamic context menu for inventory items\nDisplays available actions based on item type\n\nFeatures:\n- Dynamic action button generation\n- Smart positioning (stays within screen bounds)\n- Auto-closes on focus loss or outside click\n- Server-validated actions\n- Singleton-like behavior (one menu at a time)\n\nUsage:\n- Create when right-clicking inventory item\n- Initialize with item data and available actions\n- Position at mouse cursor\n- Handle action callbacks" },
@@ -804,7 +804,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Delegate called when an action is selected\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate called when an action is selected" },
 #endif
@@ -816,7 +816,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 		{ "Comment", "/** Container for action buttons */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Container for action buttons" },
 #endif
@@ -828,7 +828,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 		{ "Comment", "/** Title text showing item name */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Title text showing item name" },
 #endif
@@ -838,7 +838,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Button class to use for actions */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Button class to use for actions" },
 #endif
@@ -848,7 +848,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Margin between action buttons */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Margin between action buttons" },
 #endif
@@ -857,7 +857,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Item object this menu is for */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Item object this menu is for" },
 #endif
@@ -866,7 +866,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Source storage ID */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Source storage ID" },
 #endif
@@ -875,7 +875,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Source actor containing the item */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Source actor containing the item" },
 #endif
@@ -884,7 +884,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Available actions */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesContextMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesContextMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Available actions" },
 #endif
@@ -903,15 +903,15 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_CloseMenu, "CloseMenu" }, // 3921183156
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetItemObject, "GetItemObject" }, // 2378664621
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceActor, "GetSourceActor" }, // 2140620926
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceStorageId, "GetSourceStorageId" }, // 3072815231
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked, "HandleActionButtonClicked" }, // 2125682825
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu, "InitializeMenu" }, // 3270031374
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuClosed, "OnMenuClosed" }, // 1339726811
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuInitialized, "OnMenuInitialized" }, // 2649430440
-		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_PositionAtMouse, "PositionAtMouse" }, // 4167901612
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_CloseMenu, "CloseMenu" }, // 512740469
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetItemObject, "GetItemObject" }, // 3199568612
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceActor, "GetSourceActor" }, // 1432194460
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_GetSourceStorageId, "GetSourceStorageId" }, // 2939091661
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_HandleActionButtonClicked, "HandleActionButtonClicked" }, // 3500610283
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_InitializeMenu, "InitializeMenu" }, // 3641421153
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuClosed, "OnMenuClosed" }, // 3953563914
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_OnMenuInitialized, "OnMenuInitialized" }, // 1554239206
+		{ &Z_Construct_UFunction_UEchoesContextMenuWidget_PositionAtMouse, "PositionAtMouse" }, // 3424721428
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -919,7 +919,7 @@ struct Z_Construct_UClass_UEchoesContextMenuWidget_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_OnActionSelected = { "OnActionSelected", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, OnActionSelected), Z_Construct_UDelegateFunction_Echoes_OnContextMenuActionSelected__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnActionSelected_MetaData), NewProp_OnActionSelected_MetaData) }; // 1284405335
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_OnActionSelected = { "OnActionSelected", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, OnActionSelected), Z_Construct_UDelegateFunction_Echoes_OnContextMenuActionSelected__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnActionSelected_MetaData), NewProp_OnActionSelected_MetaData) }; // 3407110891
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_ActionsContainer = { "ActionsContainer", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, ActionsContainer), Z_Construct_UClass_UVerticalBox_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionsContainer_MetaData), NewProp_ActionsContainer_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_TitleText = { "TitleText", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, TitleText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TitleText_MetaData), NewProp_TitleText_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_ActionButtonClass = { "ActionButtonClass", nullptr, (EPropertyFlags)0x0024080000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, ActionButtonClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionButtonClass_MetaData), NewProp_ActionButtonClass_MetaData) };
@@ -927,8 +927,8 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesContextM
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_ItemObject = { "ItemObject", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, ItemObject), Z_Construct_UClass_UEchoesInventoryItemObject_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemObject_MetaData), NewProp_ItemObject_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_SourceStorageId = { "SourceStorageId", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, SourceStorageId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SourceStorageId_MetaData), NewProp_SourceStorageId_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_SourceActor = { "SourceActor", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, SourceActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SourceActor_MetaData), NewProp_SourceActor_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_Actions_Inner = { "Actions", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FContextMenuAction, METADATA_PARAMS(0, nullptr) }; // 2369989439
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_Actions = { "Actions", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, Actions), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Actions_MetaData), NewProp_Actions_MetaData) }; // 2369989439
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_Actions_Inner = { "Actions", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FContextMenuAction, METADATA_PARAMS(0, nullptr) }; // 2124518370
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_Actions = { "Actions", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesContextMenuWidget, Actions), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Actions_MetaData), NewProp_Actions_MetaData) }; // 2124518370
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesContextMenuWidget_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_OnActionSelected,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesContextMenuWidget_Statics::NewProp_ActionsContainer,
@@ -975,19 +975,19 @@ UEchoesContextMenuWidget::~UEchoesContextMenuWidget() {}
 // ********** End Class UEchoesContextMenuWidget ***************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesContextMenuWidget_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FContextMenuAction::StaticStruct, Z_Construct_UScriptStruct_FContextMenuAction_Statics::NewStructOps, TEXT("ContextMenuAction"), &Z_Registration_Info_UScriptStruct_FContextMenuAction, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FContextMenuAction), 2369989439U) },
+		{ FContextMenuAction::StaticStruct, Z_Construct_UScriptStruct_FContextMenuAction_Statics::NewStructOps, TEXT("ContextMenuAction"), &Z_Registration_Info_UScriptStruct_FContextMenuAction, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FContextMenuAction), 2124518370U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesContextMenuActionButton, UEchoesContextMenuActionButton::StaticClass, TEXT("UEchoesContextMenuActionButton"), &Z_Registration_Info_UClass_UEchoesContextMenuActionButton, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuActionButton), 1119669276U) },
-		{ Z_Construct_UClass_UEchoesContextMenuWidget, UEchoesContextMenuWidget::StaticClass, TEXT("UEchoesContextMenuWidget"), &Z_Registration_Info_UClass_UEchoesContextMenuWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuWidget), 2273259366U) },
+		{ Z_Construct_UClass_UEchoesContextMenuActionButton, UEchoesContextMenuActionButton::StaticClass, TEXT("UEchoesContextMenuActionButton"), &Z_Registration_Info_UClass_UEchoesContextMenuActionButton, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuActionButton), 517160590U) },
+		{ Z_Construct_UClass_UEchoesContextMenuWidget, UEchoesContextMenuWidget::StaticClass, TEXT("UEchoesContextMenuWidget"), &Z_Registration_Info_UClass_UEchoesContextMenuWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesContextMenuWidget), 4200381565U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_1088118868(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ClassInfo),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesContextMenuWidget_h__Script_Echoes_Statics::ScriptStructInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesContextMenuWidget_h__Script_Echoes_3683753835(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesContextMenuWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesContextMenuWidget_h__Script_Echoes_Statics::ClassInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesContextMenuWidget_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesContextMenuWidget_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);
 // ********** End Registration *********************************************************************
 

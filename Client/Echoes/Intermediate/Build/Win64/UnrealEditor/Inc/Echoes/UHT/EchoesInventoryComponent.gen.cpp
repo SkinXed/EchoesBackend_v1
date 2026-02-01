@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesInventoryComponent.h"
+#include "EchoesInventoryComponent.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -44,38 +44,38 @@ struct Z_Construct_UScriptStruct_FEchoesInventoryItem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Inventory item structure for component-level storage\n * Mirrors backend Asset entity\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Inventory item structure for component-level storage\nMirrors backend Asset entity" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AssetId_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TypeId_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TypeName_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Quantity_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Volume_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TotalVolume_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IsStackable_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_AssetId;
@@ -155,22 +155,22 @@ struct Z_Construct_UScriptStruct_FEchoesContainerItems_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Container items response structure\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Container items response structure" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Items_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TotalCount_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TotalVolume_MetaData[] = {
 		{ "Category", "Inventory" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_Items_Inner;
@@ -184,8 +184,8 @@ struct Z_Construct_UScriptStruct_FEchoesContainerItems_Statics
 	}
 	static const UECodeGen_Private::FStructParams StructParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewProp_Items_Inner = { "Items", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(0, nullptr) }; // 3518727963
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesContainerItems, Items), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewProp_Items_Inner = { "Items", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(0, nullptr) }; // 2559718756
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesContainerItems, Items), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 2559718756
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewProp_TotalCount = { "TotalCount", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesContainerItems, TotalCount), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TotalCount_MetaData), NewProp_TotalCount_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewProp_TotalVolume = { "TotalVolume", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesContainerItems, TotalVolume), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TotalVolume_MetaData), NewProp_TotalVolume_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::PropPointers[] = {
@@ -230,7 +230,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature_St
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Delegates for inventory operations\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegates for inventory operations" },
 #endif
@@ -243,7 +243,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnItemsFetched_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 255446170
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnItemsFetched_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature_Statics::NewProp_Items,
 };
@@ -276,7 +276,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
@@ -306,7 +306,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__Delegat
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ErrorMessage_MetaData[] = {
 		{ "NativeConst", "" },
@@ -356,7 +356,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignatur
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Multicast delegate for UI updates\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Multicast delegate for UI updates" },
 #endif
@@ -369,7 +369,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignatur
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignature_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnInventoryUpdated_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 255446170
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignature_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnInventoryUpdated_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignature_Statics::NewProp_Items,
 };
@@ -411,7 +411,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_CanFitItem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if item can fit in this container\n\x09 * \n\x09 * @param ItemVolume - Volume of item to check\n\x09 * @return True if item can fit\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if item can fit in this container\n\n@param ItemVolume - Volume of item to check\n@return True if item can fit" },
 #endif
@@ -469,7 +469,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Fetch all items in this container from backend\n\x09 * Queries UEchoesInventorySubsystem which calls GET /api/inventory/container/{id}\n\x09 * \n\x09 * @param OnSuccess - Callback with items list\n\x09 * @param OnFailure - Callback on failure\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Fetch all items in this container from backend\nQueries UEchoesInventorySubsystem which calls GET /api/inventory/container/{id}\n\n@param OnSuccess - Callback with items list\n@param OnFailure - Callback on failure" },
 #endif
@@ -480,8 +480,8 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventFetchItems_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2705153072
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventFetchItems_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3329763266
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventFetchItems_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemsFetched__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2690535478
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventFetchItems_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3970957737
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::NewProp_OnSuccess,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems_Statics::NewProp_OnFailure,
@@ -522,7 +522,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_GetAvailableVolume_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get available volume in this container\n\x09 * \n\x09 * @return Available volume in cubic meters\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get available volume in this container\n\n@return Available volume in cubic meters" },
 #endif
@@ -570,7 +570,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get cached items (last fetched from server)\n\x09 * \n\x09 * @return Cached container items\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get cached items (last fetched from server)\n\n@return Cached container items" },
 #endif
@@ -580,7 +580,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventGetCachedItems_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(0, nullptr) }; // 255446170
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventGetCachedItems_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(0, nullptr) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems_Statics::NewProp_ReturnValue,
 };
@@ -614,7 +614,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure_
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
 		{ "NativeConst", "" },
@@ -659,7 +659,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Items_MetaData[] = {
 		{ "NativeConst", "" },
@@ -669,7 +669,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventHandleMoveRefreshSuccess_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 255446170
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventHandleMoveRefreshSuccess_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess_Statics::NewProp_Items,
 };
@@ -709,7 +709,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_InitializeStorage_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize component with storage ID from database\n\x09 * Called when spawning ships or stations\n\x09 * \n\x09 * @param InStorageId - Storage ID from database\n\x09 * @param InCapacity - Storage capacity (0 = unlimited)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize component with storage ID from database\nCalled when spawning ships or stations\n\n@param InStorageId - Storage ID from database\n@param InCapacity - Storage capacity (0 = unlimited)" },
 #endif
@@ -769,7 +769,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_S
 		{ "Comment", "/**\n\x09 * SERVER ONLY: Jettison (drop) item from inventory\n\x09 * Removes item from inventory and spawns AEchoesItemActor in space\n\x09 * \n\x09 * @param AssetId - ID of asset to jettison\n\x09 * @param Quantity - Quantity to jettison (0 = all)\n\x09 * @param OnSuccess - Callback on successful jettison\n\x09 * @param OnFailure - Callback on jettison failure\n\x09 */" },
 #endif
 		{ "DisplayName", "ServerOnly JettisonItem" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "SERVER ONLY: Jettison (drop) item from inventory\nRemoves item from inventory and spawns AEchoesItemActor in space\n\n@param AssetId - ID of asset to jettison\n@param Quantity - Quantity to jettison (0 = all)\n@param OnSuccess - Callback on successful jettison\n@param OnFailure - Callback on jettison failure" },
 #endif
@@ -787,8 +787,8 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_S
 };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_AssetId = { "AssetId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_JettisonItem_Parms, AssetId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AssetId_MetaData), NewProp_AssetId_MetaData) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_Quantity = { "Quantity", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_JettisonItem_Parms, Quantity), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_JettisonItem_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2353592895
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_JettisonItem_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3329763266
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_JettisonItem_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3911381712
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_JettisonItem_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3970957737
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_AssetId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem_Statics::NewProp_Quantity,
@@ -839,7 +839,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Stati
 		{ "Comment", "/**\n\x09 * SERVER ONLY: Move item between containers with distance check\n\x09 * This should only be called on the server\n\x09 * Validates distance between source and target actors\n\x09 * Sends POST /api/inventory/move to backend\n\x09 * \n\x09 * @param AssetId - ID of asset to move\n\x09 * @param TargetActor - Target actor with inventory component\n\x09 * @param SourceActor - Source actor (for distance check)\n\x09 * @param Quantity - Optional: quantity to move (for splitting stacks)\n\x09 * @param OnSuccess - Callback on successful move\n\x09 * @param OnFailure - Callback on move failure\n\x09 */" },
 #endif
 		{ "DisplayName", "ServerOnly MoveItem" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "SERVER ONLY: Move item between containers with distance check\nThis should only be called on the server\nValidates distance between source and target actors\nSends POST /api/inventory/move to backend\n\n@param AssetId - ID of asset to move\n@param TargetActor - Target actor with inventory component\n@param SourceActor - Source actor (for distance check)\n@param Quantity - Optional: quantity to move (for splitting stacks)\n@param OnSuccess - Callback on successful move\n@param OnFailure - Callback on move failure" },
 #endif
@@ -861,8 +861,8 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInve
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_TargetActor = { "TargetActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, TargetActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_SourceActor = { "SourceActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, SourceActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_Quantity = { "Quantity", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, Quantity), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2353592895
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3329763266
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3911381712
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_MoveItem_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3970957737
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_AssetId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem_Statics::NewProp_TargetActor,
@@ -914,7 +914,7 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Stati
 		{ "Comment", "/**\n\x09 * SERVER ONLY: Stack all items of same type in this container\n\x09 * Combines all items with same TypeId into single stack\n\x09 * Sends POST /api/inventory/stack-all to backend\n\x09 * \n\x09 * @param TypeId - Type ID to stack (0 = stack all types)\n\x09 * @param OnSuccess - Callback on successful stacking\n\x09 * @param OnFailure - Callback on stacking failure\n\x09 */" },
 #endif
 		{ "DisplayName", "ServerOnly StackAll" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "SERVER ONLY: Stack all items of same type in this container\nCombines all items with same TypeId into single stack\nSends POST /api/inventory/stack-all to backend\n\n@param TypeId - Type ID to stack (0 = stack all types)\n@param OnSuccess - Callback on successful stacking\n@param OnFailure - Callback on stacking failure" },
 #endif
@@ -927,8 +927,8 @@ struct Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Stati
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_TypeId = { "TypeId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_StackAll_Parms, TypeId), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_StackAll_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2353592895
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_StackAll_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3329763266
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_StackAll_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnItemMoveSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3911381712
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryComponent_eventServerOnly_StackAll_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnInventoryOperationFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3970957737
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_TypeId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll_Statics::NewProp_OnSuccess,
@@ -1014,8 +1014,8 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesInventoryComponent\n * \n * Actor Component for inventory management in Echoes MMO\n * Provides storage functionality for ships, stations, and containers\n * \n * Architecture:\n * - ActorComponent: Can be attached to any Actor (ship, station, container)\n * - StorageId: Links to backend Container entity (FGuid)\n * - Capacity: Maximum volume this storage can hold\n * - Communicates with UEchoesInventorySubsystem for data fetching\n * - Provides ServerOnly_ functions for server-authoritative item operations\n * \n * Usage:\n * - Attach to ship actors for cargo holds\n * - Attach to station actors for hangar storage\n * - Attach to container actors for item storage\n */" },
 #endif
-		{ "IncludePath", "Core/Common/EchoesInventoryComponent.h" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "IncludePath", "Core/Common/Components/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesInventoryComponent\n\nActor Component for inventory management in Echoes MMO\nProvides storage functionality for ships, stations, and containers\n\nArchitecture:\n- ActorComponent: Can be attached to any Actor (ship, station, container)\n- StorageId: Links to backend Container entity (FGuid)\n- Capacity: Maximum volume this storage can hold\n- Communicates with UEchoesInventorySubsystem for data fetching\n- Provides ServerOnly_ functions for server-authoritative item operations\n\nUsage:\n- Attach to ship actors for cargo holds\n- Attach to station actors for hangar storage\n- Attach to container actors for item storage" },
 #endif
@@ -1025,7 +1025,7 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Storage ID that maps to backend Container entity\n\x09 * Initialize this on spawn from database\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Storage ID that maps to backend Container entity\nInitialize this on spawn from database" },
 #endif
@@ -1035,7 +1035,7 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Maximum storage capacity in cubic meters (m\xc2\xb3)\n\x09 * Null/0 means unlimited capacity (e.g., station storage)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum storage capacity in cubic meters (m\xc2\xb3)\nNull/0 means unlimited capacity (e.g., station storage)" },
 #endif
@@ -1045,7 +1045,7 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Current used volume in cubic meters (m\xc2\xb3)\n\x09 * Updated after successful operations\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Current used volume in cubic meters (m\xc2\xb3)\nUpdated after successful operations" },
 #endif
@@ -1055,7 +1055,7 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Maximum distance for item transfer operations (in cm, Unreal units)\n\x09 * Default: 250000 cm = 2500 meters\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum distance for item transfer operations (in cm, Unreal units)\nDefault: 250000 cm = 2500 meters" },
 #endif
@@ -1065,7 +1065,7 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Multicast delegate triggered when inventory is updated\n\x09 * UI widgets should bind to this for reactive updates\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Multicast delegate triggered when inventory is updated\nUI widgets should bind to this for reactive updates" },
 #endif
@@ -1074,7 +1074,7 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cached items list */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInventoryComponent.h" },
+		{ "ModuleRelativePath", "Core/Common/Components/EchoesInventoryComponent.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cached items list" },
 #endif
@@ -1089,16 +1089,16 @@ struct Z_Construct_UClass_UEchoesInventoryComponent_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_CanFitItem, "CanFitItem" }, // 2702297884
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems, "FetchItems" }, // 1179103527
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_GetAvailableVolume, "GetAvailableVolume" }, // 3725079514
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems, "GetCachedItems" }, // 2523739166
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure, "HandleMoveRefreshFailure" }, // 3064735412
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess, "HandleMoveRefreshSuccess" }, // 4191017057
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_InitializeStorage, "InitializeStorage" }, // 3046700570
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem, "ServerOnly_JettisonItem" }, // 4235737200
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem, "ServerOnly_MoveItem" }, // 2995778485
-		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll, "ServerOnly_StackAll" }, // 1688501223
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_CanFitItem, "CanFitItem" }, // 2136615953
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_FetchItems, "FetchItems" }, // 3973341723
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_GetAvailableVolume, "GetAvailableVolume" }, // 3488816027
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_GetCachedItems, "GetCachedItems" }, // 2060809077
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshFailure, "HandleMoveRefreshFailure" }, // 2845707280
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_HandleMoveRefreshSuccess, "HandleMoveRefreshSuccess" }, // 2915822845
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_InitializeStorage, "InitializeStorage" }, // 2935149353
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_JettisonItem, "ServerOnly_JettisonItem" }, // 3342787709
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_MoveItem, "ServerOnly_MoveItem" }, // 1155305084
+		{ &Z_Construct_UFunction_UEchoesInventoryComponent_ServerOnly_StackAll, "ServerOnly_StackAll" }, // 2867086704
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -1110,8 +1110,8 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInvento
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_Capacity = { "Capacity", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, Capacity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Capacity_MetaData), NewProp_Capacity_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_UsedVolume = { "UsedVolume", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, UsedVolume), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UsedVolume_MetaData), NewProp_UsedVolume_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_MaxTransferDistance = { "MaxTransferDistance", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, MaxTransferDistance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxTransferDistance_MetaData), NewProp_MaxTransferDistance_MetaData) };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_OnInventoryUpdated = { "OnInventoryUpdated", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, OnInventoryUpdated), Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnInventoryUpdated_MetaData), NewProp_OnInventoryUpdated_MetaData) }; // 946450413
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_CachedItems = { "CachedItems", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, CachedItems), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CachedItems_MetaData), NewProp_CachedItems_MetaData) }; // 255446170
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_OnInventoryUpdated = { "OnInventoryUpdated", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, OnInventoryUpdated), Z_Construct_UDelegateFunction_Echoes_OnInventoryUpdated__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnInventoryUpdated_MetaData), NewProp_OnInventoryUpdated_MetaData) }; // 1206027392
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_CachedItems = { "CachedItems", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryComponent, CachedItems), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CachedItems_MetaData), NewProp_CachedItems_MetaData) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesInventoryComponent_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_StorageId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventoryComponent_Statics::NewProp_Capacity,
@@ -1154,19 +1154,19 @@ UEchoesInventoryComponent::~UEchoesInventoryComponent() {}
 // ********** End Class UEchoesInventoryComponent **************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FEchoesInventoryItem::StaticStruct, Z_Construct_UScriptStruct_FEchoesInventoryItem_Statics::NewStructOps, TEXT("EchoesInventoryItem"), &Z_Registration_Info_UScriptStruct_FEchoesInventoryItem, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesInventoryItem), 3518727963U) },
-		{ FEchoesContainerItems::StaticStruct, Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewStructOps, TEXT("EchoesContainerItems"), &Z_Registration_Info_UScriptStruct_FEchoesContainerItems, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesContainerItems), 255446170U) },
+		{ FEchoesInventoryItem::StaticStruct, Z_Construct_UScriptStruct_FEchoesInventoryItem_Statics::NewStructOps, TEXT("EchoesInventoryItem"), &Z_Registration_Info_UScriptStruct_FEchoesInventoryItem, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesInventoryItem), 2559718756U) },
+		{ FEchoesContainerItems::StaticStruct, Z_Construct_UScriptStruct_FEchoesContainerItems_Statics::NewStructOps, TEXT("EchoesContainerItems"), &Z_Registration_Info_UScriptStruct_FEchoesContainerItems, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesContainerItems), 3126575347U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryComponent, UEchoesInventoryComponent::StaticClass, TEXT("UEchoesInventoryComponent"), &Z_Registration_Info_UClass_UEchoesInventoryComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryComponent), 880132349U) },
+		{ Z_Construct_UClass_UEchoesInventoryComponent, UEchoesInventoryComponent::StaticClass, TEXT("UEchoesInventoryComponent"), &Z_Registration_Info_UClass_UEchoesInventoryComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryComponent), 1636020358U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_2637190715(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ClassInfo),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInventoryComponent_h__Script_Echoes_Statics::ScriptStructInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h__Script_Echoes_1451907046(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h__Script_Echoes_Statics::ClassInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesInventoryComponent_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);
 // ********** End Registration *********************************************************************
 

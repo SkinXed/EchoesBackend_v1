@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/StationActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "StationActor.h"
+#include "EchoesWorldVisualTypes.h"
 #include "Engine/HitResult.h"
 #include "UObject/CoreNet.h"
 
@@ -54,7 +54,7 @@ struct Z_Construct_UFunction_AStationActor_ClientRPC_OpenStationMenu_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Client RPC to open station menu on player's screen\n\x09 * Called after successful docking\n\x09 * \n\x09 * @param InStationName - Name of the station\n\x09 * @param InStationType - Type of the station\n\x09 * @param InHangarStorageId - Storage ID of player's personal hangar\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Client RPC to open station menu on player's screen\nCalled after successful docking\n\n@param InStationName - Name of the station\n@param InStationType - Type of the station\n@param InHangarStorageId - Storage ID of player's personal hangar" },
 #endif
@@ -120,7 +120,7 @@ struct Z_Construct_UFunction_AStationActor_GetStationId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Getters ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Getters ====================" },
 #endif
@@ -165,7 +165,7 @@ struct Z_Construct_UFunction_AStationActor_GetStationName_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Station" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
@@ -207,7 +207,7 @@ struct Z_Construct_UFunction_AStationActor_GetStationType_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Station" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
@@ -251,7 +251,7 @@ struct Z_Construct_UFunction_AStationActor_HandleHangarFailure_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when ship fitting fetch fails */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when ship fitting fetch fails" },
 #endif
@@ -302,7 +302,7 @@ struct Z_Construct_UFunction_AStationActor_HandleHangarReceived_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when ship fitting is successfully fetched */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when ship fitting is successfully fetched" },
 #endif
@@ -355,7 +355,7 @@ struct Z_Construct_UFunction_AStationActor_HasDockingAccess_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if player has access rights to dock at this station\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if player has access rights to dock at this station" },
 #endif
@@ -416,7 +416,7 @@ struct Z_Construct_UFunction_AStationActor_InitializeStation_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Initialization ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Initialization ====================" },
 #endif
@@ -446,7 +446,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationAct
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InName = { "InName", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InName_MetaData), NewProp_InName_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InStationType = { "InStationType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InStationType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InStationType_MetaData), NewProp_InStationType_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InSeed = { "InSeed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InSeed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InVisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 1509157565
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InVisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 1647809122
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStationActor_InitializeStation_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InStationId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InName,
@@ -497,7 +497,7 @@ struct Z_Construct_UFunction_AStationActor_OnDockingZoneBeginOverlap_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when ship enters docking zone\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when ship enters docking zone" },
 #endif
@@ -572,7 +572,7 @@ struct Z_Construct_UFunction_AStationActor_OnRep_StationData_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -616,7 +616,7 @@ struct Z_Construct_UFunction_AStationActor_ServerRPC_RequestDocking_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Server RPC to request docking at this station\n\x09 * Validates access rights and initiates docking sequence\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server RPC to request docking at this station\nValidates access rights and initiates docking sequence" },
 #endif
@@ -677,7 +677,7 @@ struct Z_Construct_UFunction_AStationActor_ServerRPC_RequestUndock_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Server RPC to request undocking from station\n\x09 * Called from client when player clicks Undock button\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server RPC to request undocking from station\nCalled from client when player clicks Undock button" },
 #endif
@@ -774,8 +774,8 @@ struct Z_Construct_UClass_AStationActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AStationActor\n * \n * Represents a space station in the Echoes universe\n * Supports modular construction and faction customization\n */" },
 #endif
-		{ "IncludePath", "Core/Common/StationActor.h" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "IncludePath", "Core/Common/Actor/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AStationActor\n\nRepresents a space station in the Echoes universe\nSupports modular construction and faction customization" },
 #endif
@@ -786,7 +786,7 @@ struct Z_Construct_UClass_AStationActor_Statics
 		{ "Comment", "// ==================== Components ====================\n" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Components ====================" },
 #endif
@@ -794,7 +794,7 @@ struct Z_Construct_UClass_AStationActor_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LightsComponent_MetaData[] = {
 		{ "Category", "Components" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DockingZone_MetaData[] = {
 		{ "Category", "Components" },
@@ -802,7 +802,7 @@ struct Z_Construct_UClass_AStationActor_Statics
 		{ "Comment", "/** Docking zone - detects ships requesting to dock */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Docking zone - detects ships requesting to dock" },
 #endif
@@ -812,26 +812,26 @@ struct Z_Construct_UClass_AStationActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Station Data (Replicated) ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Station Data (Replicated) ====================" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StationName_MetaData[] = {
 		{ "Category", "Station" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StationType_MetaData[] = {
 		{ "Category", "Station" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Seed_MetaData[] = {
 		{ "Category", "Station" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_VisualData_MetaData[] = {
 		{ "Category", "Station" },
-		{ "ModuleRelativePath", "Core/Common/StationActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_BaseMeshComponent;
@@ -845,18 +845,18 @@ struct Z_Construct_UClass_AStationActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AStationActor_ClientRPC_OpenStationMenu, "ClientRPC_OpenStationMenu" }, // 1968481489
-		{ &Z_Construct_UFunction_AStationActor_GetStationId, "GetStationId" }, // 724220845
-		{ &Z_Construct_UFunction_AStationActor_GetStationName, "GetStationName" }, // 3095192526
-		{ &Z_Construct_UFunction_AStationActor_GetStationType, "GetStationType" }, // 3584134899
-		{ &Z_Construct_UFunction_AStationActor_HandleHangarFailure, "HandleHangarFailure" }, // 3147242742
-		{ &Z_Construct_UFunction_AStationActor_HandleHangarReceived, "HandleHangarReceived" }, // 288522190
-		{ &Z_Construct_UFunction_AStationActor_HasDockingAccess, "HasDockingAccess" }, // 347559422
-		{ &Z_Construct_UFunction_AStationActor_InitializeStation, "InitializeStation" }, // 3630069563
-		{ &Z_Construct_UFunction_AStationActor_OnDockingZoneBeginOverlap, "OnDockingZoneBeginOverlap" }, // 2257829724
-		{ &Z_Construct_UFunction_AStationActor_OnRep_StationData, "OnRep_StationData" }, // 1374244659
-		{ &Z_Construct_UFunction_AStationActor_ServerRPC_RequestDocking, "ServerRPC_RequestDocking" }, // 3397108270
-		{ &Z_Construct_UFunction_AStationActor_ServerRPC_RequestUndock, "ServerRPC_RequestUndock" }, // 3489060149
+		{ &Z_Construct_UFunction_AStationActor_ClientRPC_OpenStationMenu, "ClientRPC_OpenStationMenu" }, // 2192380974
+		{ &Z_Construct_UFunction_AStationActor_GetStationId, "GetStationId" }, // 2571789804
+		{ &Z_Construct_UFunction_AStationActor_GetStationName, "GetStationName" }, // 1094968963
+		{ &Z_Construct_UFunction_AStationActor_GetStationType, "GetStationType" }, // 2864649158
+		{ &Z_Construct_UFunction_AStationActor_HandleHangarFailure, "HandleHangarFailure" }, // 189998307
+		{ &Z_Construct_UFunction_AStationActor_HandleHangarReceived, "HandleHangarReceived" }, // 526437512
+		{ &Z_Construct_UFunction_AStationActor_HasDockingAccess, "HasDockingAccess" }, // 3694027179
+		{ &Z_Construct_UFunction_AStationActor_InitializeStation, "InitializeStation" }, // 2386921600
+		{ &Z_Construct_UFunction_AStationActor_OnDockingZoneBeginOverlap, "OnDockingZoneBeginOverlap" }, // 426342618
+		{ &Z_Construct_UFunction_AStationActor_OnRep_StationData, "OnRep_StationData" }, // 790732877
+		{ &Z_Construct_UFunction_AStationActor_ServerRPC_RequestDocking, "ServerRPC_RequestDocking" }, // 1162402649
+		{ &Z_Construct_UFunction_AStationActor_ServerRPC_RequestUndock, "ServerRPC_RequestUndock" }, // 2515696060
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -871,7 +871,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStationActor_
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_StationName = { "StationName", "OnRep_StationData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, StationName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StationName_MetaData), NewProp_StationName_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_StationType = { "StationType", "OnRep_StationData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, StationType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StationType_MetaData), NewProp_StationType_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_Seed = { "Seed", "OnRep_StationData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, Seed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Seed_MetaData), NewProp_Seed_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, VisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1509157565
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, VisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1647809122
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AStationActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStationActor_Statics::NewProp_BaseMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStationActor_Statics::NewProp_LightsComponent,
@@ -931,14 +931,14 @@ AStationActor::~AStationActor() {}
 // ********** End Class AStationActor **************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 300704525U) },
+		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 3546483841U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_3951727151(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_1246153827(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/AnomalyActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "AnomalyActor.h"
+#include "EchoesWorldVisualTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -35,7 +35,7 @@ struct Z_Construct_UFunction_AAnomalyActor_ActivateScanningSignature_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Activate scanning signature (called when player scans)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Activate scanning signature (called when player scans)" },
 #endif
@@ -71,7 +71,7 @@ struct Z_Construct_UFunction_AAnomalyActor_DeactivateScanningSignature_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Deactivate scanning signature\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Deactivate scanning signature" },
 #endif
@@ -111,7 +111,7 @@ struct Z_Construct_UFunction_AAnomalyActor_GetAnomalyDifficulty_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the anomaly difficulty\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the anomaly difficulty" },
 #endif
@@ -159,7 +159,7 @@ struct Z_Construct_UFunction_AAnomalyActor_GetAnomalyId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the anomaly's unique ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the anomaly's unique ID" },
 #endif
@@ -207,7 +207,7 @@ struct Z_Construct_UFunction_AAnomalyActor_GetAnomalyName_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the anomaly's name\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the anomaly's name" },
 #endif
@@ -255,7 +255,7 @@ struct Z_Construct_UFunction_AAnomalyActor_GetAnomalyType_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the anomaly type\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the anomaly type" },
 #endif
@@ -308,7 +308,7 @@ struct Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize anomaly from server configuration\n\x09 * \n\x09 * @param AnomalyId - Unique identifier of the anomaly\n\x09 * @param AnomalyName - Name of the anomaly\n\x09 * @param AnomalyType - Type (Combat/Relic/Data/Gas/Ore)\n\x09 * @param AnomalyDifficulty - Difficulty level (Easy/Medium/Hard/Elite)\n\x09 * @param Seed - Procedural generation seed\n\x09 * @param VisualData - Visual configuration from data table\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize anomaly from server configuration\n\n@param AnomalyId - Unique identifier of the anomaly\n@param AnomalyName - Name of the anomaly\n@param AnomalyType - Type (Combat/Relic/Data/Gas/Ore)\n@param AnomalyDifficulty - Difficulty level (Easy/Medium/Hard/Elite)\n@param Seed - Procedural generation seed\n@param VisualData - Visual configuration from data table" },
 #endif
@@ -343,7 +343,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AAnomalyActor_
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_AnomalyType = { "AnomalyType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AnomalyActor_eventInitializeAnomaly_Parms, AnomalyType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AnomalyType_MetaData), NewProp_AnomalyType_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_AnomalyDifficulty = { "AnomalyDifficulty", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AnomalyActor_eventInitializeAnomaly_Parms, AnomalyDifficulty), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AnomalyDifficulty_MetaData), NewProp_AnomalyDifficulty_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_Seed = { "Seed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AnomalyActor_eventInitializeAnomaly_Parms, Seed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AnomalyActor_eventInitializeAnomaly_Parms, VisualData), Z_Construct_UScriptStruct_FAnomalyVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 3343435054
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AnomalyActor_eventInitializeAnomaly_Parms, VisualData), Z_Construct_UScriptStruct_FAnomalyVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 3365759244
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_AnomalyId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly_Statics::NewProp_AnomalyName,
@@ -430,8 +430,8 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AAnomalyActor\n * \n * Represents a cosmic anomaly in a solar system\n * Supports different types: Combat, Relic, Data, Gas, Ore\n * Features scanning signature system for exploration gameplay\n * Configurable difficulty levels affect visuals and rewards\n * \n * Key Features:\n * - Type-specific visual configurations (Combat/Relic/Data/Gas)\n * - Scanning signature VFX (visible when scanned)\n * - Difficulty-based icons and effects\n * - Trigger zones for interaction\n * - Support for loot/reward systems\n */" },
 #endif
-		{ "IncludePath", "Core/Common/AnomalyActor.h" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "IncludePath", "Core/Common/Actor/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AAnomalyActor\n\nRepresents a cosmic anomaly in a solar system\nSupports different types: Combat, Relic, Data, Gas, Ore\nFeatures scanning signature system for exploration gameplay\nConfigurable difficulty levels affect visuals and rewards\n\nKey Features:\n- Type-specific visual configurations (Combat/Relic/Data/Gas)\n- Scanning signature VFX (visible when scanned)\n- Difficulty-based icons and effects\n- Trigger zones for interaction\n- Support for loot/reward systems" },
 #endif
@@ -443,7 +443,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Root scene component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Root scene component" },
 #endif
@@ -455,7 +455,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Central structure mesh */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Central structure mesh" },
 #endif
@@ -467,7 +467,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Scanning signature VFX */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Scanning signature VFX" },
 #endif
@@ -479,7 +479,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Type-specific VFX (combat beams, data streams, gas clouds) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Type-specific VFX (combat beams, data streams, gas clouds)" },
 #endif
@@ -491,7 +491,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Ambient audio component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ambient audio component" },
 #endif
@@ -503,7 +503,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Warning audio component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Warning audio component" },
 #endif
@@ -515,7 +515,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 		{ "Comment", "/** Trigger sphere for interaction detection */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Trigger sphere for interaction detection" },
 #endif
@@ -526,7 +526,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique ID of this anomaly */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique ID of this anomaly" },
 #endif
@@ -537,7 +537,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Name of the anomaly */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Name of the anomaly" },
 #endif
@@ -548,7 +548,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Type of anomaly (Combat/Relic/Data/Gas/Ore) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Type of anomaly (Combat/Relic/Data/Gas/Ore)" },
 #endif
@@ -559,7 +559,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Difficulty level (Easy/Medium/Hard/Elite) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Difficulty level (Easy/Medium/Hard/Elite)" },
 #endif
@@ -570,7 +570,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Procedural generation seed */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Procedural generation seed" },
 #endif
@@ -581,7 +581,7 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether signature is currently visible (scanned) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/AnomalyActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/AnomalyActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether signature is currently visible (scanned)" },
 #endif
@@ -604,13 +604,13 @@ struct Z_Construct_UClass_AAnomalyActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AAnomalyActor_ActivateScanningSignature, "ActivateScanningSignature" }, // 4290843501
-		{ &Z_Construct_UFunction_AAnomalyActor_DeactivateScanningSignature, "DeactivateScanningSignature" }, // 2567762156
-		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyDifficulty, "GetAnomalyDifficulty" }, // 3719205871
-		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyId, "GetAnomalyId" }, // 1746286371
-		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyName, "GetAnomalyName" }, // 1904776369
-		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyType, "GetAnomalyType" }, // 4019105161
-		{ &Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly, "InitializeAnomaly" }, // 248116309
+		{ &Z_Construct_UFunction_AAnomalyActor_ActivateScanningSignature, "ActivateScanningSignature" }, // 3113792925
+		{ &Z_Construct_UFunction_AAnomalyActor_DeactivateScanningSignature, "DeactivateScanningSignature" }, // 3865618010
+		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyDifficulty, "GetAnomalyDifficulty" }, // 2321957606
+		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyId, "GetAnomalyId" }, // 4181011891
+		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyName, "GetAnomalyName" }, // 3537045982
+		{ &Z_Construct_UFunction_AAnomalyActor_GetAnomalyType, "GetAnomalyType" }, // 1604774164
+		{ &Z_Construct_UFunction_AAnomalyActor_InitializeAnomaly, "InitializeAnomaly" }, // 3705959722
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -701,14 +701,14 @@ AAnomalyActor::~AAnomalyActor() {}
 // ********** End Class AAnomalyActor **************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AAnomalyActor, AAnomalyActor::StaticClass, TEXT("AAnomalyActor"), &Z_Registration_Info_UClass_AAnomalyActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AAnomalyActor), 1661655623U) },
+		{ Z_Construct_UClass_AAnomalyActor, AAnomalyActor::StaticClass, TEXT("AAnomalyActor"), &Z_Registration_Info_UClass_AAnomalyActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AAnomalyActor), 2091830531U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h__Script_Echoes_2376726643(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h__Script_Echoes_3742975058(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

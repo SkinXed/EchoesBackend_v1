@@ -263,11 +263,31 @@ EchoesBackend_v1/
 ├── Client/                  # Unreal Engine 5 C++ client
 │   └── Echoes/
 │       └── Source/Echoes/
-│           ├── Core/       # Core game systems
-│           │   ├── Common/ # Shared client/server (Common_ prefix)
-│           │   ├── Client/ # Client-only (Client_ prefix)
-│           │   └── Server/ # Server-only (Server_ prefix)
-│           └── UI/         # UI widgets
+├── Core/
+│   ├── Common/              # "Истина". Логика, которая нужна и Серверу, и Клиенту
+│   │   ├── Actors/          # Звезды, планеты, врата (StargateActor, PlanetActor)
+│   │   ├── Components/      # InventoryComponent, ShipMovementComponent
+│   │   ├── Interfaces/      # EchoesInteractableInterface
+│   │   ├── Networking/      # Твои Subsystems (Auth, Identity, Inventory)
+│   │   ├── Types/           # Структуры и Enum (ShipTypes, ItemDefinitions)
+│   │   └── World/           # EchoesWorldGenerator
+│   │
+│   ├── Server/              # ТОЛЬКО для UE Dedicated Server
+│   │   ├── GameModes/       # EchoesServerGameMode
+│   │   ├── Managers/        # HangarManager, ServerManagementSubsystem
+│   │   └── Validation/      # Логика проверки читов/прав доступа
+│   │
+│   └── Client/              # ТОЛЬКО для визуализации
+│       ├── Pawns/           # EchoesShipPawn
+│       ├── Controller/      # Логика ввода и локальный PlayerController
+│       └── Visuals/         # Эффекты Niagara, привязанные к логике
+│
+├── UI/                      # Все, что связано с UMG
+│   ├── Widgets/             # Конкретные окна (Login, Inventory, Station)
+│   ├── Framework/           # Base Classes (EchoesWindowBase)
+│   └── Logic/               # DragDrop операции, ItemObjects
+│
+└── Echoes.Build.cs          # Настройки путей (биндинг)
 ├── docs/                    # 📚 Documentation hub
 │   ├── STATUS.md           # Real-time project status
 │   ├── QUICK_START.md      # Quick start guide

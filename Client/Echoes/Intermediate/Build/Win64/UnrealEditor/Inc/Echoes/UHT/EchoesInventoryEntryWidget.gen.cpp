@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesInventoryEntryWidget.h"
+#include "EchoesInventoryEntryWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -38,7 +38,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleContextMenuAction
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle context menu action selected\n\x09 * @param ActionId - ID of selected action\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle context menu action selected\n@param ActionId - ID of selected action" },
 #endif
@@ -89,7 +89,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleIconLoaded_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle icon loaded callback\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle icon loaded callback" },
 #endif
@@ -134,7 +134,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure_S
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
 		{ "NativeConst", "" },
@@ -175,7 +175,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess_S
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -208,7 +208,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure_S
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
 		{ "NativeConst", "" },
@@ -249,7 +249,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess_S
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -281,7 +281,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantityCancelled
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle quantity selection cancelled for drag operation\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle quantity selection cancelled for drag operation" },
 #endif
@@ -320,7 +320,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantitySelected_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle quantity selected for drag operation\n\x09 * @param SelectedQuantity - Quantity selected by user\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle quantity selected for drag operation\n@param SelectedQuantity - Quantity selected by user" },
 #endif
@@ -364,7 +364,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantityCance
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle quantity selection cancelled for jettison operation\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle quantity selection cancelled for jettison operation" },
 #endif
@@ -403,7 +403,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantitySelec
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle quantity selected for jettison operation\n\x09 * @param SelectedQuantity - Quantity selected by user\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle quantity selected for jettison operation\n@param SelectedQuantity - Quantity selected by user" },
 #endif
@@ -452,7 +452,7 @@ struct Z_Construct_UFunction_UEchoesInventoryEntryWidget_SetItemData_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set the item data to display\n\x09 * Called automatically by ListView when item is set\n\x09 * @param ItemObject - The inventory item object to display\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set the item data to display\nCalled automatically by ListView when item is set\n@param ItemObject - The inventory item object to display" },
 #endif
@@ -543,8 +543,8 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesInventoryEntryWidget\n * \n * Entry widget for inventory list items\n * Implements IUserObjectListEntry to work with UListView\n * Displays item icon, name, quantity, and volume\n * \n * Usage in UMG:\n * - Create a widget blueprint based on this class\n * - Add UImage for icon (name it \"ItemIcon\")\n * - Add UTextBlock for name (name it \"ItemNameText\")\n * - Add UTextBlock for quantity (name it \"QuantityText\")\n * - Add UTextBlock for volume (name it \"VolumeText\")\n * - Set this blueprint as Entry Widget Class in ListView\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesInventoryEntryWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesInventoryEntryWidget\n\nEntry widget for inventory list items\nImplements IUserObjectListEntry to work with UListView\nDisplays item icon, name, quantity, and volume\n\nUsage in UMG:\n- Create a widget blueprint based on this class\n- Add UImage for icon (name it \"ItemIcon\")\n- Add UTextBlock for name (name it \"ItemNameText\")\n- Add UTextBlock for quantity (name it \"QuantityText\")\n- Add UTextBlock for volume (name it \"VolumeText\")\n- Set this blueprint as Entry Widget Class in ListView" },
 #endif
@@ -556,7 +556,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 		{ "Comment", "/** Image widget for item icon */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Image widget for item icon" },
 #endif
@@ -568,7 +568,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 		{ "Comment", "/** Text block for item name */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Text block for item name" },
 #endif
@@ -580,7 +580,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 		{ "Comment", "/** Text block for quantity */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Text block for quantity" },
 #endif
@@ -592,7 +592,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 		{ "Comment", "/** Text block for volume */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Text block for volume" },
 #endif
@@ -602,7 +602,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Optional: Placeholder icon shown while loading */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional: Placeholder icon shown while loading" },
 #endif
@@ -612,7 +612,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Context menu widget class */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Context menu widget class" },
 #endif
@@ -622,7 +622,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Quantity selector widget class */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Quantity selector widget class" },
 #endif
@@ -631,7 +631,7 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Current item object being displayed */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryEntryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryEntryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Current item object being displayed" },
 #endif
@@ -648,17 +648,17 @@ struct Z_Construct_UClass_UEchoesInventoryEntryWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleContextMenuAction, "HandleContextMenuAction" }, // 589391854
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleIconLoaded, "HandleIconLoaded" }, // 3370816314
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure, "HandleJettisonFailure" }, // 3892818357
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess, "HandleJettisonSuccess" }, // 2363951933
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure, "HandleStackAllFailure" }, // 3878818885
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess, "HandleStackAllSuccess" }, // 733883559
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantityCancelled, "OnDragQuantityCancelled" }, // 2729483125
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantitySelected, "OnDragQuantitySelected" }, // 1161400816
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantityCancelled, "OnJettisonQuantityCancelled" }, // 53401379
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantitySelected, "OnJettisonQuantitySelected" }, // 45606962
-		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_SetItemData, "SetItemData" }, // 2982626831
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleContextMenuAction, "HandleContextMenuAction" }, // 713205132
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleIconLoaded, "HandleIconLoaded" }, // 3834310316
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonFailure, "HandleJettisonFailure" }, // 3772400918
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleJettisonSuccess, "HandleJettisonSuccess" }, // 3857088311
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllFailure, "HandleStackAllFailure" }, // 4011586399
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_HandleStackAllSuccess, "HandleStackAllSuccess" }, // 1597446094
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantityCancelled, "OnDragQuantityCancelled" }, // 3717527068
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnDragQuantitySelected, "OnDragQuantitySelected" }, // 1667292077
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantityCancelled, "OnJettisonQuantityCancelled" }, // 574854734
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_OnJettisonQuantitySelected, "OnJettisonQuantitySelected" }, // 482391081
+		{ &Z_Construct_UFunction_UEchoesInventoryEntryWidget_SetItemData, "SetItemData" }, // 2882691797
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static const UECodeGen_Private::FImplementedInterfaceParams InterfaceParams[];
@@ -723,14 +723,14 @@ UEchoesInventoryEntryWidget::~UEchoesInventoryEntryWidget() {}
 // ********** End Class UEchoesInventoryEntryWidget ************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryEntryWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryEntryWidget, UEchoesInventoryEntryWidget::StaticClass, TEXT("UEchoesInventoryEntryWidget"), &Z_Registration_Info_UClass_UEchoesInventoryEntryWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryEntryWidget), 2882616340U) },
+		{ Z_Construct_UClass_UEchoesInventoryEntryWidget, UEchoesInventoryEntryWidget::StaticClass, TEXT("UEchoesInventoryEntryWidget"), &Z_Registration_Info_UClass_UEchoesInventoryEntryWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryEntryWidget), 580192312U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_2860265747(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryEntryWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryEntryWidget_h__Script_Echoes_4160840487(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryEntryWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryEntryWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

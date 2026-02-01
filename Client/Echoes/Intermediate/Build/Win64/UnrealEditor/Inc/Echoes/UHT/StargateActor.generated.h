@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/StargateActor.h"
+// IWYU pragma: private, include "Core/Common/Actor/StargateActor.h"
 
 #ifdef ECHOES_StargateActor_generated_h
 #error "StargateActor.generated.h already included, missing '#pragma once' in StargateActor.h"
@@ -24,7 +24,7 @@ struct FHitResult;
 struct FStargateVisualRow;
 
 // ********** Begin Class AStargateActor ***********************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual bool ServerRPC_RequestJump_Validate(APlayerController* ); \
 	virtual void ServerRPC_RequestJump_Implementation(APlayerController* PlayerController); \
 	DECLARE_FUNCTION(execOnRep_GateData); \
@@ -39,10 +39,10 @@ struct FStargateVisualRow;
 	DECLARE_FUNCTION(execInitializeStargate);
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_CALLBACK_WRAPPERS
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_CALLBACK_WRAPPERS
 ECHOES_API UClass* Z_Construct_UClass_AStargateActor_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAStargateActor(); \
 	friend struct Z_Construct_UClass_AStargateActor_Statics; \
@@ -63,7 +63,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AStargateActor(AStargateActor&&) = delete; \
 	AStargateActor(const AStargateActor&) = delete; \
@@ -73,14 +73,14 @@ public: \
 	NO_API virtual ~AStargateActor();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_19_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_19_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_CALLBACK_WRAPPERS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h_22_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_CALLBACK_WRAPPERS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h_22_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -90,6 +90,6 @@ class AStargateActor;
 // ********** End Class AStargateActor *************************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Server/EchoesServerManagementSubsystem.h"
-#include "Core/Server/EchoesServerDiscoveryTypes.h"
+#include "EchoesServerManagementSubsystem.h"
+#include "EchoesServerDiscoveryTypes.h"
 #include "Engine/GameInstance.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -37,7 +37,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnServerConfigReceived__DelegateSign
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Delegate for when server configuration is received from backend\n * Used by WorldGenerator to spawn planets, stargates, stations, etc.\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate for when server configuration is received from backend\nUsed by WorldGenerator to spawn planets, stargates, stations, etc." },
 #endif
@@ -90,7 +90,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnRegionalClusterConfigReceived__Del
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Delegate for when regional cluster configuration is received from backend\n * Used by WorldGenerator to spawn multiple systems with spatial offsets\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate for when regional cluster configuration is received from backend\nUsed by WorldGenerator to spawn multiple systems with spatial offsets" },
 #endif
@@ -144,7 +144,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetInstanceId_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the unique instance ID for this server\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the unique instance ID for this server" },
 #endif
@@ -192,7 +192,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetRegionalConfig_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get cached regional cluster configuration\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get cached regional cluster configuration" },
 #endif
@@ -243,7 +243,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerId_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get server ID assigned by backend\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get server ID assigned by backend" },
 #endif
@@ -291,7 +291,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerType_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get server type (DedicatedSystem or RegionalCluster)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get server type (DedicatedSystem or RegionalCluster)" },
 #endif
@@ -339,7 +339,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsRegionalCluster_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if this is a regional cluster server\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if this is a regional cluster server" },
 #endif
@@ -392,7 +392,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsServerRegistered
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if server is registered with backend\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if server is registered with backend" },
 #endif
@@ -441,7 +441,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_GetConf
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Request universe configuration from backend\n\x09 * Called automatically after successful registration\n\x09 * Response triggers OnServerConfigReceived delegate\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Request universe configuration from backend\nCalled automatically after successful registration\nResponse triggers OnServerConfigReceived delegate" },
 #endif
@@ -477,7 +477,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Heartbe
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Send heartbeat to backend with current metrics\n\x09 * Called automatically every 30 seconds by timer\n\x09 * If backend returns 404 (server not found), triggers re-registration\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Send heartbeat to backend with current metrics\nCalled automatically every 30 seconds by timer\nIf backend returns 404 (server not found), triggers re-registration" },
 #endif
@@ -521,7 +521,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Registe
 #endif
 		{ "CPP_Default_InGamePort", "7777" },
 		{ "CPP_Default_SolarSystemId", "()" },
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Register this server with the backend (The Handshake)\nCalled automatically during Initialize() if running as dedicated server\nCan also be triggered manually from GameMode\n\n@param InstanceId - Unique GUID for this server instance\n@param GamePort - Port for game connections\n@param SolarSystemId - Solar system this server hosts (for DedicatedSystem mode)" },
 #endif
@@ -580,7 +580,7 @@ struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Unregis
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Unregister server from backend (graceful shutdown)\n\x09 * Called automatically during Deinitialize()\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unregister server from backend (graceful shutdown)\nCalled automatically during Deinitialize()" },
 #endif
@@ -661,8 +661,8 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesServerManagementSubsystem\n * \n * Server Management Subsystem for Echoes Dedicated Server\n * Handles server lifecycle, registration, heartbeat, and configuration sync with ASP.NET Core backend\n * \n * Architecture:\n * - GameInstanceSubsystem: Persists across level transitions (server side only)\n * - Only runs when NetMode == NM_DedicatedServer\n * - All requests to backend must include X-Server-Secret header\n * - Backend is the source of truth for all server state\n * \n * Lifecycle:\n * 1. Initialize() - Called on server startup, triggers registration\n * 2. ServerOnly_Register() - The Handshake with backend\n * 3. ServerOnly_StartHeartbeat() - Begin 30-second heartbeat timer\n * 4. ServerOnly_GetConfig() - Fetch universe configuration from backend\n * 5. Deinitialize() - Graceful shutdown, unregister from backend\n */" },
 #endif
-		{ "IncludePath", "Core/Server/EchoesServerManagementSubsystem.h" },
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "IncludePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesServerManagementSubsystem\n\nServer Management Subsystem for Echoes Dedicated Server\nHandles server lifecycle, registration, heartbeat, and configuration sync with ASP.NET Core backend\n\nArchitecture:\n- GameInstanceSubsystem: Persists across level transitions (server side only)\n- Only runs when NetMode == NM_DedicatedServer\n- All requests to backend must include X-Server-Secret header\n- Backend is the source of truth for all server state\n\nLifecycle:\n1. Initialize() - Called on server startup, triggers registration\n2. ServerOnly_Register() - The Handshake with backend\n3. ServerOnly_StartHeartbeat() - Begin 30-second heartbeat timer\n4. ServerOnly_GetConfig() - Fetch universe configuration from backend\n5. Deinitialize() - Graceful shutdown, unregister from backend" },
 #endif
@@ -672,7 +672,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Broadcast when server configuration is received (WorldGenerator subscribes to this) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Broadcast when server configuration is received (WorldGenerator subscribes to this)" },
 #endif
@@ -682,7 +682,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Broadcast when regional cluster configuration is received (WorldGenerator subscribes to this) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Broadcast when regional cluster configuration is received (WorldGenerator subscribes to this)" },
 #endif
@@ -691,7 +691,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Backend API base URL */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Backend API base URL" },
 #endif
@@ -700,7 +700,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Server secret for authentication (X-Server-Secret header) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server secret for authentication (X-Server-Secret header)" },
 #endif
@@ -709,7 +709,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique instance ID for this server (GUID) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique instance ID for this server (GUID)" },
 #endif
@@ -718,7 +718,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Server ID assigned by backend after registration */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server ID assigned by backend after registration" },
 #endif
@@ -727,7 +727,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether server is registered with backend */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether server is registered with backend" },
 #endif
@@ -736,7 +736,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Solar system ID this server hosts (for DedicatedSystem mode) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Solar system ID this server hosts (for DedicatedSystem mode)" },
 #endif
@@ -745,7 +745,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Game port for client connections */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Game port for client connections" },
 #endif
@@ -754,7 +754,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Node type: \"DedicatedSystem\" or \"RegionalCluster\" */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Node type: \"DedicatedSystem\" or \"RegionalCluster\"" },
 #endif
@@ -763,7 +763,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Region ID this server hosts (for RegionalCluster mode) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Region ID this server hosts (for RegionalCluster mode)" },
 #endif
@@ -772,7 +772,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cached server configuration received from backend (DedicatedSystem mode) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cached server configuration received from backend (DedicatedSystem mode)" },
 #endif
@@ -781,7 +781,7 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cached regional cluster configuration received from backend (RegionalCluster mode) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Server/EchoesServerManagementSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cached regional cluster configuration received from backend (RegionalCluster mode)" },
 #endif
@@ -804,16 +804,16 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetInstanceId, "GetInstanceId" }, // 3339510006
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetRegionalConfig, "GetRegionalConfig" }, // 4256219304
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerId, "GetServerId" }, // 801725324
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerType, "GetServerType" }, // 1509085507
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsRegionalCluster, "IsRegionalCluster" }, // 2705024765
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsServerRegistered, "IsServerRegistered" }, // 3706503401
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_GetConfig, "ServerOnly_GetConfig" }, // 4088227962
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Heartbeat, "ServerOnly_Heartbeat" }, // 1540807896
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register, "ServerOnly_Register" }, // 946668330
-		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Unregister, "ServerOnly_Unregister" }, // 2128658270
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetInstanceId, "GetInstanceId" }, // 1067278714
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetRegionalConfig, "GetRegionalConfig" }, // 7635550
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerId, "GetServerId" }, // 1107558125
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerType, "GetServerType" }, // 3359078857
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsRegionalCluster, "IsRegionalCluster" }, // 3722830661
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsServerRegistered, "IsServerRegistered" }, // 428410746
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_GetConfig, "ServerOnly_GetConfig" }, // 1797996127
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Heartbeat, "ServerOnly_Heartbeat" }, // 3719494717
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Register, "ServerOnly_Register" }, // 3576710583
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_Unregister, "ServerOnly_Unregister" }, // 508875178
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -821,8 +821,8 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_OnServerConfigReceived = { "OnServerConfigReceived", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, OnServerConfigReceived), Z_Construct_UDelegateFunction_Echoes_OnServerConfigReceived__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnServerConfigReceived_MetaData), NewProp_OnServerConfigReceived_MetaData) }; // 2834423440
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_OnRegionalClusterConfigReceived = { "OnRegionalClusterConfigReceived", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, OnRegionalClusterConfigReceived), Z_Construct_UDelegateFunction_Echoes_OnRegionalClusterConfigReceived__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnRegionalClusterConfigReceived_MetaData), NewProp_OnRegionalClusterConfigReceived_MetaData) }; // 3145959017
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_OnServerConfigReceived = { "OnServerConfigReceived", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, OnServerConfigReceived), Z_Construct_UDelegateFunction_Echoes_OnServerConfigReceived__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnServerConfigReceived_MetaData), NewProp_OnServerConfigReceived_MetaData) }; // 2367962766
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_OnRegionalClusterConfigReceived = { "OnRegionalClusterConfigReceived", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, OnRegionalClusterConfigReceived), Z_Construct_UDelegateFunction_Echoes_OnRegionalClusterConfigReceived__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnRegionalClusterConfigReceived_MetaData), NewProp_OnRegionalClusterConfigReceived_MetaData) }; // 711187048
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_BackendURL = { "BackendURL", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, BackendURL), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_BackendURL_MetaData), NewProp_BackendURL_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerSecret = { "ServerSecret", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, ServerSecret), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerSecret_MetaData), NewProp_ServerSecret_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerInstanceId = { "ServerInstanceId", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, ServerInstanceId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerInstanceId_MetaData), NewProp_ServerInstanceId_MetaData) };
@@ -888,14 +888,14 @@ UEchoesServerManagementSubsystem::~UEchoesServerManagementSubsystem() {}
 // ********** End Class UEchoesServerManagementSubsystem *******************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesServerManagementSubsystem, UEchoesServerManagementSubsystem::StaticClass, TEXT("UEchoesServerManagementSubsystem"), &Z_Registration_Info_UClass_UEchoesServerManagementSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerManagementSubsystem), 690058291U) },
+		{ Z_Construct_UClass_UEchoesServerManagementSubsystem, UEchoesServerManagementSubsystem::StaticClass, TEXT("UEchoesServerManagementSubsystem"), &Z_Registration_Info_UClass_UEchoesServerManagementSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerManagementSubsystem), 3911746889U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_872765511(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_3867458592(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

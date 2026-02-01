@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "UI/EchoesPreloadWidget.h"
+// IWYU pragma: private, include "UI/Widgets/EchoesPreloadWidget.h"
 
 #ifdef ECHOES_EchoesPreloadWidget_generated_h
 #error "EchoesPreloadWidget.generated.h already included, missing '#pragma once' in EchoesPreloadWidget.h"
@@ -19,20 +19,20 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 enum class ENextState : uint8;
 
 // ********** Begin Delegate FOnPreloadComplete ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_36_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_36_DELEGATE \
 ECHOES_API void FOnPreloadComplete_DelegateWrapper(const FMulticastScriptDelegate& OnPreloadComplete, ENextState NextState);
 
 
 // ********** End Delegate FOnPreloadComplete ******************************************************
 
 // ********** Begin Class UEchoesPreloadWidget *****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execStartPreload);
 
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesPreloadWidget_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesPreloadWidget(); \
 	friend struct Z_Construct_UClass_UEchoesPreloadWidget_Statics; \
@@ -43,7 +43,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesPreloadWidget)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesPreloadWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -55,13 +55,13 @@ public: \
 	NO_API virtual ~UEchoesPreloadWidget();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_50_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_50_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h_53_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -71,7 +71,7 @@ class UEchoesPreloadWidget;
 // ********** End Class UEchoesPreloadWidget *******************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h
 
 // ********** Begin Enum EPreloadState *************************************************************
 #define FOREACH_ENUM_EPRELOADSTATE(op) \

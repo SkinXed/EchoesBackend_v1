@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesShipStatsSubsystem.h"
+// IWYU pragma: private, include "Core/Common/Networking/EchoesShipStatsSubsystem.h"
 
 #ifdef ECHOES_EchoesShipStatsSubsystem_generated_h
 #error "EchoesShipStatsSubsystem.generated.h already included, missing '#pragma once' in EchoesShipStatsSubsystem.h"
@@ -20,35 +20,35 @@ struct FEchoesShipStats;
 struct FGuid;
 
 // ********** Begin Delegate FOnShipStatsFetched ***************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_11_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_11_DELEGATE \
 ECHOES_API void FOnShipStatsFetched_DelegateWrapper(const FScriptDelegate& OnShipStatsFetched, FEchoesShipStats const& Stats);
 
 
 // ********** End Delegate FOnShipStatsFetched *****************************************************
 
 // ********** Begin Delegate FOnModuleAdded ********************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_12_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_12_DELEGATE \
 ECHOES_API void FOnModuleAdded_DelegateWrapper(const FScriptDelegate& OnModuleAdded, bool bSuccess);
 
 
 // ********** End Delegate FOnModuleAdded **********************************************************
 
 // ********** Begin Delegate FOnApiError ***********************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_13_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_13_DELEGATE \
 ECHOES_API void FOnApiError_DelegateWrapper(const FScriptDelegate& OnApiError, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnApiError *************************************************************
 
 // ********** Begin Class UEchoesShipStatsSubsystem ************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execAddModule); \
 	DECLARE_FUNCTION(execFetchShipStats);
 
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesShipStatsSubsystem_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesShipStatsSubsystem(); \
 	friend struct Z_Construct_UClass_UEchoesShipStatsSubsystem_Statics; \
@@ -61,7 +61,7 @@ public: \
 
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesShipStatsSubsystem(); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -73,13 +73,13 @@ public: \
 	NO_API virtual ~UEchoesShipStatsSubsystem();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_22_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_22_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h_25_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h_25_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -89,6 +89,6 @@ class UEchoesShipStatsSubsystem;
 // ********** End Class UEchoesShipStatsSubsystem **************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

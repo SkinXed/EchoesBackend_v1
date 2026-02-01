@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/PlanetActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "PlanetActor.h"
+#include "EchoesWorldVisualTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -31,7 +31,7 @@ struct Z_Construct_UFunction_APlanetActor_ApplySeedVariation_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Apply seed-based variation to visual appearance\n\x09 * Uses the seed to:\n\x09 * - Select one material from the array\n\x09 * - Adjust rotation\n\x09 * - Modify atmosphere intensity\n\x09 * - Randomize texture parameters\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Apply seed-based variation to visual appearance\nUses the seed to:\n- Select one material from the array\n- Adjust rotation\n- Modify atmosphere intensity\n- Randomize texture parameters" },
 #endif
@@ -71,7 +71,7 @@ struct Z_Construct_UFunction_APlanetActor_GetPlanetId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Getters ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Getters ====================" },
 #endif
@@ -116,7 +116,7 @@ struct Z_Construct_UFunction_APlanetActor_GetPlanetName_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Planet" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
@@ -158,7 +158,7 @@ struct Z_Construct_UFunction_APlanetActor_GetPlanetType_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Planet" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
@@ -200,7 +200,7 @@ struct Z_Construct_UFunction_APlanetActor_GetRadius_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Planet" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_ReturnValue;
@@ -242,7 +242,7 @@ struct Z_Construct_UFunction_APlanetActor_GetSeed_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Planet" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FIntPropertyParams NewProp_ReturnValue;
@@ -292,7 +292,7 @@ struct Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize planet from configuration data\n\x09 * Called by WorldGenerator after spawning\n\x09 * \n\x09 * @param InPlanetId - Unique planet ID from database\n\x09 * @param InName - Planet name\n\x09 * @param InType - Planet type (e.g., \"Lava\", \"Oceanic\", \"Barren\")\n\x09 * @param InRadius - Planet radius in km\n\x09 * @param InSeed - Seed for procedural variation\n\x09 * @param InVisualData - Visual configuration from data table\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize planet from configuration data\nCalled by WorldGenerator after spawning\n\n@param InPlanetId - Unique planet ID from database\n@param InName - Planet name\n@param InType - Planet type (e.g., \"Lava\", \"Oceanic\", \"Barren\")\n@param InRadius - Planet radius in km\n@param InSeed - Seed for procedural variation\n@param InVisualData - Visual configuration from data table" },
 #endif
@@ -324,7 +324,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_APlanetActor_I
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InType = { "InType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InType_MetaData), NewProp_InType_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InRadius = { "InRadius", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InRadius), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InSeed = { "InSeed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InSeed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InVisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 1565181472
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InVisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 1135975489
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InPlanetId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InName,
@@ -365,7 +365,7 @@ struct Z_Construct_UFunction_APlanetActor_OnRep_PlanetData_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -441,8 +441,8 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * APlanetActor\n * \n * Represents a planet in the Echoes universe\n * Spawned by AEchoesWorldGenerator based on backend configuration\n * Supports seed-based visual variation and procedural generation\n * \n * Features:\n * - Server-side spawning with replication\n * - Seed-based variation for unique appearance\n * - Async asset loading for optimization\n * - Atmosphere and cloud layers\n * - Material parameter randomization\n */" },
 #endif
-		{ "IncludePath", "Core/Common/PlanetActor.h" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "IncludePath", "Core/Common/Actor/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "APlanetActor\n\nRepresents a planet in the Echoes universe\nSpawned by AEchoesWorldGenerator based on backend configuration\nSupports seed-based visual variation and procedural generation\n\nFeatures:\n- Server-side spawning with replication\n- Seed-based variation for unique appearance\n- Async asset loading for optimization\n- Atmosphere and cloud layers\n- Material parameter randomization" },
 #endif
@@ -453,7 +453,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 		{ "Comment", "/** Planet mesh component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Planet mesh component" },
 #endif
@@ -464,7 +464,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 		{ "Comment", "/** Cloud layer mesh component (optional) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cloud layer mesh component (optional)" },
 #endif
@@ -475,7 +475,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 		{ "Comment", "/** Atmosphere mesh component (optional) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Atmosphere mesh component (optional)" },
 #endif
@@ -486,7 +486,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 		{ "Comment", "/** Ring mesh component (optional, for gas giants) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ring mesh component (optional, for gas giants)" },
 #endif
@@ -496,7 +496,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique planet ID from database */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique planet ID from database" },
 #endif
@@ -506,7 +506,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Planet name */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Planet name" },
 #endif
@@ -516,7 +516,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Planet type (e.g., \"Lava\", \"Oceanic\", \"Barren\") */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Planet type (e.g., \"Lava\", \"Oceanic\", \"Barren\")" },
 #endif
@@ -526,7 +526,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Planet radius in km */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Planet radius in km" },
 #endif
@@ -536,7 +536,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Seed for procedural variation */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Seed for procedural variation" },
 #endif
@@ -546,7 +546,7 @@ struct Z_Construct_UClass_APlanetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Visual configuration data */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/PlanetActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration data" },
 #endif
@@ -565,14 +565,14 @@ struct Z_Construct_UClass_APlanetActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_APlanetActor_ApplySeedVariation, "ApplySeedVariation" }, // 1597951080
-		{ &Z_Construct_UFunction_APlanetActor_GetPlanetId, "GetPlanetId" }, // 1931550446
-		{ &Z_Construct_UFunction_APlanetActor_GetPlanetName, "GetPlanetName" }, // 314821616
-		{ &Z_Construct_UFunction_APlanetActor_GetPlanetType, "GetPlanetType" }, // 204372499
-		{ &Z_Construct_UFunction_APlanetActor_GetRadius, "GetRadius" }, // 3630309249
-		{ &Z_Construct_UFunction_APlanetActor_GetSeed, "GetSeed" }, // 3928417542
-		{ &Z_Construct_UFunction_APlanetActor_InitializePlanet, "InitializePlanet" }, // 1401541917
-		{ &Z_Construct_UFunction_APlanetActor_OnRep_PlanetData, "OnRep_PlanetData" }, // 973457108
+		{ &Z_Construct_UFunction_APlanetActor_ApplySeedVariation, "ApplySeedVariation" }, // 698242928
+		{ &Z_Construct_UFunction_APlanetActor_GetPlanetId, "GetPlanetId" }, // 735537990
+		{ &Z_Construct_UFunction_APlanetActor_GetPlanetName, "GetPlanetName" }, // 3184214214
+		{ &Z_Construct_UFunction_APlanetActor_GetPlanetType, "GetPlanetType" }, // 3563501123
+		{ &Z_Construct_UFunction_APlanetActor_GetRadius, "GetRadius" }, // 443128008
+		{ &Z_Construct_UFunction_APlanetActor_GetSeed, "GetSeed" }, // 3271480025
+		{ &Z_Construct_UFunction_APlanetActor_InitializePlanet, "InitializePlanet" }, // 4024288001
+		{ &Z_Construct_UFunction_APlanetActor_OnRep_PlanetData, "OnRep_PlanetData" }, // 2063678419
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -589,7 +589,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_APlanetActor_Stat
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetType = { "PlanetType", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, PlanetType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlanetType_MetaData), NewProp_PlanetType_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_Radius = { "Radius", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, Radius), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Radius_MetaData), NewProp_Radius_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_Seed = { "Seed", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, Seed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Seed_MetaData), NewProp_Seed_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, VisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1565181472
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, VisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1135975489
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_APlanetActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_CloudLayerComponent,
@@ -653,14 +653,14 @@ APlanetActor::~APlanetActor() {}
 // ********** End Class APlanetActor ***************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_PlanetActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_APlanetActor, APlanetActor::StaticClass, TEXT("APlanetActor"), &Z_Registration_Info_UClass_APlanetActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlanetActor), 3878426878U) },
+		{ Z_Construct_UClass_APlanetActor, APlanetActor::StaticClass, TEXT("APlanetActor"), &Z_Registration_Info_UClass_APlanetActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlanetActor), 3207915853U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_PlanetActor_h__Script_Echoes_2023904510(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_PlanetActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_PlanetActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_3224768546(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

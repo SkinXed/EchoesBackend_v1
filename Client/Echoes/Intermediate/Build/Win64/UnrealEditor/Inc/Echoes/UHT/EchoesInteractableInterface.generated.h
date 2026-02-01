@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesInteractableInterface.h"
+// IWYU pragma: private, include "Core/Common/Interfaces/EchoesInteractableInterface.h"
 
 #ifdef ECHOES_EchoesInteractableInterface_generated_h
 #error "EchoesInteractableInterface.generated.h already included, missing '#pragma once' in EchoesInteractableInterface.h"
@@ -20,7 +20,7 @@ class APawn;
 struct FEchoesInteractionResult;
 
 // ********** Begin ScriptStruct FEchoesInteractionResult ******************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_19_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_19_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct();
 
@@ -29,7 +29,7 @@ struct FEchoesInteractionResult;
 // ********** End ScriptStruct FEchoesInteractionResult ********************************************
 
 // ********** Begin Interface UEchoesInteractableInterface *****************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual FEchoesInteractionResult OnInteract_Implementation(APawn* Interactor) { return FEchoesInteractionResult(); }; \
 	virtual FText GetInteractionPrompt_Implementation() const { return FText::GetEmpty(); }; \
 	virtual float GetInteractionDistance_Implementation() const { return 0; }; \
@@ -40,10 +40,10 @@ struct FEchoesInteractionResult;
 	DECLARE_FUNCTION(execCanInteract);
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_CALLBACK_WRAPPERS
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_CALLBACK_WRAPPERS
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInteractableInterface_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	ECHOES_API UEchoesInteractableInterface(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -55,7 +55,7 @@ ECHOES_API UClass* Z_Construct_UClass_UEchoesInteractableInterface_NoRegister();
 	virtual ~UEchoesInteractableInterface() = default;
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_GENERATED_UINTERFACE_BODY() \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_GENERATED_UINTERFACE_BODY() \
 private: \
 	static void StaticRegisterNativesUEchoesInteractableInterface(); \
 	friend struct Z_Construct_UClass_UEchoesInteractableInterface_Statics; \
@@ -66,15 +66,15 @@ public: \
 	DECLARE_SERIALIZER(UEchoesInteractableInterface)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_GENERATED_BODY \
 	PRAGMA_DISABLE_DEPRECATION_WARNINGS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_GENERATED_UINTERFACE_BODY() \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_GENERATED_UINTERFACE_BODY() \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_ENHANCED_CONSTRUCTORS \
 private: \
 	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_INCLASS_IINTERFACE_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_INCLASS_IINTERFACE_NO_PURE_DECLS \
 protected: \
 	virtual ~IEchoesInteractableInterface() {} \
 public: \
@@ -87,13 +87,13 @@ public: \
 	virtual UObject* _getUObject() const { return nullptr; }
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_35_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_55_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_35_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_55_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_CALLBACK_WRAPPERS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h_38_INCLASS_IINTERFACE_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_CALLBACK_WRAPPERS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h_38_INCLASS_IINTERFACE_NO_PURE_DECLS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -103,6 +103,6 @@ class UEchoesInteractableInterface;
 // ********** End Interface UEchoesInteractableInterface *******************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

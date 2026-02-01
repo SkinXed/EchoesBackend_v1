@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Client/EchoesShipPawn.h"
+// IWYU pragma: private, include "Core/Client/Pawns/EchoesShipPawn.h"
 
 #ifdef ECHOES_EchoesShipPawn_generated_h
 #error "EchoesShipPawn.generated.h already included, missing '#pragma once' in EchoesShipPawn.h"
@@ -20,7 +20,7 @@ struct FEchoesShipFitting;
 struct FEchoesShipStats;
 
 // ********** Begin Class AEchoesShipPawn **********************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execHandleShipFittingFailed); \
 	DECLARE_FUNCTION(execHandleShipFittingReceived); \
 	DECLARE_FUNCTION(execOnFittingReceived); \
@@ -31,10 +31,10 @@ struct FEchoesShipStats;
 	DECLARE_FUNCTION(execCommon_InitializeFromStats);
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_CALLBACK_WRAPPERS
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_CALLBACK_WRAPPERS
 ECHOES_API UClass* Z_Construct_UClass_AEchoesShipPawn_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEchoesShipPawn(); \
 	friend struct Z_Construct_UClass_AEchoesShipPawn_Statics; \
@@ -51,7 +51,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AEchoesShipPawn(AEchoesShipPawn&&) = delete; \
 	AEchoesShipPawn(const AEchoesShipPawn&) = delete; \
@@ -61,14 +61,14 @@ public: \
 	NO_API virtual ~AEchoesShipPawn();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_23_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_23_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_CALLBACK_WRAPPERS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h_26_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_CALLBACK_WRAPPERS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h_26_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -78,6 +78,6 @@ class AEchoesShipPawn;
 // ********** End Class AEchoesShipPawn ************************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

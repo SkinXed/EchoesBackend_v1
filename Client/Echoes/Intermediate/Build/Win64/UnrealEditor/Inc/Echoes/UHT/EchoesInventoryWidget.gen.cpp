@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesInventoryWidget.h"
-#include "Core/Common/EchoesInventoryComponent.h"
+#include "EchoesInventoryWidget.h"
+#include "EchoesInventoryComponent.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -38,7 +38,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_GetInventoryComponent_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the inventory component we're currently displaying\n\x09 * @return The inventory component, or nullptr if not found\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the inventory component we're currently displaying\n@return The inventory component, or nullptr if not found" },
 #endif
@@ -89,7 +89,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_GetSelectedItem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the currently selected item\n\x09 * @return Selected inventory item object, or nullptr if none selected\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the currently selected item\n@return Selected inventory item object, or nullptr if none selected" },
 #endif
@@ -133,7 +133,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_HandleFetchFailure_Statics
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
 		{ "NativeConst", "" },
@@ -178,7 +178,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_HandleMoveFailure_Statics
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
 		{ "NativeConst", "" },
@@ -219,7 +219,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_HandleMoveSuccess_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -258,7 +258,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryRefreshed_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when inventory is refreshed\n\x09 * Override in Blueprint for custom behavior\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when inventory is refreshed\nOverride in Blueprint for custom behavior" },
 #endif
@@ -290,7 +290,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when inventory is updated from the component\n\x09 * @param Items - New inventory items\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when inventory is updated from the component\n@param Items - New inventory items" },
 #endif
@@ -303,7 +303,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryWidget_eventOnInventoryUpdated_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 255446170
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryWidget_eventOnInventoryUpdated_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated_Statics::NewProp_Items,
 };
@@ -350,7 +350,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_OnItemSelected_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when an item is selected\n\x09 * Override in Blueprint for custom selection behavior\n\x09 * @param ItemObject - The selected item\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when an item is selected\nOverride in Blueprint for custom selection behavior\n@param ItemObject - The selected item" },
 #endif
@@ -390,7 +390,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_OnItemSelectionChanged_Stati
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle item selection changed\n\x09 * @param ItemObject - Selected item object\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle item selection changed\n@param ItemObject - Selected item object" },
 #endif
@@ -447,7 +447,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_OnMoveRequestFailed_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when move request fails\n\x09 * Override in Blueprint to show error message\n\x09 * @param ErrorMessage - Error message to display\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when move request fails\nOverride in Blueprint to show error message\n@param ErrorMessage - Error message to display" },
 #endif
@@ -490,7 +490,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Populate the list view with inventory items\n\x09 * @param Items - Items to display\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Populate the list view with inventory items\n@param Items - Items to display" },
 #endif
@@ -503,7 +503,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList_Static
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryWidget_eventPopulateInventoryList_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 255446170
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList_Statics::NewProp_Items = { "Items", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryWidget_eventPopulateInventoryList_Parms, Items), Z_Construct_UScriptStruct_FEchoesContainerItems, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Items_MetaData), NewProp_Items_MetaData) }; // 3126575347
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList_Statics::NewProp_Items,
 };
@@ -538,7 +538,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_RefreshInventory_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Manually refresh the inventory display\n\x09 * This will fetch items from the component and update the list\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Manually refresh the inventory display\nThis will fetch items from the component and update the list" },
 #endif
@@ -578,7 +578,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_SetTargetActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set the target actor whose inventory to display\n\x09 * If not set, will use the owning player's pawn\n\x09 * @param NewTargetActor - Actor with UEchoesInventoryComponent\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set the target actor whose inventory to display\nIf not set, will use the owning player's pawn\n@param NewTargetActor - Actor with UEchoesInventoryComponent" },
 #endif
@@ -629,7 +629,7 @@ struct Z_Construct_UFunction_UEchoesInventoryWidget_UI_RequestMoveItem_Statics
 		{ "Comment", "/**\n\x09 * Request to move the selected item to another container\n\x09 * This is a UI stub that should trigger ServerOnly_MoveItem on the component\n\x09 * @param TargetContainerActor - The target actor to move items to\n\x09 * @param Quantity - Amount to move (0 = all)\n\x09 */" },
 #endif
 		{ "CPP_Default_Quantity", "0" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Request to move the selected item to another container\nThis is a UI stub that should trigger ServerOnly_MoveItem on the component\n@param TargetContainerActor - The target actor to move items to\n@param Quantity - Amount to move (0 = all)" },
 #endif
@@ -724,8 +724,8 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesInventoryWidget\n * \n * Main inventory UI widget using ListView\n * Displays contents of a UEchoesInventoryComponent\n * \n * Features:\n * - Automatic binding to owner's or target actor's inventory component\n * - Event-driven updates via OnInventoryUpdated delegate\n * - ListView-based display for efficient rendering\n * - Selection support\n * - Drag-and-drop preparation\n * \n * Usage:\n * - Create widget blueprint based on this class\n * - Add UListView widget (name it \"InventoryListView\")\n * - Set entry widget class in ListView properties\n * - Optionally set TargetActor to view another actor's inventory\n * - Call RefreshInventory() to manually refresh\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesInventoryWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 		{ "ObjectInitializerConstructorDeclared", "" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesInventoryWidget\n\nMain inventory UI widget using ListView\nDisplays contents of a UEchoesInventoryComponent\n\nFeatures:\n- Automatic binding to owner's or target actor's inventory component\n- Event-driven updates via OnInventoryUpdated delegate\n- ListView-based display for efficient rendering\n- Selection support\n- Drag-and-drop preparation\n\nUsage:\n- Create widget blueprint based on this class\n- Add UListView widget (name it \"InventoryListView\")\n- Set entry widget class in ListView properties\n- Optionally set TargetActor to view another actor's inventory\n- Call RefreshInventory() to manually refresh" },
@@ -738,7 +738,7 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 		{ "Comment", "/** ListView widget for displaying inventory items */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "ListView widget for displaying inventory items" },
 #endif
@@ -748,7 +748,7 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Optional target actor to display inventory from (if not owner) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional target actor to display inventory from (if not owner)" },
 #endif
@@ -758,7 +758,7 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether to auto-refresh on construct */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether to auto-refresh on construct" },
 #endif
@@ -768,7 +768,7 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 		{ "Comment", "/** Cached inventory component reference */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cached inventory component reference" },
 #endif
@@ -777,7 +777,7 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Actor we're currently viewing inventory from */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesInventoryWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Actor we're currently viewing inventory from" },
 #endif
@@ -792,20 +792,20 @@ struct Z_Construct_UClass_UEchoesInventoryWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_GetInventoryComponent, "GetInventoryComponent" }, // 2316844330
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_GetSelectedItem, "GetSelectedItem" }, // 173113074
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_HandleFetchFailure, "HandleFetchFailure" }, // 1855805608
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_HandleMoveFailure, "HandleMoveFailure" }, // 2107568726
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_HandleMoveSuccess, "HandleMoveSuccess" }, // 1781289213
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryRefreshed, "OnInventoryRefreshed" }, // 1549495489
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated, "OnInventoryUpdated" }, // 1356989780
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnItemSelected, "OnItemSelected" }, // 30396570
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnItemSelectionChanged, "OnItemSelectionChanged" }, // 395295388
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnMoveRequestFailed, "OnMoveRequestFailed" }, // 410819925
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList, "PopulateInventoryList" }, // 1475844961
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_RefreshInventory, "RefreshInventory" }, // 4035071541
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_SetTargetActor, "SetTargetActor" }, // 232477453
-		{ &Z_Construct_UFunction_UEchoesInventoryWidget_UI_RequestMoveItem, "UI_RequestMoveItem" }, // 1855464797
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_GetInventoryComponent, "GetInventoryComponent" }, // 3250563685
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_GetSelectedItem, "GetSelectedItem" }, // 1749844791
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_HandleFetchFailure, "HandleFetchFailure" }, // 3492465072
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_HandleMoveFailure, "HandleMoveFailure" }, // 554236047
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_HandleMoveSuccess, "HandleMoveSuccess" }, // 1485084914
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryRefreshed, "OnInventoryRefreshed" }, // 760906391
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnInventoryUpdated, "OnInventoryUpdated" }, // 3253757708
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnItemSelected, "OnItemSelected" }, // 1536799701
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnItemSelectionChanged, "OnItemSelectionChanged" }, // 2839645352
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_OnMoveRequestFailed, "OnMoveRequestFailed" }, // 4014173699
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_PopulateInventoryList, "PopulateInventoryList" }, // 1289727086
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_RefreshInventory, "RefreshInventory" }, // 2848163808
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_SetTargetActor, "SetTargetActor" }, // 740734350
+		{ &Z_Construct_UFunction_UEchoesInventoryWidget_UI_RequestMoveItem, "UI_RequestMoveItem" }, // 2463757384
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -863,14 +863,14 @@ UEchoesInventoryWidget::~UEchoesInventoryWidget() {}
 // ********** End Class UEchoesInventoryWidget *****************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryWidget, UEchoesInventoryWidget::StaticClass, TEXT("UEchoesInventoryWidget"), &Z_Registration_Info_UClass_UEchoesInventoryWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryWidget), 2522707317U) },
+		{ Z_Construct_UClass_UEchoesInventoryWidget, UEchoesInventoryWidget::StaticClass, TEXT("UEchoesInventoryWidget"), &Z_Registration_Info_UClass_UEchoesInventoryWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryWidget), 473045070U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h__Script_Echoes_919792143(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h__Script_Echoes_3590490859(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

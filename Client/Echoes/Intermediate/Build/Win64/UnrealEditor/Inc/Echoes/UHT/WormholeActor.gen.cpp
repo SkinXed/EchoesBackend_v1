@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/WormholeActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "WormholeActor.h"
+#include "EchoesWorldVisualTypes.h"
 #include "Engine/HitResult.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -45,7 +45,7 @@ struct Z_Construct_UFunction_AWormholeActor_CanAccommodateShip_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if wormhole can accommodate ship of given mass\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if wormhole can accommodate ship of given mass" },
 #endif
@@ -102,7 +102,7 @@ struct Z_Construct_UFunction_AWormholeActor_GetStabilityPercentage_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get stability percentage (0.0 to 1.0)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get stability percentage (0.0 to 1.0)" },
 #endif
@@ -150,7 +150,7 @@ struct Z_Construct_UFunction_AWormholeActor_GetTargetSystemId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the target system ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the target system ID" },
 #endif
@@ -198,7 +198,7 @@ struct Z_Construct_UFunction_AWormholeActor_GetWormholeId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the wormhole's unique ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the wormhole's unique ID" },
 #endif
@@ -246,7 +246,7 @@ struct Z_Construct_UFunction_AWormholeActor_GetWormholeName_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the wormhole's name\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the wormhole's name" },
 #endif
@@ -298,7 +298,7 @@ struct Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize wormhole from server configuration\n\x09 * \n\x09 * @param WormholeId - Unique identifier of the wormhole\n\x09 * @param WormholeName - Name of the wormhole\n\x09 * @param TargetSystemId - Destination solar system ID\n\x09 * @param Seed - Procedural generation seed\n\x09 * @param VisualData - Visual configuration from data table\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize wormhole from server configuration\n\n@param WormholeId - Unique identifier of the wormhole\n@param WormholeName - Name of the wormhole\n@param TargetSystemId - Destination solar system ID\n@param Seed - Procedural generation seed\n@param VisualData - Visual configuration from data table" },
 #endif
@@ -328,7 +328,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeAc
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_WormholeName = { "WormholeName", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, WormholeName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WormholeName_MetaData), NewProp_WormholeName_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_TargetSystemId = { "TargetSystemId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, TargetSystemId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TargetSystemId_MetaData), NewProp_TargetSystemId_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_Seed = { "Seed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, Seed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, VisualData), Z_Construct_UScriptStruct_FWormholeVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 949240393
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, VisualData), Z_Construct_UScriptStruct_FWormholeVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1063376799
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_WormholeId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_WormholeName,
@@ -376,7 +376,7 @@ struct Z_Construct_UFunction_AWormholeActor_InitiateJump_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initiate jump sequence for a ship\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initiate jump sequence for a ship" },
 #endif
@@ -429,7 +429,7 @@ struct Z_Construct_UFunction_AWormholeActor_OnTriggerBeginOverlap_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when a ship enters the wormhole trigger zone\n\x09 * Server will initiate jump to target system\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when a ship enters the wormhole trigger zone\nServer will initiate jump to target system" },
 #endif
@@ -513,7 +513,7 @@ struct Z_Construct_UFunction_AWormholeActor_ProcessShipPassage_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Process ship passing through wormhole\n\x09 * Reduces remaining mass and lifetime\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Process ship passing through wormhole\nReduces remaining mass and lifetime" },
 #endif
@@ -563,7 +563,7 @@ struct Z_Construct_UFunction_AWormholeActor_TriggerCollapse_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Trigger wormhole collapse\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Trigger wormhole collapse" },
 #endif
@@ -644,8 +644,8 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AWormholeActor\n * \n * Represents a wormhole connection between solar systems\n * Features spatial distortion effects and jump trigger zones\n * Color and effects vary based on destination system\n * \n * Key Features:\n * - Unique visual appearance based on TargetSystemId\n * - Trigger zone for initiating jumps to target system\n * - Spatial distortion post-process effects\n * - Entry/exit sound effects\n * - Stability indicators (VFX intensity)\n */" },
 #endif
-		{ "IncludePath", "Core/Common/WormholeActor.h" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "IncludePath", "Core/Common/Actor/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AWormholeActor\n\nRepresents a wormhole connection between solar systems\nFeatures spatial distortion effects and jump trigger zones\nColor and effects vary based on destination system\n\nKey Features:\n- Unique visual appearance based on TargetSystemId\n- Trigger zone for initiating jumps to target system\n- Spatial distortion post-process effects\n- Entry/exit sound effects\n- Stability indicators (VFX intensity)" },
 #endif
@@ -657,7 +657,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Root scene component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Root scene component" },
 #endif
@@ -669,7 +669,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Entrance structure mesh (optional) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Entrance structure mesh (optional)" },
 #endif
@@ -681,7 +681,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Main wormhole VFX (event horizon) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Main wormhole VFX (event horizon)" },
 #endif
@@ -693,7 +693,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Instability VFX (for unstable wormholes) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Instability VFX (for unstable wormholes)" },
 #endif
@@ -705,7 +705,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Ambient audio component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ambient audio component" },
 #endif
@@ -717,7 +717,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Entrance sound component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Entrance sound component" },
 #endif
@@ -729,7 +729,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ "Comment", "/** Trigger sphere for jump detection */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Trigger sphere for jump detection" },
 #endif
@@ -740,7 +740,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique ID of this wormhole */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique ID of this wormhole" },
 #endif
@@ -751,7 +751,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Name of the wormhole */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Name of the wormhole" },
 #endif
@@ -762,7 +762,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Target system ID (where this wormhole leads) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Target system ID (where this wormhole leads)" },
 #endif
@@ -773,7 +773,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Procedural generation seed */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Procedural generation seed" },
 #endif
@@ -784,7 +784,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique color for this wormhole */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique color for this wormhole" },
 #endif
@@ -796,7 +796,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum mass capacity (in metric tons) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum mass capacity (in metric tons)" },
 #endif
@@ -807,7 +807,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Current mass that has passed through */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Current mass that has passed through" },
 #endif
@@ -818,7 +818,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Remaining lifetime in seconds */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Remaining lifetime in seconds" },
 #endif
@@ -830,7 +830,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Initial lifetime when wormhole was created */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initial lifetime when wormhole was created" },
 #endif
@@ -841,7 +841,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether wormhole is collapsing */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/WormholeActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/WormholeActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether wormhole is collapsing" },
 #endif
@@ -868,16 +868,16 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AWormholeActor_CanAccommodateShip, "CanAccommodateShip" }, // 538234996
-		{ &Z_Construct_UFunction_AWormholeActor_GetStabilityPercentage, "GetStabilityPercentage" }, // 3585443758
-		{ &Z_Construct_UFunction_AWormholeActor_GetTargetSystemId, "GetTargetSystemId" }, // 3731896944
-		{ &Z_Construct_UFunction_AWormholeActor_GetWormholeId, "GetWormholeId" }, // 1635689240
-		{ &Z_Construct_UFunction_AWormholeActor_GetWormholeName, "GetWormholeName" }, // 2746880348
-		{ &Z_Construct_UFunction_AWormholeActor_InitializeWormhole, "InitializeWormhole" }, // 4246918955
-		{ &Z_Construct_UFunction_AWormholeActor_InitiateJump, "InitiateJump" }, // 1104662810
-		{ &Z_Construct_UFunction_AWormholeActor_OnTriggerBeginOverlap, "OnTriggerBeginOverlap" }, // 1473668778
-		{ &Z_Construct_UFunction_AWormholeActor_ProcessShipPassage, "ProcessShipPassage" }, // 3370129835
-		{ &Z_Construct_UFunction_AWormholeActor_TriggerCollapse, "TriggerCollapse" }, // 2497143244
+		{ &Z_Construct_UFunction_AWormholeActor_CanAccommodateShip, "CanAccommodateShip" }, // 1869594668
+		{ &Z_Construct_UFunction_AWormholeActor_GetStabilityPercentage, "GetStabilityPercentage" }, // 3809023462
+		{ &Z_Construct_UFunction_AWormholeActor_GetTargetSystemId, "GetTargetSystemId" }, // 1460890247
+		{ &Z_Construct_UFunction_AWormholeActor_GetWormholeId, "GetWormholeId" }, // 735386603
+		{ &Z_Construct_UFunction_AWormholeActor_GetWormholeName, "GetWormholeName" }, // 1474667776
+		{ &Z_Construct_UFunction_AWormholeActor_InitializeWormhole, "InitializeWormhole" }, // 716047702
+		{ &Z_Construct_UFunction_AWormholeActor_InitiateJump, "InitiateJump" }, // 3140131087
+		{ &Z_Construct_UFunction_AWormholeActor_OnTriggerBeginOverlap, "OnTriggerBeginOverlap" }, // 2839336003
+		{ &Z_Construct_UFunction_AWormholeActor_ProcessShipPassage, "ProcessShipPassage" }, // 2811712781
+		{ &Z_Construct_UFunction_AWormholeActor_TriggerCollapse, "TriggerCollapse" }, // 3813477062
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -980,14 +980,14 @@ AWormholeActor::~AWormholeActor() {}
 // ********** End Class AWormholeActor *************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AWormholeActor, AWormholeActor::StaticClass, TEXT("AWormholeActor"), &Z_Registration_Info_UClass_AWormholeActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AWormholeActor), 1309416509U) },
+		{ Z_Construct_UClass_AWormholeActor, AWormholeActor::StaticClass, TEXT("AWormholeActor"), &Z_Registration_Info_UClass_AWormholeActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AWormholeActor), 4201081168U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h__Script_Echoes_732306454(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_3776286664(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

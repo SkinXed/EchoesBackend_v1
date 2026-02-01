@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Server/EchoesHangarManager.h"
-#include "Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "EchoesHangarManager.h"
+#include "EchoesInventorySubsystem.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

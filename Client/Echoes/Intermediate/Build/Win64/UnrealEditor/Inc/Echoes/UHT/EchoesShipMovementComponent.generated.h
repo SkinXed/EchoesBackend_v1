@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesShipMovementComponent.h"
+// IWYU pragma: private, include "Core/Common/Components/EchoesShipMovementComponent.h"
 
 #ifdef ECHOES_EchoesShipMovementComponent_generated_h
 #error "EchoesShipMovementComponent.generated.h already included, missing '#pragma once' in EchoesShipMovementComponent.h"
@@ -19,7 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 struct FEchoesShipStats;
 
 // ********** Begin Class UEchoesShipMovementComponent *********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execCommon_CalculateAlignTime); \
 	DECLARE_FUNCTION(execCanEnterWarp); \
 	DECLARE_FUNCTION(execCancelWarp); \
@@ -32,7 +32,7 @@ struct FEchoesShipStats;
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesShipMovementComponent_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesShipMovementComponent(); \
 	friend struct Z_Construct_UClass_UEchoesShipMovementComponent_Statics; \
@@ -43,7 +43,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesShipMovementComponent)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UEchoesShipMovementComponent(UEchoesShipMovementComponent&&) = delete; \
 	UEchoesShipMovementComponent(const UEchoesShipMovementComponent&) = delete; \
@@ -53,13 +53,13 @@ public: \
 	NO_API virtual ~UEchoesShipMovementComponent();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_15_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_15_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h_18_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h_18_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -69,6 +69,6 @@ class UEchoesShipMovementComponent;
 // ********** End Class UEchoesShipMovementComponent ***********************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipMovementComponent_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Components_EchoesShipMovementComponent_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/StargateActor.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "StargateActor.h"
+#include "EchoesWorldVisualTypes.h"
 #include "Engine/HitResult.h"
 #include "UObject/CoreNet.h"
 
@@ -44,7 +44,7 @@ struct Z_Construct_UFunction_AStargateActor_GetGateId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Getters ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Getters ====================" },
 #endif
@@ -89,7 +89,7 @@ struct Z_Construct_UFunction_AStargateActor_GetGateName_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
@@ -131,7 +131,7 @@ struct Z_Construct_UFunction_AStargateActor_GetTargetSystemId_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
@@ -173,7 +173,7 @@ struct Z_Construct_UFunction_AStargateActor_GetTargetSystemName_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue;
@@ -223,7 +223,7 @@ struct Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Initialization ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Initialization ====================" },
 #endif
@@ -263,7 +263,7 @@ void Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_bI
 	((StargateActor_eventInitializeStargate_Parms*)Obj)->bInIsOperational = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_bInIsOperational = { "bInIsOperational", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(StargateActor_eventInitializeStargate_Parms), &Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_bInIsOperational_SetBit, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StargateActor_eventInitializeStargate_Parms, InVisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 2349172136
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StargateActor_eventInitializeStargate_Parms, InVisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 395951088
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InGateId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InName,
@@ -309,7 +309,7 @@ struct Z_Construct_UFunction_AStargateActor_IsOperational_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 #endif // WITH_METADATA
 	static void NewProp_ReturnValue_SetBit(void* Obj);
@@ -360,7 +360,7 @@ struct Z_Construct_UFunction_AStargateActor_IsShipReadyToJump_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if ship is ready to jump (not in combat, has energy, etc.)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if ship is ready to jump (not in combat, has energy, etc.)" },
 #endif
@@ -421,7 +421,7 @@ struct Z_Construct_UFunction_AStargateActor_OnJumpTriggerBeginOverlap_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when ship enters jump trigger zone\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when ship enters jump trigger zone" },
 #endif
@@ -496,7 +496,7 @@ struct Z_Construct_UFunction_AStargateActor_OnRep_GateData_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -540,7 +540,7 @@ struct Z_Construct_UFunction_AStargateActor_ServerRPC_RequestJump_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Server RPC to request jump to target system\n\x09 * Validates ship readiness and initiates travel\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server RPC to request jump to target system\nValidates ship readiness and initiates travel" },
 #endif
@@ -635,8 +635,8 @@ struct Z_Construct_UClass_AStargateActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * AStargateActor\n * \n * Represents a stargate in the Echoes universe\n * Provides jump capability to other solar systems\n */" },
 #endif
-		{ "IncludePath", "Core/Common/StargateActor.h" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "IncludePath", "Core/Common/Actor/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AStargateActor\n\nRepresents a stargate in the Echoes universe\nProvides jump capability to other solar systems" },
 #endif
@@ -647,7 +647,7 @@ struct Z_Construct_UClass_AStargateActor_Statics
 		{ "Comment", "// ==================== Components ====================\n" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Components ====================" },
 #endif
@@ -655,17 +655,17 @@ struct Z_Construct_UClass_AStargateActor_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PortalVFXComponent_MetaData[] = {
 		{ "Category", "Components" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DestinationFXComponent_MetaData[] = {
 		{ "Category", "Components" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AmbientAudioComponent_MetaData[] = {
 		{ "Category", "Components" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_JumpTriggerZone_MetaData[] = {
 		{ "Category", "Components" },
@@ -673,7 +673,7 @@ struct Z_Construct_UClass_AStargateActor_Statics
 		{ "Comment", "/** Jump trigger zone - detects ships entering for jump */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Jump trigger zone - detects ships entering for jump" },
 #endif
@@ -683,30 +683,30 @@ struct Z_Construct_UClass_AStargateActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Gate Data (Replicated) ====================\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Gate Data (Replicated) ====================" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GateName_MetaData[] = {
 		{ "Category", "Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TargetSystemId_MetaData[] = {
 		{ "Category", "Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TargetSystemName_MetaData[] = {
 		{ "Category", "Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsOperational_MetaData[] = {
 		{ "Category", "Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_VisualData_MetaData[] = {
 		{ "Category", "Stargate" },
-		{ "ModuleRelativePath", "Core/Common/StargateActor.h" },
+		{ "ModuleRelativePath", "Core/Common/Actor/StargateActor.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_GateMeshComponent;
@@ -724,16 +724,16 @@ struct Z_Construct_UClass_AStargateActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AStargateActor_GetGateId, "GetGateId" }, // 2457784306
-		{ &Z_Construct_UFunction_AStargateActor_GetGateName, "GetGateName" }, // 2536640805
-		{ &Z_Construct_UFunction_AStargateActor_GetTargetSystemId, "GetTargetSystemId" }, // 2013758584
-		{ &Z_Construct_UFunction_AStargateActor_GetTargetSystemName, "GetTargetSystemName" }, // 1592363934
-		{ &Z_Construct_UFunction_AStargateActor_InitializeStargate, "InitializeStargate" }, // 2782464364
-		{ &Z_Construct_UFunction_AStargateActor_IsOperational, "IsOperational" }, // 2953087208
-		{ &Z_Construct_UFunction_AStargateActor_IsShipReadyToJump, "IsShipReadyToJump" }, // 456374390
-		{ &Z_Construct_UFunction_AStargateActor_OnJumpTriggerBeginOverlap, "OnJumpTriggerBeginOverlap" }, // 524114548
-		{ &Z_Construct_UFunction_AStargateActor_OnRep_GateData, "OnRep_GateData" }, // 2712804769
-		{ &Z_Construct_UFunction_AStargateActor_ServerRPC_RequestJump, "ServerRPC_RequestJump" }, // 1171365877
+		{ &Z_Construct_UFunction_AStargateActor_GetGateId, "GetGateId" }, // 839474670
+		{ &Z_Construct_UFunction_AStargateActor_GetGateName, "GetGateName" }, // 2820376385
+		{ &Z_Construct_UFunction_AStargateActor_GetTargetSystemId, "GetTargetSystemId" }, // 3657346315
+		{ &Z_Construct_UFunction_AStargateActor_GetTargetSystemName, "GetTargetSystemName" }, // 68606480
+		{ &Z_Construct_UFunction_AStargateActor_InitializeStargate, "InitializeStargate" }, // 1241964588
+		{ &Z_Construct_UFunction_AStargateActor_IsOperational, "IsOperational" }, // 833781042
+		{ &Z_Construct_UFunction_AStargateActor_IsShipReadyToJump, "IsShipReadyToJump" }, // 1329407560
+		{ &Z_Construct_UFunction_AStargateActor_OnJumpTriggerBeginOverlap, "OnJumpTriggerBeginOverlap" }, // 2802027740
+		{ &Z_Construct_UFunction_AStargateActor_OnRep_GateData, "OnRep_GateData" }, // 2422461317
+		{ &Z_Construct_UFunction_AStargateActor_ServerRPC_RequestJump, "ServerRPC_RequestJump" }, // 1855043522
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -755,7 +755,7 @@ void Z_Construct_UClass_AStargateActor_Statics::NewProp_bIsOperational_SetBit(vo
 	((AStargateActor*)Obj)->bIsOperational = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AStargateActor_Statics::NewProp_bIsOperational = { "bIsOperational", "OnRep_GateData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AStargateActor), &Z_Construct_UClass_AStargateActor_Statics::NewProp_bIsOperational_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsOperational_MetaData), NewProp_bIsOperational_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStargateActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStargateActor, VisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 2349172136
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStargateActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStargateActor, VisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 395951088
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AStargateActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStargateActor_Statics::NewProp_GateMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStargateActor_Statics::NewProp_PortalVFXComponent,
@@ -820,14 +820,14 @@ AStargateActor::~AStargateActor() {}
 // ********** End Class AStargateActor *************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStargateActor, AStargateActor::StaticClass, TEXT("AStargateActor"), &Z_Registration_Info_UClass_AStargateActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStargateActor), 1842996685U) },
+		{ Z_Construct_UClass_AStargateActor, AStargateActor::StaticClass, TEXT("AStargateActor"), &Z_Registration_Info_UClass_AStargateActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStargateActor), 2383360262U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h__Script_Echoes_804605748(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StargateActor_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_3696037919(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

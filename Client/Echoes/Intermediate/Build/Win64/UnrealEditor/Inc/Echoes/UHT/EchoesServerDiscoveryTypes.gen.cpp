@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Server/EchoesServerDiscoveryTypes.h"
+#include "EchoesServerDiscoveryTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

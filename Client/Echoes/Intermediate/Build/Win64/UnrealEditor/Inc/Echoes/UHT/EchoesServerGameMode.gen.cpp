@@ -6,7 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "EchoesServerGameMode.h"
-#include "Core/Server/EchoesServerDiscoveryTypes.h"
+#include "EchoesServerDiscoveryTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 

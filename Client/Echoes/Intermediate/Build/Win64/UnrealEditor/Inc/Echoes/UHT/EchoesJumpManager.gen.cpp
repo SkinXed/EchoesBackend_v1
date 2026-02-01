@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesJumpManager.h"
+#include "EchoesJumpManager.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -51,7 +51,7 @@ struct Z_Construct_UEnum_Echoes_EJumpState_Statics
 		{ "Initiating.Name", "EJumpState::Initiating" },
 		{ "Jumping.DisplayName", "Jumping" },
 		{ "Jumping.Name", "EJumpState::Jumping" },
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 		{ "None.DisplayName", "None" },
 		{ "None.Name", "EJumpState::None" },
 #if !UE_BUILD_SHIPPING
@@ -103,7 +103,7 @@ struct Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_EndJumpSequence_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * End jump sequence on client\n\x09 * Triggers fade in, unblocks input, removes effects\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "End jump sequence on client\nTriggers fade in, unblocks input, removes effects" },
 #endif
@@ -150,7 +150,7 @@ struct Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_StartJumpSequence_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Start jump sequence on client\n\x09 * Triggers fade out, warp tunnel effect, blocks input\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Start jump sequence on client\nTriggers fade out, warp tunnel effect, blocks input" },
 #endif
@@ -206,7 +206,7 @@ struct Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_UpdateJumpProgress_Sta
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Update jump progress on client (for HUD/effects)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Update jump progress on client (for HUD/effects)" },
 #endif
@@ -259,7 +259,7 @@ struct Z_Construct_UFunction_UEchoesJumpManager_InitiateIntraServerJump_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initiate an intra-server jump\n\x09 * Called by Stargate when target system is on this server\n\x09 * \n\x09 * @param PlayerController - Player requesting the jump\n\x09 * @param TargetLocation - Destination coordinates in world space\n\x09 * @param TargetSystemId - GUID of target system (for backend update)\n\x09 * @return true if jump initiated successfully\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initiate an intra-server jump\nCalled by Stargate when target system is on this server\n\n@param PlayerController - Player requesting the jump\n@param TargetLocation - Destination coordinates in world space\n@param TargetSystemId - GUID of target system (for backend update)\n@return true if jump initiated successfully" },
 #endif
@@ -367,8 +367,8 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesJumpManager\n * \n * Manages seamless intra-server jumps between star systems in Regional Clusters\n * Handles three-phase jump system: Initiation \xe2\x86\x92 Shift \xe2\x86\x92 Arrival\n * \n * Architecture:\n * - Component attached to GameMode\n * - Server authoritative with client RPCs for visual effects\n * - Integrates with backend for location persistence\n * - Handles physics teleportation safely\n * - Manages player state during jump (invulnerable, input blocked)\n * \n * Three-Phase Jump System:\n * 1. Initiation (ClientOnly): Fade out, warp tunnel effect, block input\n * 2. The Shift (ServerOnly): Instant teleportation with physics handling\n * 3. Arrival (ClientOnly): Asset loading check, fade in, unblock input\n */" },
 #endif
-		{ "IncludePath", "Core/Common/EchoesJumpManager.h" },
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "IncludePath", "Core/Common/World/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesJumpManager\n\nManages seamless intra-server jumps between star systems in Regional Clusters\nHandles three-phase jump system: Initiation \xe2\x86\x92 Shift \xe2\x86\x92 Arrival\n\nArchitecture:\n- Component attached to GameMode\n- Server authoritative with client RPCs for visual effects\n- Integrates with backend for location persistence\n- Handles physics teleportation safely\n- Manages player state during jump (invulnerable, input blocked)\n\nThree-Phase Jump System:\n1. Initiation (ClientOnly): Fade out, warp tunnel effect, block input\n2. The Shift (ServerOnly): Instant teleportation with physics handling\n3. Arrival (ClientOnly): Asset loading check, fade in, unblock input" },
 #endif
@@ -378,7 +378,7 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Transition time for fade effects (seconds)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Transition time for fade effects (seconds)" },
 #endif
@@ -388,7 +388,7 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Time to wait for asset loading at destination (seconds)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Time to wait for asset loading at destination (seconds)" },
 #endif
@@ -398,7 +398,7 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Maximum distance for collision check (cm)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum distance for collision check (cm)" },
 #endif
@@ -407,7 +407,7 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Map of players currently jumping */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Map of players currently jumping" },
 #endif
@@ -416,7 +416,7 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to world generator for asset management */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesJumpManager.h" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesJumpManager.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to world generator for asset management" },
 #endif
@@ -433,10 +433,10 @@ struct Z_Construct_UClass_UEchoesJumpManager_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_EndJumpSequence, "ClientRPC_EndJumpSequence" }, // 3512149451
-		{ &Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_StartJumpSequence, "ClientRPC_StartJumpSequence" }, // 2986902569
-		{ &Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_UpdateJumpProgress, "ClientRPC_UpdateJumpProgress" }, // 3708858234
-		{ &Z_Construct_UFunction_UEchoesJumpManager_InitiateIntraServerJump, "InitiateIntraServerJump" }, // 59778741
+		{ &Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_EndJumpSequence, "ClientRPC_EndJumpSequence" }, // 1454460747
+		{ &Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_StartJumpSequence, "ClientRPC_StartJumpSequence" }, // 1663439139
+		{ &Z_Construct_UFunction_UEchoesJumpManager_ClientRPC_UpdateJumpProgress, "ClientRPC_UpdateJumpProgress" }, // 389463522
+		{ &Z_Construct_UFunction_UEchoesJumpManager_InitiateIntraServerJump, "InitiateIntraServerJump" }, // 1423022143
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -448,9 +448,9 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesJumpMana
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_AssetLoadWaitTime = { "AssetLoadWaitTime", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesJumpManager, AssetLoadWaitTime), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AssetLoadWaitTime_MetaData), NewProp_AssetLoadWaitTime_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_CollisionCheckRadius = { "CollisionCheckRadius", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesJumpManager, CollisionCheckRadius), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CollisionCheckRadius_MetaData), NewProp_CollisionCheckRadius_MetaData) };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_JumpingPlayers_ValueProp_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_JumpingPlayers_ValueProp = { "JumpingPlayers", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UEnum_Echoes_EJumpState, METADATA_PARAMS(0, nullptr) }; // 685698400
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_JumpingPlayers_ValueProp = { "JumpingPlayers", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UEnum_Echoes_EJumpState, METADATA_PARAMS(0, nullptr) }; // 3408206755
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_JumpingPlayers_Key_KeyProp = { "JumpingPlayers_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_APlayerController_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_JumpingPlayers = { "JumpingPlayers", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesJumpManager, JumpingPlayers), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JumpingPlayers_MetaData), NewProp_JumpingPlayers_MetaData) }; // 685698400
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_JumpingPlayers = { "JumpingPlayers", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesJumpManager, JumpingPlayers), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JumpingPlayers_MetaData), NewProp_JumpingPlayers_MetaData) }; // 3408206755
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_WorldGenerator = { "WorldGenerator", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesJumpManager, WorldGenerator), Z_Construct_UClass_AEchoesWorldGenerator_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WorldGenerator_MetaData), NewProp_WorldGenerator_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesJumpManager_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesJumpManager_Statics::NewProp_TransitionTime,
@@ -496,19 +496,19 @@ UEchoesJumpManager::~UEchoesJumpManager() {}
 // ********** End Class UEchoesJumpManager *********************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h__Script_Echoes_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EJumpState_StaticEnum, TEXT("EJumpState"), &Z_Registration_Info_UEnum_EJumpState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 685698400U) },
+		{ EJumpState_StaticEnum, TEXT("EJumpState"), &Z_Registration_Info_UEnum_EJumpState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3408206755U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesJumpManager, UEchoesJumpManager::StaticClass, TEXT("UEchoesJumpManager"), &Z_Registration_Info_UClass_UEchoesJumpManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesJumpManager), 1844634413U) },
+		{ Z_Construct_UClass_UEchoesJumpManager, UEchoesJumpManager::StaticClass, TEXT("UEchoesJumpManager"), &Z_Registration_Info_UClass_UEchoesJumpManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesJumpManager), 3097169187U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h__Script_Echoes_3663850595(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h__Script_Echoes_3386018833(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h__Script_Echoes_Statics::EnumInfo));
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h__Script_Echoes_Statics::EnumInfo));
 // ********** End Registration *********************************************************************
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

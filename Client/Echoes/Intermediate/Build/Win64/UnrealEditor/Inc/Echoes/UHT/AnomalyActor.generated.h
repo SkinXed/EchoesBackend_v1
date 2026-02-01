@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/AnomalyActor.h"
+// IWYU pragma: private, include "Core/Common/Actor/AnomalyActor.h"
 
 #ifdef ECHOES_AnomalyActor_generated_h
 #error "AnomalyActor.generated.h already included, missing '#pragma once' in AnomalyActor.h"
@@ -20,7 +20,7 @@ struct FAnomalyVisualRow;
 struct FGuid;
 
 // ********** Begin Class AAnomalyActor ************************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execDeactivateScanningSignature); \
 	DECLARE_FUNCTION(execActivateScanningSignature); \
 	DECLARE_FUNCTION(execGetAnomalyDifficulty); \
@@ -32,7 +32,7 @@ struct FGuid;
 
 ECHOES_API UClass* Z_Construct_UClass_AAnomalyActor_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAAnomalyActor(); \
 	friend struct Z_Construct_UClass_AAnomalyActor_Statics; \
@@ -53,7 +53,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AAnomalyActor(AAnomalyActor&&) = delete; \
 	AAnomalyActor(const AAnomalyActor&) = delete; \
@@ -63,13 +63,13 @@ public: \
 	NO_API virtual ~AAnomalyActor();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_25_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_25_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h_28_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h_28_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -79,6 +79,6 @@ class AAnomalyActor;
 // ********** End Class AAnomalyActor **************************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_AnomalyActor_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_AnomalyActor_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

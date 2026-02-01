@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/StarActor.h"
+// IWYU pragma: private, include "Core/Common/Actor/StarActor.h"
 
 #ifdef ECHOES_StarActor_generated_h
 #error "StarActor.generated.h already included, missing '#pragma once' in StarActor.h"
@@ -19,7 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 struct FStarVisualRow;
 
 // ********** Begin Class AStarActor ***************************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnRep_StarData); \
 	DECLARE_FUNCTION(execGetLuminosity); \
 	DECLARE_FUNCTION(execGetTemperature); \
@@ -29,7 +29,7 @@ struct FStarVisualRow;
 
 ECHOES_API UClass* Z_Construct_UClass_AStarActor_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAStarActor(); \
 	friend struct Z_Construct_UClass_AStarActor_Statics; \
@@ -49,7 +49,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AStarActor(AStarActor&&) = delete; \
 	AStarActor(const AStarActor&) = delete; \
@@ -59,13 +59,13 @@ public: \
 	NO_API virtual ~AStarActor();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_21_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_21_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h_24_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h_24_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -75,6 +75,6 @@ class AStarActor;
 // ********** End Class AStarActor *****************************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StarActor_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

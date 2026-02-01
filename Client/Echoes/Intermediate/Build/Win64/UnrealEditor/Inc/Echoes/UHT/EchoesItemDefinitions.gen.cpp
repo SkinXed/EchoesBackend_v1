@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesItemDefinitions.h"
+#include "EchoesItemDefinitions.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -64,7 +64,7 @@ struct Z_Construct_UEnum_Echoes_EEchoesItemCategory_Statics
 		{ "Mineral.Name", "EEchoesItemCategory::Mineral" },
 		{ "Module.DisplayName", "Module" },
 		{ "Module.Name", "EEchoesItemCategory::Module" },
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 		{ "None.DisplayName", "None" },
 		{ "None.Name", "EEchoesItemCategory::None" },
 		{ "Ore.DisplayName", "Ore" },
@@ -147,7 +147,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * FEchoesItemDefinitionRow\n * \n * Data table row structure for item definitions\n * Maps database item IDs to visual assets and metadata\n * \n * Usage:\n * - Create Data Table asset in Unreal Editor based on this struct\n * - Row names should match database TypeId (as string)\n * - Fill in visual assets (icons, meshes) and metadata\n * - Reference table in UEchoesInventorySubsystem\n * \n * Example Data Table Setup:\n * Row Name: \"34\" (Tritanium TypeId)\n * DisplayName: \"Tritanium\"\n * Description: \"The most common ore in space...\"\n * Icon: T_Icon_Tritanium\n * WorldMesh: SM_Ore_Tritanium\n * UnitVolume: 0.01\n * UnitMass: 0.01\n * Category: Ore\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "FEchoesItemDefinitionRow\n\nData table row structure for item definitions\nMaps database item IDs to visual assets and metadata\n\nUsage:\n- Create Data Table asset in Unreal Editor based on this struct\n- Row names should match database TypeId (as string)\n- Fill in visual assets (icons, meshes) and metadata\n- Reference table in UEchoesInventorySubsystem\n\nExample Data Table Setup:\nRow Name: \"34\" (Tritanium TypeId)\nDisplayName: \"Tritanium\"\nDescription: \"The most common ore in space...\"\nIcon: T_Icon_Tritanium\nWorldMesh: SM_Ore_Tritanium\nUnitVolume: 0.01\nUnitMass: 0.01\nCategory: Ore" },
 #endif
@@ -157,7 +157,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Localized display name for the item\n\x09 * Supports localization for different languages\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Localized display name for the item\nSupports localization for different languages" },
 #endif
@@ -167,7 +167,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Localized description of the item\n\x09 * Displayed in tooltips and detail panels\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Localized description of the item\nDisplayed in tooltips and detail panels" },
 #endif
@@ -177,7 +177,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Icon texture for UI display (ListView, tooltips, etc.)\n\x09 * Soft reference for async loading to prevent freezes\n\x09 * Recommended size: 64x64 or 128x128\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Icon texture for UI display (ListView, tooltips, etc.)\nSoft reference for async loading to prevent freezes\nRecommended size: 64x64 or 128x128" },
 #endif
@@ -187,7 +187,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * 3D mesh for world representation\n\x09 * Used when item is ejected into space or displayed in 3D\n\x09 * Soft reference for streaming\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "3D mesh for world representation\nUsed when item is ejected into space or displayed in 3D\nSoft reference for streaming" },
 #endif
@@ -197,7 +197,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Volume of a single unit (in cubic meters)\n\x09 * Used for cargo capacity calculations\n\x09 * TotalVolume = Quantity * UnitVolume\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Volume of a single unit (in cubic meters)\nUsed for cargo capacity calculations\nTotalVolume = Quantity * UnitVolume" },
 #endif
@@ -207,7 +207,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Mass of a single unit (in kilograms)\n\x09 * Used for physics and ship mass calculations\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Mass of a single unit (in kilograms)\nUsed for physics and ship mass calculations" },
 #endif
@@ -217,7 +217,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Item category for organization and filtering\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Item category for organization and filtering" },
 #endif
@@ -227,7 +227,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Optional: Market group ID for market categorization\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional: Market group ID for market categorization" },
 #endif
@@ -237,7 +237,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Optional: Tech level of the item (0-5, where 5 is highest tech)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional: Tech level of the item (0-5, where 5 is highest tech)" },
 #endif
@@ -247,7 +247,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Optional: Meta level (0 = regular, 1+ = special variants)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional: Meta level (0 = regular, 1+ = special variants)" },
 #endif
@@ -257,7 +257,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Whether this item can be stacked in inventory\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether this item can be stacked in inventory" },
 #endif
@@ -267,7 +267,7 @@ struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Maximum stack size (0 = unlimited)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesItemDefinitions.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesItemDefinitions.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum stack size (0 = unlimited)" },
 #endif
@@ -301,7 +301,7 @@ const UECodeGen_Private::FSoftObjectPropertyParams Z_Construct_UScriptStruct_FEc
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_UnitVolume = { "UnitVolume", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, UnitVolume), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UnitVolume_MetaData), NewProp_UnitVolume_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_UnitMass = { "UnitMass", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, UnitMass), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UnitMass_MetaData), NewProp_UnitMass_MetaData) };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_Category_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_Category = { "Category", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, Category), Z_Construct_UEnum_Echoes_EEchoesItemCategory, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Category_MetaData), NewProp_Category_MetaData) }; // 2187383382
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_Category = { "Category", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, Category), Z_Construct_UEnum_Echoes_EEchoesItemCategory, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Category_MetaData), NewProp_Category_MetaData) }; // 3886991834
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_MarketGroupId = { "MarketGroupId", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, MarketGroupId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MarketGroupId_MetaData), NewProp_MarketGroupId_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_TechLevel = { "TechLevel", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, TechLevel), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TechLevel_MetaData), NewProp_TechLevel_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewProp_MetaLevel = { "MetaLevel", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesItemDefinitionRow, MetaLevel), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MetaLevel_MetaData), NewProp_MetaLevel_MetaData) };
@@ -351,19 +351,19 @@ UScriptStruct* Z_Construct_UScriptStruct_FEchoesItemDefinitionRow()
 // ********** End ScriptStruct FEchoesItemDefinitionRow ********************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h__Script_Echoes_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EEchoesItemCategory_StaticEnum, TEXT("EEchoesItemCategory"), &Z_Registration_Info_UEnum_EEchoesItemCategory, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 2187383382U) },
+		{ EEchoesItemCategory_StaticEnum, TEXT("EEchoesItemCategory"), &Z_Registration_Info_UEnum_EEchoesItemCategory, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3886991834U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FEchoesItemDefinitionRow::StaticStruct, Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewStructOps, TEXT("EchoesItemDefinitionRow"), &Z_Registration_Info_UScriptStruct_FEchoesItemDefinitionRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesItemDefinitionRow), 987535441U) },
+		{ FEchoesItemDefinitionRow::StaticStruct, Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics::NewStructOps, TEXT("EchoesItemDefinitionRow"), &Z_Registration_Info_UScriptStruct_FEchoesItemDefinitionRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesItemDefinitionRow), 590939204U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h__Script_Echoes_1281658730(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h__Script_Echoes_3810466379(TEXT("/Script/Echoes"),
 	nullptr, 0,
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h__Script_Echoes_Statics::ScriptStructInfo),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h__Script_Echoes_Statics::EnumInfo));
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h__Script_Echoes_Statics::ScriptStructInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h__Script_Echoes_Statics::EnumInfo));
 // ********** End Registration *********************************************************************
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

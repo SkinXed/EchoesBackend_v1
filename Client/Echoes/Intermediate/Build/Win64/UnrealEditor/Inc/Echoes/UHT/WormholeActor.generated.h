@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/WormholeActor.h"
+// IWYU pragma: private, include "Core/Common/Actor/WormholeActor.h"
 
 #ifdef ECHOES_WormholeActor_generated_h
 #error "WormholeActor.generated.h already included, missing '#pragma once' in WormholeActor.h"
@@ -23,7 +23,7 @@ struct FHitResult;
 struct FWormholeVisualRow;
 
 // ********** Begin Class AWormholeActor ***********************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execTriggerCollapse); \
 	DECLARE_FUNCTION(execGetStabilityPercentage); \
 	DECLARE_FUNCTION(execCanAccommodateShip); \
@@ -38,7 +38,7 @@ struct FWormholeVisualRow;
 
 ECHOES_API UClass* Z_Construct_UClass_AWormholeActor_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAWormholeActor(); \
 	friend struct Z_Construct_UClass_AWormholeActor_Statics; \
@@ -61,7 +61,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AWormholeActor(AWormholeActor&&) = delete; \
 	AWormholeActor(const AWormholeActor&) = delete; \
@@ -71,13 +71,13 @@ public: \
 	NO_API virtual ~AWormholeActor();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_24_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_24_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h_27_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h_27_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -87,6 +87,6 @@ class AWormholeActor;
 // ********** End Class AWormholeActor *************************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_WormholeActor_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

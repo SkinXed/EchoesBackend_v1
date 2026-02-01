@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/StationActor.h"
+// IWYU pragma: private, include "Core/Common/Actor/StationActor.h"
 
 #ifdef ECHOES_StationActor_generated_h
 #error "StationActor.generated.h already included, missing '#pragma once' in StationActor.h"
@@ -24,7 +24,7 @@ struct FHitResult;
 struct FStationVisualRow;
 
 // ********** Begin Class AStationActor ************************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual bool ServerRPC_RequestUndock_Validate(APlayerController* ); \
 	virtual void ServerRPC_RequestUndock_Implementation(APlayerController* PlayerController); \
 	virtual void ClientRPC_OpenStationMenu_Implementation(const FString& InStationName, const FString& InStationType, FGuid const& InHangarStorageId); \
@@ -44,10 +44,10 @@ struct FStationVisualRow;
 	DECLARE_FUNCTION(execInitializeStation);
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_CALLBACK_WRAPPERS
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_CALLBACK_WRAPPERS
 ECHOES_API UClass* Z_Construct_UClass_AStationActor_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAStationActor(); \
 	friend struct Z_Construct_UClass_AStationActor_Statics; \
@@ -67,7 +67,7 @@ public: \
 	DECLARE_VALIDATE_GENERATED_REP_ENUMS(NO_API)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AStationActor(AStationActor&&) = delete; \
 	AStationActor(const AStationActor&) = delete; \
@@ -77,14 +77,14 @@ public: \
 	NO_API virtual ~AStationActor();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_18_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_18_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_CALLBACK_WRAPPERS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h_21_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_CALLBACK_WRAPPERS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -94,6 +94,6 @@ class AStationActor;
 // ********** End Class AStationActor **************************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_StationActor_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

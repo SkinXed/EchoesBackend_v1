@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesInteractableInterface.h"
+#include "EchoesInteractableInterface.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -39,7 +39,7 @@ struct Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Interaction result structure\n * Contains information about interaction success/failure\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Interaction result structure\nContains information about interaction success/failure" },
 #endif
@@ -49,7 +49,7 @@ struct Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether the interaction was successful */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether the interaction was successful" },
 #endif
@@ -59,7 +59,7 @@ struct Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Message to display to player (error or info) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Message to display to player (error or info)" },
 #endif
@@ -69,7 +69,7 @@ struct Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Optional: actor that was interacted with */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Optional: actor that was interacted with" },
 #endif
@@ -166,7 +166,7 @@ struct Z_Construct_UFunction_UEchoesInteractableInterface_CanInteract_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if the actor can be interacted with\n\x09 * Called on both client and server\n\x09 * \n\x09 * @param Interactor - Pawn attempting to interact\n\x09 * @return True if interaction is allowed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if the actor can be interacted with\nCalled on both client and server\n\n@param Interactor - Pawn attempting to interact\n@return True if interaction is allowed" },
 #endif
@@ -252,7 +252,7 @@ struct Z_Construct_UFunction_UEchoesInteractableInterface_GetInteractionDistance
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the interaction distance for this object\n\x09 * \n\x09 * @return Maximum interaction distance in cm (Unreal units)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the interaction distance for this object\n\n@return Maximum interaction distance in cm (Unreal units)" },
 #endif
@@ -323,7 +323,7 @@ struct Z_Construct_UFunction_UEchoesInteractableInterface_GetInteractionPrompt_S
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the display name for interaction prompt\n\x09 * \n\x09 * @return Name to show in interaction UI\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the display name for interaction prompt\n\n@return Name to show in interaction UI" },
 #endif
@@ -396,7 +396,7 @@ struct Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Server-side interaction handler\n\x09 * Called when player interacts with this object\n\x09 * \n\x09 * @param Interactor - Pawn that initiated interaction\n\x09 * @return Interaction result\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server-side interaction handler\nCalled when player interacts with this object\n\n@param Interactor - Pawn that initiated interaction\n@return Interaction result" },
 #endif
@@ -408,7 +408,7 @@ struct Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics::NewProp_Interactor = { "Interactor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInteractableInterface_eventOnInteract_Parms, Interactor), Z_Construct_UClass_APawn_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInteractableInterface_eventOnInteract_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesInteractionResult, METADATA_PARAMS(0, nullptr) }; // 332251469
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInteractableInterface_eventOnInteract_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesInteractionResult, METADATA_PARAMS(0, nullptr) }; // 3108084640
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics::NewProp_Interactor,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract_Statics::NewProp_ReturnValue,
@@ -482,15 +482,15 @@ struct Z_Construct_UClass_UEchoesInteractableInterface_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
 		{ "IsBlueprintBase", "true" },
-		{ "ModuleRelativePath", "Core/Common/EchoesInteractableInterface.h" },
+		{ "ModuleRelativePath", "Core/Common/Interfaces/EchoesInteractableInterface.h" },
 	};
 #endif // WITH_METADATA
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesInteractableInterface_CanInteract, "CanInteract" }, // 3176174516
-		{ &Z_Construct_UFunction_UEchoesInteractableInterface_GetInteractionDistance, "GetInteractionDistance" }, // 382380856
-		{ &Z_Construct_UFunction_UEchoesInteractableInterface_GetInteractionPrompt, "GetInteractionPrompt" }, // 2339663920
-		{ &Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract, "OnInteract" }, // 3328887779
+		{ &Z_Construct_UFunction_UEchoesInteractableInterface_CanInteract, "CanInteract" }, // 1649702618
+		{ &Z_Construct_UFunction_UEchoesInteractableInterface_GetInteractionDistance, "GetInteractionDistance" }, // 1461917842
+		{ &Z_Construct_UFunction_UEchoesInteractableInterface_GetInteractionPrompt, "GetInteractionPrompt" }, // 1163023324
+		{ &Z_Construct_UFunction_UEchoesInteractableInterface_OnInteract, "OnInteract" }, // 3058685533
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -531,18 +531,18 @@ DEFINE_VTABLE_PTR_HELPER_CTOR(UEchoesInteractableInterface);
 // ********** End Interface UEchoesInteractableInterface *******************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FEchoesInteractionResult::StaticStruct, Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics::NewStructOps, TEXT("EchoesInteractionResult"), &Z_Registration_Info_UScriptStruct_FEchoesInteractionResult, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesInteractionResult), 332251469U) },
+		{ FEchoesInteractionResult::StaticStruct, Z_Construct_UScriptStruct_FEchoesInteractionResult_Statics::NewStructOps, TEXT("EchoesInteractionResult"), &Z_Registration_Info_UScriptStruct_FEchoesInteractionResult, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesInteractionResult), 3108084640U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInteractableInterface, UEchoesInteractableInterface::StaticClass, TEXT("UEchoesInteractableInterface"), &Z_Registration_Info_UClass_UEchoesInteractableInterface, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInteractableInterface), 2005703613U) },
+		{ Z_Construct_UClass_UEchoesInteractableInterface, UEchoesInteractableInterface::StaticClass, TEXT("UEchoesInteractableInterface"), &Z_Registration_Info_UClass_UEchoesInteractableInterface, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInteractableInterface), 3329931218U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h__Script_Echoes_2632167387(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h__Script_Echoes_Statics::ClassInfo),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesInteractableInterface_h__Script_Echoes_Statics::ScriptStructInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h__Script_Echoes_2490719800(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h__Script_Echoes_Statics::ClassInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Interfaces_EchoesInteractableInterface_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);
 // ********** End Registration *********************************************************************
 

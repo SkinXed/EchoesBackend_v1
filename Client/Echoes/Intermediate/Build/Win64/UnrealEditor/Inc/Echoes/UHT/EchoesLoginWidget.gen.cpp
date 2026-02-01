@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesLoginWidget.h"
-#include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "EchoesLoginWidget.h"
+#include "EchoesAuthSubsystem.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -37,7 +37,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnLoginSuccessEvent__DelegateSignatu
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AuthResponse_MetaData[] = {
 		{ "NativeConst", "" },
@@ -84,7 +84,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnLoginFailureEvent__DelegateSignatu
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ErrorMessage_MetaData[] = {
 		{ "NativeConst", "" },
@@ -130,7 +130,7 @@ struct Z_Construct_UFunction_UEchoesLoginWidget_OnLoginButtonClicked_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle login button click\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle login button click" },
 #endif
@@ -169,7 +169,7 @@ struct Z_Construct_UFunction_UEchoesLoginWidget_OnLoginFailure_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when login fails\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when login fails" },
 #endif
@@ -220,7 +220,7 @@ struct Z_Construct_UFunction_UEchoesLoginWidget_OnLoginSuccess_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when login succeeds\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when login succeeds" },
 #endif
@@ -272,7 +272,7 @@ struct Z_Construct_UFunction_UEchoesLoginWidget_OnPasswordCommitted_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle Enter key press in password field\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle Enter key press in password field" },
 #endif
@@ -323,7 +323,7 @@ struct Z_Construct_UFunction_UEchoesLoginWidget_OnRegisterButtonClicked_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle register button click\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle register button click" },
 #endif
@@ -399,8 +399,8 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesLoginWidget\n * \n * Login UI widget for Echoes MMO\n * Provides email/username and password input fields\n * Integrates with UEchoesAuthSubsystem for authentication\n * Inherits from UEchoesWindowBase for drag/focus support\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesLoginWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesLoginWidget\n\nLogin UI widget for Echoes MMO\nProvides email/username and password input fields\nIntegrates with UEchoesAuthSubsystem for authentication\nInherits from UEchoesWindowBase for drag/focus support" },
 #endif
@@ -411,7 +411,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 		{ "Comment", "/** Email or username input field */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Email or username input field" },
 #endif
@@ -422,7 +422,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 		{ "Comment", "/** Password input field */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Password input field" },
 #endif
@@ -433,7 +433,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 		{ "Comment", "/** Remember Me checkbox */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Remember Me checkbox" },
 #endif
@@ -444,7 +444,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 		{ "Comment", "/** Login button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Login button" },
 #endif
@@ -455,7 +455,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 		{ "Comment", "/** Register button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Register button" },
 #endif
@@ -466,7 +466,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 		{ "Comment", "/** Status text (for errors/success messages) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Status text (for errors/success messages)" },
 #endif
@@ -476,7 +476,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when login is successful */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when login is successful" },
 #endif
@@ -486,7 +486,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when login fails */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when login fails" },
 #endif
@@ -495,7 +495,7 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to auth subsystem */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesLoginWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesLoginWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to auth subsystem" },
 #endif
@@ -513,11 +513,11 @@ struct Z_Construct_UClass_UEchoesLoginWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnLoginButtonClicked, "OnLoginButtonClicked" }, // 731021437
-		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnLoginFailure, "OnLoginFailure" }, // 3189685406
-		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnLoginSuccess, "OnLoginSuccess" }, // 3269945178
-		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnPasswordCommitted, "OnPasswordCommitted" }, // 3334070126
-		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnRegisterButtonClicked, "OnRegisterButtonClicked" }, // 4260072176
+		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnLoginButtonClicked, "OnLoginButtonClicked" }, // 1858344943
+		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnLoginFailure, "OnLoginFailure" }, // 3449099536
+		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnLoginSuccess, "OnLoginSuccess" }, // 2937741878
+		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnPasswordCommitted, "OnPasswordCommitted" }, // 3686619306
+		{ &Z_Construct_UFunction_UEchoesLoginWidget_OnRegisterButtonClicked, "OnRegisterButtonClicked" }, // 1879805220
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -531,8 +531,8 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesLoginWi
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_LoginButton = { "LoginButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, LoginButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LoginButton_MetaData), NewProp_LoginButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_RegisterButton = { "RegisterButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, RegisterButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RegisterButton_MetaData), NewProp_RegisterButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_StatusText = { "StatusText", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, StatusText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StatusText_MetaData), NewProp_StatusText_MetaData) };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_OnLoginSuccessDelegate = { "OnLoginSuccessDelegate", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, OnLoginSuccessDelegate), Z_Construct_UDelegateFunction_Echoes_OnLoginSuccessEvent__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnLoginSuccessDelegate_MetaData), NewProp_OnLoginSuccessDelegate_MetaData) }; // 3511753456
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_OnLoginFailureDelegate = { "OnLoginFailureDelegate", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, OnLoginFailureDelegate), Z_Construct_UDelegateFunction_Echoes_OnLoginFailureEvent__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnLoginFailureDelegate_MetaData), NewProp_OnLoginFailureDelegate_MetaData) }; // 2520267840
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_OnLoginSuccessDelegate = { "OnLoginSuccessDelegate", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, OnLoginSuccessDelegate), Z_Construct_UDelegateFunction_Echoes_OnLoginSuccessEvent__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnLoginSuccessDelegate_MetaData), NewProp_OnLoginSuccessDelegate_MetaData) }; // 1909488498
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_OnLoginFailureDelegate = { "OnLoginFailureDelegate", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, OnLoginFailureDelegate), Z_Construct_UDelegateFunction_Echoes_OnLoginFailureEvent__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnLoginFailureDelegate_MetaData), NewProp_OnLoginFailureDelegate_MetaData) }; // 4274802061
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_AuthSubsystem = { "AuthSubsystem", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesLoginWidget, AuthSubsystem), Z_Construct_UClass_UEchoesAuthSubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthSubsystem_MetaData), NewProp_AuthSubsystem_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesLoginWidget_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesLoginWidget_Statics::NewProp_EmailUsernameInput,
@@ -580,14 +580,14 @@ UEchoesLoginWidget::~UEchoesLoginWidget() {}
 // ********** End Class UEchoesLoginWidget *********************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesLoginWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesLoginWidget, UEchoesLoginWidget::StaticClass, TEXT("UEchoesLoginWidget"), &Z_Registration_Info_UClass_UEchoesLoginWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesLoginWidget), 364248458U) },
+		{ Z_Construct_UClass_UEchoesLoginWidget, UEchoesLoginWidget::StaticClass, TEXT("UEchoesLoginWidget"), &Z_Registration_Info_UClass_UEchoesLoginWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesLoginWidget), 2155170924U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h__Script_Echoes_2492493838(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesLoginWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesLoginWidget_h__Script_Echoes_4172307227(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesLoginWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesLoginWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

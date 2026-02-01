@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesWindowBase.h"
+#include "EchoesWindowBase.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -34,7 +34,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_BringToFront_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Bring this window to front (highest Z-order)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Bring this window to front (highest Z-order)" },
 #endif
@@ -70,7 +70,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_CloseWindow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Close this window (removes from parent and destroys)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Close this window (removes from parent and destroys)" },
 #endif
@@ -110,7 +110,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_GetWindowPosition_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get window position\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get window position" },
 #endif
@@ -158,7 +158,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_GetWindowSize_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get window size\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get window size" },
 #endif
@@ -206,7 +206,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_GetWindowTitle_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the window title text\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the window title text" },
 #endif
@@ -250,7 +250,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_LoadWindowPosition_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Load window position from player settings\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Load window position from player settings" },
 #endif
@@ -285,7 +285,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_OnCloseButtonClicked_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Called when close button is clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when close button is clicked" },
 #endif
@@ -327,7 +327,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_OnWindowClosed_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when window is closed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when window is closed" },
 #endif
@@ -362,7 +362,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_OnWindowFocused_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when window gains focus\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when window gains focus" },
 #endif
@@ -391,7 +391,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_SaveWindowPosition_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Save window position to player settings\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Save window position to player settings" },
 #endif
@@ -431,7 +431,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_SetWindowPosition_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set window position\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set window position" },
 #endif
@@ -480,7 +480,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_SetWindowSize_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set window size\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set window size" },
 #endif
@@ -529,7 +529,7 @@ struct Z_Construct_UFunction_UEchoesWindowBase_SetWindowTitle_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set the window title text\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set the window title text" },
 #endif
@@ -623,8 +623,8 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesWindowBase\n * \n * Base class for draggable and resizable window-style UI widgets\n * Provides Windows-like window behavior with title bar, resize handles, and focus management\n * \n * Features:\n * - Draggable via title bar\n * - Resizable from bottom-right corner\n * - Minimum size constraints\n * - Z-order focus system\n * - Close button\n * - Content slot for child widgets\n * - Position persistence (optional)\n * \n * Usage:\n * - Create widget blueprint based on this class\n * - Add required widget bindings: TitleBar, TitleText, CloseButton, ResizeHandle, ContentSlot\n * - Set MinWindowSize and DefaultWindowSize in Blueprint\n * - Place content widgets in ContentSlot in Blueprint editor\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesWindowBase.h" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "IncludePath", "UI/Framework/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 		{ "ObjectInitializerConstructorDeclared", "" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesWindowBase\n\nBase class for draggable and resizable window-style UI widgets\nProvides Windows-like window behavior with title bar, resize handles, and focus management\n\nFeatures:\n- Draggable via title bar\n- Resizable from bottom-right corner\n- Minimum size constraints\n- Z-order focus system\n- Close button\n- Content slot for child widgets\n- Position persistence (optional)\n\nUsage:\n- Create widget blueprint based on this class\n- Add required widget bindings: TitleBar, TitleText, CloseButton, ResizeHandle, ContentSlot\n- Set MinWindowSize and DefaultWindowSize in Blueprint\n- Place content widgets in ContentSlot in Blueprint editor" },
@@ -637,7 +637,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 		{ "Comment", "/** Title bar border (draggable area) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Title bar border (draggable area)" },
 #endif
@@ -649,7 +649,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 		{ "Comment", "/** Title text block */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Title text block" },
 #endif
@@ -661,7 +661,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 		{ "Comment", "/** Close button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Close button" },
 #endif
@@ -673,7 +673,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 		{ "Comment", "/** Resize handle (bottom-right corner) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Resize handle (bottom-right corner)" },
 #endif
@@ -685,7 +685,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 		{ "Comment", "/** Content slot for child widgets */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Content slot for child widgets" },
 #endif
@@ -695,7 +695,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Minimum window size (width, height) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Minimum window size (width, height)" },
 #endif
@@ -705,7 +705,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Maximum window size (0 = no limit) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Maximum window size (0 = no limit)" },
 #endif
@@ -715,7 +715,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Default window size */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Default window size" },
 #endif
@@ -725,7 +725,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Default window position (relative to screen) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Default window position (relative to screen)" },
 #endif
@@ -735,7 +735,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether to save/load window position */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether to save/load window position" },
 #endif
@@ -745,7 +745,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique window ID for position saving (auto-generated from class name) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Unique window ID for position saving (auto-generated from class name)" },
 #endif
@@ -755,7 +755,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether window can be resized */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether window can be resized" },
 #endif
@@ -765,7 +765,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether window can be dragged */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether window can be dragged" },
 #endif
@@ -775,7 +775,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Enable window snapping to screen edges and other windows */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Enable window snapping to screen edges and other windows" },
 #endif
@@ -785,7 +785,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Distance threshold for snapping (in pixels) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Distance threshold for snapping (in pixels)" },
 #endif
@@ -795,7 +795,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Snap to screen edges */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Snap to screen edges" },
 #endif
@@ -805,7 +805,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Snap to other windows */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Snap to other windows" },
 #endif
@@ -815,7 +815,7 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 		{ "Comment", "/** Cached canvas panel slot for position/size manipulation */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesWindowBase.h" },
+		{ "ModuleRelativePath", "UI/Framework/EchoesWindowBase.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cached canvas panel slot for position/size manipulation" },
 #endif
@@ -848,19 +848,19 @@ struct Z_Construct_UClass_UEchoesWindowBase_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesWindowBase_BringToFront, "BringToFront" }, // 2775546321
-		{ &Z_Construct_UFunction_UEchoesWindowBase_CloseWindow, "CloseWindow" }, // 1750668450
-		{ &Z_Construct_UFunction_UEchoesWindowBase_GetWindowPosition, "GetWindowPosition" }, // 2855245804
-		{ &Z_Construct_UFunction_UEchoesWindowBase_GetWindowSize, "GetWindowSize" }, // 1051999783
-		{ &Z_Construct_UFunction_UEchoesWindowBase_GetWindowTitle, "GetWindowTitle" }, // 951620980
-		{ &Z_Construct_UFunction_UEchoesWindowBase_LoadWindowPosition, "LoadWindowPosition" }, // 3403372296
-		{ &Z_Construct_UFunction_UEchoesWindowBase_OnCloseButtonClicked, "OnCloseButtonClicked" }, // 3196167481
-		{ &Z_Construct_UFunction_UEchoesWindowBase_OnWindowClosed, "OnWindowClosed" }, // 3055708995
-		{ &Z_Construct_UFunction_UEchoesWindowBase_OnWindowFocused, "OnWindowFocused" }, // 2289035645
-		{ &Z_Construct_UFunction_UEchoesWindowBase_SaveWindowPosition, "SaveWindowPosition" }, // 1938621114
-		{ &Z_Construct_UFunction_UEchoesWindowBase_SetWindowPosition, "SetWindowPosition" }, // 2558841842
-		{ &Z_Construct_UFunction_UEchoesWindowBase_SetWindowSize, "SetWindowSize" }, // 3078635217
-		{ &Z_Construct_UFunction_UEchoesWindowBase_SetWindowTitle, "SetWindowTitle" }, // 3241210384
+		{ &Z_Construct_UFunction_UEchoesWindowBase_BringToFront, "BringToFront" }, // 3939485939
+		{ &Z_Construct_UFunction_UEchoesWindowBase_CloseWindow, "CloseWindow" }, // 883239599
+		{ &Z_Construct_UFunction_UEchoesWindowBase_GetWindowPosition, "GetWindowPosition" }, // 2484980260
+		{ &Z_Construct_UFunction_UEchoesWindowBase_GetWindowSize, "GetWindowSize" }, // 1269511037
+		{ &Z_Construct_UFunction_UEchoesWindowBase_GetWindowTitle, "GetWindowTitle" }, // 739113689
+		{ &Z_Construct_UFunction_UEchoesWindowBase_LoadWindowPosition, "LoadWindowPosition" }, // 2410691880
+		{ &Z_Construct_UFunction_UEchoesWindowBase_OnCloseButtonClicked, "OnCloseButtonClicked" }, // 1578176309
+		{ &Z_Construct_UFunction_UEchoesWindowBase_OnWindowClosed, "OnWindowClosed" }, // 911372440
+		{ &Z_Construct_UFunction_UEchoesWindowBase_OnWindowFocused, "OnWindowFocused" }, // 242657106
+		{ &Z_Construct_UFunction_UEchoesWindowBase_SaveWindowPosition, "SaveWindowPosition" }, // 45380814
+		{ &Z_Construct_UFunction_UEchoesWindowBase_SetWindowPosition, "SetWindowPosition" }, // 517414884
+		{ &Z_Construct_UFunction_UEchoesWindowBase_SetWindowSize, "SetWindowSize" }, // 4063371398
+		{ &Z_Construct_UFunction_UEchoesWindowBase_SetWindowTitle, "SetWindowTitle" }, // 3726813262
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -964,14 +964,14 @@ UEchoesWindowBase::~UEchoesWindowBase() {}
 // ********** End Class UEchoesWindowBase **********************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesWindowBase_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Framework_EchoesWindowBase_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesWindowBase, UEchoesWindowBase::StaticClass, TEXT("UEchoesWindowBase"), &Z_Registration_Info_UClass_UEchoesWindowBase, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesWindowBase), 2090409658U) },
+		{ Z_Construct_UClass_UEchoesWindowBase, UEchoesWindowBase::StaticClass, TEXT("UEchoesWindowBase"), &Z_Registration_Info_UClass_UEchoesWindowBase, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesWindowBase), 3367101607U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesWindowBase_h__Script_Echoes_2416172786(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesWindowBase_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesWindowBase_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Framework_EchoesWindowBase_h__Script_Echoes_3634189016(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Framework_EchoesWindowBase_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Framework_EchoesWindowBase_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

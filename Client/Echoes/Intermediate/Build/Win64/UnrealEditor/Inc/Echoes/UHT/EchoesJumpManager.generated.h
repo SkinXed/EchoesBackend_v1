@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesJumpManager.h"
+// IWYU pragma: private, include "Core/Common/World/EchoesJumpManager.h"
 
 #ifdef ECHOES_EchoesJumpManager_generated_h
 #error "EchoesJumpManager.generated.h already included, missing '#pragma once' in EchoesJumpManager.h"
@@ -20,7 +20,7 @@ class APlayerController;
 struct FGuid;
 
 // ********** Begin Class UEchoesJumpManager *******************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual void ClientRPC_UpdateJumpProgress_Implementation(float Progress); \
 	virtual void ClientRPC_EndJumpSequence_Implementation(); \
 	virtual void ClientRPC_StartJumpSequence_Implementation(float TransitionDuration); \
@@ -30,10 +30,10 @@ struct FGuid;
 	DECLARE_FUNCTION(execInitiateIntraServerJump);
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_CALLBACK_WRAPPERS
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_CALLBACK_WRAPPERS
 ECHOES_API UClass* Z_Construct_UClass_UEchoesJumpManager_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesJumpManager(); \
 	friend struct Z_Construct_UClass_UEchoesJumpManager_Statics; \
@@ -44,7 +44,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesJumpManager)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UEchoesJumpManager(UEchoesJumpManager&&) = delete; \
 	UEchoesJumpManager(const UEchoesJumpManager&) = delete; \
@@ -54,14 +54,14 @@ public: \
 	NO_API virtual ~UEchoesJumpManager();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_42_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_42_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_CALLBACK_WRAPPERS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h_45_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_CALLBACK_WRAPPERS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h_45_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -71,7 +71,7 @@ class UEchoesJumpManager;
 // ********** End Class UEchoesJumpManager *********************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesJumpManager_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesJumpManager_h
 
 // ********** Begin Enum EJumpState ****************************************************************
 #define FOREACH_ENUM_EJUMPSTATE(op) \

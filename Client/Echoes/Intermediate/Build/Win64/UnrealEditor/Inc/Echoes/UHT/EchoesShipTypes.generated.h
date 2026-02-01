@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesShipTypes.h"
+// IWYU pragma: private, include "Core/Common/Types/EchoesShipTypes.h"
 
 #ifdef ECHOES_EchoesShipTypes_generated_h
 #error "EchoesShipTypes.generated.h already included, missing '#pragma once' in EchoesShipTypes.h"
@@ -17,7 +17,7 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 // ********** Begin ScriptStruct FEchoesShipStats **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h_29_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h_29_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FEchoesShipStats_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct();
 
@@ -26,7 +26,7 @@ struct FEchoesShipStats;
 // ********** End ScriptStruct FEchoesShipStats ****************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipTypes_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesShipTypes_h
 
 // ********** Begin Enum EWarpState ****************************************************************
 #define FOREACH_ENUM_EWARPSTATE(op) \

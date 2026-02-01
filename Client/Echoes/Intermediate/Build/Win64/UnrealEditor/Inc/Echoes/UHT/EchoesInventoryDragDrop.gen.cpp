@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesInventoryDragDrop.h"
-#include "Core/Common/EchoesInventoryComponent.h"
+#include "EchoesInventoryDragDrop.h"
+#include "EchoesInventoryComponent.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -35,7 +35,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item data being dragged\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item data being dragged" },
 #endif
@@ -45,7 +45,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventGetItemData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(0, nullptr) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventGetItemData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(0, nullptr) }; // 2559718756
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData_Statics::NewProp_ReturnValue,
 };
@@ -83,7 +83,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_GetQuantity_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the quantity being moved\n\x09 * @return Quantity to move (0 means all/full stack)\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the quantity being moved\n@return Quantity to move (0 means all/full stack)" },
 #endif
@@ -131,7 +131,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_GetSourceActor_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the source actor\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the source actor" },
 #endif
@@ -179,7 +179,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_GetSourceStorageId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the source storage ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the source storage ID" },
 #endif
@@ -231,7 +231,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_St
 		{ "Comment", "/**\n\x09 * Initialize the drag operation with item data\n\x09 * @param InItemData - The item being dragged\n\x09 * @param InSourceStorageId - Storage ID where item originates\n\x09 * @param InSourceActor - Actor containing the source inventory\n\x09 * @param InQuantity - Quantity to move (0 = all)\n\x09 */" },
 #endif
 		{ "CPP_Default_InQuantity", "0" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize the drag operation with item data\n@param InItemData - The item being dragged\n@param InSourceStorageId - Storage ID where item originates\n@param InSourceActor - Actor containing the source inventory\n@param InQuantity - Quantity to move (0 = all)" },
 #endif
@@ -250,7 +250,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_Statics::NewProp_InItemData = { "InItemData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventInitializeDragOperation_Parms, InItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InItemData_MetaData), NewProp_InItemData_MetaData) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_Statics::NewProp_InItemData = { "InItemData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventInitializeDragOperation_Parms, InItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InItemData_MetaData), NewProp_InItemData_MetaData) }; // 2559718756
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_Statics::NewProp_InSourceStorageId = { "InSourceStorageId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventInitializeDragOperation_Parms, InSourceStorageId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InSourceStorageId_MetaData), NewProp_InSourceStorageId_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_Statics::NewProp_InSourceActor = { "InSourceActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventInitializeDragOperation_Parms, InSourceActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation_Statics::NewProp_InQuantity = { "InQuantity", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryDragDrop_eventInitializeDragOperation_Parms, InQuantity), METADATA_PARAMS(0, nullptr) };
@@ -298,7 +298,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_IsPartialStack_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if this is a partial stack move\n\x09 * @return True if quantity is less than total item quantity\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if this is a partial stack move\n@return True if quantity is less than total item quantity" },
 #endif
@@ -351,7 +351,7 @@ struct Z_Construct_UFunction_UEchoesInventoryDragDrop_SetQuantity_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Set the quantity being moved (for stack splitting)\n\x09 * @param InQuantity - New quantity to move\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Set the quantity being moved (for stack splitting)\n@param InQuantity - New quantity to move" },
 #endif
@@ -438,8 +438,8 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesInventoryDragDrop\n * \n * Drag and drop operation for inventory items\n * Carries item data and source storage information\n * Provides visual feedback during drag\n * \n * Features:\n * - Holds inventory item data\n * - Tracks source storage ID\n * - Supports partial quantity for stack splitting\n * - Visual feedback with item icon\n * \n * Usage:\n * - Create when drag starts in inventory entry widget\n * - Set item data and source storage\n * - Set quantity (defaults to full stack)\n * - Receive in drop target (inventory widget)\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesInventoryDragDrop.h" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "IncludePath", "UI/Logic/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesInventoryDragDrop\n\nDrag and drop operation for inventory items\nCarries item data and source storage information\nProvides visual feedback during drag\n\nFeatures:\n- Holds inventory item data\n- Tracks source storage ID\n- Supports partial quantity for stack splitting\n- Visual feedback with item icon\n\nUsage:\n- Create when drag starts in inventory entry widget\n- Set item data and source storage\n- Set quantity (defaults to full stack)\n- Receive in drop target (inventory widget)" },
 #endif
@@ -449,7 +449,7 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** The inventory item being dragged */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The inventory item being dragged" },
 #endif
@@ -459,7 +459,7 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Storage ID where the item originates */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Storage ID where the item originates" },
 #endif
@@ -469,7 +469,7 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Actor containing the source inventory component */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Actor containing the source inventory component" },
 #endif
@@ -479,7 +479,7 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Quantity being moved (0 = all) */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryDragDrop.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryDragDrop.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Quantity being moved (0 = all)" },
 #endif
@@ -492,13 +492,13 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData, "GetItemData" }, // 1197970389
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetQuantity, "GetQuantity" }, // 2907746207
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetSourceActor, "GetSourceActor" }, // 2872217117
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetSourceStorageId, "GetSourceStorageId" }, // 3820372156
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation, "InitializeDragOperation" }, // 2695983061
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_IsPartialStack, "IsPartialStack" }, // 2139831679
-		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_SetQuantity, "SetQuantity" }, // 2041223007
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetItemData, "GetItemData" }, // 761952315
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetQuantity, "GetQuantity" }, // 2274122913
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetSourceActor, "GetSourceActor" }, // 2351337936
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_GetSourceStorageId, "GetSourceStorageId" }, // 882011119
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_InitializeDragOperation, "InitializeDragOperation" }, // 3302800619
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_IsPartialStack, "IsPartialStack" }, // 3857210258
+		{ &Z_Construct_UFunction_UEchoesInventoryDragDrop_SetQuantity, "SetQuantity" }, // 3991078469
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -506,7 +506,7 @@ struct Z_Construct_UClass_UEchoesInventoryDragDrop_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryDragDrop_Statics::NewProp_ItemData = { "ItemData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryDragDrop, ItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemData_MetaData), NewProp_ItemData_MetaData) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryDragDrop_Statics::NewProp_ItemData = { "ItemData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryDragDrop, ItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemData_MetaData), NewProp_ItemData_MetaData) }; // 2559718756
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryDragDrop_Statics::NewProp_SourceStorageId = { "SourceStorageId", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryDragDrop, SourceStorageId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SourceStorageId_MetaData), NewProp_SourceStorageId_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesInventoryDragDrop_Statics::NewProp_SourceActor = { "SourceActor", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryDragDrop, SourceActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SourceActor_MetaData), NewProp_SourceActor_MetaData) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UClass_UEchoesInventoryDragDrop_Statics::NewProp_Quantity = { "Quantity", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryDragDrop, Quantity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Quantity_MetaData), NewProp_Quantity_MetaData) };
@@ -551,14 +551,14 @@ UEchoesInventoryDragDrop::~UEchoesInventoryDragDrop() {}
 // ********** End Class UEchoesInventoryDragDrop ***************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryDragDrop_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryDragDrop_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryDragDrop, UEchoesInventoryDragDrop::StaticClass, TEXT("UEchoesInventoryDragDrop"), &Z_Registration_Info_UClass_UEchoesInventoryDragDrop, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryDragDrop), 1447291682U) },
+		{ Z_Construct_UClass_UEchoesInventoryDragDrop, UEchoesInventoryDragDrop::StaticClass, TEXT("UEchoesInventoryDragDrop"), &Z_Registration_Info_UClass_UEchoesInventoryDragDrop, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryDragDrop), 3833102922U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryDragDrop_h__Script_Echoes_1718921984(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryDragDrop_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryDragDrop_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryDragDrop_h__Script_Echoes_2689476290(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryDragDrop_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryDragDrop_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

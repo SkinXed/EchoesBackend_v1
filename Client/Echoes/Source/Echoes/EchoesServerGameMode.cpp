@@ -1,12 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EchoesServerGameMode.h"
-#include "Core/Server/EchoesServerManagementSubsystem.h"
-#include "Core/Common/EchoesWorldGenerator.h"
-#include "Core/Common/EchoesJumpManager.h"
-#include "Core/Server/EchoesServerDiscoveryTypes.h"
-#include "Core/Common/Networking/EchoesInventorySubsystem.h"
-#include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "EchoesServerManagementSubsystem.h"
+#include "EchoesWorldGenerator.h"
+#include "EchoesJumpManager.h"
+#include "EchoesServerDiscoveryTypes.h"
+#include "EchoesInventorySubsystem.h"
+#include "EchoesAuthSubsystem.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Json.h"

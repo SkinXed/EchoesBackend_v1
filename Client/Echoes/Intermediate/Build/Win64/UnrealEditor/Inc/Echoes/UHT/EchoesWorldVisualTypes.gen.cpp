@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesWorldVisualTypes.h"
+#include "EchoesWorldVisualTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -50,7 +50,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for planets\n * Maps planet types from database to Unreal assets\n * Uses TSoftObjectPtr for memory optimization (lazy loading)\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for planets\nMaps planet types from database to Unreal assets\nUses TSoftObjectPtr for memory optimization (lazy loading)" },
 #endif
@@ -60,7 +60,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Planet mesh (sphere or custom model) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Planet mesh (sphere or custom model)" },
 #endif
@@ -70,7 +70,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Array of possible material instances for variation */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Array of possible material instances for variation" },
 #endif
@@ -80,7 +80,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Atmosphere post-process settings (optional) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Atmosphere post-process settings (optional)" },
 #endif
@@ -90,7 +90,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Atmosphere scale (0 = no atmosphere, 1 = normal, >1 = thick atmosphere) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Atmosphere scale (0 = no atmosphere, 1 = normal, >1 = thick atmosphere)" },
 #endif
@@ -100,7 +100,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cloud layer mesh (optional) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cloud layer mesh (optional)" },
 #endif
@@ -110,7 +110,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cloud layer material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cloud layer material" },
 #endif
@@ -120,7 +120,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cloud rotation speed */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cloud rotation speed" },
 #endif
@@ -130,7 +130,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Array of texture randomizers for surface variation */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Array of texture randomizers for surface variation" },
 #endif
@@ -140,7 +140,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Emissive intensity for lava/volcanic planets */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Emissive intensity for lava/volcanic planets" },
 #endif
@@ -150,7 +150,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ring system mesh (optional, for gas giants) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ring system mesh (optional, for gas giants)" },
 #endif
@@ -160,7 +160,7 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ring material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ring material" },
 #endif
@@ -257,7 +257,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for stars\n * Defines corona effects, lighting, and post-process settings\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for stars\nDefines corona effects, lighting, and post-process settings" },
 #endif
@@ -267,7 +267,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Star mesh (usually a sphere) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Star mesh (usually a sphere)" },
 #endif
@@ -277,7 +277,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Star surface material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Star surface material" },
 #endif
@@ -287,7 +287,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Corona particle system (Legacy Cascade) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Corona particle system (Legacy Cascade)" },
 #endif
@@ -297,7 +297,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Corona VFX (Niagara) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Corona VFX (Niagara)" },
 #endif
@@ -307,7 +307,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Base light intensity (will be scaled by star luminosity) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Base light intensity (will be scaled by star luminosity)" },
 #endif
@@ -317,7 +317,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Light color (will be adjusted by star temperature) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Light color (will be adjusted by star temperature)" },
 #endif
@@ -327,7 +327,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Attenuation radius for directional light */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Attenuation radius for directional light" },
 #endif
@@ -337,7 +337,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Lens flare type */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Lens flare type" },
 #endif
@@ -347,7 +347,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Post-process material for bloom and glow */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Post-process material for bloom and glow" },
 #endif
@@ -357,7 +357,7 @@ struct Z_Construct_UScriptStruct_FStarVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Bloom intensity */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Bloom intensity" },
 #endif
@@ -445,7 +445,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for space stations\n * Supports modular construction with faction customization\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for space stations\nSupports modular construction with faction customization" },
 #endif
@@ -455,7 +455,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Base station mesh */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Base station mesh" },
 #endif
@@ -465,7 +465,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Array of modular parts (habitats, docking bays, solar panels, etc.) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Array of modular parts (habitats, docking bays, solar panels, etc.)" },
 #endif
@@ -475,7 +475,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Faction decals (logos, markings) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Faction decals (logos, markings)" },
 #endif
@@ -485,7 +485,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Navigation lights pattern (Niagara or material) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Navigation lights pattern (Niagara or material)" },
 #endif
@@ -495,7 +495,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Window emissive material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Window emissive material" },
 #endif
@@ -505,7 +505,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Docking bay lights */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Docking bay lights" },
 #endif
@@ -515,7 +515,7 @@ struct Z_Construct_UScriptStruct_FStationVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Scale variation range (min-max) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Scale variation range (min-max)" },
 #endif
@@ -600,7 +600,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for stargates\n * Defines gate structure and portal VFX\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for stargates\nDefines gate structure and portal VFX" },
 #endif
@@ -610,7 +610,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Gate structure mesh */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Gate structure mesh" },
 #endif
@@ -620,7 +620,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Gate material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Gate material" },
 #endif
@@ -630,7 +630,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Portal VFX (wormhole effect) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Portal VFX (wormhole effect)" },
 #endif
@@ -640,7 +640,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Portal material (event horizon) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Portal material (event horizon)" },
 #endif
@@ -650,7 +650,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Destination marker VFX */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Destination marker VFX" },
 #endif
@@ -660,7 +660,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Gate activation sound */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Gate activation sound" },
 #endif
@@ -670,7 +670,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ambient hum sound */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ambient hum sound" },
 #endif
@@ -680,7 +680,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ring rotation speed (for spinning gates) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ring rotation speed (for spinning gates)" },
 #endif
@@ -690,7 +690,7 @@ struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Light color for gate */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Light color for gate" },
 #endif
@@ -775,7 +775,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for asteroid belts\n * Defines individual asteroid meshes and environmental effects\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for asteroid belts\nDefines individual asteroid meshes and environmental effects" },
 #endif
@@ -785,7 +785,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Array of asteroid mesh variants for procedural distribution */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Array of asteroid mesh variants for procedural distribution" },
 #endif
@@ -795,7 +795,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Array of material instances for asteroid variation */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Array of material instances for asteroid variation" },
 #endif
@@ -805,7 +805,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Cloud/Dust particle effects (Niagara) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Cloud/Dust particle effects (Niagara)" },
 #endif
@@ -815,7 +815,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ambient audio loop for the belt */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ambient audio loop for the belt" },
 #endif
@@ -825,7 +825,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Density multiplier for asteroid distribution (0.1 to 2.0) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Density multiplier for asteroid distribution (0.1 to 2.0)" },
 #endif
@@ -835,7 +835,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Scale range for asteroids (min-max) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Scale range for asteroids (min-max)" },
 #endif
@@ -845,7 +845,7 @@ struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Color tint for mineral-rich asteroids */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Color tint for mineral-rich asteroids" },
 #endif
@@ -930,7 +930,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for anomalies\n * Defines site visuals based on anomaly type and difficulty\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for anomalies\nDefines site visuals based on anomaly type and difficulty" },
 #endif
@@ -940,7 +940,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Central structure or debris mesh */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Central structure or debris mesh" },
 #endif
@@ -950,7 +950,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Center mesh material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Center mesh material" },
 #endif
@@ -960,7 +960,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Scanning signature VFX (visible when scanned) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Scanning signature VFX (visible when scanned)" },
 #endif
@@ -970,7 +970,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Icon or marker for difficulty level */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Icon or marker for difficulty level" },
 #endif
@@ -980,7 +980,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Type-specific particle effects (combat beams, data streams, gas clouds, etc.) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Type-specific particle effects (combat beams, data streams, gas clouds, etc.)" },
 #endif
@@ -990,7 +990,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ambient sound for the anomaly */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ambient sound for the anomaly" },
 #endif
@@ -1000,7 +1000,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Warning sound when entering danger zone */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Warning sound when entering danger zone" },
 #endif
@@ -1010,7 +1010,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Glow color for anomaly signature */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Glow color for anomaly signature" },
 #endif
@@ -1020,7 +1020,7 @@ struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Detection radius multiplier */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Detection radius multiplier" },
 #endif
@@ -1105,7 +1105,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Visual configuration for wormholes\n * Defines unique effects and distortions for wormhole entrances\n */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Visual configuration for wormholes\nDefines unique effects and distortions for wormhole entrances" },
 #endif
@@ -1115,7 +1115,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Wormhole entrance mesh (optional structural ring) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Wormhole entrance mesh (optional structural ring)" },
 #endif
@@ -1125,7 +1125,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Entrance mesh material */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Entrance mesh material" },
 #endif
@@ -1135,7 +1135,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Main wormhole VFX (event horizon, spatial distortion) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Main wormhole VFX (event horizon, spatial distortion)" },
 #endif
@@ -1145,7 +1145,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Post-process material for space-time distortion effect */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Post-process material for space-time distortion effect" },
 #endif
@@ -1155,7 +1155,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Entrance activation sound */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Entrance activation sound" },
 #endif
@@ -1165,7 +1165,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Exit/jump sound */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Exit/jump sound" },
 #endif
@@ -1175,7 +1175,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Ambient hum/rumble loop */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ambient hum/rumble loop" },
 #endif
@@ -1185,7 +1185,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Base color for the wormhole (will be modified by TargetSystemId) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Base color for the wormhole (will be modified by TargetSystemId)" },
 #endif
@@ -1195,7 +1195,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Instability VFX (for unstable wormholes) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Instability VFX (for unstable wormholes)" },
 #endif
@@ -1205,7 +1205,7 @@ struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Intensity of spatial distortion (0.0 to 1.0) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesWorldVisualTypes.h" },
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Intensity of spatial distortion (0.0 to 1.0)" },
 #endif
@@ -1275,21 +1275,21 @@ UScriptStruct* Z_Construct_UScriptStruct_FWormholeVisualRow()
 // ********** End ScriptStruct FWormholeVisualRow **************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldVisualTypes_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FPlanetVisualRow::StaticStruct, Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewStructOps, TEXT("PlanetVisualRow"), &Z_Registration_Info_UScriptStruct_FPlanetVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlanetVisualRow), 1565181472U) },
-		{ FStarVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStarVisualRow_Statics::NewStructOps, TEXT("StarVisualRow"), &Z_Registration_Info_UScriptStruct_FStarVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStarVisualRow), 2749687722U) },
-		{ FStationVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStationVisualRow_Statics::NewStructOps, TEXT("StationVisualRow"), &Z_Registration_Info_UScriptStruct_FStationVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStationVisualRow), 1509157565U) },
-		{ FStargateVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStargateVisualRow_Statics::NewStructOps, TEXT("StargateVisualRow"), &Z_Registration_Info_UScriptStruct_FStargateVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStargateVisualRow), 2349172136U) },
-		{ FAsteroidBeltVisualRow::StaticStruct, Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics::NewStructOps, TEXT("AsteroidBeltVisualRow"), &Z_Registration_Info_UScriptStruct_FAsteroidBeltVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAsteroidBeltVisualRow), 816970460U) },
-		{ FAnomalyVisualRow::StaticStruct, Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics::NewStructOps, TEXT("AnomalyVisualRow"), &Z_Registration_Info_UScriptStruct_FAnomalyVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAnomalyVisualRow), 3343435054U) },
-		{ FWormholeVisualRow::StaticStruct, Z_Construct_UScriptStruct_FWormholeVisualRow_Statics::NewStructOps, TEXT("WormholeVisualRow"), &Z_Registration_Info_UScriptStruct_FWormholeVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FWormholeVisualRow), 949240393U) },
+		{ FPlanetVisualRow::StaticStruct, Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewStructOps, TEXT("PlanetVisualRow"), &Z_Registration_Info_UScriptStruct_FPlanetVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlanetVisualRow), 1135975489U) },
+		{ FStarVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStarVisualRow_Statics::NewStructOps, TEXT("StarVisualRow"), &Z_Registration_Info_UScriptStruct_FStarVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStarVisualRow), 71317364U) },
+		{ FStationVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStationVisualRow_Statics::NewStructOps, TEXT("StationVisualRow"), &Z_Registration_Info_UScriptStruct_FStationVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStationVisualRow), 1647809122U) },
+		{ FStargateVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStargateVisualRow_Statics::NewStructOps, TEXT("StargateVisualRow"), &Z_Registration_Info_UScriptStruct_FStargateVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStargateVisualRow), 395951088U) },
+		{ FAsteroidBeltVisualRow::StaticStruct, Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics::NewStructOps, TEXT("AsteroidBeltVisualRow"), &Z_Registration_Info_UScriptStruct_FAsteroidBeltVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAsteroidBeltVisualRow), 2143765835U) },
+		{ FAnomalyVisualRow::StaticStruct, Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics::NewStructOps, TEXT("AnomalyVisualRow"), &Z_Registration_Info_UScriptStruct_FAnomalyVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAnomalyVisualRow), 3365759244U) },
+		{ FWormholeVisualRow::StaticStruct, Z_Construct_UScriptStruct_FWormholeVisualRow_Statics::NewStructOps, TEXT("WormholeVisualRow"), &Z_Registration_Info_UScriptStruct_FWormholeVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FWormholeVisualRow), 1063376799U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldVisualTypes_h__Script_Echoes_2821949431(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_4096197673(TEXT("/Script/Echoes"),
 	nullptr, 0,
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldVisualTypes_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesWorldVisualTypes_h__Script_Echoes_Statics::ScriptStructInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);
 // ********** End Registration *********************************************************************
 

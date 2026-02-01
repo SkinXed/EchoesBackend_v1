@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesPreloadWidget.h"
+#include "EchoesPreloadWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -48,7 +48,7 @@ struct Z_Construct_UEnum_Echoes_EPreloadState_Statics
 		{ "Comment", "/**\n * Preload state enum\n */" },
 #endif
 		{ "Failed.Name", "EPreloadState::Failed" },
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 		{ "Success.Name", "EPreloadState::Success" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Preload state enum" },
@@ -110,7 +110,7 @@ struct Z_Construct_UEnum_Echoes_ENextState_Statics
 		{ "Comment", "/**\n * Next state after preload\n */" },
 #endif
 		{ "Login.Name", "ENextState::Login" },
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Next state after preload" },
 #endif
@@ -153,7 +153,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FBytePropertyParams NewProp_NextState_Underlying;
@@ -162,7 +162,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature_Statics::NewProp_NextState_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature_Statics::NewProp_NextState = { "NextState", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnPreloadComplete_Parms, NextState), Z_Construct_UEnum_Echoes_ENextState, METADATA_PARAMS(0, nullptr) }; // 2333295913
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature_Statics::NewProp_NextState = { "NextState", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnPreloadComplete_Parms, NextState), Z_Construct_UEnum_Echoes_ENextState, METADATA_PARAMS(0, nullptr) }; // 3766622234
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature_Statics::NewProp_NextState_Underlying,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature_Statics::NewProp_NextState,
@@ -200,7 +200,7 @@ struct Z_Construct_UFunction_UEchoesPreloadWidget_StartPreload_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Start the preload process\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Start the preload process" },
 #endif
@@ -272,8 +272,8 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesPreloadWidget\n * \n * Preload widget for cold start validation\n * Checks API connectivity and validates saved JWT token\n * \n * Flow:\n * 1. Check API status (/api/system/status)\n * 2. If token exists in LocalPlayerSettings, validate it (/api/auth/validate-token)\n * 3. On success -> Character Select\n * 4. On failure -> Login\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesPreloadWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesPreloadWidget\n\nPreload widget for cold start validation\nChecks API connectivity and validates saved JWT token\n\nFlow:\n1. Check API status (/api/system/status)\n2. If token exists in LocalPlayerSettings, validate it (/api/auth/validate-token)\n3. On success -> Character Select\n4. On failure -> Login" },
 #endif
@@ -284,7 +284,7 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 		{ "Comment", "/** Status message text */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Status message text" },
 #endif
@@ -295,7 +295,7 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 		{ "Comment", "/** Loading progress bar */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Loading progress bar" },
 #endif
@@ -305,7 +305,7 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when preload is complete */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when preload is complete" },
 #endif
@@ -314,7 +314,7 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to auth subsystem */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesPreloadWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesPreloadWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to auth subsystem" },
 #endif
@@ -327,7 +327,7 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesPreloadWidget_StartPreload, "StartPreload" }, // 1274502945
+		{ &Z_Construct_UFunction_UEchoesPreloadWidget_StartPreload, "StartPreload" }, // 3896432685
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -337,7 +337,7 @@ struct Z_Construct_UClass_UEchoesPreloadWidget_Statics
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesPreloadWidget_Statics::NewProp_StatusText = { "StatusText", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesPreloadWidget, StatusText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StatusText_MetaData), NewProp_StatusText_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesPreloadWidget_Statics::NewProp_ProgressBar = { "ProgressBar", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesPreloadWidget, ProgressBar), Z_Construct_UClass_UProgressBar_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ProgressBar_MetaData), NewProp_ProgressBar_MetaData) };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesPreloadWidget_Statics::NewProp_OnPreloadComplete = { "OnPreloadComplete", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesPreloadWidget, OnPreloadComplete), Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnPreloadComplete_MetaData), NewProp_OnPreloadComplete_MetaData) }; // 2730088595
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesPreloadWidget_Statics::NewProp_OnPreloadComplete = { "OnPreloadComplete", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesPreloadWidget, OnPreloadComplete), Z_Construct_UDelegateFunction_Echoes_OnPreloadComplete__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnPreloadComplete_MetaData), NewProp_OnPreloadComplete_MetaData) }; // 426529378
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesPreloadWidget_Statics::NewProp_AuthSubsystem = { "AuthSubsystem", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesPreloadWidget, AuthSubsystem), Z_Construct_UClass_UEchoesAuthSubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthSubsystem_MetaData), NewProp_AuthSubsystem_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesPreloadWidget_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesPreloadWidget_Statics::NewProp_StatusText,
@@ -380,20 +380,20 @@ UEchoesPreloadWidget::~UEchoesPreloadWidget() {}
 // ********** End Class UEchoesPreloadWidget *******************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h__Script_Echoes_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EPreloadState_StaticEnum, TEXT("EPreloadState"), &Z_Registration_Info_UEnum_EPreloadState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 2480900085U) },
-		{ ENextState_StaticEnum, TEXT("ENextState"), &Z_Registration_Info_UEnum_ENextState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 2333295913U) },
+		{ EPreloadState_StaticEnum, TEXT("EPreloadState"), &Z_Registration_Info_UEnum_EPreloadState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 648871921U) },
+		{ ENextState_StaticEnum, TEXT("ENextState"), &Z_Registration_Info_UEnum_ENextState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3766622234U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesPreloadWidget, UEchoesPreloadWidget::StaticClass, TEXT("UEchoesPreloadWidget"), &Z_Registration_Info_UClass_UEchoesPreloadWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesPreloadWidget), 435220248U) },
+		{ Z_Construct_UClass_UEchoesPreloadWidget, UEchoesPreloadWidget::StaticClass, TEXT("UEchoesPreloadWidget"), &Z_Registration_Info_UClass_UEchoesPreloadWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesPreloadWidget), 3991211329U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h__Script_Echoes_2246214835(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h__Script_Echoes_2348813838(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesPreloadWidget_h__Script_Echoes_Statics::EnumInfo));
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h__Script_Echoes_Statics::EnumInfo));
 // ********** End Registration *********************************************************************
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

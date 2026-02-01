@@ -5,9 +5,9 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesInventoryItemObject.h"
-#include "Core/Common/EchoesInventoryComponent.h"
-#include "Core/Common/EchoesItemDefinitions.h"
+#include "EchoesInventoryItemObject.h"
+#include "EchoesInventoryComponent.h"
+#include "EchoesItemDefinitions.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -37,7 +37,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetAssetId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the asset ID\n\x09 * @return Asset GUID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the asset ID\n@return Asset GUID" },
 #endif
@@ -85,7 +85,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetCalculatedTotalVolume
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get calculated total volume (Quantity * UnitVolume from definition)\n\x09 * Uses definition's UnitVolume if available, otherwise uses ItemData.Volume\n\x09 * @return Total volume in m\xc2\xb3\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get calculated total volume (Quantity * UnitVolume from definition)\nUses definition's UnitVolume if available, otherwise uses ItemData.Volume\n@return Total volume in m\xc2\xb3" },
 #endif
@@ -133,7 +133,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetDescription_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the description from item definition (localized)\n\x09 * @return Description text\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the description from item definition (localized)\n@return Description text" },
 #endif
@@ -181,7 +181,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetDisplayName_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the display name from item definition (localized)\n\x09 * Falls back to TypeName if definition not found\n\x09 * @return Display name\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the display name from item definition (localized)\nFalls back to TypeName if definition not found\n@return Display name" },
 #endif
@@ -229,7 +229,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedTotalVolume_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get formatted total volume string (e.g., \"1,205.0 m\xc2\xb3\")\n\x09 * @return Formatted total volume string\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get formatted total volume string (e.g., \"1,205.0 m\xc2\xb3\")\n@return Formatted total volume string" },
 #endif
@@ -277,7 +277,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedVolume_Stati
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get formatted volume string (e.g., \"120.5 m\xc2\xb3\")\n\x09 * @return Formatted volume string\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get formatted volume string (e.g., \"120.5 m\xc2\xb3\")\n@return Formatted volume string" },
 #endif
@@ -325,7 +325,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the wrapped inventory item data\n\x09 * @return The wrapped inventory item\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the wrapped inventory item data\n@return The wrapped inventory item" },
 #endif
@@ -335,7 +335,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventGetItemData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(0, nullptr) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventGetItemData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(0, nullptr) }; // 2559718756
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData_Statics::NewProp_ReturnValue,
 };
@@ -373,7 +373,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_St
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item definition data for Blueprints\n\x09 * @return Definition data if cached, otherwise default-constructed\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item definition data for Blueprints\n@return Definition data if cached, otherwise default-constructed" },
 #endif
@@ -383,7 +383,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 987535441
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 590939204
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::NewProp_ReturnValue,
 };
@@ -421,7 +421,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemName_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item type name\n\x09 * @return Item type name\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item type name\n@return Item type name" },
 #endif
@@ -469,7 +469,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetQuantity_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the item quantity\n\x09 * @return Item quantity\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the item quantity\n@return Item quantity" },
 #endif
@@ -517,7 +517,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetTotalMass_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get total mass (Quantity * UnitMass from definition)\n\x09 * @return Total mass in kg\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get total mass (Quantity * UnitMass from definition)\n@return Total mass in kg" },
 #endif
@@ -565,7 +565,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetTypeId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the type ID\n\x09 * @return Type ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the type ID\n@return Type ID" },
 #endif
@@ -613,7 +613,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetUnitVolume_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get unit volume from item definition\n\x09 * @return Volume per unit in m\xc2\xb3\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get unit volume from item definition\n@return Volume per unit in m\xc2\xb3" },
 #endif
@@ -661,7 +661,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_HasDefinition_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if item definition is loaded\n\x09 * @return True if definition was found and cached\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if item definition is loaded\n@return True if definition was found and cached" },
 #endif
@@ -714,7 +714,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData_Stati
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize the object with inventory item data\n\x09 * @param InItemData - The inventory item data to wrap\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize the object with inventory item data\n@param InItemData - The inventory item data to wrap" },
 #endif
@@ -727,7 +727,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData_Stati
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData_Statics::NewProp_InItemData = { "InItemData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventInitializeWithData_Parms, InItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InItemData_MetaData), NewProp_InItemData_MetaData) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData_Statics::NewProp_InItemData = { "InItemData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventInitializeWithData_Parms, InItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InItemData_MetaData), NewProp_InItemData_MetaData) }; // 2559718756
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData_Statics::NewProp_InItemData,
 };
@@ -766,7 +766,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_IsStackable_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Check if item is stackable\n\x09 * @return True if stackable\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if item is stackable\n@return True if stackable" },
 #endif
@@ -867,8 +867,8 @@ struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesInventoryItemObject\n * \n * Data wrapper for FEchoesInventoryItem to be used with UListView\n * This UObject wraps the inventory item struct so it can be used with UMG ListView\n * \n * Usage:\n * - Create instances for each item in inventory\n * - Add to ListView as items\n * - Entry widgets retrieve data via getter methods\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesInventoryItemObject.h" },
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "IncludePath", "UI/Logic/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesInventoryItemObject\n\nData wrapper for FEchoesInventoryItem to be used with UListView\nThis UObject wraps the inventory item struct so it can be used with UMG ListView\n\nUsage:\n- Create instances for each item in inventory\n- Add to ListView as items\n- Entry widgets retrieve data via getter methods" },
 #endif
@@ -877,7 +877,7 @@ struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** The wrapped inventory item data */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "The wrapped inventory item data" },
 #endif
@@ -886,7 +886,7 @@ struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to inventory subsystem for fetching definitions */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesInventoryItemObject.h" },
+		{ "ModuleRelativePath", "UI/Logic/EchoesInventoryItemObject.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to inventory subsystem for fetching definitions" },
 #endif
@@ -897,22 +897,22 @@ struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetAssetId, "GetAssetId" }, // 3863850911
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetCalculatedTotalVolume, "GetCalculatedTotalVolume" }, // 2747291097
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetDescription, "GetDescription" }, // 858415420
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetDisplayName, "GetDisplayName" }, // 1652311593
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedTotalVolume, "GetFormattedTotalVolume" }, // 2362077509
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedVolume, "GetFormattedVolume" }, // 567224024
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData, "GetItemData" }, // 1338310867
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData, "GetItemDefinitionData" }, // 3419370371
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemName, "GetItemName" }, // 3764568089
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetQuantity, "GetQuantity" }, // 2729205749
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetTotalMass, "GetTotalMass" }, // 3962847787
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetTypeId, "GetTypeId" }, // 244065313
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetUnitVolume, "GetUnitVolume" }, // 616223040
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_HasDefinition, "HasDefinition" }, // 3689454148
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData, "InitializeWithData" }, // 3603063408
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_IsStackable, "IsStackable" }, // 4275079366
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetAssetId, "GetAssetId" }, // 2401365508
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetCalculatedTotalVolume, "GetCalculatedTotalVolume" }, // 2731221411
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetDescription, "GetDescription" }, // 4007503072
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetDisplayName, "GetDisplayName" }, // 1256401946
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedTotalVolume, "GetFormattedTotalVolume" }, // 2291883251
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedVolume, "GetFormattedVolume" }, // 3198391673
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData, "GetItemData" }, // 3985250411
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData, "GetItemDefinitionData" }, // 197874740
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemName, "GetItemName" }, // 3892951402
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetQuantity, "GetQuantity" }, // 4270848445
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetTotalMass, "GetTotalMass" }, // 1961578352
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetTypeId, "GetTypeId" }, // 2575228228
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetUnitVolume, "GetUnitVolume" }, // 3409935699
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_HasDefinition, "HasDefinition" }, // 2786280977
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_InitializeWithData, "InitializeWithData" }, // 701212022
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_IsStackable, "IsStackable" }, // 2530788550
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -920,7 +920,7 @@ struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryItemObject_Statics::NewProp_ItemData = { "ItemData", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryItemObject, ItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemData_MetaData), NewProp_ItemData_MetaData) }; // 3518727963
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesInventoryItemObject_Statics::NewProp_ItemData = { "ItemData", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryItemObject, ItemData), Z_Construct_UScriptStruct_FEchoesInventoryItem, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ItemData_MetaData), NewProp_ItemData_MetaData) }; // 2559718756
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesInventoryItemObject_Statics::NewProp_InventorySubsystem = { "InventorySubsystem", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesInventoryItemObject, InventorySubsystem), Z_Construct_UClass_UEchoesInventorySubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InventorySubsystem_MetaData), NewProp_InventorySubsystem_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesInventoryItemObject_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesInventoryItemObject_Statics::NewProp_ItemData,
@@ -961,14 +961,14 @@ UEchoesInventoryItemObject::~UEchoesInventoryItemObject() {}
 // ********** End Class UEchoesInventoryItemObject *************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryItemObject, UEchoesInventoryItemObject::StaticClass, TEXT("UEchoesInventoryItemObject"), &Z_Registration_Info_UClass_UEchoesInventoryItemObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryItemObject), 4153456366U) },
+		{ Z_Construct_UClass_UEchoesInventoryItemObject, UEchoesInventoryItemObject::StaticClass, TEXT("UEchoesInventoryItemObject"), &Z_Registration_Info_UClass_UEchoesInventoryItemObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryItemObject), 4281696882U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h__Script_Echoes_1170439757(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryItemObject_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_3230525612(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

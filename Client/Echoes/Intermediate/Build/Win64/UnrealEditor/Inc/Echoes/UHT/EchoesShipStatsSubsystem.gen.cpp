@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Common/EchoesShipStatsSubsystem.h"
-#include "Core/Common/EchoesShipTypes.h"
+#include "EchoesShipStatsSubsystem.h"
+#include "EchoesShipTypes.h"
 #include "Engine/GameInstance.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
@@ -37,7 +37,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignatur
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Delegate types for async callbacks (must be declared before class)\n" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate types for async callbacks (must be declared before class)" },
 #endif
@@ -50,7 +50,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignatur
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignature_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnShipStatsFetched_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 652073936
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignature_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnShipStatsFetched_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 2315152803
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignature_Statics::NewProp_Stats,
 };
@@ -87,7 +87,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnModuleAdded__DelegateSignature_Sta
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 	};
 #endif // WITH_METADATA
 	static void NewProp_bSuccess_SetBit(void* Obj);
@@ -136,7 +136,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature_Static
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ErrorMessage_MetaData[] = {
 		{ "NativeConst", "" },
@@ -192,7 +192,7 @@ struct Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n     * Add module to ship\n     * POST /api/ship/{id}/modules\n     */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Add module to ship\nPOST /api/ship/{id}/modules" },
 #endif
@@ -217,8 +217,8 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesShip
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_ModuleTypeId = { "ModuleTypeId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, ModuleTypeId), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_Mass = { "Mass", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, Mass), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_Slot = { "Slot", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, Slot), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnModuleAdded__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnSuccess_MetaData), NewProp_OnSuccess_MetaData) }; // 1431936699
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_OnError = { "OnError", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, OnError), Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnError_MetaData), NewProp_OnError_MetaData) }; // 1194898746
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnModuleAdded__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnSuccess_MetaData), NewProp_OnSuccess_MetaData) }; // 1220523253
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_OnError = { "OnError", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventAddModule_Parms, OnError), Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnError_MetaData), NewProp_OnError_MetaData) }; // 790282548
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_ShipInstanceId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule_Statics::NewProp_ModuleTypeId,
@@ -269,7 +269,7 @@ struct Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n     * Fetch ship stats from backend\n     * GET /api/ship/{id}/stats\n     * @param ShipInstanceId - Ship instance GUID\n     * @param OnSuccess - Called when stats are successfully fetched\n     * @param OnError - Called on error\n     */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Fetch ship stats from backend\nGET /api/ship/{id}/stats\n@param ShipInstanceId - Ship instance GUID\n@param OnSuccess - Called when stats are successfully fetched\n@param OnError - Called on error" },
 #endif
@@ -288,8 +288,8 @@ struct Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_ShipInstanceId = { "ShipInstanceId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventFetchShipStats_Parms, ShipInstanceId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventFetchShipStats_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnSuccess_MetaData), NewProp_OnSuccess_MetaData) }; // 1431354558
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_OnError = { "OnError", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventFetchShipStats_Parms, OnError), Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnError_MetaData), NewProp_OnError_MetaData) }; // 1194898746
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventFetchShipStats_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnShipStatsFetched__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnSuccess_MetaData), NewProp_OnSuccess_MetaData) }; // 2989218571
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_OnError = { "OnError", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipStatsSubsystem_eventFetchShipStats_Parms, OnError), Z_Construct_UDelegateFunction_Echoes_OnApiError__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnError_MetaData), NewProp_OnError_MetaData) }; // 790282548
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_ShipInstanceId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats_Statics::NewProp_OnSuccess,
@@ -365,8 +365,8 @@ struct Z_Construct_UClass_UEchoesShipStatsSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Subsystem for communicating with Ship Controller API\n * \"\xd0\x97\xd0\xb5\xd1\x80\xd0\xba\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd0\xbe\xd1\x81\xd1\x82\xd1\x8c\" - Mirrors backend ShipController\n * \n * Handles fetching ship stats from ASP.NET Core backend\n */" },
 #endif
-		{ "IncludePath", "Core/Common/EchoesShipStatsSubsystem.h" },
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "IncludePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Subsystem for communicating with Ship Controller API\n\"\xd0\x97\xd0\xb5\xd1\x80\xd0\xba\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd0\xbe\xd1\x81\xd1\x82\xd1\x8c\" - Mirrors backend ShipController\n\nHandles fetching ship stats from ASP.NET Core backend" },
 #endif
@@ -376,7 +376,7 @@ struct Z_Construct_UClass_UEchoesShipStatsSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Backend API URL */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Backend API URL" },
 #endif
@@ -386,7 +386,7 @@ struct Z_Construct_UClass_UEchoesShipStatsSubsystem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Server secret for authentication */" },
 #endif
-		{ "ModuleRelativePath", "Core/Common/EchoesShipStatsSubsystem.h" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesShipStatsSubsystem.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server secret for authentication" },
 #endif
@@ -397,8 +397,8 @@ struct Z_Construct_UClass_UEchoesShipStatsSubsystem_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule, "AddModule" }, // 1630199352
-		{ &Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats, "FetchShipStats" }, // 3073678581
+		{ &Z_Construct_UFunction_UEchoesShipStatsSubsystem_AddModule, "AddModule" }, // 2813125537
+		{ &Z_Construct_UFunction_UEchoesShipStatsSubsystem_FetchShipStats, "FetchShipStats" }, // 3577768632
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -447,14 +447,14 @@ UEchoesShipStatsSubsystem::~UEchoesShipStatsSubsystem() {}
 // ********** End Class UEchoesShipStatsSubsystem **************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesShipStatsSubsystem, UEchoesShipStatsSubsystem::StaticClass, TEXT("UEchoesShipStatsSubsystem"), &Z_Registration_Info_UClass_UEchoesShipStatsSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesShipStatsSubsystem), 1614803073U) },
+		{ Z_Construct_UClass_UEchoesShipStatsSubsystem, UEchoesShipStatsSubsystem::StaticClass, TEXT("UEchoesShipStatsSubsystem"), &Z_Registration_Info_UClass_UEchoesShipStatsSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesShipStatsSubsystem), 2883835510U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h__Script_Echoes_1845086771(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesShipStatsSubsystem_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h__Script_Echoes_2453616879(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesShipStatsSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

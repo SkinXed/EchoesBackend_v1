@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "UI/EchoesInventoryWidget.h"
+// IWYU pragma: private, include "UI/Widgets/EchoesInventoryWidget.h"
 
 #ifdef ECHOES_EchoesInventoryWidget_generated_h
 #error "EchoesInventoryWidget.generated.h already included, missing '#pragma once' in EchoesInventoryWidget.h"
@@ -23,7 +23,7 @@ class UObject;
 struct FEchoesContainerItems;
 
 // ********** Begin Class UEchoesInventoryWidget ***************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execHandleFetchFailure); \
 	DECLARE_FUNCTION(execHandleMoveFailure); \
 	DECLARE_FUNCTION(execHandleMoveSuccess); \
@@ -37,10 +37,10 @@ struct FEchoesContainerItems;
 	DECLARE_FUNCTION(execRefreshInventory);
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_CALLBACK_WRAPPERS
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_CALLBACK_WRAPPERS
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventoryWidget_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesInventoryWidget(); \
 	friend struct Z_Construct_UClass_UEchoesInventoryWidget_Statics; \
@@ -51,7 +51,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesInventoryWidget)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UEchoesInventoryWidget(UEchoesInventoryWidget&&) = delete; \
 	UEchoesInventoryWidget(const UEchoesInventoryWidget&) = delete; \
@@ -61,14 +61,14 @@ public: \
 	NO_API virtual ~UEchoesInventoryWidget();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_34_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_34_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_CALLBACK_WRAPPERS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h_37_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_CALLBACK_WRAPPERS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h_37_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -78,6 +78,6 @@ class UEchoesInventoryWidget;
 // ********** End Class UEchoesInventoryWidget *****************************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesInventoryWidget_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesInventoryWidget_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -5,9 +5,9 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Core/Client/EchoesShipPawn.h"
-#include "Core/Common/EchoesShipTypes.h"
-#include "Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "EchoesShipPawn.h"
+#include "EchoesInventorySubsystem.h"
+#include "EchoesShipTypes.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -41,7 +41,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Initialize ship from backend stats (Common - can be called on any side) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize ship from backend stats (Common - can be called on any side)" },
 #endif
@@ -54,7 +54,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventCommon_InitializeFromStats_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 652073936
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventCommon_InitializeFromStats_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 2315152803
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats_Statics::NewProp_Stats,
 };
@@ -93,7 +93,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_GetShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Get current ship stats */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get current ship stats" },
 #endif
@@ -103,7 +103,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_GetShipStats_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_GetShipStats_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventGetShipStats_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(0, nullptr) }; // 652073936
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_GetShipStats_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventGetShipStats_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(0, nullptr) }; // 2315152803
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesShipPawn_GetShipStats_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesShipPawn_GetShipStats_Statics::NewProp_ReturnValue,
 };
@@ -137,7 +137,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed_Statics
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
 		{ "NativeConst", "" },
@@ -182,7 +182,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived_Statics
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Fitting_MetaData[] = {
 		{ "NativeConst", "" },
@@ -231,7 +231,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Legacy function name for backward compatibility */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Legacy function name for backward compatibility" },
 #endif
@@ -244,7 +244,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventInitializeShipStats_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 652073936
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventInitializeShipStats_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 2315152803
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats_Statics::NewProp_Stats,
 };
@@ -282,7 +282,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Handle fitting received from inventory subsystem */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle fitting received from inventory subsystem" },
 #endif
@@ -295,7 +295,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventOnFittingReceived_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 652073936
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived_Statics::NewProp_Stats = { "Stats", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesShipPawn_eventOnFittingReceived_Parms, Stats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Stats_MetaData), NewProp_Stats_MetaData) }; // 2315152803
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived_Statics::NewProp_Stats,
 };
@@ -329,7 +329,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_OnRep_ShipStats_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when ship stats are replicated from server to client */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when ship stats are replicated from server to client" },
 #endif
@@ -377,7 +377,7 @@ struct Z_Construct_UFunction_AEchoesShipPawn_ServerRPC_RequestShipInitialization
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Server RPC to request ship initialization with ownership verification */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Server RPC to request ship initialization with ownership verification" },
 #endif
@@ -469,8 +469,8 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 		{ "Comment", "/**\n * Ship pawn with physics-based movement and camera\n * Client-side implementation with Enhanced Input\n */" },
 #endif
 		{ "HideCategories", "Navigation" },
-		{ "IncludePath", "Core/Client/EchoesShipPawn.h" },
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "IncludePath", "Core/Client/Pawns/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship pawn with physics-based movement and camera\nClient-side implementation with Enhanced Input" },
 #endif
@@ -481,7 +481,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 		{ "Comment", "/** Ship mesh with physics simulation */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Ship mesh with physics simulation" },
 #endif
@@ -492,7 +492,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 		{ "Comment", "/** Custom ship movement component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Custom ship movement component" },
 #endif
@@ -503,7 +503,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 		{ "Comment", "/** Spring arm for camera (provides lag and smoothing) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Spring arm for camera (provides lag and smoothing)" },
 #endif
@@ -514,7 +514,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 		{ "Comment", "/** Camera component */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Camera component" },
 #endif
@@ -524,7 +524,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Input Mapping Context */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Input Mapping Context" },
 #endif
@@ -534,7 +534,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Move action (WASD) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Move action (WASD)" },
 #endif
@@ -544,7 +544,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Look action (Mouse) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Look action (Mouse)" },
 #endif
@@ -554,7 +554,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Mouse follow toggle action */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Mouse follow toggle action" },
 #endif
@@ -564,7 +564,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Warp action */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Warp action" },
 #endif
@@ -574,7 +574,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Free look action (Alt key) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Free look action (Alt key)" },
 #endif
@@ -584,7 +584,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Camera distance from ship */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Camera distance from ship" },
 #endif
@@ -594,7 +594,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Camera lag speed (provides mass feel on acceleration) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Camera lag speed (provides mass feel on acceleration)" },
 #endif
@@ -604,7 +604,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether camera lag is enabled */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether camera lag is enabled" },
 #endif
@@ -614,7 +614,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Camera pitch angle (degrees) */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Camera pitch angle (degrees)" },
 #endif
@@ -624,7 +624,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Mouse sensitivity for camera control */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Mouse sensitivity for camera control" },
 #endif
@@ -634,7 +634,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether free look is currently active */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether free look is currently active" },
 #endif
@@ -644,7 +644,7 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Replicated ship stats - authoritative on server */" },
 #endif
-		{ "ModuleRelativePath", "Core/Client/EchoesShipPawn.h" },
+		{ "ModuleRelativePath", "Core/Client/Pawns/EchoesShipPawn.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Replicated ship stats - authoritative on server" },
 #endif
@@ -672,14 +672,14 @@ struct Z_Construct_UClass_AEchoesShipPawn_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats, "Common_InitializeFromStats" }, // 2490362803
-		{ &Z_Construct_UFunction_AEchoesShipPawn_GetShipStats, "GetShipStats" }, // 1312928224
-		{ &Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed, "HandleShipFittingFailed" }, // 2708423049
-		{ &Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived, "HandleShipFittingReceived" }, // 1989409304
-		{ &Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats, "InitializeShipStats" }, // 1082518863
-		{ &Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived, "OnFittingReceived" }, // 3142198698
-		{ &Z_Construct_UFunction_AEchoesShipPawn_OnRep_ShipStats, "OnRep_ShipStats" }, // 636055126
-		{ &Z_Construct_UFunction_AEchoesShipPawn_ServerRPC_RequestShipInitialization, "ServerRPC_RequestShipInitialization" }, // 2229126264
+		{ &Z_Construct_UFunction_AEchoesShipPawn_Common_InitializeFromStats, "Common_InitializeFromStats" }, // 566619446
+		{ &Z_Construct_UFunction_AEchoesShipPawn_GetShipStats, "GetShipStats" }, // 846503173
+		{ &Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingFailed, "HandleShipFittingFailed" }, // 1306442998
+		{ &Z_Construct_UFunction_AEchoesShipPawn_HandleShipFittingReceived, "HandleShipFittingReceived" }, // 906933434
+		{ &Z_Construct_UFunction_AEchoesShipPawn_InitializeShipStats, "InitializeShipStats" }, // 2857971674
+		{ &Z_Construct_UFunction_AEchoesShipPawn_OnFittingReceived, "OnFittingReceived" }, // 2098461970
+		{ &Z_Construct_UFunction_AEchoesShipPawn_OnRep_ShipStats, "OnRep_ShipStats" }, // 1018796369
+		{ &Z_Construct_UFunction_AEchoesShipPawn_ServerRPC_RequestShipInitialization, "ServerRPC_RequestShipInitialization" }, // 3767957064
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -711,7 +711,7 @@ void Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_bFreeLookActive_SetBit(
 	((AEchoesShipPawn*)Obj)->bFreeLookActive = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_bFreeLookActive = { "bFreeLookActive", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AEchoesShipPawn), &Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_bFreeLookActive_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bFreeLookActive_MetaData), NewProp_bFreeLookActive_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_ReplicatedShipStats = { "ReplicatedShipStats", "OnRep_ShipStats", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesShipPawn, ReplicatedShipStats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReplicatedShipStats_MetaData), NewProp_ReplicatedShipStats_MetaData) }; // 652073936
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_ReplicatedShipStats = { "ReplicatedShipStats", "OnRep_ShipStats", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesShipPawn, ReplicatedShipStats), Z_Construct_UScriptStruct_FEchoesShipStats, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReplicatedShipStats_MetaData), NewProp_ReplicatedShipStats_MetaData) }; // 2315152803
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEchoesShipPawn_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_ShipMesh,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesShipPawn_Statics::NewProp_ShipMovement,
@@ -774,14 +774,14 @@ AEchoesShipPawn::~AEchoesShipPawn() {}
 // ********** End Class AEchoesShipPawn ************************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesShipPawn, AEchoesShipPawn::StaticClass, TEXT("AEchoesShipPawn"), &Z_Registration_Info_UClass_AEchoesShipPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesShipPawn), 3513169178U) },
+		{ Z_Construct_UClass_AEchoesShipPawn, AEchoesShipPawn::StaticClass, TEXT("AEchoesShipPawn"), &Z_Registration_Info_UClass_AEchoesShipPawn, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesShipPawn), 2657867276U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_4191918352(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_EchoesShipPawn_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h__Script_Echoes_2036875396(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Client_Pawns_EchoesShipPawn_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

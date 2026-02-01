@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Server/EchoesServerManagementSubsystem.h"
+// IWYU pragma: private, include "Core/Server/Managers/EchoesServerManagementSubsystem.h"
 
 #ifdef ECHOES_EchoesServerManagementSubsystem_generated_h
 #error "EchoesServerManagementSubsystem.generated.h already included, missing '#pragma once' in EchoesServerManagementSubsystem.h"
@@ -21,21 +21,21 @@ struct FServerRegionalClusterConfig;
 struct FServerSystemConfig;
 
 // ********** Begin Delegate FOnServerConfigReceived ***********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_18_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_18_DELEGATE \
 ECHOES_API void FOnServerConfigReceived_DelegateWrapper(const FMulticastScriptDelegate& OnServerConfigReceived, FServerSystemConfig const& Config);
 
 
 // ********** End Delegate FOnServerConfigReceived *************************************************
 
 // ********** Begin Delegate FOnRegionalClusterConfigReceived **************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_24_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_24_DELEGATE \
 ECHOES_API void FOnRegionalClusterConfigReceived_DelegateWrapper(const FMulticastScriptDelegate& OnRegionalClusterConfigReceived, FServerRegionalClusterConfig const& RegionalConfig);
 
 
 // ********** End Delegate FOnRegionalClusterConfigReceived ****************************************
 
 // ********** Begin Class UEchoesServerManagementSubsystem *****************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execGetRegionalConfig); \
 	DECLARE_FUNCTION(execIsRegionalCluster); \
 	DECLARE_FUNCTION(execGetServerType); \
@@ -50,7 +50,7 @@ ECHOES_API void FOnRegionalClusterConfigReceived_DelegateWrapper(const FMulticas
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesServerManagementSubsystem_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesServerManagementSubsystem(); \
 	friend struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics; \
@@ -63,7 +63,7 @@ public: \
 
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesServerManagementSubsystem(); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -75,13 +75,13 @@ public: \
 	NO_API virtual ~UEchoesServerManagementSubsystem();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_45_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_45_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h_48_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -91,6 +91,6 @@ class UEchoesServerManagementSubsystem;
 // ********** End Class UEchoesServerManagementSubsystem *******************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerManagementSubsystem_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

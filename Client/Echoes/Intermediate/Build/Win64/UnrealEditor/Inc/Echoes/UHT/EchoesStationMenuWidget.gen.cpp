@@ -5,7 +5,7 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesStationMenuWidget.h"
+#include "EchoesStationMenuWidget.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -32,7 +32,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnInventoryButtonClicked__DelegateSi
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Delegates for button actions\n" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegates for button actions" },
 #endif
@@ -61,7 +61,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnUndockButtonClicked__DelegateSigna
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
@@ -87,7 +87,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnRepairButtonClicked__DelegateSigna
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
@@ -121,7 +121,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_GetHangarStorageId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the hangar storage ID for inventory operations\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the hangar storage ID for inventory operations" },
 #endif
@@ -169,7 +169,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_GetStationId_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Get the station ID\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the station ID" },
 #endif
@@ -220,7 +220,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_InitializeStationMenu_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Initialize the station menu with station data\n\x09 * Called when the menu is opened\n\x09 * \n\x09 * @param InStationId - Station GUID\n\x09 * @param InStationName - Display name of station\n\x09 * @param InStationType - Type of station (Trading, Military, etc.)\n\x09 * @param InHangarStorageId - Container ID of personal hangar at this station\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Initialize the station menu with station data\nCalled when the menu is opened\n\n@param InStationId - Station GUID\n@param InStationName - Display name of station\n@param InStationType - Type of station (Trading, Military, etc.)\n@param InHangarStorageId - Container ID of personal hangar at this station" },
 #endif
@@ -288,7 +288,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_OnInventoryButtonPressed_S
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle Inventory button clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle Inventory button clicked" },
 #endif
@@ -323,7 +323,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_OnRepairButtonPressed_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle Repair button clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle Repair button clicked" },
 #endif
@@ -365,7 +365,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_OnStationMenuInitialized_S
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Blueprint event called when station menu is initialized\n\x09 * Override in Blueprint for custom initialization\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Blueprint event called when station menu is initialized\nOverride in Blueprint for custom initialization" },
 #endif
@@ -393,7 +393,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_OnUndockButtonPressed_Stat
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Handle Undock button clicked\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Handle Undock button clicked" },
 #endif
@@ -429,7 +429,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_OpenPersonalHangar_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Open personal hangar window\n\x09 * Creates a new window with inventory widget showing hangar contents\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Open personal hangar window\nCreates a new window with inventory widget showing hangar contents" },
 #endif
@@ -465,7 +465,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_OpenShipCargo_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Open ship cargo window\n\x09 * Creates a new window with inventory widget showing ship cargo\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Open ship cargo window\nCreates a new window with inventory widget showing ship cargo" },
 #endif
@@ -501,7 +501,7 @@ struct Z_Construct_UFunction_UEchoesStationMenuWidget_RequestUndock_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Request undock from server\n\x09 * Calls ServerRPC on StationActor\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Request undock from server\nCalls ServerRPC on StationActor" },
 #endif
@@ -581,8 +581,8 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesStationMenuWidget\n * \n * Station menu widget for player interaction with stations\n * Provides access to inventory, undocking, and station services\n * \n * Features:\n * - Inventory button: Opens personal hangar at current station\n * - Undock button: Initiates undocking sequence\n * - Repair button: Station services (stub for now)\n * - Displays current station info (Name, Type)\n * \n * Usage:\n * - Create widget blueprint based on this class\n * - Add buttons: InventoryButton, UndockButton, RepairButton\n * - Add text blocks: StationNameText, StationTypeText\n * - Widget is opened via ClientRPC from StationActor upon docking\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesStationMenuWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 		{ "ObjectInitializerConstructorDeclared", "" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesStationMenuWidget\n\nStation menu widget for player interaction with stations\nProvides access to inventory, undocking, and station services\n\nFeatures:\n- Inventory button: Opens personal hangar at current station\n- Undock button: Initiates undocking sequence\n- Repair button: Station services (stub for now)\n- Displays current station info (Name, Type)\n\nUsage:\n- Create widget blueprint based on this class\n- Add buttons: InventoryButton, UndockButton, RepairButton\n- Add text blocks: StationNameText, StationTypeText\n- Widget is opened via ClientRPC from StationActor upon docking" },
@@ -593,7 +593,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Triggered when Inventory button is clicked\n\x09 * Blueprint should open hangar inventory UI\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Triggered when Inventory button is clicked\nBlueprint should open hangar inventory UI" },
 #endif
@@ -603,7 +603,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Triggered when Undock button is clicked\n\x09 * Blueprint should initiate undocking sequence\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Triggered when Undock button is clicked\nBlueprint should initiate undocking sequence" },
 #endif
@@ -613,7 +613,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n\x09 * Triggered when Repair button is clicked\n\x09 * Blueprint should open repair/services UI\n\x09 */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Triggered when Repair button is clicked\nBlueprint should open repair/services UI" },
 #endif
@@ -625,7 +625,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 		{ "Comment", "/** Button to open inventory/hangar */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Button to open inventory/hangar" },
 #endif
@@ -637,7 +637,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 		{ "Comment", "/** Button to undock from station */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Button to undock from station" },
 #endif
@@ -649,7 +649,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 		{ "Comment", "/** Button for repair/services (stub) */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Button for repair/services (stub)" },
 #endif
@@ -661,7 +661,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 		{ "Comment", "/** Text block displaying station name */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Text block displaying station name" },
 #endif
@@ -673,7 +673,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 		{ "Comment", "/** Text block displaying station type */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Text block displaying station type" },
 #endif
@@ -682,7 +682,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Current station ID */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Current station ID" },
 #endif
@@ -691,7 +691,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Station name */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Station name" },
 #endif
@@ -700,7 +700,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Station type */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Station type" },
 #endif
@@ -709,7 +709,7 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Personal hangar storage ID at this station */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesStationMenuWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesStationMenuWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Personal hangar storage ID at this station" },
 #endif
@@ -730,16 +730,16 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_GetHangarStorageId, "GetHangarStorageId" }, // 968842352
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_GetStationId, "GetStationId" }, // 765782141
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_InitializeStationMenu, "InitializeStationMenu" }, // 1548763660
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnInventoryButtonPressed, "OnInventoryButtonPressed" }, // 1077758705
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnRepairButtonPressed, "OnRepairButtonPressed" }, // 2691397763
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnStationMenuInitialized, "OnStationMenuInitialized" }, // 1359939120
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnUndockButtonPressed, "OnUndockButtonPressed" }, // 434453442
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OpenPersonalHangar, "OpenPersonalHangar" }, // 899008183
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OpenShipCargo, "OpenShipCargo" }, // 970630485
-		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_RequestUndock, "RequestUndock" }, // 502295419
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_GetHangarStorageId, "GetHangarStorageId" }, // 2000353567
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_GetStationId, "GetStationId" }, // 1556505161
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_InitializeStationMenu, "InitializeStationMenu" }, // 603302776
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnInventoryButtonPressed, "OnInventoryButtonPressed" }, // 2890733413
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnRepairButtonPressed, "OnRepairButtonPressed" }, // 1039684426
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnStationMenuInitialized, "OnStationMenuInitialized" }, // 396258512
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OnUndockButtonPressed, "OnUndockButtonPressed" }, // 483181826
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OpenPersonalHangar, "OpenPersonalHangar" }, // 401214208
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_OpenShipCargo, "OpenShipCargo" }, // 3291572857
+		{ &Z_Construct_UFunction_UEchoesStationMenuWidget_RequestUndock, "RequestUndock" }, // 1037400780
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -747,9 +747,9 @@ struct Z_Construct_UClass_UEchoesStationMenuWidget_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_OnInventoryButtonClicked = { "OnInventoryButtonClicked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, OnInventoryButtonClicked), Z_Construct_UDelegateFunction_Echoes_OnInventoryButtonClicked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnInventoryButtonClicked_MetaData), NewProp_OnInventoryButtonClicked_MetaData) }; // 1160635909
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_OnUndockButtonClicked = { "OnUndockButtonClicked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, OnUndockButtonClicked), Z_Construct_UDelegateFunction_Echoes_OnUndockButtonClicked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnUndockButtonClicked_MetaData), NewProp_OnUndockButtonClicked_MetaData) }; // 3306517124
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_OnRepairButtonClicked = { "OnRepairButtonClicked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, OnRepairButtonClicked), Z_Construct_UDelegateFunction_Echoes_OnRepairButtonClicked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnRepairButtonClicked_MetaData), NewProp_OnRepairButtonClicked_MetaData) }; // 3142367974
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_OnInventoryButtonClicked = { "OnInventoryButtonClicked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, OnInventoryButtonClicked), Z_Construct_UDelegateFunction_Echoes_OnInventoryButtonClicked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnInventoryButtonClicked_MetaData), NewProp_OnInventoryButtonClicked_MetaData) }; // 4285577999
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_OnUndockButtonClicked = { "OnUndockButtonClicked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, OnUndockButtonClicked), Z_Construct_UDelegateFunction_Echoes_OnUndockButtonClicked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnUndockButtonClicked_MetaData), NewProp_OnUndockButtonClicked_MetaData) }; // 2910055444
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_OnRepairButtonClicked = { "OnRepairButtonClicked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, OnRepairButtonClicked), Z_Construct_UDelegateFunction_Echoes_OnRepairButtonClicked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnRepairButtonClicked_MetaData), NewProp_OnRepairButtonClicked_MetaData) }; // 2720698828
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_InventoryButton = { "InventoryButton", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, InventoryButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InventoryButton_MetaData), NewProp_InventoryButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_UndockButton = { "UndockButton", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, UndockButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UndockButton_MetaData), NewProp_UndockButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesStationMenuWidget_Statics::NewProp_RepairButton = { "RepairButton", nullptr, (EPropertyFlags)0x002008000008000c, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesStationMenuWidget, RepairButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RepairButton_MetaData), NewProp_RepairButton_MetaData) };
@@ -807,14 +807,14 @@ UEchoesStationMenuWidget::~UEchoesStationMenuWidget() {}
 // ********** End Class UEchoesStationMenuWidget ***************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesStationMenuWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesStationMenuWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesStationMenuWidget, UEchoesStationMenuWidget::StaticClass, TEXT("UEchoesStationMenuWidget"), &Z_Registration_Info_UClass_UEchoesStationMenuWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesStationMenuWidget), 305910390U) },
+		{ Z_Construct_UClass_UEchoesStationMenuWidget, UEchoesStationMenuWidget::StaticClass, TEXT("UEchoesStationMenuWidget"), &Z_Registration_Info_UClass_UEchoesStationMenuWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesStationMenuWidget), 3308950566U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesStationMenuWidget_h__Script_Echoes_529550722(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesStationMenuWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesStationMenuWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesStationMenuWidget_h__Script_Echoes_2519709618(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesStationMenuWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesStationMenuWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************

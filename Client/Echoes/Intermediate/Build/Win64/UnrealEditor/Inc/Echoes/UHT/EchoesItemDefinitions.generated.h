@@ -4,7 +4,7 @@
 	DO NOT modify this manually! Edit the corresponding .h files instead!
 ===========================================================================*/
 
-// IWYU pragma: private, include "Core/Common/EchoesItemDefinitions.h"
+// IWYU pragma: private, include "Core/Common/Types/EchoesItemDefinitions.h"
 
 #ifdef ECHOES_EchoesItemDefinitions_generated_h
 #error "EchoesItemDefinitions.generated.h already included, missing '#pragma once' in EchoesItemDefinitions.h"
@@ -17,7 +17,7 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 // ********** Begin ScriptStruct FEchoesItemDefinitionRow ******************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h_63_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h_63_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics; \
 	static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -27,7 +27,7 @@ struct FEchoesItemDefinitionRow;
 // ********** End ScriptStruct FEchoesItemDefinitionRow ********************************************
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesItemDefinitions_h
+#define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h
 
 // ********** Begin Enum EEchoesItemCategory *******************************************************
 #define FOREACH_ENUM_EECHOESITEMCATEGORY(op) \

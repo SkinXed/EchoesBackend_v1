@@ -5,8 +5,8 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "UI/EchoesCharacterSelectWidget.h"
-#include "Core/Common/Networking/EchoesAuthSubsystem.h"
+#include "EchoesCharacterSelectWidget.h"
+#include "EchoesAuthSubsystem.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
@@ -72,19 +72,19 @@ struct Z_Construct_UClass_UCharacterListItem_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Character list item data\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesCharacterSelectWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Character list item data" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterInfo_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RaceName_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CharacterInfo;
@@ -141,7 +141,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCancelCreateButtonCl
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -178,7 +178,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterSelected_St
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Called when a character is selected */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when a character is selected" },
 #endif
@@ -219,7 +219,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnConfirmCreateButtonC
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -248,7 +248,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCreateButtonClicked_
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -277,7 +277,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnDeleteButtonClicked_
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -306,7 +306,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnLogoutButtonClicked_
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -340,7 +340,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnRaceSelectionChanged
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_SelectedItem;
@@ -385,7 +385,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked_
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// ==================== Button Handlers ====================\n" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "==================== Button Handlers ====================" },
 #endif
@@ -464,8 +464,8 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * UEchoesCharacterSelectWidget\n * \n * Character selection UI widget for Echoes MMO\n * Displays list of player's characters and allows creation of new characters\n * Inherits from UEchoesWindowBase for drag/focus support\n */" },
 #endif
-		{ "IncludePath", "UI/EchoesCharacterSelectWidget.h" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "IncludePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "UEchoesCharacterSelectWidget\n\nCharacter selection UI widget for Echoes MMO\nDisplays list of player's characters and allows creation of new characters\nInherits from UEchoesWindowBase for drag/focus support" },
 #endif
@@ -476,7 +476,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "/** List view for characters */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "List view for characters" },
 #endif
@@ -487,7 +487,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "/** Select character button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Select character button" },
 #endif
@@ -498,7 +498,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "/** Create new character button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Create new character button" },
 #endif
@@ -509,7 +509,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "/** Delete character button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delete character button" },
 #endif
@@ -520,7 +520,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "/** Logout button */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Logout button" },
 #endif
@@ -531,7 +531,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "/** Status text */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Status text" },
 #endif
@@ -542,7 +542,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "Comment", "// Character creation panel widgets\n" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Character creation panel widgets" },
 #endif
@@ -550,33 +550,33 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RaceComboBox_MetaData[] = {
 		{ "BindWidget", "" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RaceDescriptionText_MetaData[] = {
 		{ "BindWidget", "" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RaceBonusesText_MetaData[] = {
 		{ "BindWidget", "" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ConfirmCreateButton_MetaData[] = {
 		{ "BindWidget", "" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CancelCreateButton_MetaData[] = {
 		{ "BindWidget", "" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AuthSubsystem_MetaData[] = {
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to auth subsystem */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to auth subsystem" },
 #endif
@@ -585,7 +585,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Currently selected character */" },
 #endif
-		{ "ModuleRelativePath", "UI/EchoesCharacterSelectWidget.h" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Currently selected character" },
 #endif
@@ -608,14 +608,14 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCancelCreateButtonClicked, "OnCancelCreateButtonClicked" }, // 1584637404
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterSelected, "OnCharacterSelected" }, // 2307171806
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnConfirmCreateButtonClicked, "OnConfirmCreateButtonClicked" }, // 1811059387
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCreateButtonClicked, "OnCreateButtonClicked" }, // 1082346214
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnDeleteButtonClicked, "OnDeleteButtonClicked" }, // 2683603242
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnLogoutButtonClicked, "OnLogoutButtonClicked" }, // 257671726
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnRaceSelectionChanged, "OnRaceSelectionChanged" }, // 1597709346
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked, "OnSelectButtonClicked" }, // 3965066683
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCancelCreateButtonClicked, "OnCancelCreateButtonClicked" }, // 1138692661
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterSelected, "OnCharacterSelected" }, // 3305172017
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnConfirmCreateButtonClicked, "OnConfirmCreateButtonClicked" }, // 3982875008
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCreateButtonClicked, "OnCreateButtonClicked" }, // 1541413618
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnDeleteButtonClicked, "OnDeleteButtonClicked" }, // 2368296363
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnLogoutButtonClicked, "OnLogoutButtonClicked" }, // 3530194877
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnRaceSelectionChanged, "OnRaceSelectionChanged" }, // 3884670524
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked, "OnSelectButtonClicked" }, // 2999122884
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -688,15 +688,15 @@ UEchoesCharacterSelectWidget::~UEchoesCharacterSelectWidget() {}
 // ********** End Class UEchoesCharacterSelectWidget ***********************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesCharacterSelectWidget_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 174844967U) },
-		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 3266696874U) },
+		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 470511823U) },
+		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 2827608592U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesCharacterSelectWidget_h__Script_Echoes_3705254717(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_4205381382(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // ********** End Registration *********************************************************************
