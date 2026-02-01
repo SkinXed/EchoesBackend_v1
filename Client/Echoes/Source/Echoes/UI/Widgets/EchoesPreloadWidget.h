@@ -1,9 +1,9 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EchoesWindowBase.h"
+#include "Blueprint/UserWidget.h"
 #include "Http.h"
 #include "EchoesPreloadWidget.generated.h"
 
@@ -17,10 +17,12 @@ class UEchoesAuthSubsystem;
 UENUM(BlueprintType)
 enum class EPreloadState : uint8
 {
+	CheckingInternet,
 	CheckingAPI,
 	ValidatingToken,
 	Success,
-	Failed
+	Failed,
+	FatalError
 };
 
 /**
@@ -48,7 +50,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPreloadComplete, ENextState, Next
  * 4. On failure -> Login
  */
 UCLASS()
-class ECHOES_API UEchoesPreloadWidget : public UEchoesWindowBase
+class ECHOES_API UEchoesPreloadWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -84,7 +86,12 @@ public:
 
 protected:
 	// ==================== Preload Steps ====================
+	 // UI элементы (OptionalWidget позволит скомпилировать, даже если ты их еще не создал в UMG)
+	 UPROPERTY(meta = (BindWidget, OptionalWidget = true))
+	 class UButton* RetryButton;
 
+	 UPROPERTY(meta = (BindWidget, OptionalWidget = true))
+	 class UTextBlock* ErrorText;
 	/**
 	 * Step 1: Check API status
 	 */
@@ -94,6 +101,13 @@ protected:
 	 * Step 2: Validate saved token
 	 */
 	void ValidateSavedToken();
+
+	UFUNCTION()
+	void OnRetryClicked();
+
+	// Логика проверок
+	void CheckInternetConnection();
+	void HandleFatalError(const FString& ErrorMessage);
 
 	/**
 	 * Complete preload with next state
@@ -142,4 +156,7 @@ private:
 
 	/** Saved JWT token */
 	FString SavedToken;
+
+	/** Indicates widget is still active */
+	bool bIsActive = false;
 };

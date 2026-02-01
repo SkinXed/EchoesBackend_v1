@@ -1,16 +1,22 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EchoesPreloadWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
+#include "Components/Button.h"
 #include "Core/Common/Networking/EchoesAuthSubsystem.h"
 #include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "JsonObjectConverter.h"
+#include "Misc/ConfigCacheIni.h"
+
+const FString ClientVersion = TEXT("0.0.1");
 
 void UEchoesPreloadWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	bIsActive = true;
 
 	// Get auth subsystem
 	if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld()))
@@ -18,10 +24,23 @@ void UEchoesPreloadWidget::NativeConstruct()
 		AuthSubsystem = GameInstance->GetSubsystem<UEchoesAuthSubsystem>();
 	}
 
+	// Привязка кнопки Retry
+	if (RetryButton)
+	{
+		RetryButton->OnClicked.AddDynamic(this, &UEchoesPreloadWidget::OnRetryClicked);
+		RetryButton->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
+	// Скрываем текст ошибки на старте
+	if (ErrorText)
+	{
+		ErrorText->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
 	// Get HTTP module
 	Http = &FHttpModule::Get();
 
-	CurrentState = EPreloadState::CheckingAPI;
+	CurrentState = EPreloadState::CheckingInternet;
 
 	// Start preload automatically
 	StartPreload();
@@ -29,63 +48,67 @@ void UEchoesPreloadWidget::NativeConstruct()
 
 void UEchoesPreloadWidget::NativeDestruct()
 {
+	bIsActive = false;
 	Super::NativeDestruct();
 }
 
 void UEchoesPreloadWidget::StartPreload()
 {
-	UpdateStatus("Connecting to server...", 0.1f);
-	CheckAPIStatus();
+	// Сброс UI перед новой попыткой
+	if (ErrorText) ErrorText->SetVisibility(ESlateVisibility::Collapsed);
+	if (RetryButton) RetryButton->SetVisibility(ESlateVisibility::Collapsed);
+
+	// Запускаем цепочку проверок
+	CheckInternetConnection();
 }
 
 void UEchoesPreloadWidget::CheckAPIStatus()
 {
-	CurrentState = EPreloadState::CheckingAPI;
-	UpdateStatus("Checking API status...", 0.2f);
-
-	// Create HTTP request
-	TSharedRef<IHttpRequest> Request = Http->CreateRequest();
-	Request->OnProcessRequestComplete().BindUObject(this, &UEchoesPreloadWidget::OnAPIStatusResponse);
-	Request->SetURL(GetApiBaseUrl() + "/api/system/status");
-	Request->SetVerb("GET");
-	Request->SetHeader("Content-Type", "application/json");
-	Request->ProcessRequest();
+	// Оставлен для совместимости, если захочешь вызвать отдельно
+	CheckInternetConnection();
 }
 
 void UEchoesPreloadWidget::OnAPIStatusResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 {
+	if (!bIsActive)
+	{
+		return;
+	}
+
+	// Если мы попали сюда напрямую (минуя лямбду), делаем проверку
 	if (!bWasSuccessful || !Response.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("API status check failed"));
-		UpdateStatus("Failed to connect to server", 1.0f);
-		
-		// Wait a moment then transition to login
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle,
-			[this]()
-			{
-				CompletePreload(ENextState::Login);
-			},
-			2.0f,
-			false
-		);
+		HandleFatalError("Server is offline or unreachable.");
 		return;
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("API status: %s"), *Response->GetContentAsString());
-	
+
+	CurrentState = EPreloadState::CheckingAPI;
+	UpdateStatus("Verifying client version...", 0.3f);
+
 	// Parse response
 	TSharedPtr<FJsonObject> JsonObject;
 	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
-	
+
 	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
 	{
-		FString Status = JsonObject->GetStringField("status");
-		if (Status == "online")
+		FString Status = JsonObject->GetStringField(TEXT("status"));
+
+		if (Status == TEXT("online"))
 		{
-			UpdateStatus("Server online, checking saved credentials...", 0.5f);
-			
+			// CHECK VERSION
+			FString MinRequiredVersion = JsonObject->GetStringField(TEXT("minClientVersion"));
+
+			// Простая проверка версий (строковая).
+			if (!MinRequiredVersion.IsEmpty() && MinRequiredVersion > ClientVersion)
+			{
+				HandleFatalError("Client update required!\nMin: " + MinRequiredVersion + "\nYour: " + ClientVersion);
+				return;
+			}
+
+			UpdateStatus("Server online. Checking saved session...", 0.5f);
+
 			// Check for saved token
 			SavedToken = GetSavedToken();
 			if (!SavedToken.IsEmpty())
@@ -95,7 +118,7 @@ void UEchoesPreloadWidget::OnAPIStatusResponse(FHttpRequestPtr Request, FHttpRes
 			else
 			{
 				UpdateStatus("No saved credentials found", 0.9f);
-				
+
 				// No token, go to login
 				FTimerHandle TimerHandle;
 				GetWorld()->GetTimerManager().SetTimer(
@@ -111,9 +134,14 @@ void UEchoesPreloadWidget::OnAPIStatusResponse(FHttpRequestPtr Request, FHttpRes
 		}
 		else
 		{
-			UpdateStatus("Server degraded, please try again later", 1.0f);
-			CompletePreload(ENextState::Login);
+			// Сервер в режиме обслуживания
+			FString Msg = JsonObject->GetStringField(TEXT("message"));
+			HandleFatalError("Server Maintenance: " + (Msg.IsEmpty() ? "Try again later" : Msg));
 		}
+	}
+	else
+	{
+		HandleFatalError("Invalid server response format.");
 	}
 }
 
@@ -138,44 +166,33 @@ void UEchoesPreloadWidget::ValidateSavedToken()
 
 void UEchoesPreloadWidget::OnTokenValidationResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 {
-	if (!bWasSuccessful || !Response.IsValid())
+	if (!bIsActive)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Token validation failed"));
-		UpdateStatus("Session expired, please login", 0.9f);
-		
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle,
-			[this]()
-			{
-				CompletePreload(ENextState::Login);
-			},
-			1.5f,
-			false
-		);
 		return;
 	}
 
-	// Parse response
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Token validation failed network check"));
+		CompletePreload(ENextState::Login);
+		return;
+	}
+
 	TSharedPtr<FJsonObject> JsonObject;
 	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
-	
+
 	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
 	{
-		bool bIsValid = JsonObject->GetBoolField("isValid");
-		
+		bool bIsValid = JsonObject->GetBoolField(TEXT("isValid"));
+
 		if (bIsValid && AuthSubsystem)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Token validated successfully"));
-			
-			// TODO: Store character list in AuthSubsystem from response
-			// For now, just set the token
-			// AuthSubsystem->SetToken(SavedToken);
-			
+
 			UpdateStatus("Welcome back!", 1.0f);
 			CurrentState = EPreloadState::Success;
-			
-			// Go directly to character select
+
+			// Задержка для красоты
 			FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(
 				TimerHandle,
@@ -189,10 +206,9 @@ void UEchoesPreloadWidget::OnTokenValidationResponse(FHttpRequestPtr Request, FH
 		}
 		else
 		{
-			FString Error = JsonObject->GetStringField("error");
-			UE_LOG(LogTemp, Warning, TEXT("Token invalid: %s"), *Error);
+			UE_LOG(LogTemp, Warning, TEXT("Token invalid or expired"));
 			UpdateStatus("Session expired, please login", 0.9f);
-			
+
 			FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(
 				TimerHandle,
@@ -240,12 +256,17 @@ FString UEchoesPreloadWidget::GetSavedToken() const
 
 void UEchoesPreloadWidget::UpdateStatus(const FString& Message, float Progress)
 {
-	if (StatusText)
+	if (!bIsActive)
+	{
+		return;
+	}
+
+	if (IsValid(StatusText))
 	{
 		StatusText->SetText(FText::FromString(Message));
 	}
 
-	if (ProgressBar)
+	if (IsValid(ProgressBar))
 	{
 		ProgressBar->SetPercent(Progress);
 	}
@@ -255,6 +276,89 @@ void UEchoesPreloadWidget::UpdateStatus(const FString& Message, float Progress)
 
 FString UEchoesPreloadWidget::GetApiBaseUrl() const
 {
-	// TODO: Get from config
+	if (GConfig)
+	{
+		FString ConfigUrl;
+		// Читаем из DefaultGame.ini секцию [Network] ключ ApiUrl
+		if (GConfig->GetString(TEXT("Network"), TEXT("ApiUrl"), ConfigUrl, GGameIni))
+		{
+			return ConfigUrl;
+		}
+	}
 	return TEXT("http://localhost:5116");
+}
+
+void UEchoesPreloadWidget::CheckInternetConnection()
+{
+	if (!bIsActive)
+	{
+		return;
+	}
+
+	CurrentState = EPreloadState::CheckingInternet;
+	UpdateStatus("Checking connection...", 0.1f);
+
+	// Проверяем доступность нашего же API.
+	TSharedRef<IHttpRequest> Request = Http->CreateRequest();
+
+	Request->SetURL(GetApiBaseUrl() + "/api/system/status");
+	Request->SetVerb("GET");
+	Request->SetTimeout(5.0f);
+
+	Request->OnProcessRequestComplete().BindLambda([this](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bSuccess)
+		{
+			if (!bIsActive)
+			{
+				return;
+			}
+
+			if (bSuccess && Response.IsValid() && Response->GetResponseCode() == 200)
+			{
+				OnAPIStatusResponse(Request, Response, true);
+			}
+			else
+			{
+				FString ErrorMsg = "Connection failed. ";
+				if (Response.IsValid())
+				{
+					ErrorMsg += FString::Printf(TEXT("Code: %d"), Response->GetResponseCode());
+				}
+				else
+				{
+					ErrorMsg += "Server unreachable.";
+				}
+				HandleFatalError(ErrorMsg);
+			}
+		});
+
+	Request->ProcessRequest();
+}
+
+void UEchoesPreloadWidget::HandleFatalError(const FString& ErrorMessage)
+{
+	if (!bIsActive)
+	{
+		return;
+	}
+
+	CurrentState = EPreloadState::FatalError;
+	UpdateStatus("Connection Error", 0.0f);
+
+	if (IsValid(ErrorText))
+	{
+		ErrorText->SetText(FText::FromString(ErrorMessage));
+		ErrorText->SetVisibility(ESlateVisibility::Visible);
+	}
+
+	if (IsValid(RetryButton))
+	{
+		RetryButton->SetVisibility(ESlateVisibility::Visible);
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("Preload Fatal: %s"), *ErrorMessage);
+}
+
+void UEchoesPreloadWidget::OnRetryClicked()
+{
+	 StartPreload();
 }

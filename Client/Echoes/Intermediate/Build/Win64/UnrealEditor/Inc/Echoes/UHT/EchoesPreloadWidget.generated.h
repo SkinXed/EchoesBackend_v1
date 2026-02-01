@@ -19,31 +19,32 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 enum class ENextState : uint8;
 
 // ********** Begin Delegate FOnPreloadComplete ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_36_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_38_DELEGATE \
 ECHOES_API void FOnPreloadComplete_DelegateWrapper(const FMulticastScriptDelegate& OnPreloadComplete, ENextState NextState);
 
 
 // ********** End Delegate FOnPreloadComplete ******************************************************
 
 // ********** Begin Class UEchoesPreloadWidget *****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnRetryClicked); \
 	DECLARE_FUNCTION(execStartPreload);
 
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesPreloadWidget_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesPreloadWidget(); \
 	friend struct Z_Construct_UClass_UEchoesPreloadWidget_Statics; \
 	static UClass* GetPrivateStaticClass(); \
 	friend ECHOES_API UClass* Z_Construct_UClass_UEchoesPreloadWidget_NoRegister(); \
 public: \
-	DECLARE_CLASS2(UEchoesPreloadWidget, UEchoesWindowBase, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/Echoes"), Z_Construct_UClass_UEchoesPreloadWidget_NoRegister) \
+	DECLARE_CLASS2(UEchoesPreloadWidget, UUserWidget, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/Echoes"), Z_Construct_UClass_UEchoesPreloadWidget_NoRegister) \
 	DECLARE_SERIALIZER(UEchoesPreloadWidget)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesPreloadWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -55,13 +56,13 @@ public: \
 	NO_API virtual ~UEchoesPreloadWidget();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_50_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_52_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_53_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesPreloadWidget_h_55_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -75,10 +76,12 @@ class UEchoesPreloadWidget;
 
 // ********** Begin Enum EPreloadState *************************************************************
 #define FOREACH_ENUM_EPRELOADSTATE(op) \
+	op(EPreloadState::CheckingInternet) \
 	op(EPreloadState::CheckingAPI) \
 	op(EPreloadState::ValidatingToken) \
 	op(EPreloadState::Success) \
-	op(EPreloadState::Failed) 
+	op(EPreloadState::Failed) \
+	op(EPreloadState::FatalError) 
 
 enum class EPreloadState : uint8;
 template<> struct TIsUEnumClass<EPreloadState> { enum { Value = true }; };
