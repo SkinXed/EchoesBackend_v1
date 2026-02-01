@@ -37,6 +37,10 @@ struct FRegisterServerRequest
 	UPROPERTY(BlueprintReadWrite, Category = "Server")
 	FGuid RegionId;
 
+	/** Node type: "DedicatedSystem" or "RegionalCluster" */
+	UPROPERTY(BlueprintReadWrite, Category = "Server")
+	FString ServerType;
+
 	/** Maximum number of concurrent players this server can handle */
 	UPROPERTY(BlueprintReadWrite, Category = "Server")
 	int32 MaxPlayers = 100;

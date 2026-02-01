@@ -7,6 +7,7 @@
 #include "UI/EchoesInventoryWidget.h"
 #include "UI/EchoesContextMenuWidget.h"
 #include "Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "Core/Common/EchoesItemDefinitions.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Engine/Texture2D.h"
@@ -88,22 +89,27 @@ void UEchoesInventoryEntryWidget::StartAsyncIconLoad()
 		return;
 	}
 
-	// Check if item has definition with icon
-	const FEchoesItemDefinitionRow* Definition = CurrentItemObject->GetItemDefinition();
-	if (!Definition || Definition->Icon.IsNull())
+	if (!CurrentItemObject->HasDefinition())
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryEntryWidget: No icon defined for item %d"), CurrentItemObject->GetTypeId());
+		return;
+	}
+
+	FEchoesItemDefinitionRow Definition = CurrentItemObject->GetItemDefinitionData();
+	if (Definition.Icon.IsNull())
 	{
 		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryEntryWidget: No icon defined for item %d"), CurrentItemObject->GetTypeId());
 		return;
 	}
 
 	// If icon is already loaded, use it immediately
-	if (Definition->Icon.IsValid())
+	if (Definition.Icon.IsValid())
 	{
 		if (ItemIcon)
 		{
-			ItemIcon->SetBrushFromTexture(Definition->Icon.Get());
+			ItemIcon->SetBrushFromTexture(Definition.Icon.Get());
 		}
-		OnIconLoaded(Definition->Icon.Get());
+		OnIconLoaded(Definition.Icon.Get());
 		return;
 	}
 
@@ -123,9 +129,11 @@ void UEchoesInventoryEntryWidget::StartAsyncIconLoad()
 
 	// Start async load
 	FString ItemIdStr = FString::FromInt(CurrentItemObject->GetTypeId());
+	FOnIconLoaded OnLoaded;
+	OnLoaded.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleIconLoaded);
 	InventorySubsystem->AsyncLoadItemIcon(
 		ItemIdStr,
-		FOnIconLoaded::CreateUObject(this, &UEchoesInventoryEntryWidget::HandleIconLoaded)
+		OnLoaded
 	);
 }
 
@@ -142,13 +150,34 @@ void UEchoesInventoryEntryWidget::HandleIconLoaded(UTexture2D* LoadedIcon)
 	OnIconLoaded(LoadedIcon);
 }
 
-void UEchoesInventoryEntryWidget::UpdateDisplay_Implementation(UEchoesInventoryItemObject* ItemObject)
+void UEchoesInventoryEntryWidget::UpdateDisplay(UEchoesInventoryItemObject* ItemObject)
 {
 	// Default implementation - can be overridden in Blueprint
 	// Base implementation already handled text updates in SetItemData
 	
 	// Icon loading would typically be handled here or in Blueprint
 	// For now, we leave this as a Blueprint override point
+}
+
+void UEchoesInventoryEntryWidget::OnEntrySelected()
+{
+}
+
+void UEchoesInventoryEntryWidget::OnEntryDeselected()
+{
+}
+
+bool UEchoesInventoryEntryWidget::HandleDragStarting(UEchoesInventoryItemObject* ItemObject, bool bIsShiftHeld)
+{
+	return true;
+}
+
+void UEchoesInventoryEntryWidget::OnIconLoaded(UTexture2D* LoadedIcon)
+{
+}
+
+void UEchoesInventoryEntryWidget::OnContextMenuActionExecuted(UEchoesInventoryItemObject* ItemObject, const FString& ActionId)
+{
 }
 
 FReply UEchoesInventoryEntryWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -170,11 +199,12 @@ FReply UEchoesInventoryEntryWidget::NativeOnMouseButtonDown(const FGeometry& InG
 	// Handle left mouse button for dragging
 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
+		PendingDragEvent = InMouseEvent;
 		// Check if Shift is held
 		bool bIsShiftHeld = InMouseEvent.IsShiftDown();
 
 		// Ask Blueprint if drag should start
-		if (OnDragStarting(CurrentItemObject, bIsShiftHeld))
+		if (HandleDragStarting(CurrentItemObject, bIsShiftHeld))
 		{
 			// Detect drag if pressed
 			Reply = Reply.DetectDrag(TakeWidget(), EKeys::LeftMouseButton);
@@ -262,7 +292,7 @@ void UEchoesInventoryEntryWidget::CreateDragOperationWithQuantity(
 
 	// Get the inventory widget to find source storage
 	UEchoesInventoryWidget* InventoryWidget = nullptr;
-	UWidget* ParentWidget = GetParent();
+	UPanelWidget* ParentWidget = GetParent();
 	while (ParentWidget)
 	{
 		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
@@ -276,7 +306,7 @@ void UEchoesInventoryEntryWidget::CreateDragOperationWithQuantity(
 	if (!InventoryWidget)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget"));
-		OnDragCancelled();
+		OnDragCancelled(PendingDragEvent, nullptr);
 		return;
 	}
 
@@ -285,7 +315,7 @@ void UEchoesInventoryEntryWidget::CreateDragOperationWithQuantity(
 	if (!SourceComponent)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Source inventory component not found"));
-		OnDragCancelled();
+		OnDragCancelled(PendingDragEvent, nullptr);
 		return;
 	}
 
@@ -332,7 +362,7 @@ void UEchoesInventoryEntryWidget::OnDragQuantityCancelled()
 {
 	bWaitingForDragQuantity = false;
 	UE_LOG(LogTemp, Log, TEXT("Drag quantity selection cancelled"));
-	OnDragCancelled();
+	OnDragCancelled(PendingDragEvent, nullptr);
 }
 
 void UEchoesInventoryEntryWidget::OnJettisonQuantitySelected(int64 SelectedQuantity)
@@ -345,7 +375,7 @@ void UEchoesInventoryEntryWidget::OnJettisonQuantitySelected(int64 SelectedQuant
 
 	// Get inventory component
 	UEchoesInventoryWidget* InventoryWidget = nullptr;
-	UWidget* ParentWidget = GetParent();
+	UPanelWidget* ParentWidget = GetParent();
 	while (ParentWidget)
 	{
 		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
@@ -370,17 +400,17 @@ void UEchoesInventoryEntryWidget::OnJettisonQuantitySelected(int64 SelectedQuant
 	}
 
 	// Jettison item with selected quantity
+	FOnItemMoveSuccess OnSuccess;
+	OnSuccess.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleJettisonSuccess);
+
+	FOnInventoryOperationFailure OnFailure;
+	OnFailure.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleJettisonFailure);
+
 	Component->ServerOnly_JettisonItem(
 		CurrentItemObject->GetAssetId(),
 		SelectedQuantity,
-		FOnItemMoveSuccess::CreateLambda([SelectedQuantity]()
-		{
-			UE_LOG(LogTemp, Log, TEXT("Jettisoned %lld items successfully"), SelectedQuantity);
-		}),
-		FOnInventoryOperationFailure::CreateLambda([](const FString& Error)
-		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to jettison item: %s"), *Error);
-		})
+		OnSuccess,
+		OnFailure
 	);
 }
 
@@ -434,7 +464,7 @@ void UEchoesInventoryEntryWidget::ShowContextMenu()
 
 	// Get inventory widget and component
 	UEchoesInventoryWidget* InventoryWidget = nullptr;
-	UWidget* ParentWidget = GetParent();
+	UPanelWidget* ParentWidget = GetParent();
 	while (ParentWidget)
 	{
 		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
@@ -498,19 +528,16 @@ TArray<FContextMenuAction> UEchoesInventoryEntryWidget::GetDefaultActionsForItem
 		true
 	));
 
-	// Check if item can be used/equipped
-	// This is a simplified check - full implementation would check item category
-	const FEchoesItemDefinitionRow* Definition = ItemObject->GetItemDefinition();
-	if (Definition)
+	if (ItemObject->HasDefinition())
 	{
-		// If it's a module or equipment, show Use/Fit option
-		FString Category = Definition->Category.ToString();
+		FEchoesItemDefinitionRow Definition = ItemObject->GetItemDefinitionData();
+		const FString Category = UEnum::GetValueAsString(Definition.Category);
 		if (Category.Contains(TEXT("Module")) || Category.Contains(TEXT("Equipment")))
 		{
 			Actions.Add(FContextMenuAction(
 				FText::FromString(TEXT("Fit to Ship")),
 				TEXT("fit"),
-				false // Disabled for now (stub)
+				false
 			));
 		}
 	}
@@ -535,16 +562,14 @@ void UEchoesInventoryEntryWidget::HandleContextMenuAction(const FString& ActionI
 {
 	if (!CurrentItemObject)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Context menu action but no current item"));
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Handling context menu action: %s for item: %s"),
-		*ActionId, *CurrentItemObject->GetItemName());
+	OnContextMenuActionExecuted(CurrentItemObject, ActionId);
 
-	// Get inventory component
+	// Get inventory widget and component
 	UEchoesInventoryWidget* InventoryWidget = nullptr;
-	UWidget* ParentWidget = GetParent();
+	UPanelWidget* ParentWidget = GetParent();
 	while (ParentWidget)
 	{
 		InventoryWidget = Cast<UEchoesInventoryWidget>(ParentWidget);
@@ -557,86 +582,74 @@ void UEchoesInventoryEntryWidget::HandleContextMenuAction(const FString& ActionI
 
 	if (!InventoryWidget)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget"));
+		UE_LOG(LogTemp, Error, TEXT("Could not find parent inventory widget for action"));
 		return;
 	}
 
 	UEchoesInventoryComponent* Component = InventoryWidget->GetInventoryComponent();
 	if (!Component)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Could not find inventory component"));
+		UE_LOG(LogTemp, Error, TEXT("Could not find inventory component for action"));
 		return;
 	}
 
-	// Execute action
 	if (ActionId == TEXT("jettison"))
 	{
-		// Check if item has quantity > 1, show quantity selector
-		if (CurrentItemObject->IsStackable() && CurrentItemObject->GetQuantity() > 1 && QuantitySelectorClass)
-		{
-			// Show quantity selector
-			UEchoesQuantitySelectorWidget* QuantitySelector = CreateWidget<UEchoesQuantitySelectorWidget>(
-				GetWorld(), QuantitySelectorClass);
-			
-			if (QuantitySelector)
-			{
-				QuantitySelector->InitializeSelector(
-					CurrentItemObject->GetQuantity(),
-					CurrentItemObject->GetItemName()
-				);
+		FOnItemMoveSuccess OnSuccess;
+		OnSuccess.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleJettisonSuccess);
 
-				// Bind to delegates
-				QuantitySelector->OnQuantitySelected.AddDynamic(this, &UEchoesInventoryEntryWidget::OnJettisonQuantitySelected);
-				QuantitySelector->OnQuantitySelectionCancelled.AddDynamic(this, &UEchoesInventoryEntryWidget::OnJettisonQuantityCancelled);
+		FOnInventoryOperationFailure OnFailure;
+		OnFailure.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleJettisonFailure);
 
-				// Add to viewport as modal
-				QuantitySelector->AddToViewport(1000);
-
-				UE_LOG(LogTemp, Log, TEXT("Quantity selector shown for jettison"));
-				return;
-			}
-		}
-
-		// Jettison entire stack
 		Component->ServerOnly_JettisonItem(
 			CurrentItemObject->GetAssetId(),
-			0, // 0 = all quantity
-			FOnItemMoveSuccess::CreateLambda([this]()
-			{
-				UE_LOG(LogTemp, Log, TEXT("Item jettisoned successfully"));
-			}),
-			FOnInventoryOperationFailure::CreateLambda([this](const FString& Error)
-			{
-				UE_LOG(LogTemp, Error, TEXT("Failed to jettison item: %s"), *Error);
-			})
+			0,
+			OnSuccess,
+			OnFailure
 		);
 	}
 	else if (ActionId == TEXT("fit"))
 	{
-		// Fit to ship (stub)
-		UE_LOG(LogTemp, Warning, TEXT("Fit to ship not implemented yet"));
+		// TODO: Implement module fitting
+		UE_LOG(LogTemp, Warning, TEXT("Fit action not yet implemented"));
 	}
 	else if (ActionId == TEXT("stack_all"))
 	{
-		// Stack all items of this type
+		FOnItemMoveSuccess OnSuccess;
+		OnSuccess.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleStackAllSuccess);
+
+		FOnInventoryOperationFailure OnFailure;
+		OnFailure.BindDynamic(this, &UEchoesInventoryEntryWidget::HandleStackAllFailure);
+
 		Component->ServerOnly_StackAll(
 			CurrentItemObject->GetTypeId(),
-			FOnItemMoveSuccess::CreateLambda([this]()
-			{
-				UE_LOG(LogTemp, Log, TEXT("Items stacked successfully"));
-			}),
-			FOnInventoryOperationFailure::CreateLambda([this](const FString& Error)
-			{
-				UE_LOG(LogTemp, Error, TEXT("Failed to stack items: %s"), *Error);
-			})
+			OnSuccess,
+			OnFailure
 		);
 	}
-
-	// Notify Blueprint
-	OnContextMenuActionExecuted(CurrentItemObject, ActionId);
 }
 
-void UEchoesInventoryEntryWidget::OnContextMenuRequested_Implementation(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions)
+void UEchoesInventoryEntryWidget::OnContextMenuRequested(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions)
 {
 	// Default implementation - Blueprint can override to customize actions
+}
+
+void UEchoesInventoryEntryWidget::HandleJettisonSuccess()
+{
+	UE_LOG(LogTemp, Log, TEXT("Item jettisoned successfully"));
+}
+
+void UEchoesInventoryEntryWidget::HandleJettisonFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Error, TEXT("Failed to jettison item: %s"), *Error);
+}
+
+void UEchoesInventoryEntryWidget::HandleStackAllSuccess()
+{
+	UE_LOG(LogTemp, Log, TEXT("Items stacked successfully"));
+}
+
+void UEchoesInventoryEntryWidget::HandleStackAllFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Error, TEXT("Failed to stack items: %s"), *Error);
 }

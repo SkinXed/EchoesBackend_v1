@@ -212,7 +212,8 @@ bool UEchoesJumpManager::ValidateTargetLocation(const FVector& TargetLocation) c
 
 	// Check if location is within valid world bounds
 	// For LWC support, we don't have strict bounds, but check for NaN/Inf
-	if (!TargetLocation.ContainsNaN() && TargetLocation.IsFinite())
+	const bool bIsFinite = FMath::IsFinite(TargetLocation.X) && FMath::IsFinite(TargetLocation.Y) && FMath::IsFinite(TargetLocation.Z);
+	if (!TargetLocation.ContainsNaN() && bIsFinite)
 	{
 		// Perform collision check at target location
 		FCollisionShape SphereShape = FCollisionShape::MakeSphere(CollisionCheckRadius);

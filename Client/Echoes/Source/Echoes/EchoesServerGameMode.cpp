@@ -14,6 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Misc/ConfigCacheIni.h"
+#include "GameFramework/PlayerState.h"
 
 AEchoesServerGameMode::AEchoesServerGameMode()
 {
@@ -525,13 +526,14 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	UE_LOG(LogTemp, Log, TEXT("Spawning player at station: %s (ShipTypeId: %d)"), *StationId.ToString(), ShipTypeId);
 
 	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
-	const FEchoesItemDefinitionRow* ShipDef = nullptr;
+	FEchoesItemDefinitionRow ShipDef;
+	bool bHasShipDef = false;
 	if (InventorySubsystem)
 	{
-		ShipDef = InventorySubsystem->GetItemFromRegistry(ShipTypeId);
-		if (ShipDef)
+		bHasShipDef = InventorySubsystem->TryGetItemFromRegistry(ShipTypeId, ShipDef);
+		if (bHasShipDef)
 		{
-			UE_LOG(LogTemp, Log, TEXT("✓ Ship definition found: %s"), *ShipDef->DisplayName.ToString());
+			UE_LOG(LogTemp, Log, TEXT("✓ Ship definition found: %s"), *ShipDef.DisplayName.ToString());
 		}
 		else
 		{
@@ -576,14 +578,15 @@ void AEchoesServerGameMode::SpawnPlayerInSpace(APlayerController* PC, const FVec
 	UE_LOG(LogTemp, Log, TEXT("Spawning player in space at: %s (ShipTypeId: %d)"), *Position.ToString(), ShipTypeId);
 
 	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
-	const FEchoesItemDefinitionRow* ShipDef = nullptr;
+	FEchoesItemDefinitionRow ShipDef;
+	bool bHasShipDef = false;
 	if (InventorySubsystem)
 	{
-		ShipDef = InventorySubsystem->GetItemFromRegistry(ShipTypeId);
-		if (ShipDef)
+		bHasShipDef = InventorySubsystem->TryGetItemFromRegistry(ShipTypeId, ShipDef);
+		if (bHasShipDef)
 		{
-			UE_LOG(LogTemp, Log, TEXT("✓ Ship definition found: %s"), *ShipDef->DisplayName.ToString());
-			UE_LOG(LogTemp, Log, TEXT("  Ship mesh: %s"), ShipDef->WorldMesh.IsNull() ? TEXT("None") : TEXT("Available"));
+			UE_LOG(LogTemp, Log, TEXT("✓ Ship definition found: %s"), *ShipDef.DisplayName.ToString());
+			UE_LOG(LogTemp, Log, TEXT("  Ship mesh: %s"), ShipDef.WorldMesh.IsNull() ? TEXT("None") : TEXT("Available"));
 		}
 		else
 		{

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/IUserObjectListEntry.h"
+#include "Components/PanelWidget.h"
 #include "UI/EchoesContextMenuWidget.h"
 #include "EchoesInventoryEntryWidget.generated.h"
 
@@ -53,64 +54,50 @@ public:
 protected:
 	/**
 	 * Called when the entry is selected
-	 * Override in Blueprint for custom selection behavior
+	 * Override in derived classes for custom selection behavior
 	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
-	void OnEntrySelected();
+	virtual void OnEntrySelected();
 
 	/**
 	 * Called when the entry is deselected
-	 * Override in Blueprint for custom deselection behavior
+	 * Override in derived classes for custom deselection behavior
 	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
-	void OnEntryDeselected();
+	virtual void OnEntryDeselected();
 
 	/**
-	 * Blueprint event called when drag is about to start
-	 * Override in Blueprint to customize drag behavior
+	 * Called when drag is about to start
+	 * Override in derived classes to customize drag behavior
 	 * @return True to allow drag, false to cancel
 	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
-	bool OnDragStarting(UEchoesInventoryItemObject* ItemObject, bool bIsShiftHeld);
+	virtual bool HandleDragStarting(UEchoesInventoryItemObject* ItemObject, bool bIsShiftHeld);
 
 	/**
-	 * Blueprint event called when drag is cancelled
-	 * Override in Blueprint for custom behavior
-	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
-	void OnDragCancelled();
-
-	/**
-	 * Blueprint event called when context menu is requested
-	 * Override in Blueprint to customize available actions
+	 * Called when context menu is requested
+	 * Override in derived classes to customize available actions
 	 * @param ItemObject - Item for which context menu is requested
 	 * @param OutActions - Array of actions to display in menu
 	 */
-	UFUNCTION(BlueprintNativeEvent, Category = "Echoes|Inventory|UI")
-	void OnContextMenuRequested(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions);
+	virtual void OnContextMenuRequested(UEchoesInventoryItemObject* ItemObject, TArray<FContextMenuAction>& OutActions);
 
 	/**
-	 * Blueprint event called when context menu action is executed
-	 * Override in Blueprint to handle custom actions
+	 * Called when context menu action is executed
+	 * Override in derived classes to handle custom actions
 	 * @param ItemObject - Item the action was performed on
 	 * @param ActionId - ID of the action executed
 	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
-	void OnContextMenuActionExecuted(UEchoesInventoryItemObject* ItemObject, const FString& ActionId);
+	virtual void OnContextMenuActionExecuted(UEchoesInventoryItemObject* ItemObject, const FString& ActionId);
 
 	/**
 	 * Update the visual display with item data
-	 * Override this in Blueprint to customize appearance
+	 * Override this in derived classes to customize appearance
 	 */
-	UFUNCTION(BlueprintNativeEvent, Category = "Echoes|Inventory|UI")
-	void UpdateDisplay(UEchoesInventoryItemObject* ItemObject);
+	virtual void UpdateDisplay(UEchoesInventoryItemObject* ItemObject);
 
 	/**
 	 * Called when icon is asynchronously loaded
-	 * Override in Blueprint to handle icon updates
+	 * Override in derived classes to handle icon updates
 	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Echoes|Inventory|UI")
-	void OnIconLoaded(UTexture2D* LoadedIcon);
+	virtual void OnIconLoaded(UTexture2D* LoadedIcon);
 
 	// Widget bindings (can be set in UMG)
 	
@@ -146,6 +133,10 @@ private:
 	/** Current item object being displayed */
 	UPROPERTY()
 	UEchoesInventoryItemObject* CurrentItemObject;
+
+	FGeometry PendingDragGeometry;
+	FPointerEvent PendingDragEvent;
+	bool bWaitingForDragQuantity = false;
 
 	/**
 	 * Start async icon loading for current item
@@ -219,8 +210,15 @@ private:
 	UFUNCTION()
 	void OnJettisonQuantityCancelled();
 
-	/** Stored data for pending drag operation */
-	FPointerEvent PendingDragEvent;
-	FGeometry PendingDragGeometry;
-	bool bWaitingForDragQuantity;
+	UFUNCTION()
+	void HandleJettisonSuccess();
+
+	UFUNCTION()
+	void HandleJettisonFailure(const FString& Error);
+
+	UFUNCTION()
+	void HandleStackAllSuccess();
+
+	UFUNCTION()
+	void HandleStackAllFailure(const FString& Error);
 };

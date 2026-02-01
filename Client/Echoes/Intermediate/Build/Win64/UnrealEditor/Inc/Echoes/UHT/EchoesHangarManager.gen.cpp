@@ -5,14 +5,15 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Echoes/Core/Server/EchoesHangarManager.h"
-#include "Echoes/Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "Core/Server/EchoesHangarManager.h"
+#include "Core/Common/Networking/EchoesInventorySubsystem.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 void EmptyLinkFunctionForGeneratedCodeEchoesHangarManager() {}
 
 // ********** Begin Cross Module References ********************************************************
+COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesHangarManager();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesHangarManager_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesInventorySubsystem_NoRegister();
@@ -163,12 +164,114 @@ DEFINE_FUNCTION(AEchoesHangarManager::execOnFittingChanged)
 }
 // ********** End Class AEchoesHangarManager Function OnFittingChanged *****************************
 
+// ********** Begin Class AEchoesHangarManager Function OnShipFittingFailed ************************
+struct Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics
+{
+	struct EchoesHangarManager_eventOnShipFittingFailed_Parms
+	{
+		FString Error;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Called when ship fitting fetch fails */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/EchoesHangarManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Called when ship fitting fetch fails" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Error_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Error;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::NewProp_Error = { "Error", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesHangarManager_eventOnShipFittingFailed_Parms, Error), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Error_MetaData), NewProp_Error_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::NewProp_Error,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AEchoesHangarManager, nullptr, "OnShipFittingFailed", Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::PropPointers), sizeof(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::EchoesHangarManager_eventOnShipFittingFailed_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::EchoesHangarManager_eventOnShipFittingFailed_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AEchoesHangarManager::execOnShipFittingFailed)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Error);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnShipFittingFailed(Z_Param_Error);
+	P_NATIVE_END;
+}
+// ********** End Class AEchoesHangarManager Function OnShipFittingFailed **************************
+
+// ********** Begin Class AEchoesHangarManager Function OnShipFittingReceived **********************
+struct Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics
+{
+	struct EchoesHangarManager_eventOnShipFittingReceived_Parms
+	{
+		FEchoesShipFitting Fitting;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Called when ship fitting is successfully fetched */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/EchoesHangarManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Called when ship fitting is successfully fetched" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Fitting_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Fitting;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::NewProp_Fitting = { "Fitting", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesHangarManager_eventOnShipFittingReceived_Parms, Fitting), Z_Construct_UScriptStruct_FEchoesShipFitting, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Fitting_MetaData), NewProp_Fitting_MetaData) }; // 2094547099
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::NewProp_Fitting,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AEchoesHangarManager, nullptr, "OnShipFittingReceived", Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::PropPointers), sizeof(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::EchoesHangarManager_eventOnShipFittingReceived_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00480401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::EchoesHangarManager_eventOnShipFittingReceived_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AEchoesHangarManager::execOnShipFittingReceived)
+{
+	P_GET_STRUCT_REF(FEchoesShipFitting,Z_Param_Out_Fitting);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnShipFittingReceived(Z_Param_Out_Fitting);
+	P_NATIVE_END;
+}
+// ********** End Class AEchoesHangarManager Function OnShipFittingReceived ************************
+
 // ********** Begin Class AEchoesHangarManager Function SpawnShipPreview ***************************
 struct Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics
 {
 	struct EchoesHangarManager_eventSpawnShipPreview_Parms
 	{
-		FString ShipId;
+		FGuid ShipId;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -185,16 +288,16 @@ struct Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics
 		{ "NativeConst", "" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FStrPropertyParams NewProp_ShipId;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ShipId;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::NewProp_ShipId = { "ShipId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesHangarManager_eventSpawnShipPreview_Parms, ShipId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ShipId_MetaData), NewProp_ShipId_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::NewProp_ShipId = { "ShipId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesHangarManager_eventSpawnShipPreview_Parms, ShipId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ShipId_MetaData), NewProp_ShipId_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::NewProp_ShipId,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AEchoesHangarManager, nullptr, "SpawnShipPreview", Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::PropPointers), sizeof(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::EchoesHangarManager_eventSpawnShipPreview_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::Function_MetaDataParams)},  };
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AEchoesHangarManager, nullptr, "SpawnShipPreview", Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::PropPointers), sizeof(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::EchoesHangarManager_eventSpawnShipPreview_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04C20401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::Function_MetaDataParams)},  };
 static_assert(sizeof(Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview_Statics::EchoesHangarManager_eventSpawnShipPreview_Parms) < MAX_uint16);
 UFunction* Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview()
 {
@@ -207,10 +310,10 @@ UFunction* Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview()
 }
 DEFINE_FUNCTION(AEchoesHangarManager::execSpawnShipPreview)
 {
-	P_GET_PROPERTY(FStrProperty,Z_Param_ShipId);
+	P_GET_STRUCT_REF(FGuid,Z_Param_Out_ShipId);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->SpawnShipPreview(Z_Param_ShipId);
+	P_THIS->SpawnShipPreview(Z_Param_Out_ShipId);
 	P_NATIVE_END;
 }
 // ********** End Class AEchoesHangarManager Function SpawnShipPreview *****************************
@@ -275,6 +378,8 @@ void AEchoesHangarManager::StaticRegisterNativesAEchoesHangarManager()
 		{ "ClearShipPreview", &AEchoesHangarManager::execClearShipPreview },
 		{ "InitializeHangar", &AEchoesHangarManager::execInitializeHangar },
 		{ "OnFittingChanged", &AEchoesHangarManager::execOnFittingChanged },
+		{ "OnShipFittingFailed", &AEchoesHangarManager::execOnShipFittingFailed },
+		{ "OnShipFittingReceived", &AEchoesHangarManager::execOnShipFittingReceived },
 		{ "SpawnShipPreview", &AEchoesHangarManager::execSpawnShipPreview },
 		{ "UpdateShipMesh", &AEchoesHangarManager::execUpdateShipMesh },
 	};
@@ -384,7 +489,7 @@ struct Z_Construct_UClass_AEchoesHangarManager_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DefaultShipMesh;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PreviewShipActor;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_CurrentCharacterId;
-	static const UECodeGen_Private::FStrPropertyParams NewProp_CurrentShipId;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_CurrentShipId;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_InventorySubsystem;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
@@ -392,7 +497,9 @@ struct Z_Construct_UClass_AEchoesHangarManager_Statics
 		{ &Z_Construct_UFunction_AEchoesHangarManager_ClearShipPreview, "ClearShipPreview" }, // 2927305687
 		{ &Z_Construct_UFunction_AEchoesHangarManager_InitializeHangar, "InitializeHangar" }, // 676511314
 		{ &Z_Construct_UFunction_AEchoesHangarManager_OnFittingChanged, "OnFittingChanged" }, // 2204439808
-		{ &Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview, "SpawnShipPreview" }, // 2831077166
+		{ &Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingFailed, "OnShipFittingFailed" }, // 407317452
+		{ &Z_Construct_UFunction_AEchoesHangarManager_OnShipFittingReceived, "OnShipFittingReceived" }, // 1449995402
+		{ &Z_Construct_UFunction_AEchoesHangarManager_SpawnShipPreview, "SpawnShipPreview" }, // 2195280110
 		{ &Z_Construct_UFunction_AEchoesHangarManager_UpdateShipMesh, "UpdateShipMesh" }, // 2741030222
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -405,7 +512,7 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesHangarM
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_DefaultShipMesh = { "DefaultShipMesh", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesHangarManager, DefaultShipMesh), Z_Construct_UClass_UStaticMesh_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DefaultShipMesh_MetaData), NewProp_DefaultShipMesh_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_PreviewShipActor = { "PreviewShipActor", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesHangarManager, PreviewShipActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PreviewShipActor_MetaData), NewProp_PreviewShipActor_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_CurrentCharacterId = { "CurrentCharacterId", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesHangarManager, CurrentCharacterId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentCharacterId_MetaData), NewProp_CurrentCharacterId_MetaData) };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_CurrentShipId = { "CurrentShipId", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesHangarManager, CurrentShipId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentShipId_MetaData), NewProp_CurrentShipId_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_CurrentShipId = { "CurrentShipId", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesHangarManager, CurrentShipId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentShipId_MetaData), NewProp_CurrentShipId_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_InventorySubsystem = { "InventorySubsystem", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesHangarManager, InventorySubsystem), Z_Construct_UClass_UEchoesInventorySubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InventorySubsystem_MetaData), NewProp_InventorySubsystem_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEchoesHangarManager_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesHangarManager_Statics::NewProp_ShipSpawnPoint,
@@ -452,10 +559,10 @@ AEchoesHangarManager::~AEchoesHangarManager() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesHangarManager, AEchoesHangarManager::StaticClass, TEXT("AEchoesHangarManager"), &Z_Registration_Info_UClass_AEchoesHangarManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesHangarManager), 2339769928U) },
+		{ Z_Construct_UClass_AEchoesHangarManager, AEchoesHangarManager::StaticClass, TEXT("AEchoesHangarManager"), &Z_Registration_Info_UClass_AEchoesHangarManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesHangarManager), 2809628049U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h__Script_Echoes_2028854396(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h__Script_Echoes_4187046004(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

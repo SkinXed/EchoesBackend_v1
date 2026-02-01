@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Http.h"
-#include "Core/Common/EchoesItemDefinitions.h"
+#include "../EchoesItemDefinitions.h"
 #include "Engine/StreamableManager.h"
 #include "EchoesInventorySubsystem.generated.h"
 
@@ -297,23 +297,41 @@ public:
 	// ==================== Item Definitions System ====================
 
 	/**
-	 * Get item definition by item ID (TypeId from database)
+	 * Try to get item definition by item ID (TypeId from database)
 	 * Returns visual assets and metadata for the item
 	 * 
 	 * @param ItemId - Item type ID as string (e.g., "34" for Tritanium)
-	 * @return Item definition row, or nullptr if not found
+	 * @param OutDefinition - Filled with definition data when available
+	 * @return True if definition exists
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
-	const FEchoesItemDefinitionRow* GetItemDefinition(const FString& ItemId) const;
+	bool TryGetItemDefinition(const FString& ItemId, FEchoesItemDefinitionRow& OutDefinition) const;
 
 	/**
-	 * Get item definition by integer type ID
+	 * Try to get item definition by item ID for Blueprints
 	 * 
-	 * @param TypeId - Item type ID as integer
-	 * @return Item definition row, or nullptr if not found
+	 * @param ItemId - Item type ID as string (e.g., "34" for Tritanium)
+	 * @return Definition data if found, otherwise default-constructed
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
-	const FEchoesItemDefinitionRow* GetItemDefinitionByTypeId(int32 TypeId) const;
+	FEchoesItemDefinitionRow GetItemDefinitionData(const FString& ItemId) const;
+
+	/**
+	 * Try to get item definition by integer type ID
+	 * 
+	 * @param TypeId - Item type ID as integer
+	 * @param OutDefinition - Filled with definition data when available
+	 * @return True if definition exists
+	 */
+	bool TryGetItemDefinitionByTypeId(int32 TypeId, FEchoesItemDefinitionRow& OutDefinition) const;
+
+	/**
+	 * Get item definition by integer type ID for Blueprints
+	 * 
+	 * @param TypeId - Item type ID as integer
+	 * @return Definition data if found, otherwise default-constructed
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
+	FEchoesItemDefinitionRow GetItemDefinitionDataByTypeId(int32 TypeId) const;
 
 	/**
 	 * Async load item icon texture
@@ -349,10 +367,19 @@ public:
 	 * Provides type-safe access to item definitions
 	 * 
 	 * @param TypeId - Item type ID as integer
-	 * @return Pointer to item definition, or nullptr if not found
+	 * @param OutDefinition - Filled with definition data when available
+	 * @return True if definition exists
+	 */
+	bool TryGetItemFromRegistry(int32 TypeId, FEchoesItemDefinitionRow& OutDefinition) const;
+
+	/**
+	 * Get item definition from typed registry by integer TypeId for Blueprints
+	 * 
+	 * @param TypeId - Item type ID as integer
+	 * @return Definition data if found, otherwise default-constructed
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Inventory|ItemDefinitions")
-	const FEchoesItemDefinitionRow* GetItemFromRegistry(int32 TypeId) const;
+	FEchoesItemDefinitionRow GetItemFromRegistryData(int32 TypeId) const;
 
 	/**
 	 * Check if item exists in typed registry
@@ -449,7 +476,7 @@ protected:
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful,
-		const FGuid& ShipId,
+		FGuid ShipId,
 		FOnModuleFitted OnSuccess,
 		FOnInventoryFailure OnFailure);
 
@@ -460,7 +487,7 @@ protected:
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful,
-		const FGuid& ShipId,
+		FGuid ShipId,
 		FOnModuleUnfitted OnSuccess,
 		FOnInventoryFailure OnFailure);
 
@@ -511,6 +538,12 @@ private:
 	UPROPERTY()
 	TMap<int32, FGuid> CachedHangarIds;
 
+	FOnModuleFitted PendingModuleFitSuccess;
+	bool bHasPendingFitRefresh = false;
+
+	FOnModuleUnfitted PendingModuleUnfitSuccess;
+	bool bHasPendingUnfitRefresh = false;
+
 	/** HTTP module reference */
 	FHttpModule* Http;
 
@@ -532,10 +565,10 @@ private:
 
 	/**
 	 * Cache of loaded item definitions for quick access
-	 * Key: ItemId (TypeId as string), Value: Definition row pointer
+	 * Key: ItemId (TypeId as string), Value: Definition row
 	 * Legacy cache maintained for backward compatibility
 	 */
-	TMap<FString, const FEchoesItemDefinitionRow*> DefinitionCache;
+	TMap<FString, FEchoesItemDefinitionRow> DefinitionCache;
 
 	/**
 	 * Typed item registry for type-safe access
@@ -550,4 +583,16 @@ private:
 	 * Populates both string-based cache and typed registry
 	 */
 	void BuildDefinitionCache();
+
+	UFUNCTION()
+	void HandleFitRefreshSuccess(const FEchoesShipFitting& Fitting);
+
+	UFUNCTION()
+	void HandleFitRefreshFailure(const FString& Error);
+
+	UFUNCTION()
+	void HandleUnfitRefreshSuccess(const FEchoesShipFitting& Fitting);
+
+	UFUNCTION()
+	void HandleUnfitRefreshFailure(const FString& Error);
 };

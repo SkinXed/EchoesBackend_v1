@@ -2,7 +2,6 @@
 
 #include "EchoesHangarManager.h"
 #include "Core/Common/Networking/EchoesInventorySubsystem.h"
-#include "Core/Common/Networking/EchoesIdentitySubsystem.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -32,7 +31,7 @@ void AEchoesHangarManager::BeginPlay()
 		if (InventorySubsystem)
 		{
 			// Subscribe to fitting changes
-			InventorySubsystem->OnFittingChanged.AddDynamic(this, &AEchoesHangarManager::OnFittingChanged);
+			InventorySubsystem->OnFittingChanged.AddUObject(this, &AEchoesHangarManager::OnFittingChanged);
 			
 			UE_LOG(LogTemp, Log, TEXT("HangarManager: Subscribed to OnFittingChanged"));
 		}
@@ -48,7 +47,7 @@ void AEchoesHangarManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	// Unsubscribe from events
 	if (InventorySubsystem)
 	{
-		InventorySubsystem->OnFittingChanged.RemoveDynamic(this, &AEchoesHangarManager::OnFittingChanged);
+		InventorySubsystem->OnFittingChanged.RemoveAll(this);
 	}
 
 	// Clean up preview ship
@@ -64,29 +63,26 @@ void AEchoesHangarManager::InitializeHangar(const FString& CharacterId)
 	UE_LOG(LogTemp, Log, TEXT("HangarManager: Initializing for character: %s"), *CharacterId);
 
 	// Get identity subsystem to find active ship
-	if (UGameInstance* GameInstance = GetGameInstance())
+	if (InventorySubsystem)
 	{
-		if (UEchoesIdentitySubsystem* IdentitySubsystem = GameInstance->GetSubsystem<UEchoesIdentitySubsystem>())
+		FEchoesShipInstance ActiveShip = InventorySubsystem->Inventory_GetActiveShip();
+		
+		if (ActiveShip.InstanceId.IsValid())
 		{
-			FEchoesCharacter Character = IdentitySubsystem->Identity_GetSelectedCharacter();
-			
-			if (!Character.CurrentShipId.IsEmpty())
-			{
-				SpawnShipPreview(Character.CurrentShipId);
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("HangarManager: Character has no active ship"));
-			}
+			SpawnShipPreview(ActiveShip.InstanceId);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("HangarManager: Character has no active ship"));
 		}
 	}
 }
 
-void AEchoesHangarManager::SpawnShipPreview(const FString& ShipId)
+void AEchoesHangarManager::SpawnShipPreview(const FGuid& ShipId)
 {
 	CurrentShipId = ShipId;
 	
-	UE_LOG(LogTemp, Log, TEXT("HangarManager: Spawning ship preview for: %s"), *ShipId);
+	UE_LOG(LogTemp, Log, TEXT("HangarManager: Spawning ship preview for: %s"), *ShipId.ToString());
 
 	// Clear existing preview
 	ClearShipPreview();
@@ -95,10 +91,10 @@ void AEchoesHangarManager::SpawnShipPreview(const FString& ShipId)
 	if (InventorySubsystem)
 	{
 		FOnShipFittingReceived OnSuccess;
-		OnSuccess.BindUObject(this, &AEchoesHangarManager::OnShipFittingReceived);
+		OnSuccess.BindDynamic(this, &AEchoesHangarManager::OnShipFittingReceived);
 		
 		FOnInventoryFailure OnFailure;
-		OnFailure.BindUObject(this, &AEchoesHangarManager::OnShipFittingFailed);
+		OnFailure.BindDynamic(this, &AEchoesHangarManager::OnShipFittingFailed);
 		
 		InventorySubsystem->Inventory_FetchShipFitting(ShipId, OnSuccess, OnFailure);
 	}
@@ -154,7 +150,7 @@ void AEchoesHangarManager::OnShipFittingFailed(const FString& Error)
 void AEchoesHangarManager::UpdateShipMesh(const FEchoesShipFitting& NewFitting)
 {
 	UE_LOG(LogTemp, Log, TEXT("HangarManager: Updating ship mesh - New Mass: %.2f, Modules: %d"), 
-		NewFitting.TotalMass, NewFitting.FittedModules.Num());
+		NewFitting.TotalMass, NewFitting.Modules.Num());
 
 	// In a real implementation, you might:
 	// 1. Update the visual mesh based on ship type

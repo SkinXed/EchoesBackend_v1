@@ -93,7 +93,7 @@ public:
 	/**
 	 * Get the location of the target gate on this server (for local jumps)
 	 */
-	FVector GetTargetGateLocationOnServer(const FGuid& TargetSystemId);
+	FVector GetTargetGateLocationOnServer(const FGuid& InTargetSystemId);
 
 protected:
 	// ==================== Components ====================

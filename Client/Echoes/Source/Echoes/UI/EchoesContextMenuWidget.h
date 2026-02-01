@@ -4,13 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Button.h"
 #include "Core/Common/EchoesInventoryComponent.h"
 #include "EchoesContextMenuWidget.generated.h"
 
 class UVerticalBox;
-class UButton;
 class UTextBlock;
 class UEchoesInventoryItemObject;
+class UEchoesContextMenuWidget;
+
+UCLASS()
+class ECHOES_API UEchoesContextMenuActionButton : public UButton
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString ActionId;
+
+	UPROPERTY()
+	TWeakObjectPtr<UEchoesContextMenuWidget> OwnerWidget;
+
+	UFUNCTION()
+	void HandleClicked();
+};
 
 // Delegate for context menu action
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnContextMenuActionSelected, const FString&, ActionName);
@@ -139,17 +156,17 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Echoes|ContextMenu")
 	FOnContextMenuActionSelected OnActionSelected;
 
+	/**
+	 * Handle action button clicked
+	 */
+	UFUNCTION()
+	void HandleActionButtonClicked(const FString& ActionId);
+
 protected:
 	/**
 	 * Build the menu UI with action buttons
 	 */
 	void BuildMenuContent();
-
-	/**
-	 * Handle action button clicked
-	 */
-	UFUNCTION()
-	void OnActionButtonClicked(const FString& ActionId);
 
 	/**
 	 * Create a button for an action

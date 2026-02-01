@@ -8,7 +8,7 @@
 void UEchoesInventoryItemObject::InitializeWithData(const FEchoesInventoryItem& InItemData)
 {
 	ItemData = InItemData;
-	CachedDefinition = nullptr;
+	CachedDefinition.Reset();
 	
 	// Fetch item definition from subsystem
 	FetchItemDefinition();
@@ -33,9 +33,19 @@ FString UEchoesInventoryItemObject::GetFormattedTotalVolume() const
 	return FString::Printf(TEXT("%s m³"), *FormattedNumber.ToString());
 }
 
+FEchoesItemDefinitionRow UEchoesInventoryItemObject::GetItemDefinitionData() const
+{
+	if (CachedDefinition.IsSet())
+	{
+		return CachedDefinition.GetValue();
+	}
+
+	return FEchoesItemDefinitionRow();
+}
+
 FText UEchoesInventoryItemObject::GetDisplayName() const
 {
-	if (CachedDefinition && !CachedDefinition->DisplayName.IsEmpty())
+	if (CachedDefinition.IsSet() && !CachedDefinition->DisplayName.IsEmpty())
 	{
 		return CachedDefinition->DisplayName;
 	}
@@ -46,7 +56,7 @@ FText UEchoesInventoryItemObject::GetDisplayName() const
 
 FText UEchoesInventoryItemObject::GetDescription() const
 {
-	if (CachedDefinition)
+	if (CachedDefinition.IsSet())
 	{
 		return CachedDefinition->Description;
 	}
@@ -61,7 +71,7 @@ float UEchoesInventoryItemObject::GetCalculatedTotalVolume() const
 
 float UEchoesInventoryItemObject::GetUnitVolume() const
 {
-	if (CachedDefinition)
+	if (CachedDefinition.IsSet())
 	{
 		return CachedDefinition->UnitVolume;
 	}
@@ -72,7 +82,7 @@ float UEchoesInventoryItemObject::GetUnitVolume() const
 
 float UEchoesInventoryItemObject::GetTotalMass() const
 {
-	if (CachedDefinition)
+	if (CachedDefinition.IsSet())
 	{
 		return CachedDefinition->UnitMass * ItemData.Quantity;
 	}
@@ -107,12 +117,12 @@ void UEchoesInventoryItemObject::FetchItemDefinition()
 
 	// Fetch definition
 	FString ItemIdStr = FString::FromInt(ItemData.TypeId);
-	CachedDefinition = InventorySubsystem->GetItemDefinition(ItemIdStr);
-
-	if (CachedDefinition)
+	FEchoesItemDefinitionRow Definition;
+	if (InventorySubsystem->TryGetItemDefinition(ItemIdStr, Definition))
 	{
+		CachedDefinition = Definition;
 		UE_LOG(LogTemp, Verbose, TEXT("EchoesInventoryItemObject: Loaded definition for item %d: %s"), 
-			ItemData.TypeId, *CachedDefinition->DisplayName.ToString());
+			ItemData.TypeId, *Definition.DisplayName.ToString());
 	}
 	else
 	{

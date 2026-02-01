@@ -759,7 +759,7 @@ void UEchoesInventorySubsystem::OnModuleFitReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-   const FGuid& ShipId,
+	FGuid ShipId,
 	FOnModuleFitted OnSuccess,
 	FOnInventoryFailure OnFailure)
 {
@@ -779,27 +779,16 @@ void UEchoesInventorySubsystem::OnModuleFitReceived(
 	if (ResponseCode == 200)
 	{
 		// Success! Now refresh the ship fitting to get updated stats
-		Inventory_FetchShipFitting(
-			ShipId,
-			FOnShipFittingReceived::CreateLambda([this, OnSuccess](const FEchoesShipFitting& Fitting)
-			{
-				// Cache updated fitting
-				CachedFitting = Fitting;
-				
-				// Trigger fitting changed delegate for UI updates
-				OnFittingChanged.Broadcast(Fitting);
-				
-				// Call success callback
-				OnSuccess.ExecuteIfBound();
-				
-				UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module fitted and fitting updated"));
-			}),
-			FOnInventoryFailure::CreateLambda([OnFailure](const FString& Error)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module fitted but failed to refresh fitting: %s"), *Error);
-				// Still call success since the fit operation succeeded
-				OnSuccess.ExecuteIfBound();
-			}));
+		bHasPendingFitRefresh = true;
+		PendingModuleFitSuccess = OnSuccess;
+
+		FOnShipFittingReceived RefreshSuccess;
+		RefreshSuccess.BindDynamic(this, &UEchoesInventorySubsystem::HandleFitRefreshSuccess);
+
+		FOnInventoryFailure RefreshFailure;
+		RefreshFailure.BindDynamic(this, &UEchoesInventorySubsystem::HandleFitRefreshFailure);
+
+		Inventory_FetchShipFitting(ShipId, RefreshSuccess, RefreshFailure);
 	}
 	else if (ResponseCode == 400)
 	{
@@ -827,7 +816,7 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
 	bool bWasSuccessful,
-	const FGuid& ShipId, // Исправлено: добавлена ссылка
+	FGuid ShipId,
 	FOnModuleUnfitted OnSuccess,
 	FOnInventoryFailure OnFailure)
 {
@@ -847,27 +836,16 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	if (ResponseCode == 200)
 	{
 		// Success! Now refresh the ship fitting to get updated stats
-		Inventory_FetchShipFitting(
-			ShipId,
-			FOnShipFittingReceived::CreateLambda([this, OnSuccess](const FEchoesShipFitting& Fitting)
-			{
-				// Cache updated fitting
-				CachedFitting = Fitting;
-				
-				// Trigger fitting changed delegate for UI updates
-				OnFittingChanged.Broadcast(Fitting);
-				
-				// Call success callback
-				OnSuccess.ExecuteIfBound();
-				
-				UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module unfitted and fitting updated"));
-			}),
-			FOnInventoryFailure::CreateLambda([OnSuccess](const FString& Error)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module unfitted but failed to refresh fitting: %s"), *Error);
-				// Still call success since the unfit operation succeeded
-				OnSuccess.ExecuteIfBound();
-			}));
+		bHasPendingUnfitRefresh = true;
+		PendingModuleUnfitSuccess = OnSuccess;
+
+		FOnShipFittingReceived RefreshSuccess;
+		RefreshSuccess.BindDynamic(this, &UEchoesInventorySubsystem::HandleUnfitRefreshSuccess);
+
+		FOnInventoryFailure RefreshFailure;
+		RefreshFailure.BindDynamic(this, &UEchoesInventorySubsystem::HandleUnfitRefreshFailure);
+
+		Inventory_FetchShipFitting(ShipId, RefreshSuccess, RefreshFailure);
 	}
 	else if (ResponseCode == 401)
 	{
@@ -883,6 +861,60 @@ void UEchoesInventorySubsystem::OnModuleUnfitReceived(
 	{
 		UE_LOG(LogTemp, Error, TEXT("EchoesInventorySubsystem: Unexpected response code: %d"), ResponseCode);
 		OnFailure.ExecuteIfBound(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+	}
+}
+
+void UEchoesInventorySubsystem::HandleFitRefreshSuccess(const FEchoesShipFitting& Fitting)
+{
+	CachedFitting = Fitting;
+	OnFittingChanged.Broadcast(Fitting);
+
+	if (bHasPendingFitRefresh)
+	{
+		PendingModuleFitSuccess.ExecuteIfBound();
+		PendingModuleFitSuccess.Unbind();
+		bHasPendingFitRefresh = false;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module fitted and fitting updated"));
+}
+
+void UEchoesInventorySubsystem::HandleFitRefreshFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module fitted but failed to refresh fitting: %s"), *Error);
+
+	if (bHasPendingFitRefresh)
+	{
+		PendingModuleFitSuccess.ExecuteIfBound();
+		PendingModuleFitSuccess.Unbind();
+		bHasPendingFitRefresh = false;
+	}
+}
+
+void UEchoesInventorySubsystem::HandleUnfitRefreshSuccess(const FEchoesShipFitting& Fitting)
+{
+	CachedFitting = Fitting;
+	OnFittingChanged.Broadcast(Fitting);
+
+	if (bHasPendingUnfitRefresh)
+	{
+		PendingModuleUnfitSuccess.ExecuteIfBound();
+		PendingModuleUnfitSuccess.Unbind();
+		bHasPendingUnfitRefresh = false;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Module unfitted and fitting updated"));
+}
+
+void UEchoesInventorySubsystem::HandleUnfitRefreshFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Module unfitted but failed to refresh fitting: %s"), *Error);
+
+	if (bHasPendingUnfitRefresh)
+	{
+		PendingModuleUnfitSuccess.ExecuteIfBound();
+		PendingModuleUnfitSuccess.Unbind();
+		bHasPendingUnfitRefresh = false;
 	}
 }
 
@@ -968,136 +1000,167 @@ void UEchoesInventorySubsystem::OnPersonalHangarReceived(
 
 // ==================== Item Definitions System ====================
 
-const FEchoesItemDefinitionRow* UEchoesInventorySubsystem::GetItemDefinition(const FString& ItemId) const
+bool UEchoesInventorySubsystem::TryGetItemDefinition(const FString& ItemId, FEchoesItemDefinitionRow& OutDefinition) const
 {
-// Check cache first
-if (const FEchoesItemDefinitionRow* const* CachedDef = DefinitionCache.Find(ItemId))
-{
-return *CachedDef;
+	// Check cache first
+	if (const FEchoesItemDefinitionRow* CachedDef = DefinitionCache.Find(ItemId))
+	{
+		OutDefinition = *CachedDef;
+		return true;
+	}
+
+	// If not in cache and table exists, try to find it
+	if (ItemDefinitionsTable)
+	{
+		FName RowName(*ItemId);
+		if (const FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("GetItemDefinition")))
+		{
+			OutDefinition = *Row;
+			return true;
+		}
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item definition not found for ID: %s"), *ItemId);
+	return false;
 }
 
-// If not in cache and table exists, try to find it
-if (ItemDefinitionsTable)
+FEchoesItemDefinitionRow UEchoesInventorySubsystem::GetItemDefinitionData(const FString& ItemId) const
 {
-FName RowName(*ItemId);
-const FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("GetItemDefinition"));
-return Row;
+	FEchoesItemDefinitionRow Definition;
+	if (TryGetItemDefinition(ItemId, Definition))
+	{
+		return Definition;
+	}
+
+	return FEchoesItemDefinitionRow();
 }
 
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item definition not found for ID: %s"), *ItemId);
-return nullptr;
+bool UEchoesInventorySubsystem::TryGetItemDefinitionByTypeId(int32 TypeId, FEchoesItemDefinitionRow& OutDefinition) const
+{
+	return TryGetItemDefinition(FString::FromInt(TypeId), OutDefinition);
 }
 
-const FEchoesItemDefinitionRow* UEchoesInventorySubsystem::GetItemDefinitionByTypeId(int32 TypeId) const
+FEchoesItemDefinitionRow UEchoesInventorySubsystem::GetItemDefinitionDataByTypeId(int32 TypeId) const
 {
-return GetItemDefinition(FString::FromInt(TypeId));
+	return GetItemDefinitionData(FString::FromInt(TypeId));
 }
 
 void UEchoesInventorySubsystem::AsyncLoadItemIcon(const FString& ItemId, FOnIconLoaded OnLoaded)
 {
-const FEchoesItemDefinitionRow* Definition = GetItemDefinition(ItemId);
-if (!Definition)
-{
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Cannot load icon - item definition not found: %s"), *ItemId);
-OnLoaded.ExecuteIfBound(nullptr);
-return;
-}
+	FEchoesItemDefinitionRow Definition;
+	if (!TryGetItemDefinition(ItemId, Definition))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Cannot load icon - item definition not found: %s"), *ItemId);
+		OnLoaded.ExecuteIfBound(nullptr);
+		return;
+	}
 
-// If icon is null, return null immediately
-if (Definition->Icon.IsNull())
-{
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item %s has no icon defined"), *ItemId);
-OnLoaded.ExecuteIfBound(nullptr);
-return;
-}
+	// If icon is null, return null immediately
+	if (Definition.Icon.IsNull())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item %s has no icon defined"), *ItemId);
+		OnLoaded.ExecuteIfBound(nullptr);
+		return;
+	}
 
-// If already loaded, return immediately
-if (Definition->Icon.IsValid())
-{
-OnLoaded.ExecuteIfBound(Definition->Icon.Get());
-return;
-}
+	// If already loaded, return immediately
+	if (Definition.Icon.IsValid())
+	{
+		OnLoaded.ExecuteIfBound(Definition.Icon.Get());
+		return;
+	}
 
-// Load asynchronously
-FSoftObjectPath IconPath = Definition->Icon.ToSoftObjectPath();
-TSharedPtr<FStreamableHandle> Handle = StreamableManager.RequestAsyncLoad(
-IconPath,
-[OnLoaded, IconPath]()
-{
-UTexture2D* LoadedIcon = Cast<UTexture2D>(IconPath.ResolveObject());
-if (LoadedIcon)
-{
-UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Icon loaded: %s"), *IconPath.ToString());
-}
-else
-{
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Failed to load icon: %s"), *IconPath.ToString());
-}
-OnLoaded.ExecuteIfBound(LoadedIcon);
-}
-);
+	// Load asynchronously
+	FSoftObjectPath IconPath = Definition.Icon.ToSoftObjectPath();
+	TSharedPtr<FStreamableHandle> Handle = StreamableManager.RequestAsyncLoad(
+		IconPath,
+		[OnLoaded, IconPath]()
+		{
+			UTexture2D* LoadedIcon = Cast<UTexture2D>(IconPath.ResolveObject());
+			if (LoadedIcon)
+			{
+				UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: Icon loaded: %s"), *IconPath.ToString());
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Failed to load icon: %s"), *IconPath.ToString());
+			}
+			OnLoaded.ExecuteIfBound(LoadedIcon);
+		}
+	);
 }
 
 void UEchoesInventorySubsystem::AsyncLoadItemWorldMesh(const FString& ItemId, FOnWorldMeshLoaded OnLoaded)
 {
-const FEchoesItemDefinitionRow* Definition = GetItemDefinition(ItemId);
-if (!Definition)
-{
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Cannot load mesh - item definition not found: %s"), *ItemId);
-OnLoaded.ExecuteIfBound(nullptr);
-return;
-}
+	FEchoesItemDefinitionRow Definition;
+	if (!TryGetItemDefinition(ItemId, Definition))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Cannot load mesh - item definition not found: %s"), *ItemId);
+		OnLoaded.ExecuteIfBound(nullptr);
+		return;
+	}
 
-// If mesh is null, return null immediately
-if (Definition->WorldMesh.IsNull())
-{
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item %s has no world mesh defined"), *ItemId);
-OnLoaded.ExecuteIfBound(nullptr);
-return;
-}
+	// If mesh is null, return null immediately
+	if (Definition.WorldMesh.IsNull())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Item %s has no world mesh defined"), *ItemId);
+		OnLoaded.ExecuteIfBound(nullptr);
+		return;
+	}
 
-// If already loaded, return immediately
-if (Definition->WorldMesh.IsValid())
-{
-OnLoaded.ExecuteIfBound(Definition->WorldMesh.Get());
-return;
-}
+	// If already loaded, return immediately
+	if (Definition.WorldMesh.IsValid())
+	{
+		OnLoaded.ExecuteIfBound(Definition.WorldMesh.Get());
+		return;
+	}
 
-// Load asynchronously
-FSoftObjectPath MeshPath = Definition->WorldMesh.ToSoftObjectPath();
-TSharedPtr<FStreamableHandle> Handle = StreamableManager.RequestAsyncLoad(
-MeshPath,
-[OnLoaded, MeshPath]()
-{
-UStaticMesh* LoadedMesh = Cast<UStaticMesh>(MeshPath.ResolveObject());
-if (LoadedMesh)
-{
-UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: World mesh loaded: %s"), *MeshPath.ToString());
-}
-else
-{
-UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Failed to load world mesh: %s"), *MeshPath.ToString());
-}
-OnLoaded.ExecuteIfBound(LoadedMesh);
-}
-);
+	// Load asynchronously
+	FSoftObjectPath MeshPath = Definition.WorldMesh.ToSoftObjectPath();
+	TSharedPtr<FStreamableHandle> Handle = StreamableManager.RequestAsyncLoad(
+		MeshPath,
+		[OnLoaded, MeshPath]()
+		{
+			UStaticMesh* LoadedMesh = Cast<UStaticMesh>(MeshPath.ResolveObject());
+			if (LoadedMesh)
+			{
+				UE_LOG(LogTemp, Log, TEXT("EchoesInventorySubsystem: World mesh loaded: %s"), *MeshPath.ToString());
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("EchoesInventorySubsystem: Failed to load world mesh: %s"), *MeshPath.ToString());
+			}
+			OnLoaded.ExecuteIfBound(LoadedMesh);
+		}
+	);
 }
 
 bool UEchoesInventorySubsystem::HasItemDefinition(const FString& ItemId) const
 {
-return GetItemDefinition(ItemId) != nullptr;
+	FEchoesItemDefinitionRow Definition;
+	return TryGetItemDefinition(ItemId, Definition);
 }
 
-const FEchoesItemDefinitionRow* UEchoesInventorySubsystem::GetItemFromRegistry(int32 TypeId) const
+bool UEchoesInventorySubsystem::TryGetItemFromRegistry(int32 TypeId, FEchoesItemDefinitionRow& OutDefinition) const
 {
-	// Check typed registry first
 	if (const FEchoesItemDefinitionRow* Found = ItemTypeRegistry.Find(TypeId))
 	{
-		return Found;
+		OutDefinition = *Found;
+		return true;
 	}
 
-	// Return nullptr if not found
-	return nullptr;
+	return false;
+}
+
+FEchoesItemDefinitionRow UEchoesInventorySubsystem::GetItemFromRegistryData(int32 TypeId) const
+{
+	FEchoesItemDefinitionRow Definition;
+	if (TryGetItemFromRegistry(TypeId, Definition))
+	{
+		return Definition;
+	}
+
+	return FEchoesItemDefinitionRow();
 }
 
 bool UEchoesInventorySubsystem::HasItemInRegistry(int32 TypeId) const
@@ -1120,11 +1183,10 @@ void UEchoesInventorySubsystem::BuildDefinitionCache()
 
 	for (const FName& RowName : RowNames)
 	{
-		FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("BuildDefinitionCache"));
-		if (Row)
+		if (const FEchoesItemDefinitionRow* Row = ItemDefinitionsTable->FindRow<FEchoesItemDefinitionRow>(RowName, TEXT("BuildDefinitionCache")))
 		{
 			// Add to string-based cache (legacy)
-			DefinitionCache.Add(RowName.ToString(), Row);
+			DefinitionCache.Add(RowName.ToString(), *Row);
 
 			// Add to typed registry
 			// Parse RowName as integer TypeId

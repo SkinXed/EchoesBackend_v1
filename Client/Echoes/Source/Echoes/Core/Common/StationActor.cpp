@@ -22,7 +22,7 @@ AStationActor::AStationActor()
 
 	// Set network cull distance for regional clusters
 	// 5 million units = reasonable visibility range for stations
-	NetCullDistanceSquared = 25000000000000.0; // 5 million units squared
+	SetNetCullDistanceSquared(25000000000000.0); // 5 million units squared
 
 	// Create root component
 	USceneComponent* RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -291,23 +291,19 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 			int32 StationIdInt = 1; // TODO: Get actual station ID from database mapping
 			
 			UE_LOG(LogTemp, Log, TEXT("Requesting personal hangar for station %d"), StationIdInt);
+
+			PendingDockingController = PlayerController;
+
+			FOnHangarReceived OnSuccess;
+			OnSuccess.BindDynamic(this, &AStationActor::HandleHangarReceived);
+
+			FOnInventoryFailure OnFailure;
+			OnFailure.BindDynamic(this, &AStationActor::HandleHangarFailure);
 			
 			InventorySubsystem->Inventory_RequestPersonalHangar(
 				StationIdInt,
-				FOnHangarReceived::CreateLambda([this, PlayerController](const FGuid& HangarStorageId)
-				{
-					UE_LOG(LogTemp, Log, TEXT("✓ Personal hangar retrieved: %s"), *HangarStorageId.ToString());
-					
-					// Open station menu on client
-					ClientRPC_OpenStationMenu(StationName, StationType, HangarStorageId);
-				}),
-				FOnInventoryFailure::CreateLambda([this, PlayerController](const FString& Error)
-				{
-					UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve personal hangar: %s"), *Error);
-					
-					// Still open station menu with empty hangar ID
-					ClientRPC_OpenStationMenu(StationName, StationType, FGuid());
-				}));
+				OnSuccess,
+				OnFailure);
 		}
 		else
 		{
@@ -326,6 +322,30 @@ void AStationActor::InitiateDocking(APlayerController* PlayerController)
 	NotifyBackendDocking(PlayerController);
 
 	UE_LOG(LogTemp, Log, TEXT("✓ Docking sequence initiated"));
+}
+
+void AStationActor::HandleHangarReceived(const FGuid& HangarStorageId)
+{
+	UE_LOG(LogTemp, Log, TEXT("✓ Personal hangar retrieved: %s"), *HangarStorageId.ToString());
+
+	if (PendingDockingController.IsValid())
+	{
+		ClientRPC_OpenStationMenu(StationName, StationType, HangarStorageId);
+	}
+
+	PendingDockingController.Reset();
+}
+
+void AStationActor::HandleHangarFailure(const FString& Error)
+{
+	UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve personal hangar: %s"), *Error);
+
+	if (PendingDockingController.IsValid())
+	{
+		ClientRPC_OpenStationMenu(StationName, StationType, FGuid());
+	}
+
+	PendingDockingController.Reset();
 }
 
 void AStationActor::NotifyBackendDocking(APlayerController* PlayerController)

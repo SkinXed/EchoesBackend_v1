@@ -150,7 +150,18 @@ protected:
 	UFUNCTION()
 	void OnRep_StationData();
 
+protected:
+	/** Called when ship fitting is successfully fetched */
+	UFUNCTION()
+	void HandleHangarReceived(const FGuid& HangarStorageId);
+
+	/** Called when ship fitting fetch fails */
+	UFUNCTION()
+	void HandleHangarFailure(const FString& Error);
+
 private:
 	void ApplyVisualConfiguration();
 	void ApplySeedVariation();
+
+	TWeakObjectPtr<APlayerController> PendingDockingController;
 };
