@@ -207,7 +207,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/register"));
+		CreateAuthenticatedRequest(TEXT("POST"), GetRegisterEndpoint());
 	HttpRequest->SetContentAsString(JsonString);
 
 	// Bind response handler
@@ -265,7 +265,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Heartbeat()
 
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/heartbeat"));
+		CreateAuthenticatedRequest(TEXT("POST"), GetHeartbeatEndpoint());
 	HttpRequest->SetContentAsString(JsonString);
 
 	// Bind response handler
@@ -317,7 +317,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_GetConfig()
 
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
-		CreateAuthenticatedRequest(TEXT("POST"), TEXT("/api/server-management/config"));
+		CreateAuthenticatedRequest(TEXT("POST"), GetConfigEndpoint());
 	HttpRequest->SetContentAsString(JsonString);
 
 	// Bind response handler
@@ -352,7 +352,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Unregister()
 	UE_LOG(LogEchoesServer, Log, TEXT("Unregistering server from backend..."));
 
 	// Create HTTP request
-	FString Endpoint = FString::Printf(TEXT("/api/server-management/unregister/%s"), *ServerInstanceId);
+	FString Endpoint = FString::Printf(TEXT("%s/%s"), *GetUnregisterEndpoint(), *ServerInstanceId);
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = 
 		CreateAuthenticatedRequest(TEXT("DELETE"), Endpoint);
 
@@ -599,7 +599,7 @@ FString UEchoesServerManagementSubsystem::GetApiBaseUrl() const
 	}
 
 	// Default fallback
-	return TEXT("http://localhost:5000");
+	return TEXT("http://localhost:5116");
 }
 
 FString UEchoesServerManagementSubsystem::GetServerSecret() const
@@ -613,6 +613,54 @@ FString UEchoesServerManagementSubsystem::GetServerSecret() const
 	// Error: No server secret configured
 	UE_LOG(LogEchoesServer, Error, TEXT("ServerSecret not configured in DefaultGame.ini! Server authentication will fail."));
 	return TEXT("");
+}
+
+FString UEchoesServerManagementSubsystem::GetRegisterEndpoint() const
+{
+	// Try to get from config first
+	if (!RegisterEndpoint.IsEmpty())
+	{
+		return RegisterEndpoint;
+	}
+
+	// Default fallback
+	return TEXT("/api/server-management/register");
+}
+
+FString UEchoesServerManagementSubsystem::GetHeartbeatEndpoint() const
+{
+	// Try to get from config first
+	if (!HeartbeatEndpoint.IsEmpty())
+	{
+		return HeartbeatEndpoint;
+	}
+
+	// Default fallback
+	return TEXT("/api/server-management/heartbeat");
+}
+
+FString UEchoesServerManagementSubsystem::GetConfigEndpoint() const
+{
+	// Try to get from config first
+	if (!ConfigEndpoint.IsEmpty())
+	{
+		return ConfigEndpoint;
+	}
+
+	// Default fallback
+	return TEXT("/api/server-management/config");
+}
+
+FString UEchoesServerManagementSubsystem::GetUnregisterEndpoint() const
+{
+	// Try to get from config first
+	if (!UnregisterEndpoint.IsEmpty())
+	{
+		return UnregisterEndpoint;
+	}
+
+	// Default fallback
+	return TEXT("/api/server-management/unregister");
 }
 
 bool UEchoesServerManagementSubsystem::IsDedicatedServer() const
