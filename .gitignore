@@ -46,3 +46,14 @@ ScaffoldingReadMe.txt
 
 # Blazor WebAssembly output (served from wwwroot in API)
 wwwroot/
+Client/Echoes/Content/Asteroids_Collection_1/Maps/Example_Map_1.umap
+Client/Echoes/Content/Asteroids_Collection_1/Maps/Example_Map_2.umap
+Client/Echoes/Content/Asteroids_Collection_1/Maps/Showcase_Map_1.umap
+Client/Echoes/Content/Project/Asets/FXStarStarterKit/Maps/Star_28000Kelvin.umap
+Client/Echoes/Content/Project/Asets/FXStarStarterKit/Maps/Star_3000Kelvin.umap
+Client/Echoes/Content/Project/Asets/SpaceStation/Maps/ShipShowcase.umap
+Client/Echoes/Content/Project/Asets/SpaceStation/Maps/MainExampleMap.umap
+Client/Echoes/Content/Project/Asets/SpaceStation/Maps/Showcase.umap
+Client/Echoes/Content/Project/Asets/SpaceStation/Maps/SubLevels/ExampleLocation1.umap
+Client/Echoes/Content/Project/Asets/SpaceStation/Maps/Showcase.umap
+Client/Echoes/Content/Project/Asets/SpaceStation/Maps/MainExampleMap.umap
