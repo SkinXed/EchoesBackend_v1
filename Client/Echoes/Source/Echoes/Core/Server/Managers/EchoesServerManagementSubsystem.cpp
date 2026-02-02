@@ -599,7 +599,7 @@ FString UEchoesServerManagementSubsystem::GetApiBaseUrl() const
 	}
 
 	// Default fallback
-	return TEXT("http://localhost:5000");
+	return TEXT("http://localhost:5116");
 }
 
 FString UEchoesServerManagementSubsystem::GetServerSecret() const
