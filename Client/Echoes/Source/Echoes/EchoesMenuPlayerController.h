@@ -7,6 +7,12 @@
 #include "EchoesMenuPlayerController.generated.h"
 
 class UEchoesCharacterSelectWidget;
+class UEchoesLoginWidget;
+class UEchoesPreloadWidget;
+class UUserWidget;
+
+// Forward declare enum for preload completion (defined in EchoesPreloadWidget.h)
+enum class ENextState : uint8;
 
 // Define log category for menu system
 DECLARE_LOG_CATEGORY_EXTERN(LogEchoesMenu, Log, All);
@@ -14,45 +20,95 @@ DECLARE_LOG_CATEGORY_EXTERN(LogEchoesMenu, Log, All);
 /**
  * AEchoesMenuPlayerController
  * 
- * Player controller for character selection menu
- * Handles UI creation and input mode management
+ * Centralized menu controller for authorization flow
+ * Manages widget transitions and input mode
+ * 
+ * Authorization Chain:
+ * Preload (token check) -> Login (credentials) -> CharacterSelect -> ConnectToWorld
  * 
  * Key Features:
- * - Creates and displays character select widget on BeginPlay
- * - Sets input mode to UI-only with visible mouse cursor
+ * - ShowLoginScreen() - Display login widget
+ * - ShowCharacterSelect() - Display character selection widget
+ * - ChangeWidget() - Internal method for widget transitions
+ * - Handles bShowMouseCursor = true and FInputModeUIOnly
  * - Only operates on local player controllers
  * 
  * Usage:
  * - Create a Blueprint based on this class
- * - Set CharacterSelectWidgetClass to your WBP_CharacterSelect blueprint
+ * - Set widget class properties in Blueprint
  * - Assign this controller in EchoesMenuGameMode
- * 
- * Integration:
- * - Widget should call AuthSubsystem->ConnectToWorld() instead of OpenLevel
- * - This enables proper ClientTravel to dedicated servers
  */
 UCLASS()
 class ECHOES_API AEchoesMenuPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
+	/**
+	 * Show login screen
+	 * Called when player needs to authenticate
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Menu")
+	void ShowLoginScreen();
+
+	/**
+	 * Show character selection screen
+	 * Called after successful login
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Menu")
+	void ShowCharacterSelect();
+
 protected:
 	/**
 	 * Called when controller is ready
-	 * Creates character select widget and configures input
+	 * Starts authorization flow with preload screen
 	 */
 	virtual void BeginPlay() override;
 
 	/**
-	 * Widget class to instantiate for character selection
+	 * Change active widget
+	 * Removes current widget and displays new one
+	 * Configures input mode for UI interaction
+	 * 
+	 * @param NewWidgetClass - Class of widget to display
+	 */
+	void ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass);
+
+	/**
+	 * Handle preload completion
+	 * Transitions to login or character select based on result
+	 */
+	UFUNCTION()
+	void OnPreloadComplete(ENextState NextState);
+
+	// ==================== Widget Classes ====================
+
+	/**
+	 * Preload widget class for initial validation
+	 * Set this in Blueprint to WBP_Preload or similar
+	 */
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UEchoesPreloadWidget> PreloadWidgetClass;
+
+	/**
+	 * Login widget class for authentication
+	 * Set this in Blueprint to WBP_Login or similar
+	 */
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UEchoesLoginWidget> LoginWidgetClass;
+
+	/**
+	 * Character select widget class
 	 * Set this in Blueprint to WBP_CharacterSelect or similar
 	 */
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UEchoesCharacterSelectWidget> CharacterSelectWidgetClass;
 
+	// ==================== Widget Instances ====================
+
 	/**
-	 * Instance of the character select widget
+	 * Currently active widget
 	 */
 	UPROPERTY()
-	UEchoesCharacterSelectWidget* CharacterSelectWidget;
+	UUserWidget* CurrentWidget;
 };
