@@ -710,7 +710,7 @@ void UEchoesAuthSubsystem::OnDeleteCharacterResponseReceived(
 	FString ErrorMsg = TEXT("Character deletion failed");
 	TSharedPtr<FJsonObject> JsonObject;
 	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
-	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject->IsValid())
+	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
 	{
 		if (JsonObject->HasField(TEXT("error")))
 		{

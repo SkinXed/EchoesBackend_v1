@@ -213,7 +213,13 @@ void UEchoesCharacterSelectWidget::OnCharacterSelected(FGuid CharacterId)
 	UE_LOG(LogTemp, Log, TEXT("UI: Travel to GalaxyMap with Options: %s"), *Options);
 
 	// Абсолютный переход (Travel)
-	UGameplayStatics::OpenLevel(this, FName("GalaxyMap"), true, Options);
+	if (GalaxyLevelName.IsNone())
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterSelect: GalaxyLevelName is not set"));
+		return;
+	}
+
+	UGameplayStatics::OpenLevel(this, GalaxyLevelName, true, Options);
 }
 
 void UEchoesCharacterSelectWidget::LaunchCharacter(FGuid CharacterId)

@@ -861,6 +861,16 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 		{ "OptionalWidget", "TRUE" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GalaxyLevelName_MetaData[] = {
+		{ "Category", "Echoes|Character" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Galaxy map level to open after character selection */" },
+#endif
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Galaxy map level to open after character selection" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AuthSubsystem_MetaData[] = {
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to auth subsystem */" },
@@ -892,6 +902,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ConfirmCreateButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CancelCreateButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CreationPanel;
+	static const UECodeGen_Private::FNamePropertyParams NewProp_GalaxyLevelName;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_AuthSubsystem;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectedCharacter;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
@@ -930,6 +941,7 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharact
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_ConfirmCreateButton = { "ConfirmCreateButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, ConfirmCreateButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ConfirmCreateButton_MetaData), NewProp_ConfirmCreateButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CancelCreateButton = { "CancelCreateButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, CancelCreateButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CancelCreateButton_MetaData), NewProp_CancelCreateButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CreationPanel = { "CreationPanel", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, CreationPanel), Z_Construct_UClass_UWidget_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CreationPanel_MetaData), NewProp_CreationPanel_MetaData) };
+const UECodeGen_Private::FNamePropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_GalaxyLevelName = { "GalaxyLevelName", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Name, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, GalaxyLevelName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GalaxyLevelName_MetaData), NewProp_GalaxyLevelName_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_AuthSubsystem = { "AuthSubsystem", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, AuthSubsystem), Z_Construct_UClass_UEchoesAuthSubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthSubsystem_MetaData), NewProp_AuthSubsystem_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_SelectedCharacter = { "SelectedCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, SelectedCharacter), Z_Construct_UClass_UCharacterListItem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedCharacter_MetaData), NewProp_SelectedCharacter_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::PropPointers[] = {
@@ -945,6 +957,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesCh
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_ConfirmCreateButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CancelCreateButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CreationPanel,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_GalaxyLevelName,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_AuthSubsystem,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_SelectedCharacter,
 };
@@ -987,10 +1000,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
 		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 2993493031U) },
-		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 3738749681U) },
+		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 695636064U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_1074520297(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_3848610163(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -57,12 +57,12 @@ void UEchoesCharacterListEntry::NativeOnListItemObjectSet(UObject* ListItemObjec
 
 		if (CreditsText)
 		{
-			CreditsText->SetText(FText::AsNumber(Item->CharacterInfo.Credits));
+			CreditsText->SetText(FText::FromString(FString::Printf(TEXT("Credits: %lld"), Item->CharacterInfo.Credits)));
 		}
 
 		if (ExperienceText)
 		{
-			ExperienceText->SetText(FText::AsNumber(Item->CharacterInfo.ExperiencePoints));
+			ExperienceText->SetText(FText::FromString(FString::Printf(TEXT("XP: %d"), Item->CharacterInfo.ExperiencePoints)));
 		}
 
 		if (!AvatarImage)

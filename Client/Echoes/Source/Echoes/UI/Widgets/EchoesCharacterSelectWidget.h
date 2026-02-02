@@ -94,6 +94,12 @@ public:
 	UPROPERTY(meta = (BindWidget, OptionalWidget = true))
 	UWidget* CreationPanel;
 
+	// ==================== Map Settings ====================
+
+	/** Galaxy map level to open after character selection */
+	UPROPERTY(EditDefaultsOnly, Category = "Echoes|Character")
+	FName GalaxyLevelName = TEXT("GalaxyMap");
+
 	// ==================== Blueprint Events ====================
 
 	/** Called when a character is selected */
