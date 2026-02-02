@@ -8,6 +8,9 @@
 
 class UEchoesCharacterSelectWidget;
 
+// Define log category for menu system
+DECLARE_LOG_CATEGORY_EXTERN(LogEchoesMenu, Log, All);
+
 /**
  * AEchoesMenuPlayerController
  * 

@@ -213,10 +213,12 @@ void UEchoesCharacterSelectWidget::LaunchCharacter(FGuid CharacterId)
 
 1. Package the project
 2. Start backend API server
-3. Start dedicated server: `YourGame.exe -server CharacterSelectMap`
+3. Start dedicated server: `YourGame.exe -server GalaxyMap` (or your game map)
 4. Launch client: `YourGame.exe`
 5. Login and select character
 6. Client should travel to dedicated server
+
+**Note**: The dedicated server should start with a gameplay map (like GalaxyMap), not CharacterSelectMap. The menu is for client-side only.
 
 ## Related Files
 

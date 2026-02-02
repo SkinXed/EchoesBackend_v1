@@ -4,6 +4,9 @@
 #include "UI/Widgets/EchoesCharacterSelectWidget.h"
 #include "Blueprint/UserWidget.h"
 
+// Define log category
+DEFINE_LOG_CATEGORY(LogEchoesMenu);
+
 void AEchoesMenuPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -29,11 +32,11 @@ void AEchoesMenuPlayerController::BeginPlay()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("EchoesMenuPlayerController: Failed to create CharacterSelectWidget"));
+			UE_LOG(LogEchoesMenu, Error, TEXT("Failed to create CharacterSelectWidget"));
 		}
 	}
 	else if (!CharacterSelectWidgetClass)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("EchoesMenuPlayerController: CharacterSelectWidgetClass not set in Blueprint"));
+		UE_LOG(LogEchoesMenu, Warning, TEXT("CharacterSelectWidgetClass not set in Blueprint"));
 	}
 }
