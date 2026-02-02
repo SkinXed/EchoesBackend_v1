@@ -26,6 +26,9 @@ struct FCharacterData
 	int64 WalletBalance = 0;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int64 Credits = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	float SecurityStatus = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
@@ -39,6 +42,9 @@ struct FCharacterData
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int32 TotalSkillPoints = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int32 ExperiencePoints = 0;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int32 UnallocatedSkillPoints = 0;

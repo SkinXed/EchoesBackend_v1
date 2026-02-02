@@ -8,6 +8,7 @@
 #include "Components/ComboBoxString.h"
 #include "Components/Widget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UEchoesCharacterSelectWidget::NativeConstruct()
 {
@@ -20,12 +21,11 @@ void UEchoesCharacterSelectWidget::NativeConstruct()
 	}
 	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: AuthSubsystem=%s"), AuthSubsystem ? TEXT("Valid") : TEXT("Null"));
 
-	if (SelectButton)
+	if (CharacterList)
 	{
-		SelectButton->OnClicked.AddDynamic(this, &UEchoesCharacterSelectWidget::OnSelectButtonClicked);
+		CharacterList->OnItemSelectionChanged().AddUObject(this, &UEchoesCharacterSelectWidget::OnCharacterListSelectionChanged);
 	}
-	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: SelectButton=%s"), SelectButton ? TEXT("Bound") : TEXT("Null"));
-
+	
 	if (CreateButton)
 	{
 		CreateButton->OnClicked.AddDynamic(this, &UEchoesCharacterSelectWidget::OnCreateButtonClicked);
@@ -74,6 +74,9 @@ void UEchoesCharacterSelectWidget::NativeConstruct()
 	{
 		AuthSubsystem->OnCharacterCreated.AddDynamic(this, &UEchoesCharacterSelectWidget::HandleCharacterCreated);
 		AuthSubsystem->OnCharacterCreationFailed.AddDynamic(this, &UEchoesCharacterSelectWidget::HandleCharacterCreationFailed);
+		AuthSubsystem->OnCharacterDeleted.AddDynamic(this, &UEchoesCharacterSelectWidget::HandleCharacterDeleted);
+		AuthSubsystem->OnCharacterDeletionFailed.AddDynamic(this, &UEchoesCharacterSelectWidget::HandleCharacterDeletionFailed);
+		AuthSubsystem->OnCharacterListUpdated.AddDynamic(this, &UEchoesCharacterSelectWidget::HandleCharacterListUpdated);
 	}
 
 	SetCreationPanelVisible(false);
@@ -86,28 +89,46 @@ void UEchoesCharacterSelectWidget::NativeDestruct()
 	Super::NativeDestruct();
 }
 
-void UEchoesCharacterSelectWidget::OnSelectButtonClicked()
-{
-	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: OnSelectButtonClicked"));
-	if (!SelectedCharacter)
-	{
-		SetStatusText("Please select a character", FLinearColor::Yellow);
-		return;
-	}
 
-	OnCharacterSelected(SelectedCharacter->CharacterInfo.CharacterId);
-}
 
 void UEchoesCharacterSelectWidget::OnCreateButtonClicked()
 {
 	UE_LOG(LogTemp, Warning, TEXT("BUTTON CLICKED: Create"));
+	if (AuthSubsystem)
+	{
+		const int32 CharacterCount = AuthSubsystem->Auth_GetCharacters().Num();
+		if (CharacterCount >= 3)
+		{
+			SetStatusText("Character limit reached (max 3)", FLinearColor::Yellow);
+			return;
+		}
+	}
 	SetCreationPanelVisible(true);
 }
 
 void UEchoesCharacterSelectWidget::OnDeleteButtonClicked()
 {
 	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: OnDeleteButtonClicked"));
-	SetStatusText("Character deletion not yet implemented", FLinearColor::Yellow);
+	if (bOperationInProgress)
+	{
+		return;
+	}
+
+	if (!SelectedCharacter)
+	{
+		SetStatusText("Please select a character", FLinearColor::Yellow);
+		return;
+	}
+
+	if (!AuthSubsystem)
+	{
+		SetStatusText("Auth subsystem not available", FLinearColor::Red);
+		return;
+	}
+
+	bOperationInProgress = true;
+	SetStatusText("Deleting character...", FLinearColor::Yellow);
+	AuthSubsystem->DeleteCharacter(SelectedCharacter->CharacterInfo.CharacterId);
 }
 
 void UEchoesCharacterSelectWidget::OnLogoutButtonClicked()
@@ -118,7 +139,15 @@ void UEchoesCharacterSelectWidget::OnLogoutButtonClicked()
 		AuthSubsystem->Auth_Logout();
 	}
 
-	UGameplayStatics::OpenLevel(this, FName("EntryMap"));
+	const FString CurrentLevel = UGameplayStatics::GetCurrentLevelName(this, true);
+	if (CurrentLevel.Equals(TEXT("EntryMap"), ESearchCase::IgnoreCase))
+	{
+		UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+	}
+	else
+	{
+		UGameplayStatics::OpenLevel(this, FName("EntryMap"));
+	}
 }
 
 void UEchoesCharacterSelectWidget::OnConfirmCreateButtonClicked()
@@ -128,6 +157,16 @@ void UEchoesCharacterSelectWidget::OnConfirmCreateButtonClicked()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("CharacterSelect: Missing CharacterNameInput or RaceComboBox"));
 		return;
+	}
+
+	if (AuthSubsystem)
+	{
+		const int32 CharacterCount = AuthSubsystem->Auth_GetCharacters().Num();
+		if (CharacterCount >= 3)
+		{
+			SetStatusText("Character limit reached (max 3)", FLinearColor::Yellow);
+			return;
+		}
 	}
 
 	FString CharacterName = CharacterNameInput->GetText().ToString();
@@ -152,11 +191,16 @@ void UEchoesCharacterSelectWidget::OnCancelCreateButtonClicked()
 	SetCreationPanelVisible(false);
 }
 
-void UEchoesCharacterSelectWidget::OnRaceSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
+void UEchoesCharacterSelectWidget::OnRaceSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType) 
 {
 	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: OnRaceSelectionChanged %s"), *SelectedItem);
 	int32 RaceId = GetRaceIdFromName(SelectedItem);
 	UpdateRaceInfo(RaceId);
+}
+
+void UEchoesCharacterSelectWidget::OnCharacterListSelectionChanged(UObject* SelectedItem)
+{
+	SelectedCharacter = Cast<UCharacterListItem>(SelectedItem);
 }
 
 void UEchoesCharacterSelectWidget::OnCharacterSelected(FGuid CharacterId)
@@ -172,6 +216,11 @@ void UEchoesCharacterSelectWidget::OnCharacterSelected(FGuid CharacterId)
 	UGameplayStatics::OpenLevel(this, FName("GalaxyMap"), true, Options);
 }
 
+void UEchoesCharacterSelectWidget::LaunchCharacter(FGuid CharacterId)
+{
+	OnCharacterSelected(CharacterId);
+}
+
 void UEchoesCharacterSelectWidget::LoadCharacters()
 {
 	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: LoadCharacters"));
@@ -180,6 +229,7 @@ void UEchoesCharacterSelectWidget::LoadCharacters()
 		const TArray<FCharacterInfo>& Characters = AuthSubsystem->Auth_GetCharacters();
 		UE_LOG(LogTemp, Log, TEXT("CharacterSelect: Auth_GetCharacters=%d"), Characters.Num());
 		PopulateCharacterList(Characters);
+		AuthSubsystem->FetchCharacterList();
 	}
 }
 
@@ -221,6 +271,8 @@ void UEchoesCharacterSelectWidget::HandleCharacterCreated(const FCharacterData& 
 			NewItem->CharacterInfo.Name = "New Pilot";
 		}
 		NewItem->CharacterInfo.WalletBalance = CharacterData.WalletBalance;
+		NewItem->CharacterInfo.Credits = CharacterData.Credits;
+		NewItem->CharacterInfo.ExperiencePoints = CharacterData.ExperiencePoints;
 
 		switch (CharacterData.RaceId)
 		{
@@ -246,6 +298,11 @@ void UEchoesCharacterSelectWidget::HandleCharacterCreated(const FCharacterData& 
 		SelectedCharacter = NewItem;
 		UE_LOG(LogTemp, Warning, TEXT("UI: Manually added character %s to list"), *CharacterData.Name);
 	}
+	
+	if (AuthSubsystem)
+	{
+		UpdateCreateButtonState(AuthSubsystem->Auth_GetCharacters().Num());
+	}
 }
 
 void UEchoesCharacterSelectWidget::HandleCharacterCreationFailed(const FString& ErrorMessage)
@@ -254,6 +311,47 @@ void UEchoesCharacterSelectWidget::HandleCharacterCreationFailed(const FString& 
 	bOperationInProgress = false;
 	SetStatusText(ErrorMessage, FLinearColor::Red);
 	SetCreationPanelVisible(true);
+}
+
+void UEchoesCharacterSelectWidget::HandleCharacterDeleted(const FGuid& CharacterId)
+{
+	bOperationInProgress = false;
+	SetStatusText("Character deleted", FLinearColor::Green);
+
+	if (CharacterList)
+	{
+		TArray<UObject*> Items = CharacterList->GetListItems();
+		for (UObject* Item : Items)
+		{
+			UCharacterListItem* ListItem = Cast<UCharacterListItem>(Item);
+			if (ListItem && ListItem->CharacterInfo.CharacterId == CharacterId)
+			{
+				CharacterList->RemoveItem(ListItem);
+				break;
+			}
+		}
+	}
+
+	if (SelectedCharacter && SelectedCharacter->CharacterInfo.CharacterId == CharacterId)
+	{
+		SelectedCharacter = nullptr;
+	}
+
+	if (AuthSubsystem)
+	{
+		UpdateCreateButtonState(AuthSubsystem->Auth_GetCharacters().Num());
+	}
+}
+
+void UEchoesCharacterSelectWidget::HandleCharacterDeletionFailed(const FString& ErrorMessage)
+{
+	bOperationInProgress = false;
+	SetStatusText(ErrorMessage, FLinearColor::Red);
+}
+
+void UEchoesCharacterSelectWidget::HandleCharacterListUpdated(const TArray<FCharacterInfo>& Characters)
+{
+	PopulateCharacterList(Characters);
 }
 
 void UEchoesCharacterSelectWidget::PopulateCharacterList(const TArray<FCharacterInfo>& Characters)
@@ -265,17 +363,19 @@ void UEchoesCharacterSelectWidget::PopulateCharacterList(const TArray<FCharacter
 	}
 
 	CharacterList->ClearListItems();
+	SelectedCharacter = nullptr;
 
 	for (const FCharacterInfo& CharInfo : Characters)
 	{
 		UCharacterListItem* ListItem = NewObject<UCharacterListItem>(this);
 		ListItem->CharacterInfo = CharInfo;
-		ListItem->RaceName = "Unknown";
+		ListItem->RaceName = CharInfo.RaceName.IsEmpty() ? GetRaceNameFromId(CharInfo.RaceId) : CharInfo.RaceName;
 
 		CharacterList->AddItem(ListItem);
 	}
 
 	SetStatusText(FString::Printf(TEXT("%d character(s) found"), Characters.Num()), FLinearColor::White);
+	UpdateCreateButtonState(Characters.Num());
 }
 
 void UEchoesCharacterSelectWidget::SetCreationPanelVisible(bool bVisible)
@@ -295,11 +395,6 @@ void UEchoesCharacterSelectWidget::SetCreationPanelVisible(bool bVisible)
 	if (CharacterList)
 	{
 		CharacterList->SetVisibility(MenuVis);
-	}
-
-	if (SelectButton)
-	{
-		SelectButton->SetVisibility(MenuVis);
 	}
 
 	if (CreateButton)
@@ -394,5 +489,30 @@ void UEchoesCharacterSelectWidget::SetStatusText(const FString& Message, const F
 	{
 		StatusText->SetText(FText::FromString(Message));
 		StatusText->SetColorAndOpacity(FSlateColor(Color));
+	}
+}
+
+void UEchoesCharacterSelectWidget::UpdateCreateButtonState(int32 CharacterCount)
+{
+	if (CreateButton)
+	{
+		CreateButton->SetIsEnabled(CharacterCount < 3);
+	}
+}
+
+FString UEchoesCharacterSelectWidget::GetRaceNameFromId(int32 RaceId) const
+{
+	switch (RaceId)
+	{
+	case 1:
+		return TEXT("Caldari");
+	case 2:
+		return TEXT("Gallente");
+	case 3:
+		return TEXT("Amarr");
+	case 4:
+		return TEXT("Minmatar");
+	default:
+		return TEXT("Unknown");
 	}
 }

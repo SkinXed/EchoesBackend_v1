@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Echoes.API.Data;
 using Echoes.API.Models.DTOs;
 using Echoes.API.Models.Entities.Character;
+using Echoes.API.Models.Entities.Inventory;
 using System.Security.Claims;
 
 namespace Echoes.API.Controllers;
@@ -83,11 +84,13 @@ public class CharacterController : ControllerBase
                 Name = character.Name,
                 AccountId = character.AccountId,
                 WalletBalance = character.WalletBalance,
+                Credits = character.WalletBalance,
                 SecurityStatus = character.SecurityStatus,
                 CurrentShipId = character.ActiveShipItemId,
                 CorporationId = character.CorporationId,
                 RaceId = character.RaceId,
                 TotalSkillPoints = character.TotalSkillPoints,
+                ExperiencePoints = character.TotalSkillPoints,
                 UnallocatedSkillPoints = character.UnallocatedSkillPoints,
                 IsOnline = character.IsOnline,
                 IsDocked = character.IsDocked,
@@ -141,11 +144,13 @@ public class CharacterController : ControllerBase
                 Name = character.Name,
                 AccountId = character.AccountId,
                 WalletBalance = character.WalletBalance,
+                Credits = character.WalletBalance,
                 SecurityStatus = character.SecurityStatus,
                 CurrentShipId = character.ActiveShipItemId,
                 CorporationId = character.CorporationId,
                 RaceId = character.RaceId,
                 TotalSkillPoints = character.TotalSkillPoints,
+                ExperiencePoints = character.TotalSkillPoints,
                 UnallocatedSkillPoints = character.UnallocatedSkillPoints,
                 IsOnline = character.IsOnline,
                 IsDocked = character.IsDocked,
@@ -181,8 +186,26 @@ public class CharacterController : ControllerBase
                 return Unauthorized(new { error = "Invalid token - no account ID" });
             }
 
-            var characters = await _context.Characters
+            var characterRows = await _context.Characters
                 .Where(c => c.AccountId == accountId)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Name,
+                    c.RaceId,
+                    c.WalletBalance,
+                    Credits = c.WalletBalance,
+                    c.TotalSkillPoints,
+                    c.IsMain,
+                    c.IsOnline,
+                    c.IsDocked,
+                    c.HomeStationId,
+                    c.CreatedAt,
+                    c.LastLogin
+                })
+                .ToListAsync();
+
+            var characters = characterRows
                 .Select(c => new CharacterListDto
                 {
                     CharacterId = c.Id,
@@ -190,6 +213,8 @@ public class CharacterController : ControllerBase
                     RaceId = c.RaceId,
                     RaceName = GetRaceName(c.RaceId),
                     WalletBalance = c.WalletBalance,
+                    Credits = c.Credits,
+                    TotalSkillPoints = c.TotalSkillPoints,
                     IsMain = c.IsMain,
                     IsOnline = c.IsOnline,
                     IsDocked = c.IsDocked,
@@ -197,7 +222,7 @@ public class CharacterController : ControllerBase
                     CreatedAt = c.CreatedAt,
                     LastLogin = c.LastLogin
                 })
-                .ToListAsync();
+                .ToList();
 
             return Ok(characters);
         }
@@ -226,6 +251,12 @@ public class CharacterController : ControllerBase
             if (string.IsNullOrEmpty(accountIdClaim) || !Guid.TryParse(accountIdClaim, out var accountId))
             {
                 return Unauthorized(new { error = "Invalid token - no account ID" });
+            }
+
+            var existingCount = await _context.Characters.CountAsync(c => c.AccountId == accountId);
+            if (existingCount >= 3)
+            {
+                return BadRequest(new { error = "Character limit reached (max 3)" });
             }
 
             // Validate input
@@ -351,9 +382,11 @@ public class CharacterController : ControllerBase
                 AccountId = character.AccountId,
                 RaceId = character.RaceId,
                 WalletBalance = character.WalletBalance,
+                Credits = character.WalletBalance,
                 SecurityStatus = character.SecurityStatus,
                 CurrentShipId = character.ActiveShipItemId,
                 TotalSkillPoints = character.TotalSkillPoints,
+                ExperiencePoints = character.TotalSkillPoints,
                 UnallocatedSkillPoints = character.UnallocatedSkillPoints,
                 IsOnline = character.IsOnline,
                 IsDocked = character.IsDocked
@@ -595,6 +628,105 @@ public class CharacterController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error undocking character");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Delete a character for the authenticated account
+    /// DELETE /api/character/{id}
+    /// </summary>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> DeleteCharacter(Guid id)
+    {
+        try
+        {
+            var accountIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(accountIdClaim) || !Guid.TryParse(accountIdClaim, out var accountId))
+            {
+                return Unauthorized(new { error = "Invalid token - no account ID" });
+            }
+
+            var character = await _context.Characters
+                .FirstOrDefaultAsync(c => c.Id == id && c.AccountId == accountId);
+
+            if (character == null)
+            {
+                return NotFound(new { error = "Character not found" });
+            }
+
+            if (character.IsOnline)
+            {
+                return BadRequest(new { error = "Cannot delete an online character" });
+            }
+
+            var executionStrategy = _context.Database.CreateExecutionStrategy();
+            await executionStrategy.ExecuteAsync(async () =>
+            {
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+
+                _context.AccountSessions.RemoveRange(_context.AccountSessions.Where(s => s.CharacterId == id));
+
+                _context.CharacterContracts.RemoveRange(
+                    _context.CharacterContracts.Where(c => c.IssuerId == id || c.AssigneeId == id || c.AcceptorId == id));
+
+                _context.CharacterLocations.RemoveRange(_context.CharacterLocations.Where(cl => cl.CharacterId == id));
+
+                _context.Set<CharacterClone>().RemoveRange(_context.Set<CharacterClone>().Where(c => c.CharacterId == id));
+                _context.Set<CharacterSkill>().RemoveRange(_context.Set<CharacterSkill>().Where(s => s.CharacterId == id));
+                _context.Set<CharacterSkillEnhanced>().RemoveRange(_context.Set<CharacterSkillEnhanced>().Where(s => s.CharacterId == id));
+                _context.Set<CharacterImplant>().RemoveRange(_context.Set<CharacterImplant>().Where(i => i.CharacterId == id));
+                _context.Set<CharacterImplantEnhanced>().RemoveRange(_context.Set<CharacterImplantEnhanced>().Where(i => i.CharacterId == id));
+                _context.Set<CharacterStanding>().RemoveRange(_context.Set<CharacterStanding>().Where(s => s.CharacterId == id));
+                _context.Set<TrainingQueue>().RemoveRange(_context.Set<TrainingQueue>().Where(q => q.CharacterId == id));
+
+                var walletIds = await _context.Set<CharacterWallet>()
+                    .Where(w => w.CharacterId == id)
+                    .Select(w => w.WalletId)
+                    .ToListAsync();
+
+                if (walletIds.Count > 0)
+                {
+                    _context.Set<WalletTransaction>().RemoveRange(
+                        _context.Set<WalletTransaction>().Where(t => walletIds.Contains(t.WalletId)));
+                }
+
+                _context.Set<CharacterWallet>().RemoveRange(_context.Set<CharacterWallet>().Where(w => w.CharacterId == id));
+
+                var shipInstanceIds = await _context.ShipInstances
+                    .Where(s => s.CharacterId == id)
+                    .Select(s => s.Id)
+                    .ToListAsync();
+
+                if (shipInstanceIds.Count > 0)
+                {
+                    _context.ShipInstanceModules.RemoveRange(
+                        _context.ShipInstanceModules.Where(m => m.ShipInstanceId != null && shipInstanceIds.Contains(m.ShipInstanceId.Value)));
+                }
+
+                _context.ShipInstances.RemoveRange(_context.ShipInstances.Where(s => s.CharacterId == id));
+
+                character.ActiveShipItemId = null;
+                await _context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM inventory_items WHERE \"CharacterId\" = {id}");
+                _context.Set<InventoryItem>().RemoveRange(_context.Set<InventoryItem>().Where(i => i.OwnerId == id));
+                
+                _context.Characters.Remove(character);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            });
+
+            _logger.LogInformation("Deleted character {CharacterId} for account {AccountId}", id, accountId);
+
+            return Ok(new { message = "Character deleted" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting character {CharacterId}", id);
             return StatusCode(500, new { error = "Internal server error" });
         }
     }

@@ -374,7 +374,22 @@ bool UEchoesAuthSubsystem::ParseAuthResponse(const FString& JsonString, FAuthRes
 				FCharacterInfo CharInfo;
 				FGuid::Parse(CharObj->GetStringField(TEXT("characterId")), CharInfo.CharacterId);
 				CharInfo.Name = CharObj->GetStringField(TEXT("name"));
+				if (CharObj->HasField(TEXT("raceId")))
+				{
+					CharInfo.RaceId = CharObj->GetIntegerField(TEXT("raceId"));
+				}
+				if (CharObj->HasField(TEXT("raceName")))
+				{
+					CharInfo.RaceName = CharObj->GetStringField(TEXT("raceName"));
+				}
 				CharInfo.WalletBalance = CharObj->GetNumberField(TEXT("walletBalance"));
+				CharInfo.Credits = CharObj->HasField(TEXT("credits"))
+					? CharObj->GetNumberField(TEXT("credits"))
+					: CharInfo.WalletBalance;
+				if (CharObj->HasField(TEXT("totalSkillPoints")))
+				{
+					CharInfo.ExperiencePoints = CharObj->GetIntegerField(TEXT("totalSkillPoints"));
+				}
 				
 				if (CharObj->HasField(TEXT("currentShipId")) && !CharObj->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
 				{
@@ -407,6 +422,9 @@ bool UEchoesAuthSubsystem::ParseCharacterData(const FString& JsonString, FCharac
 	OutData.Name = JsonObject->GetStringField(TEXT("name"));
 	FGuid::Parse(JsonObject->GetStringField(TEXT("accountId")), OutData.AccountId);
 	OutData.WalletBalance = JsonObject->GetNumberField(TEXT("walletBalance"));
+	OutData.Credits = JsonObject->HasField(TEXT("credits"))
+		? JsonObject->GetNumberField(TEXT("credits"))
+		: OutData.WalletBalance;
 	OutData.SecurityStatus = JsonObject->GetNumberField(TEXT("securityStatus"));
 	
 	if (JsonObject->HasField(TEXT("currentShipId")) && !JsonObject->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
@@ -421,6 +439,7 @@ bool UEchoesAuthSubsystem::ParseCharacterData(const FString& JsonString, FCharac
 	
 	OutData.RaceId = JsonObject->GetIntegerField(TEXT("raceId"));
 	OutData.TotalSkillPoints = JsonObject->GetIntegerField(TEXT("totalSkillPoints"));
+	OutData.ExperiencePoints = OutData.TotalSkillPoints;
 	OutData.UnallocatedSkillPoints = JsonObject->GetIntegerField(TEXT("unallocatedSkillPoints"));
 	OutData.IsOnline = JsonObject->GetBoolField(TEXT("isOnline"));
 	OutData.IsDocked = JsonObject->GetBoolField(TEXT("isDocked"));
@@ -572,6 +591,36 @@ void UEchoesAuthSubsystem::CreateCharacter(const FString& CharacterName, int32 R
 	UE_LOG(LogTemp, Log, TEXT("Creating character: %s (RaceId: %d)"), *CharacterName, RaceId);
 }
 
+void UEchoesAuthSubsystem::DeleteCharacter(const FGuid& CharacterId)
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HTTP module not available"));
+		OnCharacterDeletionFailed.Broadcast(TEXT("HTTP module not available"));
+		return;
+	}
+
+	if (JWTToken.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not authenticated"));
+		OnCharacterDeletionFailed.Broadcast(TEXT("Not authenticated"));
+		return;
+	}
+
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
+	HttpRequest->SetVerb(TEXT("DELETE"));
+	HttpRequest->SetURL(GetApiBaseUrl() + FString::Printf(TEXT("/character/%s"), *CharacterId.ToString()));
+	HttpRequest->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *JWTToken));
+
+	HttpRequest->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesAuthSubsystem::OnDeleteCharacterResponseReceived,
+		CharacterId);
+
+	HttpRequest->ProcessRequest();
+	UE_LOG(LogTemp, Log, TEXT("Deleting character: %s"), *CharacterId.ToString());
+}
+
 void UEchoesAuthSubsystem::OnCreateCharacterResponseReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
@@ -625,6 +674,51 @@ void UEchoesAuthSubsystem::OnCreateCharacterResponseReceived(
 
 		OnCharacterCreationFailed.Broadcast(ErrorMsg);
 	}
+}
+
+void UEchoesAuthSubsystem::OnDeleteCharacterResponseReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	FGuid CharacterId)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Character deletion request failed"));
+		OnCharacterDeletionFailed.Broadcast(TEXT("Network error"));
+		return;
+	}
+
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+
+	if (ResponseCode == 200 || ResponseCode == 204)
+	{
+		CurrentAuthResponse.Characters.RemoveAll([CharacterId](const FCharacterInfo& Info)
+		{
+			return Info.CharacterId == CharacterId;
+		});
+
+		UE_LOG(LogTemp, Log, TEXT("Character deleted successfully: %s"), *CharacterId.ToString());
+		OnCharacterDeleted.Broadcast(CharacterId);
+		FetchCharacterList();
+		return;
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("Character deletion failed: %d - %s"), ResponseCode, *ResponseContent);
+
+	FString ErrorMsg = TEXT("Character deletion failed");
+	TSharedPtr<FJsonObject> JsonObject;
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseContent);
+	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject->IsValid())
+	{
+		if (JsonObject->HasField(TEXT("error")))
+		{
+			ErrorMsg = JsonObject->GetStringField(TEXT("error"));
+		}
+	}
+
+	OnCharacterDeletionFailed.Broadcast(ErrorMsg);
 }
 
 void UEchoesAuthSubsystem::FetchCharacterList()
@@ -692,15 +786,35 @@ void UEchoesAuthSubsystem::OnFetchCharacterListResponseReceived(
 					FGuid::Parse(CharIdStr, CharInfo.CharacterId);
 					
 					CharInfo.Name = CharObj->GetStringField(TEXT("name"));
+					if (CharObj->HasField(TEXT("raceId")))
+					{
+						CharInfo.RaceId = CharObj->GetIntegerField(TEXT("raceId"));
+					}
+					if (CharObj->HasField(TEXT("raceName")))
+					{
+						CharInfo.RaceName = CharObj->GetStringField(TEXT("raceName"));
+					}
 					CharInfo.WalletBalance = (int64)CharObj->GetNumberField(TEXT("walletBalance"));
+					CharInfo.Credits = CharObj->HasField(TEXT("credits"))
+						? (int64)CharObj->GetNumberField(TEXT("credits"))
+						: CharInfo.WalletBalance;
+					if (CharObj->HasField(TEXT("totalSkillPoints")))
+					{
+						CharInfo.ExperiencePoints = CharObj->GetIntegerField(TEXT("totalSkillPoints"));
+					}
 					CharInfo.IsMain = CharObj->GetBoolField(TEXT("isMain"));
 					CharInfo.IsOnline = CharObj->GetBoolField(TEXT("isOnline"));
+					if (CharObj->HasField(TEXT("currentShipId")) && !CharObj->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
+					{
+						CharInfo.CurrentShipId = CharObj->GetNumberField(TEXT("currentShipId"));
+					}
 
 					CurrentAuthResponse.Characters.Add(CharInfo);
 				}
 			}
 
 			UE_LOG(LogTemp, Log, TEXT("Fetched %d characters"), CurrentAuthResponse.Characters.Num());
+			OnCharacterListUpdated.Broadcast(CurrentAuthResponse.Characters);
 		}
 	}
 }

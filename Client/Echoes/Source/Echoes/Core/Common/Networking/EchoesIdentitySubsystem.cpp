@@ -186,6 +186,8 @@ void UEchoesIdentitySubsystem::OnCharacterDataReceived(
 			// Store selected character
 			SelectedCharacter = CharacterData;
 			SelectedCharacter.ISK = CharacterData.WalletBalance; // Alias for EVE-style
+			SelectedCharacter.Credits = CharacterData.WalletBalance;
+			SelectedCharacter.ExperiencePoints = CharacterData.TotalSkillPoints;
 
 			UE_LOG(LogTemp, Log, TEXT("Successfully parsed character data: %s"), *CharacterData.Name);
 			OnSuccess.ExecuteIfBound(CharacterData);
@@ -242,6 +244,9 @@ bool UEchoesIdentitySubsystem::ParseCharacterData(const FString& JsonString, FEc
 
 	JsonObject->TryGetNumberField(TEXT("walletBalance"), OutCharacter.WalletBalance);
 	OutCharacter.ISK = OutCharacter.WalletBalance; // Alias
+	OutCharacter.Credits = JsonObject->HasField(TEXT("credits"))
+		? JsonObject->GetNumberField(TEXT("credits"))
+		: OutCharacter.WalletBalance;
 
 	double SecurityStatusDouble = 0.0;
 	if (JsonObject->TryGetNumberField(TEXT("securityStatus"), SecurityStatusDouble))
@@ -267,6 +272,7 @@ bool UEchoesIdentitySubsystem::ParseCharacterData(const FString& JsonString, FEc
 	if (JsonObject->TryGetNumberField(TEXT("totalSkillPoints"), TotalSkillPointsInt))
 	{
 		OutCharacter.TotalSkillPoints = TotalSkillPointsInt;
+		OutCharacter.ExperiencePoints = TotalSkillPointsInt;
 	}
 
 	int32 UnallocatedSkillPointsInt = 0;

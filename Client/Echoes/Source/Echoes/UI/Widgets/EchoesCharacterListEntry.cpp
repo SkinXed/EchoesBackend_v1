@@ -2,6 +2,22 @@
 
 #include "EchoesCharacterListEntry.h"
 #include "Widgets/EchoesCharacterSelectWidget.h"
+#include "Components/Button.h"
+#include "Components/ListView.h"
+
+void UEchoesCharacterListEntry::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if (LoginButton)
+	{
+		LoginButton->OnClicked.AddDynamic(this, &UEchoesCharacterListEntry::OnLoginButtonClicked);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CharacterListEntry: LoginButton not bound"));
+	}
+}
 
 void UEchoesCharacterListEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
@@ -10,12 +26,14 @@ void UEchoesCharacterListEntry::NativeOnListItemObjectSet(UObject* ListItemObjec
 
 	if (Item)
 	{
+		CachedListItem = Item;
+		CachedCharacterId = Item->CharacterInfo.CharacterId;
 		UE_LOG(LogTemp, Log, TEXT("CharacterListEntry: Item=%s"), *Item->CharacterInfo.Name);
 		if (NameText)
 		{
 			if (Item->CharacterInfo.Name.IsEmpty())
 			{
-				NameText->SetText(FText::FromString("Unknown Pilot"));
+				NameText->SetText(FText::FromString(" Pilot"));
 			}
 			else
 			{
@@ -37,6 +55,16 @@ void UEchoesCharacterListEntry::NativeOnListItemObjectSet(UObject* ListItemObjec
 			UE_LOG(LogTemp, Warning, TEXT("CharacterListEntry: RaceText not bound"));
 		}
 
+		if (CreditsText)
+		{
+			CreditsText->SetText(FText::AsNumber(Item->CharacterInfo.Credits));
+		}
+
+		if (ExperienceText)
+		{
+			ExperienceText->SetText(FText::AsNumber(Item->CharacterInfo.ExperiencePoints));
+		}
+
 		if (!AvatarImage)
 		{
 			UE_LOG(LogTemp, Log, TEXT("CharacterListEntry: AvatarImage not bound"));
@@ -47,5 +75,28 @@ void UEchoesCharacterListEntry::NativeOnListItemObjectSet(UObject* ListItemObjec
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("CharacterListEntry: ListItemObject is not UCharacterListItem"));
+	}
+}
+
+void UEchoesCharacterListEntry::OnLoginButtonClicked()
+{
+	UEchoesCharacterSelectWidget* ParentWidget = GetTypedOuter<UEchoesCharacterSelectWidget>();
+	if (ParentWidget)
+	{
+		if (ParentWidget->CharacterList && CachedListItem)
+		{
+			UObject* SelectedItem = ParentWidget->CharacterList->GetSelectedItem();
+			if (SelectedItem != CachedListItem)
+			{
+				ParentWidget->CharacterList->SetSelectedItem(CachedListItem);
+				return;
+			}
+		}
+
+		ParentWidget->LaunchCharacter(CachedCharacterId);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Error: ListEntry cannot find parent EchoesCharacterSelectWidget!"));
 	}
 }

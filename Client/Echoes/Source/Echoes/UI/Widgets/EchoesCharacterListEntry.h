@@ -7,6 +7,7 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
+#include "Components/Button.h"
 #include "Widgets/EchoesCharacterSelectWidget.h"
 #include "EchoesCharacterListEntry.generated.h"
 
@@ -19,6 +20,7 @@ class ECHOES_API UEchoesCharacterListEntry : public UUserWidget, public IUserObj
 	GENERATED_BODY()
 
 public:
+	virtual void NativeConstruct() override;
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
 protected:
@@ -30,5 +32,21 @@ protected:
 	class UTextBlock* RaceText;
 
 	UPROPERTY(meta = (BindWidgetOptional))
+	class UTextBlock* CreditsText;
+
+	UPROPERTY(meta = (BindWidgetOptional))
+	class UTextBlock* ExperienceText;
+
+	UPROPERTY(meta = (BindWidgetOptional))
 	class UImage* AvatarImage;
+
+	UPROPERTY(meta = (BindWidget))	
+	class UButton* LoginButton;
+
+	FGuid CachedCharacterId;
+	UCharacterListItem* CachedListItem = nullptr;
+
+private:
+	UFUNCTION()
+	void OnLoginButtonClicked();
 };

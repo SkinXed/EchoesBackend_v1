@@ -56,10 +56,6 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UListView* CharacterList;
 
-	/** Select character button */
-	UPROPERTY(meta = (BindWidget))
-	UButton* SelectButton;
-
 	/** Create new character button */
 	UPROPERTY(meta = (BindWidget))
 	UButton* CreateButton;
@@ -104,11 +100,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
 	void OnCharacterSelected(FGuid CharacterId);
 
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
+	void LaunchCharacter(FGuid CharacterId);
+
 protected:
 	// ==================== Button Handlers ====================
-
-	UFUNCTION()
-	void OnSelectButtonClicked();
 
 	UFUNCTION()
 	void OnCreateButtonClicked();
@@ -127,6 +123,9 @@ protected:
 
 	UFUNCTION()
 	void OnRaceSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	void OnCharacterListSelectionChanged(UObject* SelectedItem);
 
 	// ==================== API Functions ====================
 
@@ -172,6 +171,9 @@ protected:
 	 */
 	void SetStatusText(const FString& Message, const FLinearColor& Color);
 
+	void UpdateCreateButtonState(int32 CharacterCount);
+	FString GetRaceNameFromId(int32 RaceId) const;
+
 private:
 	/** Reference to auth subsystem */
 	UPROPERTY()
@@ -189,4 +191,13 @@ private:
 
 	UFUNCTION()
 	void HandleCharacterCreationFailed(const FString& ErrorMessage);
+
+	UFUNCTION()
+	void HandleCharacterDeleted(const FGuid& CharacterId);
+
+	UFUNCTION()
+	void HandleCharacterDeletionFailed(const FString& ErrorMessage);
+
+	UFUNCTION()
+	void HandleCharacterListUpdated(const TArray<FCharacterInfo>& Characters);
 };

@@ -15,6 +15,7 @@ void EmptyLinkFunctionForGeneratedCodeEchoesCharacterSelectWidget() {}
 
 // ********** Begin Cross Module References ********************************************************
 COREUOBJECT_API UClass* Z_Construct_UClass_UObject();
+COREUOBJECT_API UClass* Z_Construct_UClass_UObject_NoRegister();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
 ECHOES_API UClass* Z_Construct_UClass_UCharacterListItem();
 ECHOES_API UClass* Z_Construct_UClass_UCharacterListItem_NoRegister();
@@ -99,7 +100,7 @@ struct Z_Construct_UClass_UCharacterListItem_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCharacterListItem_Statics::NewProp_CharacterInfo = { "CharacterInfo", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCharacterListItem, CharacterInfo), Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterInfo_MetaData), NewProp_CharacterInfo_MetaData) }; // 2611301823
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCharacterListItem_Statics::NewProp_CharacterInfo = { "CharacterInfo", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCharacterListItem, CharacterInfo), Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterInfo_MetaData), NewProp_CharacterInfo_MetaData) }; // 2252549621
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UCharacterListItem_Statics::NewProp_RaceName = { "RaceName", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCharacterListItem, RaceName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RaceName_MetaData), NewProp_RaceName_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCharacterListItem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCharacterListItem_Statics::NewProp_CharacterInfo,
@@ -158,7 +159,7 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated_Statics::NewProp_CharacterData = { "CharacterData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterCreated_Parms, CharacterData), Z_Construct_UScriptStruct_FCharacterData, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterData_MetaData), NewProp_CharacterData_MetaData) }; // 1777139561
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated_Statics::NewProp_CharacterData = { "CharacterData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterCreated_Parms, CharacterData), Z_Construct_UScriptStruct_FCharacterData, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterData_MetaData), NewProp_CharacterData_MetaData) }; // 1874857763
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated_Statics::NewProp_CharacterData,
 };
@@ -229,6 +230,187 @@ DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execHandleCharacterCreationFailed)
 }
 // ********** End Class UEchoesCharacterSelectWidget Function HandleCharacterCreationFailed ********
 
+// ********** Begin Class UEchoesCharacterSelectWidget Function HandleCharacterDeleted *************
+struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics
+{
+	struct EchoesCharacterSelectWidget_eventHandleCharacterDeleted_Parms
+	{
+		FGuid CharacterId;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterId_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_CharacterId;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::NewProp_CharacterId = { "CharacterId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterDeleted_Parms, CharacterId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterId_MetaData), NewProp_CharacterId_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::NewProp_CharacterId,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterSelectWidget, nullptr, "HandleCharacterDeleted", Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::EchoesCharacterSelectWidget_eventHandleCharacterDeleted_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00C40401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::EchoesCharacterSelectWidget_eventHandleCharacterDeleted_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execHandleCharacterDeleted)
+{
+	P_GET_STRUCT_REF(FGuid,Z_Param_Out_CharacterId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleCharacterDeleted(Z_Param_Out_CharacterId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesCharacterSelectWidget Function HandleCharacterDeleted ***************
+
+// ********** Begin Class UEchoesCharacterSelectWidget Function HandleCharacterDeletionFailed ******
+struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics
+{
+	struct EchoesCharacterSelectWidget_eventHandleCharacterDeletionFailed_Parms
+	{
+		FString ErrorMessage;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ErrorMessage_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ErrorMessage;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::NewProp_ErrorMessage = { "ErrorMessage", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterDeletionFailed_Parms, ErrorMessage), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ErrorMessage_MetaData), NewProp_ErrorMessage_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::NewProp_ErrorMessage,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterSelectWidget, nullptr, "HandleCharacterDeletionFailed", Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::EchoesCharacterSelectWidget_eventHandleCharacterDeletionFailed_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::EchoesCharacterSelectWidget_eventHandleCharacterDeletionFailed_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execHandleCharacterDeletionFailed)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_ErrorMessage);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleCharacterDeletionFailed(Z_Param_ErrorMessage);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesCharacterSelectWidget Function HandleCharacterDeletionFailed ********
+
+// ********** Begin Class UEchoesCharacterSelectWidget Function HandleCharacterListUpdated *********
+struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics
+{
+	struct EchoesCharacterSelectWidget_eventHandleCharacterListUpdated_Parms
+	{
+		TArray<FCharacterInfo> Characters;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Characters_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Characters_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_Characters;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2252549621
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterListUpdated_Parms, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2252549621
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterSelectWidget, nullptr, "HandleCharacterListUpdated", Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::EchoesCharacterSelectWidget_eventHandleCharacterListUpdated_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00440401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::EchoesCharacterSelectWidget_eventHandleCharacterListUpdated_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execHandleCharacterListUpdated)
+{
+	P_GET_TARRAY_REF(FCharacterInfo,Z_Param_Out_Characters);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleCharacterListUpdated(Z_Param_Out_Characters);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesCharacterSelectWidget Function HandleCharacterListUpdated ***********
+
+// ********** Begin Class UEchoesCharacterSelectWidget Function LaunchCharacter ********************
+struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics
+{
+	struct EchoesCharacterSelectWidget_eventLaunchCharacter_Parms
+	{
+		FGuid CharacterId;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Character" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_CharacterId;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::NewProp_CharacterId = { "CharacterId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventLaunchCharacter_Parms, CharacterId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::NewProp_CharacterId,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterSelectWidget, nullptr, "LaunchCharacter", Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::EchoesCharacterSelectWidget_eventLaunchCharacter_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::EchoesCharacterSelectWidget_eventLaunchCharacter_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execLaunchCharacter)
+{
+	P_GET_STRUCT(FGuid,Z_Param_CharacterId);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->LaunchCharacter(Z_Param_CharacterId);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesCharacterSelectWidget Function LaunchCharacter **********************
+
 // ********** Begin Class UEchoesCharacterSelectWidget Function OnCancelCreateButtonClicked ********
 struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCancelCreateButtonClicked_Statics
 {
@@ -257,6 +439,48 @@ DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execOnCancelCreateButtonClicked)
 	P_NATIVE_END;
 }
 // ********** End Class UEchoesCharacterSelectWidget Function OnCancelCreateButtonClicked **********
+
+// ********** Begin Class UEchoesCharacterSelectWidget Function OnCharacterListSelectionChanged ****
+struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics
+{
+	struct EchoesCharacterSelectWidget_eventOnCharacterListSelectionChanged_Parms
+	{
+		UObject* SelectedItem;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectedItem;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::NewProp_SelectedItem = { "SelectedItem", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventOnCharacterListSelectionChanged_Parms, SelectedItem), Z_Construct_UClass_UObject_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::NewProp_SelectedItem,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterSelectWidget, nullptr, "OnCharacterListSelectionChanged", Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::EchoesCharacterSelectWidget_eventOnCharacterListSelectionChanged_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::EchoesCharacterSelectWidget_eventOnCharacterListSelectionChanged_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execOnCharacterListSelectionChanged)
+{
+	P_GET_OBJECT(UObject,Z_Param_SelectedItem);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnCharacterListSelectionChanged(Z_Param_SelectedItem);
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesCharacterSelectWidget Function OnCharacterListSelectionChanged ******
 
 // ********** Begin Class UEchoesCharacterSelectWidget Function OnCharacterSelected ****************
 struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterSelected_Statics
@@ -341,7 +565,13 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCreateButtonClicked_
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// ==================== Button Handlers ====================\n" },
+#endif
 		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "==================== Button Handlers ====================" },
+#endif
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFunctionParams FuncParams;
@@ -470,41 +700,6 @@ DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execOnRaceSelectionChanged)
 }
 // ********** End Class UEchoesCharacterSelectWidget Function OnRaceSelectionChanged ***************
 
-// ********** Begin Class UEchoesCharacterSelectWidget Function OnSelectButtonClicked **************
-struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked_Statics
-{
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// ==================== Button Handlers ====================\n" },
-#endif
-		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "==================== Button Handlers ====================" },
-#endif
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterSelectWidget, nullptr, "OnSelectButtonClicked", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked_Statics::Function_MetaDataParams)},  };
-UFunction* Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(UEchoesCharacterSelectWidget::execOnSelectButtonClicked)
-{
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->OnSelectButtonClicked();
-	P_NATIVE_END;
-}
-// ********** End Class UEchoesCharacterSelectWidget Function OnSelectButtonClicked ****************
-
 // ********** Begin Class UEchoesCharacterSelectWidget *********************************************
 void UEchoesCharacterSelectWidget::StaticRegisterNativesUEchoesCharacterSelectWidget()
 {
@@ -512,14 +707,18 @@ void UEchoesCharacterSelectWidget::StaticRegisterNativesUEchoesCharacterSelectWi
 	static const FNameNativePtrPair Funcs[] = {
 		{ "HandleCharacterCreated", &UEchoesCharacterSelectWidget::execHandleCharacterCreated },
 		{ "HandleCharacterCreationFailed", &UEchoesCharacterSelectWidget::execHandleCharacterCreationFailed },
+		{ "HandleCharacterDeleted", &UEchoesCharacterSelectWidget::execHandleCharacterDeleted },
+		{ "HandleCharacterDeletionFailed", &UEchoesCharacterSelectWidget::execHandleCharacterDeletionFailed },
+		{ "HandleCharacterListUpdated", &UEchoesCharacterSelectWidget::execHandleCharacterListUpdated },
+		{ "LaunchCharacter", &UEchoesCharacterSelectWidget::execLaunchCharacter },
 		{ "OnCancelCreateButtonClicked", &UEchoesCharacterSelectWidget::execOnCancelCreateButtonClicked },
+		{ "OnCharacterListSelectionChanged", &UEchoesCharacterSelectWidget::execOnCharacterListSelectionChanged },
 		{ "OnCharacterSelected", &UEchoesCharacterSelectWidget::execOnCharacterSelected },
 		{ "OnConfirmCreateButtonClicked", &UEchoesCharacterSelectWidget::execOnConfirmCreateButtonClicked },
 		{ "OnCreateButtonClicked", &UEchoesCharacterSelectWidget::execOnCreateButtonClicked },
 		{ "OnDeleteButtonClicked", &UEchoesCharacterSelectWidget::execOnDeleteButtonClicked },
 		{ "OnLogoutButtonClicked", &UEchoesCharacterSelectWidget::execOnLogoutButtonClicked },
 		{ "OnRaceSelectionChanged", &UEchoesCharacterSelectWidget::execOnRaceSelectionChanged },
-		{ "OnSelectButtonClicked", &UEchoesCharacterSelectWidget::execOnSelectButtonClicked },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -574,17 +773,6 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "List view for characters" },
-#endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SelectButton_MetaData[] = {
-		{ "BindWidget", "" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/** Select character button */" },
-#endif
-		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterSelectWidget.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Select character button" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CreateButton_MetaData[] = {
@@ -693,7 +881,6 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CharacterList;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CreateButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DeleteButton;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_LogoutButton;
@@ -710,16 +897,20 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated, "HandleCharacterCreated" }, // 3519895976
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreated, "HandleCharacterCreated" }, // 4159767706
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreationFailed, "HandleCharacterCreationFailed" }, // 200844842
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted, "HandleCharacterDeleted" }, // 2545990866
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed, "HandleCharacterDeletionFailed" }, // 2486526509
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated, "HandleCharacterListUpdated" }, // 653994529
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter, "LaunchCharacter" }, // 60974106
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCancelCreateButtonClicked, "OnCancelCreateButtonClicked" }, // 1138692661
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged, "OnCharacterListSelectionChanged" }, // 2534137099
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterSelected, "OnCharacterSelected" }, // 3305172017
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnConfirmCreateButtonClicked, "OnConfirmCreateButtonClicked" }, // 3982875008
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCreateButtonClicked, "OnCreateButtonClicked" }, // 1541413618
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCreateButtonClicked, "OnCreateButtonClicked" }, // 3599184037
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnDeleteButtonClicked, "OnDeleteButtonClicked" }, // 2368296363
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnLogoutButtonClicked, "OnLogoutButtonClicked" }, // 3530194877
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnRaceSelectionChanged, "OnRaceSelectionChanged" }, // 3884670524
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnSelectButtonClicked, "OnSelectButtonClicked" }, // 2999122884
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -728,7 +919,6 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CharacterList = { "CharacterList", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, CharacterList), Z_Construct_UClass_UListView_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterList_MetaData), NewProp_CharacterList_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_SelectButton = { "SelectButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, SelectButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectButton_MetaData), NewProp_SelectButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CreateButton = { "CreateButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, CreateButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CreateButton_MetaData), NewProp_CreateButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_DeleteButton = { "DeleteButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, DeleteButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DeleteButton_MetaData), NewProp_DeleteButton_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_LogoutButton = { "LogoutButton", nullptr, (EPropertyFlags)0x0010000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, LogoutButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LogoutButton_MetaData), NewProp_LogoutButton_MetaData) };
@@ -744,7 +934,6 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharact
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_SelectedCharacter = { "SelectedCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterSelectWidget, SelectedCharacter), Z_Construct_UClass_UCharacterListItem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedCharacter_MetaData), NewProp_SelectedCharacter_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CharacterList,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_SelectButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_CreateButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_DeleteButton,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics::NewProp_LogoutButton,
@@ -797,11 +986,11 @@ UEchoesCharacterSelectWidget::~UEchoesCharacterSelectWidget() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 470511823U) },
-		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 1296673352U) },
+		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 2993493031U) },
+		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 3738749681U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_2259475894(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_1074520297(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

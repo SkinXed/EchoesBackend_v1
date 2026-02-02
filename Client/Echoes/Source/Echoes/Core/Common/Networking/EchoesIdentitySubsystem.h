@@ -28,6 +28,9 @@ struct FEchoesCharacter
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int64 WalletBalance = 0;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int64 Credits = 0;
+
 	/** ISK balance (alias for WalletBalance for EVE-style naming) */
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int64 ISK = 0;
@@ -46,6 +49,9 @@ struct FEchoesCharacter
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int32 TotalSkillPoints = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int32 ExperiencePoints = 0;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int32 UnallocatedSkillPoints = 0;

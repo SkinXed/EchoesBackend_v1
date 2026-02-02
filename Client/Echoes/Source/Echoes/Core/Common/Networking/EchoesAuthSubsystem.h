@@ -38,7 +38,19 @@ struct FCharacterInfo
 	FString Name;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int32 RaceId = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FString RaceName;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int64 WalletBalance = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int64 Credits = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	int32 ExperiencePoints = 0;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int64 CurrentShipId = 0;
@@ -93,6 +105,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterCreated, const FCharacte
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterCreationFailed, const FString&, ErrorMessage);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnConnectInfoReceived, const FString&, ServerIP, int32, ServerPort);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConnectInfoFailed, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterDeleted, const FGuid&, CharacterId);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterDeletionFailed, const FString&, ErrorMessage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterListUpdated, const TArray<FCharacterInfo>&, Characters);
 
 /**
  * UEchoesAuthSubsystem
@@ -229,6 +244,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
 	void CreateCharacter(const FString& CharacterName, int32 RaceId);
 
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
+	void DeleteCharacter(const FGuid& CharacterId);
+
 	/**
 	 * Fetch character list from backend
 	 * Updates CurrentAuthResponse.Characters
@@ -261,6 +279,18 @@ public:
 	/** Fired when connection info request fails */
 	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
 	FOnConnectInfoFailed OnConnectInfoFailed;
+
+	/** Fired when character is deleted successfully */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnCharacterDeleted OnCharacterDeleted;
+
+	/** Fired when character deletion fails */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnCharacterDeletionFailed OnCharacterDeletionFailed;
+
+	/** Fired when character list is updated */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Character")
+	FOnCharacterListUpdated OnCharacterListUpdated;
 
 	/**
 	 * Server RPC: Verify session token
@@ -325,6 +355,12 @@ protected:
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful);
+
+	void OnDeleteCharacterResponseReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		FGuid CharacterId);
 
 	/**
 	 * Handle character list fetch response

@@ -14,6 +14,7 @@ void EmptyLinkFunctionForGeneratedCodeEchoesCharacterListEntry() {}
 // ********** Begin Cross Module References ********************************************************
 ECHOES_API UClass* Z_Construct_UClass_UEchoesCharacterListEntry();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesCharacterListEntry_NoRegister();
+UMG_API UClass* Z_Construct_UClass_UButton_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UImage_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UTextBlock_NoRegister();
 UMG_API UClass* Z_Construct_UClass_UUserObjectListEntry_NoRegister();
@@ -21,9 +22,43 @@ UMG_API UClass* Z_Construct_UClass_UUserWidget();
 UPackage* Z_Construct_UPackage__Script_Echoes();
 // ********** End Cross Module References **********************************************************
 
+// ********** Begin Class UEchoesCharacterListEntry Function OnLoginButtonClicked ******************
+struct Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterListEntry.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesCharacterListEntry, nullptr, "OnLoginButtonClicked", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesCharacterListEntry::execOnLoginButtonClicked)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnLoginButtonClicked();
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesCharacterListEntry Function OnLoginButtonClicked ********************
+
 // ********** Begin Class UEchoesCharacterListEntry ************************************************
 void UEchoesCharacterListEntry::StaticRegisterNativesUEchoesCharacterListEntry()
 {
+	UClass* Class = UEchoesCharacterListEntry::StaticClass();
+	static const FNameNativePtrPair Funcs[] = {
+		{ "OnLoginButtonClicked", &UEchoesCharacterListEntry::execOnLoginButtonClicked },
+	};
+	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
 FClassRegistrationInfo Z_Registration_Info_UClass_UEchoesCharacterListEntry;
 UClass* UEchoesCharacterListEntry::GetPrivateStaticClass()
@@ -80,17 +115,39 @@ struct Z_Construct_UClass_UEchoesCharacterListEntry_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterListEntry.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CreditsText_MetaData[] = {
+		{ "BindWidgetOptional", "" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterListEntry.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ExperienceText_MetaData[] = {
+		{ "BindWidgetOptional", "" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterListEntry.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AvatarImage_MetaData[] = {
 		{ "BindWidgetOptional", "" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterListEntry.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LoginButton_MetaData[] = {
+		{ "BindWidget", "" },
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "UI/Widgets/EchoesCharacterListEntry.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_NameText;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_RaceText;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CreditsText;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ExperienceText;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_AvatarImage;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_LoginButton;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
+	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_UEchoesCharacterListEntry_OnLoginButtonClicked, "OnLoginButtonClicked" }, // 2589665795
+	};
+	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static const UECodeGen_Private::FImplementedInterfaceParams InterfaceParams[];
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UEchoesCharacterListEntry>::IsAbstract,
@@ -99,11 +156,17 @@ struct Z_Construct_UClass_UEchoesCharacterListEntry_Statics
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_NameText = { "NameText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterListEntry, NameText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_NameText_MetaData), NewProp_NameText_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_RaceText = { "RaceText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterListEntry, RaceText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RaceText_MetaData), NewProp_RaceText_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_CreditsText = { "CreditsText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterListEntry, CreditsText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CreditsText_MetaData), NewProp_CreditsText_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_ExperienceText = { "ExperienceText", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterListEntry, ExperienceText), Z_Construct_UClass_UTextBlock_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ExperienceText_MetaData), NewProp_ExperienceText_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_AvatarImage = { "AvatarImage", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterListEntry, AvatarImage), Z_Construct_UClass_UImage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AvatarImage_MetaData), NewProp_AvatarImage_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_LoginButton = { "LoginButton", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesCharacterListEntry, LoginButton), Z_Construct_UClass_UButton_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LoginButton_MetaData), NewProp_LoginButton_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesCharacterListEntry_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_NameText,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_RaceText,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_CreditsText,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_ExperienceText,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_AvatarImage,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesCharacterListEntry_Statics::NewProp_LoginButton,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesCharacterListEntry_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UEchoesCharacterListEntry_Statics::DependentSingletons[])() = {
@@ -119,11 +182,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_UEchoesCharacterListEnt
 	nullptr,
 	&StaticCppClassTypeInfo,
 	DependentSingletons,
-	nullptr,
+	FuncInfo,
 	Z_Construct_UClass_UEchoesCharacterListEntry_Statics::PropPointers,
 	InterfaceParams,
 	UE_ARRAY_COUNT(DependentSingletons),
-	0,
+	UE_ARRAY_COUNT(FuncInfo),
 	UE_ARRAY_COUNT(Z_Construct_UClass_UEchoesCharacterListEntry_Statics::PropPointers),
 	UE_ARRAY_COUNT(InterfaceParams),
 	0x00B010A0u,
@@ -146,10 +209,10 @@ UEchoesCharacterListEntry::~UEchoesCharacterListEntry() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterListEntry_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesCharacterListEntry, UEchoesCharacterListEntry::StaticClass, TEXT("UEchoesCharacterListEntry"), &Z_Registration_Info_UClass_UEchoesCharacterListEntry, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterListEntry), 527395947U) },
+		{ Z_Construct_UClass_UEchoesCharacterListEntry, UEchoesCharacterListEntry::StaticClass, TEXT("UEchoesCharacterListEntry"), &Z_Registration_Info_UClass_UEchoesCharacterListEntry, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterListEntry), 3364763713U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterListEntry_h__Script_Echoes_3246889015(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterListEntry_h__Script_Echoes_2811622259(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterListEntry_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterListEntry_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -12,11 +12,13 @@ namespace Echoes.API.Models.DTOs
         public string Name { get; set; } = string.Empty;
         public Guid AccountId { get; set; }
         public long WalletBalance { get; set; }
+        public long Credits { get; set; }
         public float SecurityStatus { get; set; }
         public long? CurrentShipId { get; set; }
         public Guid? CorporationId { get; set; }
         public int RaceId { get; set; }
         public int TotalSkillPoints { get; set; }
+        public int ExperiencePoints { get; set; }
         public int UnallocatedSkillPoints { get; set; }
         public bool IsOnline { get; set; }
         public bool IsDocked { get; set; }
@@ -151,6 +153,8 @@ namespace Echoes.API.Models.DTOs
         public int RaceId { get; set; }
         public string RaceName { get; set; } = string.Empty;
         public long WalletBalance { get; set; }
+        public long Credits { get; set; }
+        public int TotalSkillPoints { get; set; }
         public bool IsMain { get; set; }
         public bool IsOnline { get; set; }
         public bool IsDocked { get; set; }

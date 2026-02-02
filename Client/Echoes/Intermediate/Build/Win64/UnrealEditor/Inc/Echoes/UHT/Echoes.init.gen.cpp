@@ -12,6 +12,9 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterCreationFailed__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature();
+	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDeleted__DelegateSignature();
+	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterDeletionFailed__DelegateSignature();
+	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnCharacterSelected__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnConnectInfoFailed__DelegateSignature();
 	ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnConnectInfoReceived__DelegateSignature();
@@ -58,6 +61,9 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterCreationFailed__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDeleted__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterDeletionFailed__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnCharacterSelected__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnConnectInfoFailed__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Echoes_OnConnectInfoReceived__DelegateSignature,
@@ -99,13 +105,13 @@ void EmptyLinkFunctionForGeneratedCodeEchoes_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xDD17B0DA,
-				0xAFCA7AC5,
+				0x9FC9EE1D,
+				0x7A10732E,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_Echoes.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_Echoes.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Echoes(Z_Construct_UPackage__Script_Echoes, TEXT("/Script/Echoes"), Z_Registration_Info_UPackage__Script_Echoes, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xDD17B0DA, 0xAFCA7AC5));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Echoes(Z_Construct_UPackage__Script_Echoes, TEXT("/Script/Echoes"), Z_Registration_Info_UPackage__Script_Echoes, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x9FC9EE1D, 0x7A10732E));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

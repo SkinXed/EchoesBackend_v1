@@ -29,35 +29,35 @@ struct FEchoesCharacter;
 // ********** End ScriptStruct FEchoesCharacter ****************************************************
 
 // ********** Begin Delegate FOnCharacterDataReceived **********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_71_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_77_DELEGATE \
 ECHOES_API void FOnCharacterDataReceived_DelegateWrapper(const FScriptDelegate& OnCharacterDataReceived, FEchoesCharacter const& CharacterData);
 
 
 // ********** End Delegate FOnCharacterDataReceived ************************************************
 
 // ********** Begin Delegate FOnCharacterDataFailure ***********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_72_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_78_DELEGATE \
 ECHOES_API void FOnCharacterDataFailure_DelegateWrapper(const FScriptDelegate& OnCharacterDataFailure, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnCharacterDataFailure *************************************************
 
 // ********** Begin Delegate FOnCharacterSelected **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_73_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_79_DELEGATE \
 ECHOES_API void FOnCharacterSelected_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterSelected);
 
 
 // ********** End Delegate FOnCharacterSelected ****************************************************
 
 // ********** Begin Delegate FOnIdentityCharacterCreated *******************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_74_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_80_DELEGATE \
 ECHOES_API void FOnIdentityCharacterCreated_DelegateWrapper(const FScriptDelegate& OnIdentityCharacterCreated, FEchoesCharacter const& CharacterData);
 
 
 // ********** End Delegate FOnIdentityCharacterCreated *********************************************
 
 // ********** Begin Class UEchoesIdentitySubsystem *************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execUI_CreateCharacter); \
 	DECLARE_FUNCTION(execIdentity_ClearSelection); \
 	DECLARE_FUNCTION(execIdentity_GetSelectedCharacterId); \
@@ -69,7 +69,7 @@ ECHOES_API void FOnIdentityCharacterCreated_DelegateWrapper(const FScriptDelegat
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesIdentitySubsystem_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesIdentitySubsystem(); \
 	friend struct Z_Construct_UClass_UEchoesIdentitySubsystem_Statics; \
@@ -80,7 +80,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesIdentitySubsystem)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesIdentitySubsystem(); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -92,13 +92,13 @@ public: \
 	NO_API virtual ~UEchoesIdentitySubsystem();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_93_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_99_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_96_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h_102_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -47,7 +47,11 @@ namespace Echoes.API.Models.DTOs
     {
         public Guid CharacterId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public int RaceId { get; set; }
+        public string? RaceName { get; set; }
         public long WalletBalance { get; set; }
+        public long Credits { get; set; }
+        public int TotalSkillPoints { get; set; }
         public long? CurrentShipId { get; set; }
         public bool IsMain { get; set; }
         public bool IsOnline { get; set; }

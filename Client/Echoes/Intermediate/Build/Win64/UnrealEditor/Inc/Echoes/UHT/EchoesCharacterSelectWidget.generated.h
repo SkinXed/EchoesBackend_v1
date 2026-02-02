@@ -16,7 +16,9 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
+class UObject;
 struct FCharacterData;
+struct FCharacterInfo;
 struct FGuid;
 
 // ********** Begin Class UCharacterListItem *******************************************************
@@ -61,15 +63,19 @@ class UCharacterListItem;
 
 // ********** Begin Class UEchoesCharacterSelectWidget *********************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h_45_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleCharacterListUpdated); \
+	DECLARE_FUNCTION(execHandleCharacterDeletionFailed); \
+	DECLARE_FUNCTION(execHandleCharacterDeleted); \
 	DECLARE_FUNCTION(execHandleCharacterCreationFailed); \
 	DECLARE_FUNCTION(execHandleCharacterCreated); \
+	DECLARE_FUNCTION(execOnCharacterListSelectionChanged); \
 	DECLARE_FUNCTION(execOnRaceSelectionChanged); \
 	DECLARE_FUNCTION(execOnCancelCreateButtonClicked); \
 	DECLARE_FUNCTION(execOnConfirmCreateButtonClicked); \
 	DECLARE_FUNCTION(execOnLogoutButtonClicked); \
 	DECLARE_FUNCTION(execOnDeleteButtonClicked); \
 	DECLARE_FUNCTION(execOnCreateButtonClicked); \
-	DECLARE_FUNCTION(execOnSelectButtonClicked); \
+	DECLARE_FUNCTION(execLaunchCharacter); \
 	DECLARE_FUNCTION(execOnCharacterSelected);
 
 

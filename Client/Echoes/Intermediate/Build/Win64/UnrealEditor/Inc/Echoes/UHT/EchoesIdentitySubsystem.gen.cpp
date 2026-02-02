@@ -65,6 +65,10 @@ struct Z_Construct_UScriptStruct_FEchoesCharacter_Statics
 		{ "Category", "Character" },
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesIdentitySubsystem.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Credits_MetaData[] = {
+		{ "Category", "Character" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesIdentitySubsystem.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ISK_MetaData[] = {
 		{ "Category", "Character" },
 #if !UE_BUILD_SHIPPING
@@ -92,6 +96,10 @@ struct Z_Construct_UScriptStruct_FEchoesCharacter_Statics
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesIdentitySubsystem.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TotalSkillPoints_MetaData[] = {
+		{ "Category", "Character" },
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesIdentitySubsystem.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ExperiencePoints_MetaData[] = {
 		{ "Category", "Character" },
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesIdentitySubsystem.h" },
 	};
@@ -130,12 +138,14 @@ struct Z_Construct_UScriptStruct_FEchoesCharacter_Statics
 	static const UECodeGen_Private::FStrPropertyParams NewProp_Name;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_AccountId;
 	static const UECodeGen_Private::FInt64PropertyParams NewProp_WalletBalance;
+	static const UECodeGen_Private::FInt64PropertyParams NewProp_Credits;
 	static const UECodeGen_Private::FInt64PropertyParams NewProp_ISK;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_SecurityStatus;
 	static const UECodeGen_Private::FInt64PropertyParams NewProp_CurrentShipId;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CorporationId;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_RaceId;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_TotalSkillPoints;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_ExperiencePoints;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_UnallocatedSkillPoints;
 	static void NewProp_IsOnline_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_IsOnline;
@@ -156,12 +166,14 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoes
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_Name = { "Name", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, Name), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Name_MetaData), NewProp_Name_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_AccountId = { "AccountId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, AccountId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AccountId_MetaData), NewProp_AccountId_MetaData) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_WalletBalance = { "WalletBalance", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, WalletBalance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WalletBalance_MetaData), NewProp_WalletBalance_MetaData) };
+const UECodeGen_Private::FInt64PropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_Credits = { "Credits", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, Credits), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Credits_MetaData), NewProp_Credits_MetaData) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_ISK = { "ISK", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, ISK), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ISK_MetaData), NewProp_ISK_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_SecurityStatus = { "SecurityStatus", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, SecurityStatus), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SecurityStatus_MetaData), NewProp_SecurityStatus_MetaData) };
 const UECodeGen_Private::FInt64PropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_CurrentShipId = { "CurrentShipId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int64, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, CurrentShipId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentShipId_MetaData), NewProp_CurrentShipId_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_CorporationId = { "CorporationId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, CorporationId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CorporationId_MetaData), NewProp_CorporationId_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_RaceId = { "RaceId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, RaceId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RaceId_MetaData), NewProp_RaceId_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_TotalSkillPoints = { "TotalSkillPoints", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, TotalSkillPoints), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TotalSkillPoints_MetaData), NewProp_TotalSkillPoints_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_ExperiencePoints = { "ExperiencePoints", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, ExperiencePoints), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ExperiencePoints_MetaData), NewProp_ExperiencePoints_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_UnallocatedSkillPoints = { "UnallocatedSkillPoints", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacter, UnallocatedSkillPoints), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UnallocatedSkillPoints_MetaData), NewProp_UnallocatedSkillPoints_MetaData) };
 void Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_IsOnline_SetBit(void* Obj)
 {
@@ -185,12 +197,14 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FE
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_Name,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_AccountId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_WalletBalance,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_Credits,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_ISK,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_SecurityStatus,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_CurrentShipId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_CorporationId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_RaceId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_TotalSkillPoints,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_ExperiencePoints,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_UnallocatedSkillPoints,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_IsOnline,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewProp_IsDocked,
@@ -241,7 +255,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSig
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature_Statics::NewProp_CharacterData = { "CharacterData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnCharacterDataReceived_Parms, CharacterData), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterData_MetaData), NewProp_CharacterData_MetaData) }; // 3920001638
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature_Statics::NewProp_CharacterData = { "CharacterData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnCharacterDataReceived_Parms, CharacterData), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterData_MetaData), NewProp_CharacterData_MetaData) }; // 65035307
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature_Statics::NewProp_CharacterData,
 };
@@ -361,7 +375,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__Delegate
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature_Statics::NewProp_CharacterData = { "CharacterData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnIdentityCharacterCreated_Parms, CharacterData), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterData_MetaData), NewProp_CharacterData_MetaData) }; // 3920001638
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature_Statics::NewProp_CharacterData = { "CharacterData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnIdentityCharacterCreated_Parms, CharacterData), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterData_MetaData), NewProp_CharacterData_MetaData) }; // 65035307
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature_Statics::NewProp_CharacterData,
 };
@@ -450,7 +464,7 @@ struct Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_FetchCharacter_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 556922819
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_FetchCharacter_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataReceived__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 1680251315
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_FetchCharacter_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 906501422
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter_Statics::NewProp_OnSuccess,
@@ -502,7 +516,7 @@ struct Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharac
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_GetSelectedCharacter_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(0, nullptr) }; // 3920001638
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventIdentity_GetSelectedCharacter_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(0, nullptr) }; // 65035307
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter_Statics::NewProp_ReturnValue,
 };
@@ -720,7 +734,7 @@ struct Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_CharacterName = { "CharacterName", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventUI_CreateCharacter_Parms, CharacterName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterName_MetaData), NewProp_CharacterName_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_Race = { "Race", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventUI_CreateCharacter_Parms, Race), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Race_MetaData), NewProp_Race_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_PortraitId = { "PortraitId", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventUI_CreateCharacter_Parms, PortraitId), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventUI_CreateCharacter_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2120015902
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventUI_CreateCharacter_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnIdentityCharacterCreated__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3161926090
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesIdentitySubsystem_eventUI_CreateCharacter_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnCharacterDataFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 906501422
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter_Statics::NewProp_CharacterName,
@@ -838,12 +852,12 @@ struct Z_Construct_UClass_UEchoesIdentitySubsystem_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_ClearSelection, "Identity_ClearSelection" }, // 3967232812
-		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter, "Identity_FetchCharacter" }, // 2715454894
-		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter, "Identity_GetSelectedCharacter" }, // 3042683416
+		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_FetchCharacter, "Identity_FetchCharacter" }, // 4144290907
+		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacter, "Identity_GetSelectedCharacter" }, // 2129426112
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_GetSelectedCharacterId, "Identity_GetSelectedCharacterId" }, // 67363804
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_HasSelectedCharacter, "Identity_HasSelectedCharacter" }, // 97103536
 		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_Identity_SelectCharacter, "Identity_SelectCharacter" }, // 1684475910
-		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter, "UI_CreateCharacter" }, // 3082597433
+		{ &Z_Construct_UFunction_UEchoesIdentitySubsystem_UI_CreateCharacter, "UI_CreateCharacter" }, // 1054530951
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -852,7 +866,7 @@ struct Z_Construct_UClass_UEchoesIdentitySubsystem_Statics
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesIdentitySubsystem_Statics::NewProp_OnCharacterSelected = { "OnCharacterSelected", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesIdentitySubsystem, OnCharacterSelected), Z_Construct_UDelegateFunction_Echoes_OnCharacterSelected__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnCharacterSelected_MetaData), NewProp_OnCharacterSelected_MetaData) }; // 4053191214
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesIdentitySubsystem_Statics::NewProp_SelectedCharacter = { "SelectedCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesIdentitySubsystem, SelectedCharacter), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedCharacter_MetaData), NewProp_SelectedCharacter_MetaData) }; // 3920001638
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesIdentitySubsystem_Statics::NewProp_SelectedCharacter = { "SelectedCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesIdentitySubsystem, SelectedCharacter), Z_Construct_UScriptStruct_FEchoesCharacter, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedCharacter_MetaData), NewProp_SelectedCharacter_MetaData) }; // 65035307
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesIdentitySubsystem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesIdentitySubsystem_Statics::NewProp_OnCharacterSelected,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesIdentitySubsystem_Statics::NewProp_SelectedCharacter,
@@ -895,13 +909,13 @@ UEchoesIdentitySubsystem::~UEchoesIdentitySubsystem() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FEchoesCharacter::StaticStruct, Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewStructOps, TEXT("EchoesCharacter"), &Z_Registration_Info_UScriptStruct_FEchoesCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesCharacter), 3920001638U) },
+		{ FEchoesCharacter::StaticStruct, Z_Construct_UScriptStruct_FEchoesCharacter_Statics::NewStructOps, TEXT("EchoesCharacter"), &Z_Registration_Info_UScriptStruct_FEchoesCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesCharacter), 65035307U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesIdentitySubsystem, UEchoesIdentitySubsystem::StaticClass, TEXT("UEchoesIdentitySubsystem"), &Z_Registration_Info_UClass_UEchoesIdentitySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesIdentitySubsystem), 278034163U) },
+		{ Z_Construct_UClass_UEchoesIdentitySubsystem, UEchoesIdentitySubsystem::StaticClass, TEXT("UEchoesIdentitySubsystem"), &Z_Registration_Info_UClass_UEchoesIdentitySubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesIdentitySubsystem), 3182227684U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_2610500790(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_708256702(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesIdentitySubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

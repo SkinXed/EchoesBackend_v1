@@ -208,6 +208,21 @@ void UEchoesPreloadWidget::OnTokenValidationResponse(FHttpRequestPtr Request, FH
 						FGuid::Parse(CharObj->GetStringField(TEXT("characterId")), CharInfo.CharacterId);
 						CharInfo.Name = CharObj->GetStringField(TEXT("name"));
 						CharInfo.WalletBalance = CharObj->GetNumberField(TEXT("walletBalance"));
+						CharInfo.Credits = CharObj->HasField(TEXT("credits"))
+							? CharObj->GetNumberField(TEXT("credits"))
+							: CharInfo.WalletBalance;
+						if (CharObj->HasField(TEXT("totalSkillPoints")))
+						{
+							CharInfo.ExperiencePoints = CharObj->GetIntegerField(TEXT("totalSkillPoints"));
+						}
+						if (CharObj->HasField(TEXT("raceId")))
+						{
+							CharInfo.RaceId = CharObj->GetIntegerField(TEXT("raceId"));
+						}
+						if (CharObj->HasField(TEXT("raceName")))
+						{
+							CharInfo.RaceName = CharObj->GetStringField(TEXT("raceName"));
+						}
 						if (CharObj->HasField(TEXT("currentShipId")) && !CharObj->GetField<EJson::None>(TEXT("currentShipId"))->IsNull())
 						{
 							CharInfo.CurrentShipId = CharObj->GetNumberField(TEXT("currentShipId"));

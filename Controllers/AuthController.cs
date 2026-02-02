@@ -115,7 +115,11 @@ namespace Echoes.API.Controllers
                     {
                         CharacterId = c.Id,
                         Name = c.Name,
+                        RaceId = c.RaceId,
+                        RaceName = GetRaceName(c.RaceId),
                         WalletBalance = c.WalletBalance,
+                        Credits = c.WalletBalance,
+                        TotalSkillPoints = c.TotalSkillPoints,
                         CurrentShipId = c.ActiveShipItemId,
                         IsMain = c.IsMain,
                         IsOnline = c.IsOnline
@@ -208,7 +212,11 @@ namespace Echoes.API.Controllers
                     {
                         CharacterId = c.Id,
                         Name = c.Name,
+                        RaceId = c.RaceId,
+                        RaceName = GetRaceName(c.RaceId),
                         WalletBalance = c.WalletBalance,
+                        Credits = c.WalletBalance,
+                        TotalSkillPoints = c.TotalSkillPoints,
                         CurrentShipId = c.ActiveShipItemId,
                         IsMain = c.IsMain,
                         IsOnline = c.IsOnline
@@ -324,7 +332,11 @@ namespace Echoes.API.Controllers
                         {
                             CharacterId = c.Id,
                             Name = c.Name,
+                            RaceId = c.RaceId,
+                            RaceName = GetRaceName(c.RaceId),
                             WalletBalance = c.WalletBalance,
+                            Credits = c.WalletBalance,
+                            TotalSkillPoints = c.TotalSkillPoints,
                             CurrentShipId = c.ActiveShipItemId,
                             IsMain = c.IsMain,
                             IsOnline = c.IsOnline
@@ -658,7 +670,7 @@ namespace Echoes.API.Controllers
 
                 _context.Accounts.Add(account);
 
-                // Create character
+                // Создание персонажа
                 var character = new Character
                 {
                     Id = Guid.NewGuid(),
@@ -672,7 +684,7 @@ namespace Echoes.API.Controllers
 
                 _context.Characters.Add(character);
 
-                // Create session
+                // Создание сессии
                 var session = new AccountSession
                 {
                     Id = Guid.NewGuid(),
@@ -692,7 +704,7 @@ namespace Echoes.API.Controllers
                 _context.AccountSessions.Add(session);
                 await _context.SaveChangesAsync();
 
-                // Generate JWT
+                // Генерация JWT
                 var token = GenerateJwtToken(account, character, session);
 
                 return Ok(new GoogleAuthResponseDto
@@ -712,6 +724,18 @@ namespace Echoes.API.Controllers
                     Error = "Internal server error" 
                 });
             }
+        }
+
+        private static string GetRaceName(int raceId)
+        {
+            return raceId switch
+            {
+                1 => "Caldari",
+                2 => "Gallente",
+                3 => "Amarr",
+                4 => "Minmatar",
+                _ => "Unknown"
+            };
         }
     }
 }
