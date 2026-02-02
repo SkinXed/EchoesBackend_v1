@@ -92,9 +92,14 @@ void AEchoesMenuPlayerController::ShowLoginScreen()
 	// Bind to login success to transition to character select
 	if (UEchoesLoginWidget* LoginWidget = Cast<UEchoesLoginWidget>(CurrentWidget))
 	{
-		LoginWidget->OnLoginSuccessDelegate.AddLambda([this](const FAuthResponse& Response)
+		// Use weak pointer to prevent accessing destroyed controller
+		TWeakObjectPtr<AEchoesMenuPlayerController> WeakThis(this);
+		LoginWidget->OnLoginSuccessDelegate.AddLambda([WeakThis](const FAuthResponse& Response)
 		{
-			ShowCharacterSelect();
+			if (WeakThis.IsValid())
+			{
+				WeakThis->ShowCharacterSelect();
+			}
 		});
 	}
 }

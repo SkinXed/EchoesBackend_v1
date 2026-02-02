@@ -134,8 +134,6 @@ The widgets should already be configured to work with the new system:
 
 ## How It Works
 
-## How It Works
-
 ### Complete Authorization Flow:
 
 1. **Player opens EntryMap**
