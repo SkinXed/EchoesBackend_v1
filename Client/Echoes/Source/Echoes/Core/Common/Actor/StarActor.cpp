@@ -90,7 +90,7 @@ void AStarActor::ApplyVisualConfiguration()
 	{
 		// Base scale calculation - this would use UniverseToWorldScale in production
 		float BaseScale = Radius / 696000.0f; // Normalized to Sun radius
-		StarMeshComponent->SetRelativeScale3D(FVector(BaseScale));
+		StarMeshComponent->SetRelativeScale3D(VisualData.ActorScale * BaseScale);
 	}
 
 	// Configure light based on luminosity and temperature

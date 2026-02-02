@@ -328,7 +328,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeAc
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_WormholeName = { "WormholeName", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, WormholeName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WormholeName_MetaData), NewProp_WormholeName_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_TargetSystemId = { "TargetSystemId", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, TargetSystemId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TargetSystemId_MetaData), NewProp_TargetSystemId_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_Seed = { "Seed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, Seed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, VisualData), Z_Construct_UScriptStruct_FWormholeVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1063376799
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(WormholeActor_eventInitializeWormhole_Parms, VisualData), Z_Construct_UScriptStruct_FWormholeVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 429817243
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_WormholeId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AWormholeActor_InitializeWormhole_Statics::NewProp_WormholeName,
@@ -873,7 +873,7 @@ struct Z_Construct_UClass_AWormholeActor_Statics
 		{ &Z_Construct_UFunction_AWormholeActor_GetTargetSystemId, "GetTargetSystemId" }, // 1460890247
 		{ &Z_Construct_UFunction_AWormholeActor_GetWormholeId, "GetWormholeId" }, // 735386603
 		{ &Z_Construct_UFunction_AWormholeActor_GetWormholeName, "GetWormholeName" }, // 1474667776
-		{ &Z_Construct_UFunction_AWormholeActor_InitializeWormhole, "InitializeWormhole" }, // 716047702
+		{ &Z_Construct_UFunction_AWormholeActor_InitializeWormhole, "InitializeWormhole" }, // 3045677625
 		{ &Z_Construct_UFunction_AWormholeActor_InitiateJump, "InitiateJump" }, // 3140131087
 		{ &Z_Construct_UFunction_AWormholeActor_OnTriggerBeginOverlap, "OnTriggerBeginOverlap" }, // 2839336003
 		{ &Z_Construct_UFunction_AWormholeActor_ProcessShipPassage, "ProcessShipPassage" }, // 2811712781
@@ -983,10 +983,10 @@ AWormholeActor::~AWormholeActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AWormholeActor, AWormholeActor::StaticClass, TEXT("AWormholeActor"), &Z_Registration_Info_UClass_AWormholeActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AWormholeActor), 4201081168U) },
+		{ Z_Construct_UClass_AWormholeActor, AWormholeActor::StaticClass, TEXT("AWormholeActor"), &Z_Registration_Info_UClass_AWormholeActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AWormholeActor), 629275807U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_3776286664(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_2258421452(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_WormholeActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

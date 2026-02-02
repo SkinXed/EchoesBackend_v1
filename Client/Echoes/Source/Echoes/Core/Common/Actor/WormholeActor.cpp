@@ -124,26 +124,7 @@ void AWormholeActor::InitializeWormhole(
 	UE_LOG(LogTemp, Log, TEXT("Initializing Wormhole: %s -> System %s (Seed: %d, Color: %s)"),
 		*WormholeName, *TargetSystemId.ToString(), GenerationSeed, *WormholeColor.ToString());
 
-	// Load entrance mesh if available
-	if (!VisualData.EntranceMesh.IsNull())
-	{
-		UStaticMesh* EntranceMesh = VisualData.EntranceMesh.LoadSynchronous();
-		if (EntranceMesh && EntranceMeshComponent)
-		{
-			EntranceMeshComponent->SetStaticMesh(EntranceMesh);
-			UE_LOG(LogTemp, Log, TEXT("✓ Entrance mesh loaded"));
-		}
-	}
-
-	// Apply entrance material
-	if (!VisualData.EntranceMaterial.IsNull())
-	{
-		UMaterialInstance* Material = VisualData.EntranceMaterial.LoadSynchronous();
-		if (Material && EntranceMeshComponent)
-		{
-			EntranceMeshComponent->SetMaterial(0, Material);
-		}
-	}
+	SetActorScale3D(VisualData.ActorScale);
 
 	// Load and setup wormhole VFX
 	if (!VisualData.WormholeVFX.IsNull())

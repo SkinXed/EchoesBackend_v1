@@ -197,7 +197,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStarActor_Ini
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InTemperature = { "InTemperature", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InTemperature), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InLuminosity = { "InLuminosity", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InLuminosity), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InRadius = { "InRadius", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InRadius), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InVisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 71317364
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StarActor_eventInitializeStar_Parms, InVisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 3346617476
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStarActor_InitializeStar_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InStarClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStarActor_InitializeStar_Statics::NewProp_InTemperature,
@@ -425,7 +425,7 @@ struct Z_Construct_UClass_AStarActor_Statics
 		{ &Z_Construct_UFunction_AStarActor_GetLuminosity, "GetLuminosity" }, // 1965264837
 		{ &Z_Construct_UFunction_AStarActor_GetStarClass, "GetStarClass" }, // 3453151592
 		{ &Z_Construct_UFunction_AStarActor_GetTemperature, "GetTemperature" }, // 3057400580
-		{ &Z_Construct_UFunction_AStarActor_InitializeStar, "InitializeStar" }, // 3486438617
+		{ &Z_Construct_UFunction_AStarActor_InitializeStar, "InitializeStar" }, // 201940487
 		{ &Z_Construct_UFunction_AStarActor_OnRep_StarData, "OnRep_StarData" }, // 1102302679
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -442,7 +442,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AStarActor_Static
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_Temperature = { "Temperature", "OnRep_StarData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, Temperature), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Temperature_MetaData), NewProp_Temperature_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_Luminosity = { "Luminosity", "OnRep_StarData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, Luminosity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Luminosity_MetaData), NewProp_Luminosity_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_Radius = { "Radius", "OnRep_StarData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, Radius), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Radius_MetaData), NewProp_Radius_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, VisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 71317364
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStarActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStarActor, VisualData), Z_Construct_UScriptStruct_FStarVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 3346617476
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AStarActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStarActor_Statics::NewProp_StarMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStarActor_Statics::NewProp_StarLightComponent,
@@ -506,10 +506,10 @@ AStarActor::~AStarActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStarActor, AStarActor::StaticClass, TEXT("AStarActor"), &Z_Registration_Info_UClass_AStarActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStarActor), 2252490510U) },
+		{ Z_Construct_UClass_AStarActor, AStarActor::StaticClass, TEXT("AStarActor"), &Z_Registration_Info_UClass_AStarActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStarActor), 3825171588U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_3072243917(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_1254375079(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StarActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

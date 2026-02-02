@@ -446,7 +446,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationAct
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InName = { "InName", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InName_MetaData), NewProp_InName_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InStationType = { "InStationType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InStationType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InStationType_MetaData), NewProp_InStationType_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InSeed = { "InSeed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InSeed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InVisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 1647809122
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StationActor_eventInitializeStation_Parms, InVisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 3921162257
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStationActor_InitializeStation_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InStationId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStationActor_InitializeStation_Statics::NewProp_InName,
@@ -852,7 +852,7 @@ struct Z_Construct_UClass_AStationActor_Statics
 		{ &Z_Construct_UFunction_AStationActor_HandleHangarFailure, "HandleHangarFailure" }, // 189998307
 		{ &Z_Construct_UFunction_AStationActor_HandleHangarReceived, "HandleHangarReceived" }, // 526437512
 		{ &Z_Construct_UFunction_AStationActor_HasDockingAccess, "HasDockingAccess" }, // 3694027179
-		{ &Z_Construct_UFunction_AStationActor_InitializeStation, "InitializeStation" }, // 2386921600
+		{ &Z_Construct_UFunction_AStationActor_InitializeStation, "InitializeStation" }, // 1836664526
 		{ &Z_Construct_UFunction_AStationActor_OnDockingZoneBeginOverlap, "OnDockingZoneBeginOverlap" }, // 426342618
 		{ &Z_Construct_UFunction_AStationActor_OnRep_StationData, "OnRep_StationData" }, // 790732877
 		{ &Z_Construct_UFunction_AStationActor_ServerRPC_RequestDocking, "ServerRPC_RequestDocking" }, // 1162402649
@@ -871,7 +871,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStationActor_
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_StationName = { "StationName", "OnRep_StationData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, StationName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StationName_MetaData), NewProp_StationName_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_StationType = { "StationType", "OnRep_StationData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, StationType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StationType_MetaData), NewProp_StationType_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_Seed = { "Seed", "OnRep_StationData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, Seed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Seed_MetaData), NewProp_Seed_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, VisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 1647809122
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStationActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStationActor, VisualData), Z_Construct_UScriptStruct_FStationVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 3921162257
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AStationActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStationActor_Statics::NewProp_BaseMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStationActor_Statics::NewProp_LightsComponent,
@@ -934,10 +934,10 @@ AStationActor::~AStationActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 3546483841U) },
+		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 899962597U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_1246153827(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_3981142721(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

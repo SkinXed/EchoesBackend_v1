@@ -86,27 +86,6 @@ void AAnomalyActor::InitializeAnomaly(
 	UE_LOG(LogTemp, Log, TEXT("Initializing Anomaly: %s (Type: %s, Difficulty: %s, Seed: %d)"),
 		*AnomalyName, *AnomalyType, *AnomalyDifficulty, GenerationSeed);
 
-	// Load center mesh from visual data
-	if (!VisualData.CenterMesh.IsNull())
-	{
-		UStaticMesh* CenterMesh = VisualData.CenterMesh.LoadSynchronous();
-		if (CenterMesh && CenterMeshComponent)
-		{
-			CenterMeshComponent->SetStaticMesh(CenterMesh);
-			UE_LOG(LogTemp, Log, TEXT("✓ Center mesh loaded"));
-		}
-	}
-
-	// Apply center material
-	if (!VisualData.CenterMaterial.IsNull())
-	{
-		UMaterialInstance* Material = VisualData.CenterMaterial.LoadSynchronous();
-		if (Material && CenterMeshComponent)
-		{
-			CenterMeshComponent->SetMaterial(0, Material);
-		}
-	}
-
 	// Setup type-specific visuals
 	SetupTypeSpecificVisuals(AnomalyType, VisualData);
 
@@ -210,7 +189,7 @@ void AAnomalyActor::SetupDifficultyIndicators(const FString& Difficulty, const F
 	// Apply scale to center mesh
 	if (CenterMeshComponent)
 	{
-		CenterMeshComponent->SetWorldScale3D(FVector(ScaleMultiplier));
+		CenterMeshComponent->SetWorldScale3D(VisualData.ActorScale * ScaleMultiplier);
 	}
 
 	// Adjust trigger radius based on difficulty

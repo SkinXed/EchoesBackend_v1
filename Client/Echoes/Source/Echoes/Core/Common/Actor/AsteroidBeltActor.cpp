@@ -71,26 +71,7 @@ void AAsteroidBeltActor::InitializeAsteroidBelt(
 	UE_LOG(LogTemp, Log, TEXT("Initializing Asteroid Belt: %s (Seed: %d, Radius: %.0f, Count: %d)"),
 		*BeltName, GenerationSeed, Radius, AsteroidCount);
 
-	// Load asteroid mesh from visual data
-	if (VisualData.AsteroidMeshes.Num() > 0 && !VisualData.AsteroidMeshes[0].IsNull())
-	{
-		UStaticMesh* AsteroidMesh = VisualData.AsteroidMeshes[0].LoadSynchronous();
-		if (AsteroidMesh)
-		{
-			AsteroidInstances->SetStaticMesh(AsteroidMesh);
-			UE_LOG(LogTemp, Log, TEXT("✓ Asteroid mesh loaded: %s"), *AsteroidMesh->GetName());
-		}
-	}
-
-	// Apply material if available
-	if (VisualData.AsteroidMaterials.Num() > 0 && !VisualData.AsteroidMaterials[0].IsNull())
-	{
-		UMaterialInstance* Material = VisualData.AsteroidMaterials[0].LoadSynchronous();
-		if (Material)
-		{
-			AsteroidInstances->SetMaterial(0, Material);
-		}
-	}
+	SetActorScale3D(VisualData.ActorScale);
 
 	// Generate procedural asteroid positions
 	GenerateAsteroidPositions(AsteroidCount, Radius, GenerationSeed);

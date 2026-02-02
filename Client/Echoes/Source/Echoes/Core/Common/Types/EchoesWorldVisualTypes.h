@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "Engine/Texture2D.h"
-#include "Materials/MaterialInstance.h"
+#include "GameFramework/Actor.h"
 #include "Particles/ParticleSystem.h"
 #include "NiagaraSystem.h"
 #include "Sound/SoundBase.h"
@@ -21,49 +20,25 @@ struct FPlanetVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Planet mesh (sphere or custom model) */
+	/** Planet blueprint actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UStaticMesh> Mesh;
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Array of possible material instances for variation */
+	/** Scale applied to the planet actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TArray<TSoftObjectPtr<UMaterialInstance>> MaterialInstances;
-
-	/** Atmosphere post-process settings (optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosphere")
-	TSoftObjectPtr<UMaterialInstance> AtmosphereMaterial;
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Atmosphere scale (0 = no atmosphere, 1 = normal, >1 = thick atmosphere) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosphere")
 	float AtmosphereScale = 1.0f;
 
-	/** Cloud layer mesh (optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clouds")
-	TSoftObjectPtr<UStaticMesh> CloudLayerMesh;
-
-	/** Cloud layer material */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clouds")
-	TSoftObjectPtr<UMaterialInstance> CloudLayerMaterial;
-
 	/** Cloud rotation speed */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clouds")
 	float CloudRotationSpeed = 0.1f;
 
-	/** Array of texture randomizers for surface variation */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variation")
-	TArray<TSoftObjectPtr<UTexture2D>> TextureRandomizers;
-
 	/** Emissive intensity for lava/volcanic planets */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
 	float EmissiveIntensity = 0.0f;
-
-	/** Ring system mesh (optional, for gas giants) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rings")
-	TSoftObjectPtr<UStaticMesh> RingMesh;
-
-	/** Ring material */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rings")
-	TSoftObjectPtr<UMaterialInstance> RingMaterial;
 };
 
 /**
@@ -75,13 +50,13 @@ struct FStarVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Star mesh (usually a sphere) */
+	/** Star blueprint actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UStaticMesh> Mesh;
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Star surface material */
+	/** Scale applied to the star actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UMaterialInstance> MaterialInstance;
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Corona particle system (Legacy Cascade) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Corona")
@@ -103,14 +78,6 @@ struct FStarVisualRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
 	float AttenuationRadius = 1000000.0f;
 
-	/** Lens flare type */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UTexture2D> FlareTexture;
-
-	/** Post-process material for bloom and glow */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PostProcess")
-	TSoftObjectPtr<UMaterialInstance> PostProcessMaterial;
-
 	/** Bloom intensity */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PostProcess")
 	float BloomIntensity = 5.0f;
@@ -125,25 +92,17 @@ struct FStationVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Base station mesh */
+	/** Station blueprint actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UStaticMesh> BaseMesh;
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Array of modular parts (habitats, docking bays, solar panels, etc.) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular")
-	TArray<TSoftObjectPtr<UStaticMesh>> ModularParts;
-
-	/** Faction decals (logos, markings) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Faction")
-	TArray<TSoftObjectPtr<UMaterialInstance>> FactionDecals;
+	/** Scale applied to the station actor */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Navigation lights pattern (Niagara or material) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
 	TSoftObjectPtr<UNiagaraSystem> LightsPattern;
-
-	/** Window emissive material */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UMaterialInstance> WindowMaterial;
 
 	/** Docking bay lights */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lighting")
@@ -163,21 +122,17 @@ struct FStargateVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Gate structure mesh */
+	/** Stargate blueprint actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UStaticMesh> GateMesh;
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Gate material */
+	/** Scale applied to the stargate actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
-	TSoftObjectPtr<UMaterialInstance> GateMaterial;
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Portal VFX (wormhole effect) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
 	TSoftObjectPtr<UNiagaraSystem> PortalVFX;
-
-	/** Portal material (event horizon) */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
-	TSoftObjectPtr<UMaterialInstance> PortalMaterial;
 
 	/** Destination marker VFX */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
@@ -209,13 +164,13 @@ struct FAsteroidBeltVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Array of asteroid mesh variants for procedural distribution */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroids")
-	TArray<TSoftObjectPtr<UStaticMesh>> AsteroidMeshes;
+	/** Asteroid belt blueprint actor */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Array of material instances for asteroid variation */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asteroids")
-	TArray<TSoftObjectPtr<UMaterialInstance>> AsteroidMaterials;
+	/** Scale applied to the asteroid belt actor */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Cloud/Dust particle effects (Niagara) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
@@ -247,21 +202,17 @@ struct FAnomalyVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Central structure or debris mesh */
+	/** Anomaly blueprint actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
-	TSoftObjectPtr<UStaticMesh> CenterMesh;
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Center mesh material */
+	/** Scale applied to the anomaly actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
-	TSoftObjectPtr<UMaterialInstance> CenterMaterial;
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Scanning signature VFX (visible when scanned) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scanning")
 	TSoftObjectPtr<UNiagaraSystem> SignatureVFX;
-
-	/** Icon or marker for difficulty level */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Difficulty")
-	TSoftObjectPtr<UMaterialInstance> DifficultyIconMaterial;
 
 	/** Type-specific particle effects (combat beams, data streams, gas clouds, etc.) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TypeEffects")
@@ -293,21 +244,17 @@ struct FWormholeVisualRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	/** Wormhole entrance mesh (optional structural ring) */
+	/** Wormhole blueprint actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
-	TSoftObjectPtr<UStaticMesh> EntranceMesh;
+	TSoftClassPtr<AActor> ActorClass;
 
-	/** Entrance mesh material */
+	/** Scale applied to the wormhole actor */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Structure")
-	TSoftObjectPtr<UMaterialInstance> EntranceMaterial;
+	FVector ActorScale = FVector(1.0f, 1.0f, 1.0f);
 
 	/** Main wormhole VFX (event horizon, spatial distortion) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
 	TSoftObjectPtr<UNiagaraSystem> WormholeVFX;
-
-	/** Post-process material for space-time distortion effect */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distortion")
-	TSoftObjectPtr<UMaterialInstance> DistortionMaterial;
 
 	/** Entrance activation sound */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")

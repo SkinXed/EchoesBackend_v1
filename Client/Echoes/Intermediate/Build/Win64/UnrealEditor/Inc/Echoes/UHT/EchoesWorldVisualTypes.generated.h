@@ -17,7 +17,7 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 // ********** Begin ScriptStruct FPlanetVisualRow **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_22_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_21_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -27,7 +27,7 @@ struct FPlanetVisualRow;
 // ********** End ScriptStruct FPlanetVisualRow ****************************************************
 
 // ********** Begin ScriptStruct FStarVisualRow ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_76_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_51_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FStarVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -37,7 +37,7 @@ struct FStarVisualRow;
 // ********** End ScriptStruct FStarVisualRow ******************************************************
 
 // ********** Begin ScriptStruct FStationVisualRow *************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_126_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_93_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FStationVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -47,7 +47,7 @@ struct FStationVisualRow;
 // ********** End ScriptStruct FStationVisualRow ***************************************************
 
 // ********** Begin ScriptStruct FStargateVisualRow ************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_164_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_123_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FStargateVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -57,7 +57,7 @@ struct FStargateVisualRow;
 // ********** End ScriptStruct FStargateVisualRow **************************************************
 
 // ********** Begin ScriptStruct FAsteroidBeltVisualRow ********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_210_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_165_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -67,7 +67,7 @@ struct FAsteroidBeltVisualRow;
 // ********** End ScriptStruct FAsteroidBeltVisualRow **********************************************
 
 // ********** Begin ScriptStruct FAnomalyVisualRow *************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_248_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_203_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -77,7 +77,7 @@ struct FAnomalyVisualRow;
 // ********** End ScriptStruct FAnomalyVisualRow ***************************************************
 
 // ********** Begin ScriptStruct FWormholeVisualRow ************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_294_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h_245_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FWormholeVisualRow_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;

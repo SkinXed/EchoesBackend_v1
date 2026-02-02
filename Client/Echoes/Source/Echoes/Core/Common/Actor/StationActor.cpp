@@ -98,9 +98,12 @@ void AStationActor::InitializeStation(
 
 void AStationActor::ApplyVisualConfiguration()
 {
-	// Set base mesh and materials
-	// In production: Load async with UStreamableManager
-	
+	// Apply base scale from visual data
+	if (BaseMeshComponent)
+	{
+		BaseMeshComponent->SetRelativeScale3D(VisualData.ActorScale);
+	}
+
 	// Set navigation lights
 	if (LightsComponent && !VisualData.LightsPattern.IsNull())
 	{
@@ -123,7 +126,7 @@ void AStationActor::ApplySeedVariation()
 
 	// Apply scale variation
 	float ScaleVariation = RandomStream.FRandRange(VisualData.ScaleRange.X, VisualData.ScaleRange.Y);
-	BaseMeshComponent->SetRelativeScale3D(FVector(ScaleVariation));
+	BaseMeshComponent->SetRelativeScale3D(VisualData.ActorScale * ScaleVariation);
 
 	// Random rotation
 	FRotator RandomRotation(0.0f, RandomStream.FRandRange(0.0f, 360.0f), 0.0f);

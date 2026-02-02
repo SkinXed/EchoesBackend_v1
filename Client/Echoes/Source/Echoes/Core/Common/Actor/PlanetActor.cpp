@@ -111,7 +111,7 @@ void APlanetActor::ApplySeedVariation()
 
 	// Random scale variation (±10%)
 	float ScaleVariation = RandomStream.FRandRange(0.9f, 1.1f);
-	PlanetMeshComponent->SetRelativeScale3D(FVector(ScaleVariation));
+	PlanetMeshComponent->SetRelativeScale3D(VisualData.ActorScale * ScaleVariation);
 
 	// Create dynamic material instances for parameter variation
 	CreateDynamicMaterials();
@@ -122,19 +122,10 @@ void APlanetActor::ApplySeedVariation()
 
 void APlanetActor::ApplyVisualConfiguration()
 {
-	// Set planet mesh (would be loaded async in production)
-	// For now, assuming assets are already loaded
-	// TODO: Implement async loading with UStreamableManager
-
-	// Select material from array based on seed
-	if (VisualData.MaterialInstances.Num() > 0)
+	// Apply base scale from visual data
+	if (PlanetMeshComponent)
 	{
-		FRandomStream RandomStream(Seed);
-		int32 MaterialIndex = RandomStream.RandRange(0, VisualData.MaterialInstances.Num() - 1);
-		
-		// In production, use async loading:
-		// UAssetManager::GetStreamableManager().RequestAsyncLoad(...)
-		// For now, materials would be set through data tables
+		PlanetMeshComponent->SetRelativeScale3D(VisualData.ActorScale);
 	}
 
 	// Set atmosphere scale
@@ -150,14 +141,9 @@ void APlanetActor::ApplyVisualConfiguration()
 		}
 	}
 
-	// Set cloud layer
-	if (CloudLayerComponent && VisualData.CloudLayerMesh.IsNull())
+	// Start cloud rotation timer
+	if (CloudLayerComponent)
 	{
-		CloudLayerComponent->SetVisibility(false);
-	}
-	else if (CloudLayerComponent)
-	{
-		// Start cloud rotation timer
 		if (HasAuthority() && VisualData.CloudRotationSpeed > 0.0f)
 		{
 			GetWorld()->GetTimerManager().SetTimer(
@@ -168,12 +154,6 @@ void APlanetActor::ApplyVisualConfiguration()
 				true
 			);
 		}
-	}
-
-	// Set ring mesh for gas giants
-	if (RingComponent && VisualData.RingMesh.IsNull())
-	{
-		RingComponent->SetVisibility(false);
 	}
 }
 

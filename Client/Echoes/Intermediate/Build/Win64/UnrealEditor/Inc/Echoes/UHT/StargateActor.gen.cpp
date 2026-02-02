@@ -263,7 +263,7 @@ void Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_bI
 	((StargateActor_eventInitializeStargate_Parms*)Obj)->bInIsOperational = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_bInIsOperational = { "bInIsOperational", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(StargateActor_eventInitializeStargate_Parms), &Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_bInIsOperational_SetBit, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StargateActor_eventInitializeStargate_Parms, InVisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 395951088
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StargateActor_eventInitializeStargate_Parms, InVisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 3791110868
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InGateId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AStargateActor_InitializeStargate_Statics::NewProp_InName,
@@ -728,7 +728,7 @@ struct Z_Construct_UClass_AStargateActor_Statics
 		{ &Z_Construct_UFunction_AStargateActor_GetGateName, "GetGateName" }, // 2820376385
 		{ &Z_Construct_UFunction_AStargateActor_GetTargetSystemId, "GetTargetSystemId" }, // 3657346315
 		{ &Z_Construct_UFunction_AStargateActor_GetTargetSystemName, "GetTargetSystemName" }, // 68606480
-		{ &Z_Construct_UFunction_AStargateActor_InitializeStargate, "InitializeStargate" }, // 1241964588
+		{ &Z_Construct_UFunction_AStargateActor_InitializeStargate, "InitializeStargate" }, // 3343024980
 		{ &Z_Construct_UFunction_AStargateActor_IsOperational, "IsOperational" }, // 833781042
 		{ &Z_Construct_UFunction_AStargateActor_IsShipReadyToJump, "IsShipReadyToJump" }, // 1329407560
 		{ &Z_Construct_UFunction_AStargateActor_OnJumpTriggerBeginOverlap, "OnJumpTriggerBeginOverlap" }, // 2802027740
@@ -755,7 +755,7 @@ void Z_Construct_UClass_AStargateActor_Statics::NewProp_bIsOperational_SetBit(vo
 	((AStargateActor*)Obj)->bIsOperational = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AStargateActor_Statics::NewProp_bIsOperational = { "bIsOperational", "OnRep_GateData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AStargateActor), &Z_Construct_UClass_AStargateActor_Statics::NewProp_bIsOperational_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsOperational_MetaData), NewProp_bIsOperational_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStargateActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStargateActor, VisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 395951088
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AStargateActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AStargateActor, VisualData), Z_Construct_UScriptStruct_FStargateVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 3791110868
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AStargateActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStargateActor_Statics::NewProp_GateMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AStargateActor_Statics::NewProp_PortalVFXComponent,
@@ -823,10 +823,10 @@ AStargateActor::~AStargateActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStargateActor, AStargateActor::StaticClass, TEXT("AStargateActor"), &Z_Registration_Info_UClass_AStargateActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStargateActor), 2383360262U) },
+		{ Z_Construct_UClass_AStargateActor, AStargateActor::StaticClass, TEXT("AStargateActor"), &Z_Registration_Info_UClass_AStargateActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStargateActor), 822137513U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_3696037919(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_1534254905(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StargateActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

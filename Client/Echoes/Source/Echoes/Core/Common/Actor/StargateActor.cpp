@@ -122,8 +122,11 @@ void AStargateActor::InitializeStargate(
 
 void AStargateActor::ApplyVisualConfiguration()
 {
-	// Set gate mesh and materials
-	// In production: Load async with UStreamableManager
+	// Apply base scale from visual data
+	if (GateMeshComponent)
+	{
+		GateMeshComponent->SetRelativeScale3D(VisualData.ActorScale);
+	}
 
 	// Enable/disable portal VFX based on operational status
 	if (PortalVFXComponent)
