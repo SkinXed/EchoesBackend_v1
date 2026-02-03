@@ -188,3 +188,91 @@ void AEchoesHangarManager::OnFittingChanged(const FEchoesShipFitting& NewFitting
 		UpdateShipMesh(NewFitting);
 	}
 }
+
+FVector AEchoesHangarManager::GetOrCreateHangarInstance(const FGuid& PlayerId, const FGuid& StationId, const FGuid& HangarInstanceId)
+{
+	// Check if instance already exists for this player
+	if (FHangarInstance* ExistingInstance = HangarInstances.Find(PlayerId))
+	{
+		UE_LOG(LogTemp, Log, TEXT("HangarManager: Using existing hangar instance for player %s"), *PlayerId.ToString());
+		return ExistingInstance->SpatialOffset;
+	}
+
+	// Create new hangar instance with spatial isolation
+	FHangarInstance NewInstance;
+	NewInstance.InstanceId = HangarInstanceId;
+	NewInstance.PlayerId = PlayerId;
+	NewInstance.StationId = StationId;
+
+	// Calculate unique spatial offset based on hangar instance ID
+	// Use a deterministic hash to ensure same instance ID always gets same offset
+	uint32 Hash = GetTypeHash(HangarInstanceId);
+	
+	// Grid layout constants for spatial distribution
+	constexpr int32 GRID_SIZE = 100;           // Number of grid cells per dimension
+	constexpr int32 GRID_OFFSET = 50;          // Center offset for grid (-50 to +50)
+	constexpr int32 VERTICAL_LAYERS = 20;      // Number of vertical layers (0 to +20)
+	constexpr int32 GRID_HASH_DIVISOR = 100;   // Hash divisor for grid Y
+	constexpr int32 VERTICAL_HASH_DIVISOR = 10000; // Hash divisor for grid Z
+	constexpr float VERTICAL_SCALE = 0.5f;     // Vertical separation scale factor
+	
+	// Generate offset in a grid pattern with large separation to prevent overlap
+	int32 GridX = (Hash % GRID_SIZE) - GRID_OFFSET; // -50 to +50
+	int32 GridY = ((Hash / GRID_HASH_DIVISOR) % GRID_SIZE) - GRID_OFFSET; // -50 to +50
+	int32 GridZ = ((Hash / VERTICAL_HASH_DIVISOR) % VERTICAL_LAYERS); // 0 to +20 for vertical separation
+	
+	NewInstance.SpatialOffset = FVector(
+		GridX * HangarSpatialSeparation,
+		GridY * HangarSpatialSeparation,
+		GridZ * HangarSpatialSeparation * VERTICAL_SCALE // Less vertical separation
+	);
+
+	UE_LOG(LogTemp, Log, TEXT("HangarManager: Created new hangar instance for player %s at offset %s"), 
+		*PlayerId.ToString(), 
+		*NewInstance.SpatialOffset.ToString());
+
+	// Store the instance
+	HangarInstances.Add(PlayerId, NewInstance);
+
+	return NewInstance.SpatialOffset;
+}
+
+void AEchoesHangarManager::BindShipPawnToHangar(const FGuid& PlayerId, AActor* ShipPawn)
+{
+	if (!ShipPawn)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HangarManager: Cannot bind null ship pawn"));
+		return;
+	}
+
+	FHangarInstance* Instance = HangarInstances.Find(PlayerId);
+	if (!Instance)
+	{
+		UE_LOG(LogTemp, Error, TEXT("HangarManager: No hangar instance found for player %s"), *PlayerId.ToString());
+		return;
+	}
+
+	// Store reference to ship pawn
+	Instance->SpawnedShipPawn = ShipPawn;
+
+	// Apply spatial offset to ship pawn location
+	FVector CurrentLocation = ShipPawn->GetActorLocation();
+	FVector NewLocation = CurrentLocation + Instance->SpatialOffset;
+	ShipPawn->SetActorLocation(NewLocation);
+
+	UE_LOG(LogTemp, Log, TEXT("HangarManager: Bound ship pawn to hangar instance with offset %s"), 
+		*Instance->SpatialOffset.ToString());
+
+	// Optional: Set owner-only visibility for additional isolation
+	// This ensures only the owning player can see their ship in the hangar
+	if (APawn* Pawn = Cast<APawn>(ShipPawn))
+	{
+		// Note: SetOnlyOwnerSee requires the pawn to have an owner (player controller)
+		// This is typically set during spawn, but we can verify it here
+		if (Pawn->GetOwner())
+		{
+			ShipPawn->SetOnlyOwnerSee(true);
+			UE_LOG(LogTemp, Log, TEXT("HangarManager: Set ship pawn to owner-only visibility"));
+		}
+	}
+}
