@@ -39,6 +39,28 @@ struct FPlanetVisualRow : public FTableRowBase
 	/** Emissive intensity for lava/volcanic planets */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
 	float EmissiveIntensity = 0.0f;
+
+	// ==================== Orbit Visualization ====================
+
+	/** Whether to display orbital path for this planet type */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	bool bShowOrbit = true;
+
+	/** Color of the orbital path line */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	FLinearColor OrbitColor = FLinearColor(0.3f, 0.6f, 1.0f, 0.5f);
+
+	/** Thickness of the orbital path line in world units */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	float OrbitLineThickness = 10.0f;
+
+	/** Number of segments for orbit circle (higher = smoother) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	int32 OrbitSegments = 128;
+
+	/** Material to use for orbit rendering (optional, for advanced effects) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	TSoftObjectPtr<UMaterialInterface> OrbitMaterial;
 };
 
 /**

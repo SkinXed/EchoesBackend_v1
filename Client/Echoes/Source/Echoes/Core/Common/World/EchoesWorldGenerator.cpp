@@ -140,6 +140,29 @@ void AEchoesWorldGenerator::OnRegionalClusterConfigReceived(const FServerRegiona
 	UE_LOG(LogTemp, Log, TEXT("Total Stargates: %d"), RegionalConfig.TotalStargates);
 	UE_LOG(LogTemp, Log, TEXT("Total Stations: %d"), RegionalConfig.TotalStations);
 
+	// ==================== ENHANCED LOGGING: System List ====================
+	UE_LOG(LogTemp, Log, TEXT(""));
+	UE_LOG(LogTemp, Log, TEXT("┌────────────────────────────────────────────────────────────┐"));
+	UE_LOG(LogTemp, Log, TEXT("│ REGIONAL CLUSTER SYSTEM LIST                               │"));
+	UE_LOG(LogTemp, Log, TEXT("├────────────────────────────────────────────────────────────┤"));
+	
+	for (int32 i = 0; i < RegionalConfig.Systems.Num(); ++i)
+	{
+		const FServerSystemConfig& System = RegionalConfig.Systems[i];
+		UE_LOG(LogTemp, Log, TEXT("│ [%02d] %-40s │"), i + 1, *System.SystemName);
+		UE_LOG(LogTemp, Log, TEXT("│      ID: %-46s │"), *System.SystemId.ToString());
+		UE_LOG(LogTemp, Log, TEXT("│      Coords: (%lld, %lld, %lld)                          │"), 
+			System.PositionX, System.PositionY, System.PositionZ);
+		
+		if (i < RegionalConfig.Systems.Num() - 1)
+		{
+			UE_LOG(LogTemp, Log, TEXT("├────────────────────────────────────────────────────────────┤"));
+		}
+	}
+	
+	UE_LOG(LogTemp, Log, TEXT("└────────────────────────────────────────────────────────────┘"));
+	UE_LOG(LogTemp, Log, TEXT(""));
+
 	// Generate the regional cluster
 	ServerOnly_GenerateRegionalCluster(RegionalConfig);
 
@@ -221,6 +244,37 @@ void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Conf
 	{
 		return;
 	}
+
+	// ==================== ENHANCED LOGGING: System Statistics Table ====================
+	UE_LOG(LogTemp, Log, TEXT(""));
+	UE_LOG(LogTemp, Log, TEXT("┌─────────────────────────────────────────────────────────────┐"));
+	UE_LOG(LogTemp, Log, TEXT("│ MATERIALIZING SYSTEM: %-37s │"), *Config.SystemName);
+	UE_LOG(LogTemp, Log, TEXT("├─────────────────────────────────────────────────────────────┤"));
+	UE_LOG(LogTemp, Log, TEXT("│ System ID: %-48s │"), *Config.SystemId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("│ Star Class: %-47s │"), *Config.StarClass);
+	UE_LOG(LogTemp, Log, TEXT("│ Security Status: %-42.2f │"), Config.SecurityStatus);
+	UE_LOG(LogTemp, Log, TEXT("├─────────────────────────────────────────────────────────────┤"));
+	UE_LOG(LogTemp, Log, TEXT("│ OBJECT STATISTICS                                           │"));
+	UE_LOG(LogTemp, Log, TEXT("├─────────────────────────────────────────────────────────────┤"));
+	UE_LOG(LogTemp, Log, TEXT("│ Celestial Bodies:                                           │"));
+	UE_LOG(LogTemp, Log, TEXT("│   ⭐ Stars:          %3d                                     │"), 1);
+	UE_LOG(LogTemp, Log, TEXT("│   🌍 Planets:        %3d                                     │"), Config.Planets.Num());
+	UE_LOG(LogTemp, Log, TEXT("│   ☄️  Asteroid Belts: %3d                                     │"), Config.AsteroidBelts.Num());
+	UE_LOG(LogTemp, Log, TEXT("├─────────────────────────────────────────────────────────────┤"));
+	UE_LOG(LogTemp, Log, TEXT("│ Infrastructure:                                             │"));
+	UE_LOG(LogTemp, Log, TEXT("│   🏭 Stations:       %3d                                     │"), Config.Stations.Num());
+	UE_LOG(LogTemp, Log, TEXT("│   🚪 Stargates:      %3d                                     │"), Config.Stargates.Num());
+	UE_LOG(LogTemp, Log, TEXT("├─────────────────────────────────────────────────────────────┤"));
+	UE_LOG(LogTemp, Log, TEXT("│ Exploration:                                                │"));
+	UE_LOG(LogTemp, Log, TEXT("│   ❓ Anomalies:      %3d                                     │"), Config.Anomalies.Num());
+	UE_LOG(LogTemp, Log, TEXT("│   🌀 Wormholes:      %3d                                     │"), Config.Wormholes.Num());
+	UE_LOG(LogTemp, Log, TEXT("└─────────────────────────────────────────────────────────────┘"));
+	
+	const int32 TotalObjects = 1 + Config.Planets.Num() + Config.Stations.Num() + 
+	                           Config.Stargates.Num() + Config.AsteroidBelts.Num() + 
+	                           Config.Anomalies.Num() + Config.Wormholes.Num();
+	UE_LOG(LogTemp, Log, TEXT("Total objects to spawn: %d"), TotalObjects);
+	UE_LOG(LogTemp, Log, TEXT(""));
 
 	// Optional: Async load assets before spawning (optimization)
 	// AsyncLoadAssetsForConfig(Config);
@@ -398,10 +452,16 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 				Seed,
 				*VisualData);
 
+			// ==================== SET ORBIT PARAMETERS ====================
+			// Pass orbit distance and system offset for orbit visualization
+			// OrbitDistance is in the same units as PositionX/Y/Z (km)
+			// The planet actor will use this to draw the orbital path on clients
+			Planet->SetOrbitParameters(PlanetConfig.OrbitDistance, SystemOffset);
+
 			SpawnedActors.Add(Planet);
 
-			UE_LOG(LogTemp, Log, TEXT("✓ Planet spawned: %s (Type: %s) at (%s)"),
-				*PlanetConfig.Name, *PlanetConfig.Type, *PlanetLocation.ToString());
+			UE_LOG(LogTemp, Log, TEXT("✓ Planet spawned: %s (Type: %s, Orbit: %.1f km) at (%s)"),
+				*PlanetConfig.Name, *PlanetConfig.Type, PlanetConfig.OrbitDistance, *PlanetLocation.ToString());
 		}
 		else
 		{
