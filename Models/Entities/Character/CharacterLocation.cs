@@ -40,6 +40,9 @@ namespace Echoes.API.Models.Entities.Character
         [ForeignKey(nameof(Station))]
         public Guid? StationId { get; set; }
 
+        // Персональный инстанс ангара (для изоляции игроков)
+        public Guid? HangarInstanceId { get; set; }
+
         // Если в корабле
         [ForeignKey(nameof(Ship))]
         public long? ShipItemId { get; set; }

@@ -376,6 +376,7 @@ public class CharacterController : ControllerBase
                 LocationType = Models.Enums.LocationType.Docked,
                 IsDocked = true,
                 InWarp = false,
+                HangarInstanceId = Guid.NewGuid(), // Create unique hangar instance for this character
                 LastUpdate = DateTime.UtcNow
             };
 
@@ -459,6 +460,9 @@ public class CharacterController : ControllerBase
 
                     if (homeStation != null)
                     {
+                        // Create or get hangar instance for this character at home station
+                        var hangarInstanceId = Guid.NewGuid();
+                        
                         return Ok(new CharacterLocationDto
                         {
                             CharacterId = id,
@@ -470,7 +474,8 @@ public class CharacterController : ControllerBase
                             SolarSystemName = homeStation.SolarSystem?.Name ?? "Unknown",
                             PositionX = homeStation.PositionX,
                             PositionY = homeStation.PositionY,
-                            PositionZ = homeStation.PositionZ
+                            PositionZ = homeStation.PositionZ,
+                            HangarInstanceId = hangarInstanceId
                         });
                     }
                 }
@@ -489,7 +494,8 @@ public class CharacterController : ControllerBase
                 SolarSystemName = location.SolarSystem?.Name,
                 PositionX = location.PositionX,
                 PositionY = location.PositionY,
-                PositionZ = location.PositionZ
+                PositionZ = location.PositionZ,
+                HangarInstanceId = location.HangarInstanceId ?? Guid.NewGuid() // Ensure hangar instance exists
             };
 
             return Ok(locationDto);
