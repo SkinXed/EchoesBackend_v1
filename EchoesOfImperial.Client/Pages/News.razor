@@ -1,0 +1,249 @@
+@page "/news"
+@using EchoesOfImperial.Shared.DTOs
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Imperial Edicts - Echoes of Imperial</PageTitle>
+
+<div class="news-container">
+    <div class="news-header">
+        <h1>IMPERIAL EDICTS</h1>
+        <p>Official announcements from the Imperial Command</p>
+    </div>
+
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <div class="admin-tools">
+                <button class="btn-create-news" @onclick="ShowCreateForm">
+                    <span class="icon">📜</span>
+                    + NEW EDICT
+                </button>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+
+    @if (showCreateForm)
+    {
+        <div class="modal-overlay" @onclick="CloseCreateForm">
+            <div class="modal-content" @onclick:stopPropagation>
+                <div class="modal-header">
+                    <h2>CREATE NEW EDICT</h2>
+                    <button class="modal-close" @onclick="CloseCreateForm">✕</button>
+                </div>
+                
+                <EditForm Model="@newPost" OnValidSubmit="@HandleCreateNews" class="news-form">
+                    <DataAnnotationsValidator />
+                    
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert-error">
+                            <span class="error-icon">⚠</span>
+                            @errorMessage
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label for="title">TITLE</label>
+                        <InputText id="title" @bind-Value="newPost.Title" 
+                                   class="form-control" placeholder="Enter edict title" />
+                        <ValidationMessage For="@(() => newPost.Title)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageUrl">IMAGE URL (Optional)</label>
+                        <InputText id="imageUrl" @bind-Value="newPost.ImageUrl" 
+                                   class="form-control" placeholder="https://example.com/image.jpg" />
+                        <ValidationMessage For="@(() => newPost.ImageUrl)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">CONTENT</label>
+                        <InputTextArea id="content" @bind-Value="newPost.Content" 
+                                       class="form-control content-textarea" 
+                                       placeholder="Enter edict content (HTML/Markdown supported)" 
+                                       rows="10" />
+                        <ValidationMessage For="@(() => newPost.Content)" />
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" @onclick="CloseCreateForm">
+                            CANCEL
+                        </button>
+                        <button type="submit" class="btn-primary" disabled="@isLoading">
+                            @if (isLoading)
+                            {
+                                <span class="spinner"></span>
+                                <span>PUBLISHING...</span>
+                            }
+                            else
+                            {
+                                <span>PUBLISH</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+
+    @if (isLoadingNews)
+    {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading Imperial Edicts...</p>
+        </div>
+    }
+    else if (newsList.Count == 0)
+    {
+        <div class="empty-state">
+            <p>No edicts have been published yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="news-grid">
+            @foreach (var news in newsList)
+            {
+                <div class="news-card">
+                    @if (!string.IsNullOrEmpty(news.ImageUrl))
+                    {
+                        <div class="news-image-container">
+                            <img src="@news.ImageUrl" alt="@news.Title" class="news-image" />
+                        </div>
+                    }
+                    
+                    <div class="news-content">
+                        <h2 class="news-title">@news.Title</h2>
+                        
+                        <div class="news-meta">
+                            <span class="news-author">@news.AuthorName</span>
+                            <span class="news-separator">•</span>
+                            <span class="news-date">@news.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        
+                        <div class="news-text">
+                            @((MarkupString)news.Content)
+                        </div>
+
+                        <AuthorizeView Roles="Admin">
+                            <Authorized>
+                                <div class="news-admin-actions">
+                                    <button class="btn-delete" @onclick="() => HandleDeleteNews(news.Id)">
+                                        DELETE
+                                    </button>
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<NewsPostDto> newsList = new();
+    private bool isLoadingNews = true;
+    private bool showCreateForm = false;
+    private bool isLoading = false;
+    private string? errorMessage;
+    private NewsPostCreateDto newPost = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadNews();
+    }
+
+    private async Task LoadNews()
+    {
+        isLoadingNews = true;
+        try
+        {
+            var response = await Http.GetAsync("api/news");
+            if (response.IsSuccessStatusCode)
+            {
+                newsList = await response.Content.ReadFromJsonAsync<List<NewsPostDto>>() ?? new();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load news: {ex.Message}";
+        }
+        finally
+        {
+            isLoadingNews = false;
+        }
+    }
+
+    private void ShowCreateForm()
+    {
+        showCreateForm = true;
+        newPost = new NewsPostCreateDto();
+        errorMessage = null;
+    }
+
+    private void CloseCreateForm()
+    {
+        showCreateForm = false;
+        newPost = new NewsPostCreateDto();
+        errorMessage = null;
+    }
+
+    private async Task HandleCreateNews()
+    {
+        isLoading = true;
+        errorMessage = null;
+        
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/news", newPost);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadNews();
+                CloseCreateForm();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Failed to create edict: {error}";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task HandleDeleteNews(Guid newsId)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this edict?"))
+        {
+            return;
+        }
+
+        try
+        {
+            var response = await Http.DeleteAsync($"api/news/{newsId}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadNews();
+            }
+            else
+            {
+                errorMessage = "Failed to delete edict";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+}
