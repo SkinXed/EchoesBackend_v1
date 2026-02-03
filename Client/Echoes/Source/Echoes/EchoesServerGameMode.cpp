@@ -15,6 +15,11 @@
 #include "Engine/World.h"
 #include "Misc/ConfigCacheIni.h"
 #include "GameFramework/PlayerState.h"
+#include "Core/Common/Actor/StationActor.h"
+#include "EngineUtils.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AEchoesServerGameMode::AEchoesServerGameMode()
 {
@@ -523,7 +528,16 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Spawning player at station: %s (ShipTypeId: %d)"), *StationId.ToString(), ShipTypeId);
+	if (!HasAuthority())
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ SpawnPlayerAtStation: Called on client - must be server-only"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    SPAWNING PLAYER AT STATION (DOCKED STATE)            ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("StationId: %s, ShipTypeId: %d"), *StationId.ToString(), ShipTypeId);
 
 	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
 	FEchoesItemDefinitionRow ShipDef;
@@ -545,26 +559,123 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 		UE_LOG(LogTemp, Warning, TEXT("⚠ InventorySubsystem not available for ship lookup"));
 	}
 
-	// TODO: Find StationActor by ID
-	// TODO: Call Station->DockPlayer(PC)
-	// TODO: Open station menu widget
+	// ==================== STATION SEARCH LOGIC ====================
+	// Use TActorIterator to search for station by StationId
+	
+	AStationActor* FoundStation = nullptr;
+	UE_LOG(LogTemp, Log, TEXT("Searching for station in world..."));
 
-	// For now, spawn pawn in docked state
+	for (TActorIterator<AStationActor> It(GetWorld()); It; ++It)
+	{
+		AStationActor* Station = *It;
+		if (Station && Station->GetStationId() == StationId)
+		{
+			FoundStation = Station;
+			UE_LOG(LogTemp, Log, TEXT("✓ Station found: %s (Type: %s)"), 
+				*Station->GetStationName(), 
+				*Station->GetStationType());
+			break;
+		}
+	}
+
+	if (!FoundStation)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("⚠ Station with ID %s not found in world!"), *StationId.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("  This may occur if world generation is incomplete"));
+		UE_LOG(LogTemp, Warning, TEXT("  Falling back to safe spawn in open space at (0, 0, 0)"));
+
+		// Safety fallback: spawn in open space at origin
+		FVector SafetySpawnLocation = FVector(0.0f, 0.0f, 0.0f);
+		SpawnPlayerInSpace(PC, SafetySpawnLocation, FRotator::ZeroRotator, ShipTypeId);
+		return;
+	}
+
+	// ==================== SPAWN PLAYER PAWN ====================
+	// Call RestartPlayer to create the ship pawn
+	
+	UE_LOG(LogTemp, Log, TEXT("Creating player pawn..."));
 	RestartPlayer(PC);
 
-	if (PC->GetPawn())
+	APawn* PlayerPawn = PC->GetPawn();
+	if (!PlayerPawn)
 	{
-		UE_LOG(LogTemp, Log, TEXT("✓ Player spawned in docked state"));
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn player pawn"));
+		UE_LOG(LogTemp, Warning, TEXT("  Falling back to safe spawn"));
 		
-		// TODO: Apply ship mesh from ShipDef->WorldMesh if available
-		// TODO: Sync inventory: InventorySubsystem->Inventory_FetchShips()
-		
-		OnEntryFlowComplete.Broadcast();
+		FVector SafetySpawnLocation = FVector(0.0f, 0.0f, 0.0f);
+		SpawnPlayerInSpace(PC, SafetySpawnLocation, FRotator::ZeroRotator, ShipTypeId);
+		return;
 	}
-	else
+
+	UE_LOG(LogTemp, Log, TEXT("✓ Player pawn created: %s"), *PlayerPawn->GetName());
+
+	// ==================== MOVE PAWN TO STATION ====================
+	// Position pawn at station location
+	
+	FVector StationLocation = FoundStation->GetActorLocation();
+	FRotator StationRotation = FoundStation->GetActorRotation();
+	
+	PlayerPawn->SetActorLocation(StationLocation);
+	PlayerPawn->SetActorRotation(StationRotation);
+	
+	UE_LOG(LogTemp, Log, TEXT("✓ Pawn moved to station location: %s"), *StationLocation.ToString());
+
+	// ==================== DOCKED STATE SETUP ====================
+	// Hide pawn and disable collision/movement (player is "inside" station)
+	
+	// 1. Hide the pawn visually
+	PlayerPawn->SetActorHiddenInGame(true);
+	UE_LOG(LogTemp, Log, TEXT("✓ Pawn hidden (inside station)"));
+
+	// 2. Disable collision
+	PlayerPawn->SetActorEnableCollision(false);
+	UE_LOG(LogTemp, Log, TEXT("✓ Pawn collision disabled"));
+
+	// 3. Disable physics and movement
+	if (UPrimitiveComponent* RootPrimitive = Cast<UPrimitiveComponent>(PlayerPawn->GetRootComponent()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("✗ Failed to spawn player pawn at station"));
+		RootPrimitive->SetSimulatePhysics(false);
+		RootPrimitive->SetEnableGravity(false);
+		UE_LOG(LogTemp, Log, TEXT("✓ Physics disabled on pawn"));
 	}
+
+	// 4. If it's a character, disable movement component
+	if (ACharacter* Character = Cast<ACharacter>(PlayerPawn))
+	{
+		if (UCharacterMovementComponent* MovementComp = Character->GetCharacterMovement())
+		{
+			MovementComp->DisableMovement();
+			UE_LOG(LogTemp, Log, TEXT("✓ Character movement disabled"));
+		}
+	}
+
+	// ==================== OPEN STATION MENU ====================
+	// Call ClientRPC on StationActor to open station menu
+	
+	UE_LOG(LogTemp, Log, TEXT("Opening station menu for player..."));
+
+	// Get player's hangar storage ID (placeholder - should query from backend/inventory)
+	FGuid HangarStorageId = FGuid::NewGuid(); // TODO: Get actual hangar ID from player data
+
+	// Call the ClientRPC method on StationActor to open the menu on client
+	FoundStation->ClientRPC_OpenStationMenu(
+		FoundStation->GetStationName(),
+		FoundStation->GetStationType(),
+		HangarStorageId);
+
+	UE_LOG(LogTemp, Log, TEXT("✓ Station menu opened"));
+
+	// ==================== FINALIZE ====================
+	
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    PLAYER SUCCESSFULLY SPAWNED IN DOCKED STATE          ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PC->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Station: %s"), *FoundStation->GetStationName());
+	UE_LOG(LogTemp, Log, TEXT("Location: %s"), *StationLocation.ToString());
+
+	// Broadcast entry flow complete
+	OnEntryFlowComplete.Broadcast();
 }
 
 void AEchoesServerGameMode::SpawnPlayerInSpace(APlayerController* PC, const FVector& Position, const FRotator& Rotation, int32 ShipTypeId)

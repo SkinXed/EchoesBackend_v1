@@ -74,6 +74,7 @@ namespace Echoes.API.Services.Auth
             account.PasswordSalt = passwordSalt;
 
             // Create default character
+            // All new characters start at Genesis system in Apex Terminal
             var character = new Character
             {
                 Id = Guid.NewGuid(),
@@ -82,11 +83,33 @@ namespace Echoes.API.Services.Auth
                 IsMain = true,
                 WalletBalance = 1000000,
                 SecurityStatus = 0.0f,
-                CloneExpiration = DateTime.UtcNow.AddDays(30)
+                CloneExpiration = DateTime.UtcNow.AddDays(30),
+                IsDocked = true,
+                HomeStationId = UniverseGeneration.UniverseGenerator.APEX_TERMINAL_STATION_ID
             };
 
             _context.Accounts.Add(account);
             _context.Characters.Add(character);
+            await _context.SaveChangesAsync();
+
+            // Create character location at Apex Terminal in Genesis
+            var characterLocation = new CharacterLocation
+            {
+                Id = Guid.NewGuid(),
+                CharacterId = character.Id,
+                SolarSystemId = UniverseGeneration.UniverseGenerator.GENESIS_SYSTEM_ID,
+                StationId = UniverseGeneration.UniverseGenerator.APEX_TERMINAL_STATION_ID,
+                IsDocked = true,
+                InWarp = false,
+                LocationType = LocationType.Docked,
+                LastUpdate = DateTime.UtcNow,
+                // Position will be set from station data when character spawns
+                PositionX = 0,
+                PositionY = 0,
+                PositionZ = 0
+            };
+
+            _context.CharacterLocations.Add(characterLocation);
             await _context.SaveChangesAsync();
 
             // Create session
