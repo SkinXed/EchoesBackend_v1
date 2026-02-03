@@ -191,9 +191,18 @@
                                 <span class="price-label">PRICE:</span>
                                 <span class="price-value">@FormatPrice(item.Price)</span>
                             </div>
-                            <button class="btn-purchase" @onclick="() => HandlePurchase(item.Id)">
-                                PURCHASE
-                            </button>
+                            @if (CanAfford(item.Price))
+                            {
+                                <button class="btn-purchase" @onclick="() => HandlePurchase(item.Id)">
+                                    PURCHASE
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn-purchase disabled" disabled title="Insufficient Funds">
+                                    INSUFFICIENT FUNDS
+                                </button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -212,10 +221,12 @@
     private string? errorMessage;
     private ShopItemCreateDto itemForm = new();
     private ShopItemDto? editingItem = null;
+    private long currentBalance = 0;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadShopItems();
+        await LoadWalletBalance();
     }
 
     private async Task LoadShopItems()
@@ -274,6 +285,32 @@
         {
             isLoading = false;
         }
+    }
+
+    private async Task LoadWalletBalance()
+    {
+        try
+        {
+            var response = await Http.GetAsync("api/character/profile");
+            if (response.IsSuccessStatusCode)
+            {
+                var profile = await response.Content.ReadFromJsonAsync<CharacterProfileDto>();
+                if (profile != null)
+                {
+                    currentBalance = profile.WalletBalance;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading wallet balance: {ex.Message}");
+            // Don't show error to user, just log it
+        }
+    }
+
+    private bool CanAfford(long price)
+    {
+        return currentBalance >= price;
     }
 
     private void FilterByCategory(string? category)
@@ -415,6 +452,9 @@
                 var result = await response.Content.ReadFromJsonAsync<PurchaseResponse>();
                 if (result != null)
                 {
+                    // Update current balance from response
+                    currentBalance = result.NewBalance;
+                    
                     await JSRuntime.InvokeVoidAsync("alert", 
                         $"✓ Purchase Successful!\n\n" +
                         $"Item: {result.Item.Name}\n" +
@@ -481,6 +521,11 @@
         public long? CurrentBalance { get; set; }
         public long? RequiredAmount { get; set; }
         public long? Deficit { get; set; }
+    }
+
+    private class CharacterProfileDto
+    {
+        public long WalletBalance { get; set; }
     }
 
     private string FormatPrice(long price)
