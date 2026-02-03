@@ -1,0 +1,229 @@
+@page "/wiki"
+
+<PageTitle>Wiki - Echoes of Imperial</PageTitle>
+
+<div class="wiki-container">
+    <div class="wiki-sidebar">
+        <div class="sidebar-header">
+            <h2>KNOWLEDGE BASE</h2>
+            <p>Imperial Archives</p>
+        </div>
+        
+        <nav class="wiki-nav">
+            <button class="wiki-nav-item @(selectedSection == "architecture" ? "active" : "")" 
+                    @onclick="() => SelectSection(\"architecture\")">
+                <span class="nav-icon">📐</span>
+                <span>Architecture</span>
+            </button>
+            <button class="wiki-nav-item @(selectedSection == "factions" ? "active" : "")" 
+                    @onclick="() => SelectSection(\"factions\")">
+                <span class="nav-icon">⚔️</span>
+                <span>Great Factions</span>
+            </button>
+            <button class="wiki-nav-item @(selectedSection == "mechanics" ? "active" : "")" 
+                    @onclick="() => SelectSection(\"mechanics\")">
+                <span class="nav-icon">⚙️</span>
+                <span>Game Mechanics</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="wiki-content">
+        <div class="content-panel">
+            @if (selectedSection == "architecture")
+            {
+                @ArchitectureContent
+            }
+            else if (selectedSection == "factions")
+            {
+                @FactionsContent
+            }
+            else if (selectedSection == "mechanics")
+            {
+                @MechanicsContent
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string selectedSection = "architecture";
+
+    private void SelectSection(string section)
+    {
+        selectedSection = section;
+    }
+
+    private RenderFragment ArchitectureContent => __builder =>
+    {
+        <div class="section-content">
+            <h1 class="section-title">SYSTEM ARCHITECTURE</h1>
+            <hr class="imperial-divider" />
+            
+            <div class="content-block">
+                <h3>Hierarchy Overview</h3>
+                <p>The Echoes of Imperial infrastructure follows a robust multi-tier architecture designed for scalability and real-time gameplay:</p>
+                
+                <div class="architecture-flow">
+                    <div class="arch-node">
+                        <div class="arch-icon">🗄️</div>
+                        <h4>PostgreSQL Database</h4>
+                        <p>Central data persistence layer storing all game state, player data, and universe information.</p>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-node">
+                        <div class="arch-icon">🔌</div>
+                        <h4>ASP.NET Core API</h4>
+                        <p>RESTful API layer handling authentication, data queries, and business logic.</p>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-node">
+                        <div class="arch-icon">🖥️</div>
+                        <h4>Unreal Engine 5 Server</h4>
+                        <p>Game server managing real-time physics, combat, and multiplayer synchronization.</p>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-node">
+                        <div class="arch-icon">🎮</div>
+                        <h4>Client Application</h4>
+                        <p>Player-facing application with stunning visuals and responsive controls.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Network Protocol Standard</h3>
+                <div class="protocol-box">
+                    <p><strong>Critical Rule:</strong> All GUIDs are transmitted as <code>String</code> format for network exchange.</p>
+                    <p class="protocol-detail">This ensures cross-platform compatibility and consistent data serialization between the API and game servers.</p>
+                </div>
+            </div>
+        </div>
+    };
+
+    private RenderFragment FactionsContent => __builder =>
+    {
+        <div class="section-content">
+            <h1 class="section-title">GREAT FACTIONS</h1>
+            <hr class="imperial-divider" />
+            
+            <p class="section-intro">Four powerful factions vie for control of the known universe, each with its own ideology, culture, and capital system.</p>
+
+            <div class="factions-grid">
+                <div class="faction-card">
+                    <div class="faction-header solaris">
+                        <h3>☀️ Solaris Union</h3>
+                    </div>
+                    <div class="faction-body">
+                        <p class="faction-capital"><strong>Capital:</strong> Genesis</p>
+                        <p class="faction-desc">The Solaris Union stands as a beacon of progress and enlightenment. Born from the ashes of the old world, they champion democracy, scientific advancement, and peaceful expansion.</p>
+                        <ul class="faction-traits">
+                            <li>Advanced energy technology</li>
+                            <li>Diplomatic relations focus</li>
+                            <li>Trade and exploration specialists</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faction-card">
+                    <div class="faction-header zenith">
+                        <h3>🔺 Zenith Collective</h3>
+                    </div>
+                    <div class="faction-body">
+                        <p class="faction-capital"><strong>Capital:</strong> Zenith</p>
+                        <p class="faction-desc">The Zenith Collective represents the pinnacle of human achievement through collective consciousness. Their hive-mind structure enables unprecedented coordination and efficiency.</p>
+                        <ul class="faction-traits">
+                            <li>Neural network integration</li>
+                            <li>Rapid response fleets</li>
+                            <li>Superior tactical coordination</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faction-card">
+                    <div class="faction-header nadir">
+                        <h3>🔻 Nadir Remnant</h3>
+                    </div>
+                    <div class="faction-body">
+                        <p class="faction-capital"><strong>Capital:</strong> Nadir</p>
+                        <p class="faction-desc">Forged in the depths of desperation, the Nadir Remnant emerged from humanity's darkest hour. They are survivors, scavengers, and fierce defenders of their hard-won territory.</p>
+                        <ul class="faction-traits">
+                            <li>Salvage and retrofit expertise</li>
+                            <li>Guerrilla warfare tactics</li>
+                            <li>Resource efficiency masters</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faction-card">
+                    <div class="faction-header aegis">
+                        <h3>🛡️ Aegis Hegemony</h3>
+                    </div>
+                    <div class="faction-body">
+                        <p class="faction-capital"><strong>Capital:</strong> Aegis</p>
+                        <p class="faction-desc">The Aegis Hegemony rules with an iron fist, maintaining order through military might and strict governance. Their doctrine prioritizes security, discipline, and absolute loyalty.</p>
+                        <ul class="faction-traits">
+                            <li>Heavy armor specialization</li>
+                            <li>Military industrial complex</li>
+                            <li>Fortification experts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    };
+
+    private RenderFragment MechanicsContent => __builder =>
+    {
+        <div class="section-content">
+            <h1 class="section-title">GAME MECHANICS</h1>
+            <hr class="imperial-divider" />
+            
+            <p class="section-intro">Core gameplay systems that define the Echoes of Imperial experience.</p>
+
+            <div class="mechanics-list">
+                <div class="mechanic-card">
+                    <div class="mechanic-header">
+                        <span class="mechanic-icon">🏠</span>
+                        <h3>Personal Hangar</h3>
+                    </div>
+                    <div class="mechanic-body">
+                        <p class="mechanic-subtitle">Your Private Space</p>
+                        <p>The Personal Hangar is your isolated sanctuary within the vast universe. Each pilot has their own instanced hangar space where they can:</p>
+                        <ul>
+                            <li><strong>Ship Management:</strong> Access, customize, and maintain your fleet of vessels</li>
+                            <li><strong>Equipment Storage:</strong> Store modules, weapons, and cargo in secure containers</li>
+                            <li><strong>Privacy Shield:</strong> Complete isolation from other players ensures your assets remain private</li>
+                            <li><strong>Preparation Zone:</strong> Plan your next mission, check market prices, and configure loadouts</li>
+                        </ul>
+                        <div class="mechanic-note">
+                            <p><strong>Technical Detail:</strong> Each hangar is a separate game instance, ensuring optimal performance and absolute player isolation. No other pilot can access your hangar without explicit permission.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="imperial-divider" />
+
+                <div class="mechanic-card">
+                    <div class="mechanic-header">
+                        <span class="mechanic-icon">🚀</span>
+                        <h3>Undock System</h3>
+                    </div>
+                    <div class="mechanic-body">
+                        <p class="mechanic-subtitle">Enter the Void</p>
+                        <p>The Undock System provides a thrilling transition from your safe hangar to the dangerous expanse of space:</p>
+                        <ul>
+                            <li><strong>Launch Sequence:</strong> Initiate undocking protocols with a single command</li>
+                            <li><strong>Momentum Boost:</strong> Ships are ejected with an initial velocity impulse for dramatic effect</li>
+                            <li><strong>Station Clearing:</strong> Automatic trajectory calculation prevents collision with station structures</li>
+                            <li><strong>Combat Ready:</strong> All systems go live upon exiting the hangar bay doors</li>
+                        </ul>
+                        <div class="mechanic-note">
+                            <p><strong>Technical Detail:</strong> The undock impulse is calculated based on ship mass and station rotation, ensuring a realistic and cinematic departure. Once undocked, you enter the shared universe instance where you can encounter other players.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    };
+}
