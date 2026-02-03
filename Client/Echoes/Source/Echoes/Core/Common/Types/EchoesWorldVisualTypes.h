@@ -302,3 +302,41 @@ struct FWormholeVisualRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distortion")
 	float DistortionIntensity = 0.5f;
 };
+
+/**
+ * Visual configuration for moons
+ * Maps moon types from database to Unreal assets
+ */
+USTRUCT(BlueprintType)
+struct FMoonVisualRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** Moon blueprint actor */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	TSoftClassPtr<AActor> ActorClass;
+
+	/** Scale applied to the moon actor */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visual")
+	FVector ActorScale = FVector(0.5f, 0.5f, 0.5f); // Smaller than planets by default
+
+	/** Whether to display orbital path for this moon type */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	bool bShowOrbit = true;
+
+	/** Color of the orbital path line */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	FLinearColor OrbitColor = FLinearColor(0.6f, 0.7f, 0.8f, 0.3f); // Subtle gray-blue
+
+	/** Thickness of the orbital path line in world units */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	float OrbitLineThickness = 5.0f; // Thinner than planet orbits
+
+	/** Number of segments for orbit circle (higher = smoother) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	int32 OrbitSegments = 64; // Fewer segments than planets
+
+	/** Material to use for orbit rendering (optional, for advanced effects) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Orbit")
+	TSoftObjectPtr<UMaterialInterface> OrbitMaterial;
+};

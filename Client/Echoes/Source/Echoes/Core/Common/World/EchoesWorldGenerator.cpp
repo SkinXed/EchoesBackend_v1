@@ -3,6 +3,7 @@
 #include "EchoesWorldGenerator.h"
 #include "EchoesServerManagementSubsystem.h"
 #include "PlanetActor.h"
+#include "MoonActor.h"
 #include "StarActor.h"
 #include "StationActor.h"
 #include "StargateActor.h"
@@ -246,6 +247,13 @@ void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Conf
 	}
 
 	// ==================== ENHANCED LOGGING: System Statistics Table ====================
+	// Calculate total moon count across all planets
+	int32 TotalMoons = 0;
+	for (const FPlanetConfig& Planet : Config.Planets)
+	{
+		TotalMoons += Planet.Moons.Num();
+	}
+
 	UE_LOG(LogTemp, Log, TEXT(""));
 	UE_LOG(LogTemp, Log, TEXT("┌─────────────────────────────────────────────────────────────┐"));
 	UE_LOG(LogTemp, Log, TEXT("│ MATERIALIZING SYSTEM: %-37s │"), *Config.SystemName);
@@ -259,6 +267,7 @@ void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Conf
 	UE_LOG(LogTemp, Log, TEXT("│ Celestial Bodies:                                           │"));
 	UE_LOG(LogTemp, Log, TEXT("│   ⭐ Stars:          %3d                                     │"), 1);
 	UE_LOG(LogTemp, Log, TEXT("│   🌍 Planets:        %3d                                     │"), Config.Planets.Num());
+	UE_LOG(LogTemp, Log, TEXT("│   🌙 Moons:          %3d                                     │"), TotalMoons);
 	UE_LOG(LogTemp, Log, TEXT("│   ☄️  Asteroid Belts: %3d                                     │"), Config.AsteroidBelts.Num());
 	UE_LOG(LogTemp, Log, TEXT("├─────────────────────────────────────────────────────────────┤"));
 	UE_LOG(LogTemp, Log, TEXT("│ Infrastructure:                                             │"));
@@ -270,7 +279,12 @@ void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Conf
 	UE_LOG(LogTemp, Log, TEXT("│   🌀 Wormholes:      %3d                                     │"), Config.Wormholes.Num());
 	UE_LOG(LogTemp, Log, TEXT("└─────────────────────────────────────────────────────────────┘"));
 	
-	const int32 TotalObjects = 1 + Config.Planets.Num() + Config.Stations.Num() + 
+	// ==================== NEW: SERVER FORMAT LOGGING ====================
+	UE_LOG(LogTemp, Log, TEXT("[SERVER] System: %s | Security: %.1f"), *Config.SystemName, Config.SecurityStatus);
+	UE_LOG(LogTemp, Log, TEXT("[SERVER] Objects: 1 Star (Class %s) | %d Planets | %d Moons | %d Stations | %d Stargates"),
+		*Config.StarClass, Config.Planets.Num(), TotalMoons, Config.Stations.Num(), Config.Stargates.Num());
+	
+	const int32 TotalObjects = 1 + Config.Planets.Num() + TotalMoons + Config.Stations.Num() + 
 	                           Config.Stargates.Num() + Config.AsteroidBelts.Num() + 
 	                           Config.Anomalies.Num() + Config.Wormholes.Num();
 	UE_LOG(LogTemp, Log, TEXT("Total objects to spawn: %d"), TotalObjects);
@@ -289,6 +303,10 @@ void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Conf
 	SpawnAsteroidBelts(Config.AsteroidBelts, SystemOffset);
 	SpawnAnomalies(Config.Anomalies, SystemOffset);
 	SpawnWormholes(Config.Wormholes, SystemOffset);
+	
+	// ==================== GENERATION STATUS LOG ====================
+	UE_LOG(LogTemp, Log, TEXT("[SERVER] Status: Generation Successful for %s"), *Config.SystemName);
+	UE_LOG(LogTemp, Log, TEXT(""));
 }
 
 void AEchoesWorldGenerator::ServerOnly_ClearWorld()
@@ -462,6 +480,76 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 
 			UE_LOG(LogTemp, Log, TEXT("✓ Planet spawned: %s (Type: %s, Orbit: %.1f km) at (%s)"),
 				*PlanetConfig.Name, *PlanetConfig.Type, PlanetConfig.OrbitDistance, *PlanetLocation.ToString());
+
+			// ==================== SPAWN MOONS FOR THIS PLANET ====================
+			if (PlanetConfig.Moons.Num() > 0)
+			{
+				UE_LOG(LogTemp, Log, TEXT("  Spawning %d moons for planet %s..."), PlanetConfig.Moons.Num(), *PlanetConfig.Name);
+				
+				for (const FMoonConfig& MoonConfig : PlanetConfig.Moons)
+				{
+					// Calculate moon position relative to planet
+					// Use the moon's position data from config to offset from planet
+					FVector MoonOffset = ConvertCoordinates(
+						MoonConfig.PositionX,
+						MoonConfig.PositionY,
+						MoonConfig.PositionZ);
+					FVector MoonLocation = PlanetLocation + MoonOffset;
+					FRotator MoonRotation = FRotator::ZeroRotator;
+
+					// Get moon actor class
+					TSubclassOf<AMoonActor> MoonSpawnClass = MoonActorClass;
+					if (!MoonSpawnClass)
+					{
+						UE_LOG(LogTemp, Error, TEXT("✗ MoonActorClass is not set! Skipping moon: %s"), *MoonConfig.Name);
+						continue;
+					}
+
+					// Spawn parameters
+					FActorSpawnParameters MoonSpawnParams;
+					MoonSpawnParams.Owner = this;
+					MoonSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+					// Spawn moon actor
+					AMoonActor* Moon = GetWorld()->SpawnActor<AMoonActor>(
+						MoonSpawnClass,
+						MoonLocation,
+						MoonRotation,
+						MoonSpawnParams);
+
+					if (Moon && IsValid(Moon))
+					{
+						// Generate seed from moon ID
+						int32 MoonSeed = GenerateSeedFromGuid(MoonConfig.Id);
+
+						// Calculate orbital radius (distance from planet)
+						float OrbitRadius = FMath::Sqrt(
+							FMath::Square(static_cast<float>(MoonConfig.PositionX)) +
+							FMath::Square(static_cast<float>(MoonConfig.PositionY)) +
+							FMath::Square(static_cast<float>(MoonConfig.PositionZ)));
+
+						// Initialize moon
+						Moon->InitializeMoon(
+							MoonConfig.Id,
+							MoonConfig.Name,
+							TEXT("Rocky"), // Default type, can be extended
+							OrbitRadius,
+							MoonSeed);
+
+						// Set orbit parameters for visualization around parent planet
+						Moon->SetOrbitParameters(OrbitRadius, PlanetLocation);
+
+						SpawnedActors.Add(Moon);
+
+						UE_LOG(LogTemp, Log, TEXT("  ✓ Moon spawned: %s (Orbit: %.1f km around %s)"),
+							*MoonConfig.Name, OrbitRadius, *PlanetConfig.Name);
+					}
+					else
+					{
+						UE_LOG(LogTemp, Error, TEXT("  ✗ Failed to spawn moon: %s"), *MoonConfig.Name);
+					}
+				}
+			}
 		}
 		else
 		{
@@ -1059,6 +1147,26 @@ FWormholeVisualRow* AEchoesWorldGenerator::GetWormholeVisualData(const FString& 
 	if (!Row)
 	{
 		Row = WormholeDataTable->FindRow<FWormholeVisualRow>(FName(TEXT("Default")), TEXT("GetWormholeVisualData"));
+	}
+
+	return Row;
+}
+
+FMoonVisualRow* AEchoesWorldGenerator::GetMoonVisualData(const FString& MoonType)
+{
+	if (!MoonDataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MoonDataTable is not set!"));
+		return nullptr;
+	}
+
+	FName RowName = FName(*MoonType);
+	FMoonVisualRow* Row = MoonDataTable->FindRow<FMoonVisualRow>(RowName, TEXT("GetMoonVisualData"));
+	
+	if (!Row)
+	{
+		// Try with "Default" row as fallback
+		Row = MoonDataTable->FindRow<FMoonVisualRow>(FName(TEXT("Default")), TEXT("GetMoonVisualData"));
 	}
 
 	return Row;

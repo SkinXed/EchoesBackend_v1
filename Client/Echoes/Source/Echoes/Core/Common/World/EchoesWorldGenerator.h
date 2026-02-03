@@ -12,6 +12,7 @@
 
 class UEchoesServerManagementSubsystem;
 class APlanetActor;
+class AMoonActor;
 class AStarActor;
 class AStationActor;
 class AStargateActor;
@@ -108,11 +109,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|DataTables")
 	UDataTable* WormholeDataTable;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|DataTables")
+	UDataTable* MoonDataTable;
+
 	/**
 	 * Actor classes to spawn
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
 	TSubclassOf<APlanetActor> PlanetActorClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
+	TSubclassOf<AMoonActor> MoonActorClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|ActorClasses")
 	TSubclassOf<AStarActor> StarActorClass;
@@ -233,6 +240,7 @@ protected:
 	 * Look up visual data from data table by type
 	 */
 	FPlanetVisualRow* GetPlanetVisualData(const FString& PlanetType);
+	FMoonVisualRow* GetMoonVisualData(const FString& MoonType);
 	FStarVisualRow* GetStarVisualData(const FString& StarClass);
 	FStationVisualRow* GetStationVisualData(const FString& StationType);
 	FStargateVisualRow* GetStargateVisualData(const FString& Model);
