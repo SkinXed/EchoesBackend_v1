@@ -376,6 +376,7 @@ public class CharacterController : ControllerBase
                 LocationType = Models.Enums.LocationType.Docked,
                 IsDocked = true,
                 InWarp = false,
+                HangarInstanceId = Guid.NewGuid(), // Create unique hangar instance for this character
                 LastUpdate = DateTime.UtcNow
             };
 
@@ -459,6 +460,28 @@ public class CharacterController : ControllerBase
 
                     if (homeStation != null)
                     {
+                        // Create new location with hangar instance
+                        var hangarInstanceId = Guid.NewGuid();
+                        
+                        var newLocation = new CharacterLocation
+                        {
+                            Id = Guid.NewGuid(),
+                            CharacterId = id,
+                            StationId = homeStation.Id,
+                            SolarSystemId = homeStation.SolarSystemId,
+                            PositionX = homeStation.PositionX,
+                            PositionY = homeStation.PositionY,
+                            PositionZ = homeStation.PositionZ,
+                            IsDocked = true,
+                            InWarp = false,
+                            HangarInstanceId = hangarInstanceId,
+                            LocationType = Models.Enums.LocationType.Docked,
+                            LastUpdate = DateTime.UtcNow
+                        };
+                        
+                        _context.CharacterLocations.Add(newLocation);
+                        await _context.SaveChangesAsync();
+                        
                         return Ok(new CharacterLocationDto
                         {
                             CharacterId = id,
@@ -470,12 +493,21 @@ public class CharacterController : ControllerBase
                             SolarSystemName = homeStation.SolarSystem?.Name ?? "Unknown",
                             PositionX = homeStation.PositionX,
                             PositionY = homeStation.PositionY,
-                            PositionZ = homeStation.PositionZ
+                            PositionZ = homeStation.PositionZ,
+                            HangarInstanceId = hangarInstanceId
                         });
                     }
                 }
 
                 return NotFound(new { error = "Character location not found" });
+            }
+
+            // Ensure HangarInstanceId exists for existing location
+            if (!location.HangarInstanceId.HasValue)
+            {
+                location.HangarInstanceId = Guid.NewGuid();
+                _context.CharacterLocations.Update(location);
+                await _context.SaveChangesAsync();
             }
 
             var locationDto = new CharacterLocationDto
@@ -489,7 +521,8 @@ public class CharacterController : ControllerBase
                 SolarSystemName = location.SolarSystem?.Name,
                 PositionX = location.PositionX,
                 PositionY = location.PositionY,
-                PositionZ = location.PositionZ
+                PositionZ = location.PositionZ,
+                HangarInstanceId = location.HangarInstanceId.Value
             };
 
             return Ok(locationDto);
@@ -541,7 +574,7 @@ public class CharacterController : ControllerBase
 
             var character = await _context.Characters
                 .Include(c => c.CurrentLocation)
-                .ThenInclude(cl => cl.SolarSystem)
+                .ThenInclude(cl => cl!.SolarSystem)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (character == null)

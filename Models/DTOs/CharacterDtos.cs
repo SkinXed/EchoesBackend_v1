@@ -179,6 +179,7 @@ namespace Echoes.API.Models.DTOs
         public double PositionX { get; set; }
         public double PositionY { get; set; }
         public double PositionZ { get; set; }
+        public Guid? HangarInstanceId { get; set; }
     }
     
     /// <summary>
