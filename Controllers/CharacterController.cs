@@ -547,7 +547,7 @@ public class CharacterController : ControllerBase
 
             var character = await _context.Characters
                 .Include(c => c.CurrentLocation)
-                .ThenInclude(cl => cl.SolarSystem)
+                .ThenInclude(cl => cl!.SolarSystem)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (character == null)

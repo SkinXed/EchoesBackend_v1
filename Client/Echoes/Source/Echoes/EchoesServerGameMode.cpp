@@ -732,16 +732,15 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	
 	UE_LOG(LogTemp, Log, TEXT("Opening station menu for player..."));
 
-	// Get player's hangar storage ID (placeholder - should query from backend/inventory)
-	FGuid HangarStorageId = FGuid::NewGuid(); // TODO: Get actual hangar ID from player data
-
+	// Use the HangarInstanceId from backend for inventory association
+	// This ensures the player sees their personal hangar inventory
 	// Call the ClientRPC method on StationActor to open the menu on client
 	FoundStation->ClientRPC_OpenStationMenu(
 		FoundStation->GetStationName(),
 		FoundStation->GetStationType(),
-		HangarStorageId);
+		HangarInstanceId);
 
-	UE_LOG(LogTemp, Log, TEXT("✓ Station menu opened"));
+	UE_LOG(LogTemp, Log, TEXT("✓ Station menu opened with HangarInstanceId: %s"), *HangarInstanceId.ToString());
 
 	// ==================== FINALIZE ====================
 	
