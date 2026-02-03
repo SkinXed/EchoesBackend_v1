@@ -583,8 +583,10 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
 	UE_LOG(LogTemp, Log, TEXT("║    SPAWNING PLAYER AT STATION (DOCKED STATE)            ║"));
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
-	UE_LOG(LogTemp, Log, TEXT("CharacterId: %s, StationId: %s, ShipTypeId: %d, HangarInstanceId: %s"), 
-		*CharacterId.ToString(), *StationId.ToString(), ShipTypeId, *HangarInstanceId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("CharacterId: %s"), *CharacterId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("StationId: %s"), *StationId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("ShipTypeId: %d"), ShipTypeId);
+	UE_LOG(LogTemp, Log, TEXT("HangarInstanceId: %s"), *HangarInstanceId.ToString());
 
 	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
 	FEchoesItemDefinitionRow ShipDef;
@@ -607,7 +609,11 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	}
 
 	// ==================== STATION SEARCH LOGIC ====================
-	// Use TActorIterator to search for station by StationId
+	// 
+	// Use TActorIterator to find the station actor by StationId
+	// This ensures we spawn the player at the correct station in the world
+	//
+	// =============================================================
 	
 	AStationActor* FoundStation = nullptr;
 	UE_LOG(LogTemp, Log, TEXT("Searching for station in world..."));
@@ -638,7 +644,11 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	}
 
 	// ==================== SPAWN PLAYER PAWN ====================
-	// Call RestartPlayer to create the ship pawn
+	// 
+	// Call RestartPlayer to create the ship pawn for this player
+	// The pawn will initially spawn at the default spawn point
+	//
+	// ===========================================================
 	
 	UE_LOG(LogTemp, Log, TEXT("Creating player pawn..."));
 	RestartPlayer(PC);
@@ -657,16 +667,27 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	UE_LOG(LogTemp, Log, TEXT("✓ Player pawn created: %s"), *PlayerPawn->GetName());
 
 	// ==================== HANGAR INSTANCE ISOLATION ====================
-	// Get or create hangar instance for this player
+	//
+	// Create or retrieve the player's unique hangar instance with spatial isolation
+	// 
+	// Process:
+	// 1. HangarManager calculates deterministic spatial offset from HangarInstanceId
+	// 2. Uses 100x100x20 grid with 10km separation (1,000,000 UE units per cell)
+	// 3. Returns offset vector that will be applied to ship pawn location
+	//
+	// Formula: TargetLocation = StationLocation + SpatialOffset
+	//
+	// This ensures each player has their own isolated hangar instance at the
+	// same station without visual/audio interference from other players.
+	//
+	// ===================================================================
 	
 	FVector HangarOffset = FVector::ZeroVector;
 	if (HangarManager && CharacterId.IsValid())
 	{
 		// Get spatial offset for this player's hangar instance
 		HangarOffset = HangarManager->GetOrCreateHangarInstance(CharacterId, StationId, HangarInstanceId);
-		UE_LOG(LogTemp, Log, TEXT("✓ Hangar instance offset: %s"), *HangarOffset.ToString());
-
-		// Bind the ship pawn to the hangar instance (will be called after pawn spawn)
+		UE_LOG(LogTemp, Log, TEXT("✓ Hangar instance offset calculated: %s"), *HangarOffset.ToString());
 	}
 	else
 	{
@@ -681,28 +702,43 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	}
 
 	// ==================== MOVE PAWN TO STATION ====================
-	// Position pawn at station location (with hangar offset for isolation)
+	//
+	// Position the ship pawn at the station location
+	// The hangar offset will be applied by BindShipPawnToHangar
+	//
+	// ==============================================================
 	
 	FVector StationLocation = FoundStation->GetActorLocation();
 	FRotator StationRotation = FoundStation->GetActorRotation();
 	
-	// Apply hangar offset if available (already applied by HangarManager->BindShipPawnToHangar)
-	// So we just use station location as base
+	// Set pawn to station location (offset will be applied next)
 	PlayerPawn->SetActorLocation(StationLocation);
 	PlayerPawn->SetActorRotation(StationRotation);
 	
-	// Bind pawn to hangar instance for isolation
+	// Bind pawn to hangar instance for spatial isolation
+	// This applies the spatial offset and configures visibility settings
 	if (HangarManager && CharacterId.IsValid())
 	{
 		HangarManager->BindShipPawnToHangar(CharacterId, PlayerPawn);
+		UE_LOG(LogTemp, Log, TEXT("✓ Ship pawn bound to hangar instance with spatial isolation"));
 	}
 	
-	UE_LOG(LogTemp, Log, TEXT("✓ Pawn moved to station location: %s"), *StationLocation.ToString());
+	UE_LOG(LogTemp, Log, TEXT("✓ Pawn positioned at station (with spatial offset)"));
 
 	// ==================== DOCKED STATE SETUP ====================
-	// Hide pawn and disable collision/movement (player is "inside" station)
+	//
+	// Configure the ship pawn for docked state:
+	// - Hidden: Player is "inside" the station, ship should not be visible
+	// - No collision: Prevents physics interactions while docked
+	// - No physics: Disables physics simulation while in station
+	// - No movement: Disables character movement component if present
+	//
+	// This ensures the player is physically isolated and cannot interact
+	// with the world while viewing the station menu.
+	//
+	// ============================================================
 	
-	// 1. Hide the pawn visually
+	// 1. Hide the pawn visually (player is inside station)
 	PlayerPawn->SetActorHiddenInGame(true);
 	UE_LOG(LogTemp, Log, TEXT("✓ Pawn hidden (inside station)"));
 
@@ -729,13 +765,24 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	}
 
 	// ==================== OPEN STATION MENU ====================
-	// Call ClientRPC on StationActor to open station menu
+	//
+	// Call ClientRPC to open station menu on the player's client
+	// This is called AFTER the ship has been successfully:
+	// 1. Spawned
+	// 2. Moved to station location with spatial offset
+	// 3. Hidden and physics disabled
+	//
+	// Network Security:
+	// - ClientRPC ensures only the specific player receives the menu
+	// - HangarInstanceId links the UI to the player's personal hangar storage
+	// - Menu operations will use this ID to ensure inventory isolation
+	//
+	// ==========================================================
 	
 	UE_LOG(LogTemp, Log, TEXT("Opening station menu for player..."));
 
 	// Use the HangarInstanceId from backend for inventory association
 	// This ensures the player sees their personal hangar inventory
-	// Call the ClientRPC method on StationActor to open the menu on client
 	FoundStation->ClientRPC_OpenStationMenu(
 		FoundStation->GetStationName(),
 		FoundStation->GetStationType(),
@@ -750,7 +797,8 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
 	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PC->GetName());
 	UE_LOG(LogTemp, Log, TEXT("Station: %s"), *FoundStation->GetStationName());
-	UE_LOG(LogTemp, Log, TEXT("Location: %s"), *StationLocation.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Location: %s (with spatial offset)"), *StationLocation.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Hangar Instance: %s"), *HangarInstanceId.ToString());
 
 	// Broadcast entry flow complete
 	OnEntryFlowComplete.Broadcast();

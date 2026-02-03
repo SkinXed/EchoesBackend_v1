@@ -54,9 +54,13 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:	
-	/** Initialize hangar for specific character */
+	/** 
+	 * Initialize hangar for specific character with spatial isolation
+	 * @param CharacterId - Character GUID (FString format for Blueprint compatibility)
+	 * @param HangarInstanceId - Unique hangar instance ID from backend for spatial isolation
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
-	void InitializeHangar(const FString& CharacterId);
+	void InitializeHangar(const FString& CharacterId, const FGuid& HangarInstanceId);
 
 	/**
 	 * Get or create a hangar instance for a player
