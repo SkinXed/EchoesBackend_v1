@@ -1,0 +1,547 @@
+@page "/shop"
+@using EchoesOfImperial.Shared.DTOs
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Imperial Store - Echoes of Imperial</PageTitle>
+
+<div class="shop-container">
+    <div class="shop-header">
+        <h1>IMPERIAL STORE</h1>
+        <p>Acquire equipment and resources from the Imperial Treasury</p>
+    </div>
+
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <div class="admin-tools">
+                <button class="btn-add-item" @onclick="ShowAddItemModal">
+                    <span class="icon">⊕</span>
+                    ADD NEW ITEM
+                </button>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+
+    @if (showItemModal)
+    {
+        <div class="modal-overlay" @onclick="CloseItemModal">
+            <div class="modal-content" @onclick:stopPropagation>
+                <div class="modal-header">
+                    <h2>@(editingItem != null ? "EDIT ITEM" : "ADD NEW ITEM")</h2>
+                    <button class="modal-close" @onclick="CloseItemModal">✕</button>
+                </div>
+                
+                <EditForm Model="@itemForm" OnValidSubmit="@HandleSaveItem" class="item-form">
+                    <DataAnnotationsValidator />
+                    
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert-error">
+                            <span class="error-icon">⚠</span>
+                            @errorMessage
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label for="name">NAME</label>
+                        <InputText id="name" @bind-Value="itemForm.Name" 
+                                   class="form-control" placeholder="Item name" />
+                        <ValidationMessage For="@(() => itemForm.Name)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">CATEGORY</label>
+                        <InputSelect id="category" @bind-Value="itemForm.Category" class="form-control">
+                            <option value="">Select category...</option>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Credits">Credits</option>
+                            <option value="VipStatus">VIP Status</option>
+                            <option value="Consumables">Consumables</option>
+                            <option value="Cosmetic">Cosmetic</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(() => itemForm.Category)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">PRICE (Credits)</label>
+                        <InputNumber id="price" @bind-Value="itemForm.Price" 
+                                     class="form-control" placeholder="0" />
+                        <ValidationMessage For="@(() => itemForm.Price)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageUrl">IMAGE URL (Optional)</label>
+                        <InputText id="imageUrl" @bind-Value="itemForm.ImageUrl" 
+                                   class="form-control" placeholder="https://example.com/image.jpg" />
+                        <ValidationMessage For="@(() => itemForm.ImageUrl)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">DESCRIPTION</label>
+                        <InputTextArea id="description" @bind-Value="itemForm.Description" 
+                                       class="form-control description-textarea" 
+                                       placeholder="Item description" 
+                                       rows="5" />
+                        <ValidationMessage For="@(() => itemForm.Description)" />
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" @onclick="CloseItemModal">
+                            CANCEL
+                        </button>
+                        <button type="submit" class="btn-primary" disabled="@isSaving">
+                            @if (isSaving)
+                            {
+                                <span class="spinner"></span>
+                                <span>SAVING...</span>
+                            }
+                            else
+                            {
+                                <span>@(editingItem != null ? "UPDATE" : "CREATE")</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+
+    <div class="category-filter">
+        <button class="filter-btn @(selectedCategory == null ? "active" : "")" 
+                @onclick="FilterAll">
+            ALL
+        </button>
+        <button class="filter-btn @(selectedCategory == "Equipment" ? "active" : "")" 
+                @onclick="FilterEquipment">
+            EQUIPMENT
+        </button>
+        <button class="filter-btn @(selectedCategory == "Credits" ? "active" : "")" 
+                @onclick="FilterCredits">
+            CREDITS
+        </button>
+        <button class="filter-btn @(selectedCategory == "VipStatus" ? "active" : "")" 
+                @onclick="FilterVipStatus">
+            VIP
+        </button>
+        <button class="filter-btn @(selectedCategory == "Consumables" ? "active" : "")" 
+                @onclick="FilterConsumables">
+            CONSUMABLES
+        </button>
+        <button class="filter-btn @(selectedCategory == "Cosmetic" ? "active" : "")" 
+                @onclick="FilterCosmetic">
+            COSMETIC
+        </button>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading Imperial Store...</p>
+        </div>
+    }
+    else if (filteredItems.Count == 0)
+    {
+        <div class="empty-state">
+            <p>No items available in this category.</p>
+        </div>
+    }
+    else
+    {
+        <div class="shop-grid">
+            @foreach (var item in filteredItems)
+            {
+                <div class="shop-card @GetRarityClass(item)">
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <div class="admin-actions">
+                                <button class="btn-edit-small" @onclick="() => ShowEditItemModal(item)" title="Edit item">
+                                    ⚙️
+                                </button>
+                                <button class="btn-delete-small" @onclick="() => HandleDeleteItem(item.Id)" title="Delete item">
+                                    🗑️
+                                </button>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <div class="item-image-container">
+                            <img src="@item.ImageUrl" alt="@item.Name" class="item-image" 
+                                 onerror="this.onerror=null; this.src='/images/placeholder-item.png'; this.classList.add('placeholder');" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="item-image-container">
+                            <div class="item-placeholder">
+                                <span class="placeholder-icon">📦</span>
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="item-content">
+                        <div class="item-category">@item.Category</div>
+                        <h3 class="item-name">@item.Name</h3>
+                        <p class="item-description">@item.Description</p>
+                        
+                        <div class="item-footer">
+                            <div class="item-price">
+                                <span class="price-label">PRICE:</span>
+                                <span class="price-value">@FormatPrice(item.Price)</span>
+                            </div>
+                            @if (CanAfford(item.Price))
+                            {
+                                <button class="btn-purchase" @onclick="() => HandlePurchase(item.Id)">
+                                    PURCHASE
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn-purchase disabled" disabled title="Insufficient Funds">
+                                    INSUFFICIENT FUNDS
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<ShopItemDto> shopItems = new();
+    private List<ShopItemDto> filteredItems = new();
+    private string? selectedCategory = null;
+    private bool isLoading = true;
+    private bool showItemModal = false;
+    private bool isSaving = false;
+    private string? errorMessage;
+    private ShopItemCreateDto itemForm = new();
+    private ShopItemDto? editingItem = null;
+    private long currentBalance = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadShopItems();
+        await LoadWalletBalance();
+    }
+
+    private async Task LoadShopItems()
+    {
+        isLoading = true;
+        try
+        {
+            var response = await Http.GetAsync("api/shop");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Shop items response: {json}");
+                
+                // Parse the response - the API returns ShopItem entities
+                using var doc = System.Text.Json.JsonDocument.Parse(json);
+                var root = doc.RootElement;
+                
+                shopItems = new List<ShopItemDto>();
+                foreach (var item in root.EnumerateArray())
+                {
+                    var categoryValue = item.GetProperty("category").GetInt32();
+                    var categoryName = categoryValue switch
+                    {
+                        0 => "Equipment",
+                        1 => "Credits",
+                        2 => "VipStatus",
+                        3 => "Consumables",
+                        4 => "Cosmetic",
+                        _ => "Equipment"
+                    };
+                    
+                    shopItems.Add(new ShopItemDto
+                    {
+                        Id = Guid.Parse(item.GetProperty("id").GetString()!),
+                        Name = item.GetProperty("name").GetString()!,
+                        Description = item.GetProperty("description").GetString()!,
+                        Price = item.GetProperty("price").GetInt64(),
+                        ImageUrl = item.TryGetProperty("imageUrl", out var imgUrl) && imgUrl.ValueKind != System.Text.Json.JsonValueKind.Null 
+                            ? imgUrl.GetString() 
+                            : null,
+                        Category = categoryName,
+                        IsActive = item.GetProperty("isActive").GetBoolean(),
+                        CreatedAt = DateTime.Parse(item.GetProperty("createdAt").GetString()!)
+                    });
+                }
+                
+                FilterItems();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load shop items: {ex.Message}";
+            Console.WriteLine($"Error loading shop: {ex}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadWalletBalance()
+    {
+        try
+        {
+            var response = await Http.GetAsync("api/character/profile");
+            if (response.IsSuccessStatusCode)
+            {
+                var profile = await response.Content.ReadFromJsonAsync<CharacterProfileDto>();
+                if (profile != null)
+                {
+                    currentBalance = profile.WalletBalance;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading wallet balance: {ex.Message}");
+            // Don't show error to user, just log it
+        }
+    }
+
+    private bool CanAfford(long price)
+    {
+        return currentBalance >= price;
+    }
+
+    private void FilterByCategory(string? category)
+    {
+        selectedCategory = category;
+        FilterItems();
+    }
+
+    private void FilterAll() => FilterByCategory(null);
+    private void FilterEquipment() => FilterByCategory("Equipment");
+    private void FilterCredits() => FilterByCategory("Credits");
+    private void FilterVipStatus() => FilterByCategory("VipStatus");
+    private void FilterConsumables() => FilterByCategory("Consumables");
+    private void FilterCosmetic() => FilterByCategory("Cosmetic");
+
+    private void FilterItems()
+    {
+        if (selectedCategory == null)
+        {
+            filteredItems = shopItems.ToList(); // Create defensive copy
+        }
+        else
+        {
+            filteredItems = shopItems.Where(i => i.Category == selectedCategory).ToList();
+        }
+    }
+
+    private void ShowAddItemModal()
+    {
+        editingItem = null;
+        itemForm = new ShopItemCreateDto();
+        errorMessage = null;
+        showItemModal = true;
+    }
+
+    private void ShowEditItemModal(ShopItemDto item)
+    {
+        editingItem = item;
+        itemForm = new ShopItemCreateDto
+        {
+            Name = item.Name,
+            Description = item.Description,
+            Price = item.Price,
+            ImageUrl = item.ImageUrl,
+            Category = item.Category
+        };
+        errorMessage = null;
+        showItemModal = true;
+    }
+
+    private void CloseItemModal()
+    {
+        showItemModal = false;
+        editingItem = null;
+        itemForm = new ShopItemCreateDto();
+        errorMessage = null;
+    }
+
+    private async Task HandleSaveItem()
+    {
+        isSaving = true;
+        errorMessage = null;
+        
+        try
+        {
+            HttpResponseMessage response;
+            
+            if (editingItem != null)
+            {
+                // Update existing item
+                response = await Http.PutAsJsonAsync($"api/shop/{editingItem.Id}", itemForm);
+            }
+            else
+            {
+                // Create new item
+                response = await Http.PostAsJsonAsync("api/shop", itemForm);
+            }
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadShopItems();
+                CloseItemModal();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Failed to save item: {error}";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task HandleDeleteItem(Guid itemId)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to deactivate this item?"))
+        {
+            return;
+        }
+
+        try
+        {
+            var response = await Http.DeleteAsync($"api/shop/{itemId}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadShopItems();
+            }
+            else
+            {
+                errorMessage = "Failed to delete item";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+
+    private async Task HandlePurchase(Guid itemId)
+    {
+        try
+        {
+            var item = shopItems.FirstOrDefault(i => i.Id == itemId);
+            if (item == null) return;
+
+            Console.WriteLine($"Requesting Imperial Treasury... Attempting to purchase {item.Name} for {item.Price} credits");
+            
+            var response = await Http.PostAsync($"api/shop/purchase/{itemId}", null);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<PurchaseResponse>();
+                if (result != null)
+                {
+                    // Update current balance from response
+                    currentBalance = result.NewBalance;
+                    
+                    await JSRuntime.InvokeVoidAsync("alert", 
+                        $"✓ Purchase Successful!\n\n" +
+                        $"Item: {result.Item.Name}\n" +
+                        $"Price: {FormatPrice(result.Item.Price)}\n\n" +
+                        $"Previous Balance: {FormatPrice(result.PreviousBalance)}\n" +
+                        $"New Balance: {FormatPrice(result.NewBalance)}\n\n" +
+                        $"Imperial Treasury: Transaction completed.");
+                    
+                    // Reload items to refresh UI
+                    await LoadShopItems();
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                if (errorResponse != null)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", 
+                        $"✗ Purchase Failed\n\n" +
+                        $"{errorResponse.Error}\n\n" +
+                        $"Current Balance: {FormatPrice(errorResponse.CurrentBalance ?? 0)}\n" +
+                        $"Required: {FormatPrice(errorResponse.RequiredAmount ?? 0)}\n" +
+                        $"Deficit: {FormatPrice(errorResponse.Deficit ?? 0)}");
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Purchase failed: Insufficient funds");
+                }
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                await JSRuntime.InvokeVoidAsync("alert", $"Purchase failed: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Purchase error: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $"Purchase failed: {ex.Message}");
+        }
+    }
+
+    // Response DTOs for purchase
+    private class PurchaseResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public ItemInfo Item { get; set; } = new();
+        public long PreviousBalance { get; set; }
+        public long NewBalance { get; set; }
+        public long TransactionId { get; set; }
+    }
+
+    private class ItemInfo
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public long Price { get; set; }
+    }
+
+    private class ErrorResponse
+    {
+        public string Error { get; set; } = string.Empty;
+        public long? CurrentBalance { get; set; }
+        public long? RequiredAmount { get; set; }
+        public long? Deficit { get; set; }
+    }
+
+    private class CharacterProfileDto
+    {
+        public long WalletBalance { get; set; }
+    }
+
+    private string FormatPrice(long price)
+    {
+        return $"{price:N0} ₡";
+    }
+
+    private string GetRarityClass(ShopItemDto item)
+    {
+        // Check if item is rare/special based on price or name
+        if (item.Name.Contains("Rare", StringComparison.OrdinalIgnoreCase) ||
+            item.Name.Contains("Special", StringComparison.OrdinalIgnoreCase) ||
+            item.Price > 1000000)
+        {
+            return "rare";
+        }
+        return "";
+    }
+}

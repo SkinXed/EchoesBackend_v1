@@ -1,0 +1,328 @@
+@page "/character/profile"
+@using EchoesOfImperial.Shared.DTOs
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Character Profile - Echoes of Imperial</PageTitle>
+
+<div class="profile-container">
+    @if (isLoading)
+    {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading character profile...</p>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="error-panel">
+            <h2>Error</h2>
+            <p>@errorMessage</p>
+            <button class="btn-primary" @onclick="NavigateToLogin">
+                Return to Login
+            </button>
+        </div>
+    }
+    else if (character != null)
+    {
+        <!-- Header Panel - ID Card -->
+        <div class="profile-panel header-panel fade-in">
+            <div class="panel-header">
+                <h2>PILOT IDENTIFICATION</h2>
+                <div class="panel-accent"></div>
+            </div>
+            <div class="panel-content">
+                <div class="id-card">
+                    <div class="pilot-name">@character.Name</div>
+                    <div class="pilot-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">ID:</span>
+                            <span class="meta-value">@character.Id.ToString().Substring(0, 8).ToUpper()</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Race:</span>
+                            <span class="meta-value">@character.RaceName</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Corporation:</span>
+                            <span class="meta-value">@(character.CorporationName ?? "Independent")</span>
+                        </div>
+                    </div>
+                    <div class="security-status">
+                        <span class="status-label">Security Status:</span>
+                        <div class="status-bar">
+                            <div class="status-fill" style="width: @GetSecurityStatusPercentage()%; background-color: @GetSecurityStatusColor();"></div>
+                        </div>
+                        <span class="status-value" style="color: @GetSecurityStatusColor();">@character.SecurityStatus.ToString("F2")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Attributes Panel -->
+        <div class="profile-panel attributes-panel fade-in" style="animation-delay: 0.1s;">
+            <div class="panel-header">
+                <h2>ATTRIBUTES</h2>
+                <div class="panel-accent"></div>
+            </div>
+            <div class="panel-content">
+                <div class="attributes-grid">
+                    <div class="attribute-card">
+                        <div class="attribute-icon">🧠</div>
+                        <div class="attribute-name">Intelligence</div>
+                        <div class="attribute-value">@character.Intelligence</div>
+                        <div class="attribute-bar">
+                            <div class="attribute-fill" style="width: @((character.Intelligence / 50.0 * 100))%;"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-card">
+                        <div class="attribute-icon">👁️</div>
+                        <div class="attribute-name">Perception</div>
+                        <div class="attribute-value">@character.Perception</div>
+                        <div class="attribute-bar">
+                            <div class="attribute-fill" style="width: @((character.Perception / 50.0 * 100))%;"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-card">
+                        <div class="attribute-icon">💬</div>
+                        <div class="attribute-name">Charisma</div>
+                        <div class="attribute-value">@character.Charisma</div>
+                        <div class="attribute-bar">
+                            <div class="attribute-fill" style="width: @((character.Charisma / 50.0 * 100))%;"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-card">
+                        <div class="attribute-icon">💪</div>
+                        <div class="attribute-name">Willpower</div>
+                        <div class="attribute-value">@character.Willpower</div>
+                        <div class="attribute-bar">
+                            <div class="attribute-fill" style="width: @((character.Willpower / 50.0 * 100))%;"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-card">
+                        <div class="attribute-icon">🎯</div>
+                        <div class="attribute-name">Memory</div>
+                        <div class="attribute-value">@character.Memory</div>
+                        <div class="attribute-bar">
+                            <div class="attribute-fill" style="width: @((character.Memory / 50.0 * 100))%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Financial Intelligence Panel -->
+        <div class="profile-panel financial-panel fade-in" style="animation-delay: 0.2s;">
+            <div class="panel-header">
+                <h2>FINANCIAL INTELLIGENCE</h2>
+                <div class="panel-accent"></div>
+            </div>
+            <div class="panel-content">
+                <div class="wallet-display">
+                    <div class="wallet-label">Current Balance</div>
+                    <div class="wallet-amount">@FormatISK(character.WalletBalance) ₡</div>
+                </div>
+                <div class="financial-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Earned:</span>
+                        <span class="stat-value earned">+@FormatISK(character.TotalISKEarned) ₡</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Lost:</span>
+                        <span class="stat-value lost">-@FormatISK(character.TotalISKLost) ₡</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Net Worth:</span>
+                        <span class="stat-value">@FormatISK(character.TotalISKEarned - character.TotalISKLost) ₡</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <div class="two-column-grid">
+            <!-- Skills Panel -->
+            <div class="profile-panel skills-panel fade-in" style="animation-delay: 0.3s;">
+                <div class="panel-header">
+                    <h2>SKILL OVERVIEW</h2>
+                    <div class="panel-accent"></div>
+                </div>
+                <div class="panel-content">
+                    <div class="skill-summary">
+                        <div class="skill-stat">
+                            <div class="skill-icon">📚</div>
+                            <div class="skill-info">
+                                <div class="skill-label">Total Skill Points</div>
+                                <div class="skill-value">@FormatNumber(character.TotalSkillPoints)</div>
+                            </div>
+                        </div>
+                        <div class="skill-stat">
+                            <div class="skill-icon">⭐</div>
+                            <div class="skill-info">
+                                <div class="skill-label">Unallocated SP</div>
+                                <div class="skill-value">@FormatNumber(character.UnallocatedSkillPoints)</div>
+                            </div>
+                        </div>
+                        @if (character.SkillTrainingEnd.HasValue)
+                        {
+                            <div class="training-indicator">
+                                <div class="training-label">⏱️ Training in Progress</div>
+                                <div class="training-time">Ends: @character.SkillTrainingEnd.Value.ToString("MMM dd, yyyy HH:mm")</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="training-indicator inactive">
+                                <div class="training-label">No Active Training</div>
+                            </div>
+                        }
+                    </div>
+                    @if (!string.IsNullOrEmpty(character.ActiveShipName))
+                    {
+                        <div class="active-ship">
+                            <div class="ship-label">Active Ship:</div>
+                            <div class="ship-name">@character.ActiveShipName</div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Combat Record Panel -->
+            <div class="profile-panel combat-panel fade-in" style="animation-delay: 0.4s;">
+                <div class="panel-header">
+                    <h2>COMBAT RECORD</h2>
+                    <div class="panel-accent"></div>
+                </div>
+                <div class="panel-content">
+                    <div class="combat-stats">
+                        <div class="combat-stat">
+                            <div class="combat-icon kills">⚔️</div>
+                            <div class="combat-info">
+                                <div class="combat-label">Kills</div>
+                                <div class="combat-value">@character.TotalKills</div>
+                            </div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="combat-icon deaths">💀</div>
+                            <div class="combat-info">
+                                <div class="combat-label">Deaths</div>
+                                <div class="combat-value">@character.TotalDeaths</div>
+                            </div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="combat-icon ships-destroyed">🚀</div>
+                            <div class="combat-info">
+                                <div class="combat-label">Ships Destroyed</div>
+                                <div class="combat-value">@character.TotalShipsDestroyed</div>
+                            </div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="combat-icon ships-lost">💥</div>
+                            <div class="combat-info">
+                                <div class="combat-label">Ships Lost</div>
+                                <div class="combat-value">@character.TotalShipsLost</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kd-ratio">
+                        <span class="ratio-label">K/D Ratio:</span>
+                        <span class="ratio-value">@GetKDRatio()</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private CharacterDetailsDto? character;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCharacterProfile();
+    }
+
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    private async Task LoadCharacterProfile()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            var response = await Http.GetAsync("api/character/profile");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                character = await response.Content.ReadFromJsonAsync<CharacterDetailsDto>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                errorMessage = "Not authenticated. Please login first.";
+                await Task.Delay(2000);
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                errorMessage = "Failed to load character profile.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading profile: {ex.Message}";
+            Console.WriteLine($"Error: {ex}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private string GetSecurityStatusColor()
+    {
+        if (character == null) return "#c5a059";
+        
+        if (character.SecurityStatus >= 5.0f) return "#00ff00"; // Green for high positive
+        if (character.SecurityStatus >= 0.0f) return "#c5a059"; // Gold for neutral/low positive
+        if (character.SecurityStatus >= -5.0f) return "#ff8800"; // Orange for low negative
+        return "#ff0000"; // Red for very negative
+    }
+
+    private double GetSecurityStatusPercentage()
+    {
+        if (character == null) return 50;
+        
+        // Map -10 to 10 range to 0 to 100 percentage
+        return ((character.SecurityStatus + 10) / 20.0) * 100;
+    }
+
+    private string FormatISK(decimal amount)
+    {
+        return amount.ToString("N0");
+    }
+
+    private string FormatNumber(int number)
+    {
+        return number.ToString("N0");
+    }
+
+    private string GetKDRatio()
+    {
+        if (character == null || character.TotalDeaths == 0)
+            return character?.TotalKills.ToString("F2") ?? "0.00";
+        
+        return ((double)character.TotalKills / character.TotalDeaths).ToString("F2");
+    }
+}

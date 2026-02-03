@@ -1,0 +1,624 @@
+/* Wiki Container */
+.wiki-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--imperial-bg);
+    gap: 0;
+}
+
+/* Sidebar Styling */
+.wiki-sidebar {
+    width: 300px;
+    background: var(--imperial-panel);
+    border-right: 2px solid rgba(197, 160, 89, 0.3);
+    padding: 2rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--imperial-gold);
+    letter-spacing: 0.15em;
+}
+
+.sidebar-header p {
+    margin: 0;
+    color: var(--imperial-text);
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* Navigation */
+.wiki-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.wiki-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(5, 5, 5, 0.4);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 4px;
+    color: var(--imperial-text);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.wiki-nav-item:hover {
+    background: rgba(197, 160, 89, 0.1);
+    border-color: var(--imperial-gold);
+    transform: translateX(5px);
+}
+
+.wiki-nav-item.active {
+    background: rgba(197, 160, 89, 0.2);
+    border-color: var(--imperial-gold);
+    color: var(--imperial-gold);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
+}
+
+.nav-icon {
+    font-size: 1.5rem;
+}
+
+/* Content Area */
+.wiki-content {
+    flex: 1;
+    padding: 3rem;
+    overflow-y: auto;
+}
+
+.content-panel {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.section-content {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    color: var(--imperial-gold);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+}
+
+.section-intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--imperial-text);
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+/* Imperial Divider */
+.imperial-divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--imperial-gold) 20%, 
+        var(--imperial-gold) 80%, 
+        transparent 100%);
+    margin: 2rem 0;
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
+}
+
+/* Content Blocks */
+.content-block {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: rgba(15, 18, 22, 0.6);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 8px;
+}
+
+.content-block h3 {
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+    color: var(--imperial-gold);
+}
+
+.content-block p {
+    line-height: 1.7;
+    color: var(--imperial-text);
+    margin-bottom: 1rem;
+}
+
+/* Architecture Flow */
+.architecture-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 2rem;
+}
+
+.arch-node {
+    background: rgba(5, 5, 5, 0.8);
+    border: 2px solid rgba(197, 160, 89, 0.3);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.arch-node:hover {
+    border-color: var(--imperial-gold);
+    box-shadow: 0 4px 20px rgba(197, 160, 89, 0.2);
+    transform: scale(1.02);
+}
+
+.arch-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.arch-node h4 {
+    font-size: 1.3rem;
+    margin: 0 0 0.75rem 0;
+    color: var(--imperial-gold);
+}
+
+.arch-node p {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+.arch-arrow {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--imperial-gold);
+    padding: 0.5rem 0;
+}
+
+/* Protocol Box */
+.protocol-box {
+    background: rgba(197, 160, 89, 0.1);
+    border: 1px solid var(--imperial-gold);
+    border-left: 4px solid var(--imperial-gold);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.protocol-box code {
+    background: rgba(5, 5, 5, 0.6);
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    color: var(--imperial-gold);
+}
+
+.protocol-detail {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Factions Grid */
+.factions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.faction-card {
+    background: rgba(15, 18, 22, 0.8);
+    border: 2px solid rgba(197, 160, 89, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faction-card:hover {
+    border-color: var(--imperial-gold);
+    box-shadow: 0 8px 24px rgba(197, 160, 89, 0.2);
+    transform: translateY(-5px);
+}
+
+.faction-header {
+    padding: 1.25rem;
+    text-align: center;
+    border-bottom: 2px solid rgba(197, 160, 89, 0.3);
+}
+
+.faction-header.solaris {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+}
+
+.faction-header.zenith {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(63, 81, 181, 0.1));
+}
+
+.faction-header.nadir {
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(101, 67, 33, 0.1));
+}
+
+.faction-header.aegis {
+    background: linear-gradient(135deg, rgba(158, 158, 158, 0.1), rgba(96, 125, 139, 0.1));
+}
+
+.faction-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--imperial-gold);
+}
+
+.faction-body {
+    padding: 1.5rem;
+}
+
+.faction-capital {
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    color: var(--imperial-gold);
+}
+
+.faction-desc {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: var(--imperial-text);
+}
+
+.faction-traits {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+}
+
+.faction-traits li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--imperial-text);
+    font-size: 0.95rem;
+}
+
+.faction-traits li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--imperial-gold);
+}
+
+/* Mechanics */
+.mechanics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.mechanic-card {
+    background: rgba(15, 18, 22, 0.6);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.mechanic-card:hover {
+    border-color: var(--imperial-gold);
+    box-shadow: 0 6px 20px rgba(197, 160, 89, 0.15);
+}
+
+.mechanic-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(5, 5, 5, 0.6);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.mechanic-icon {
+    font-size: 2.5rem;
+}
+
+.mechanic-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--imperial-gold);
+}
+
+.mechanic-body {
+    padding: 2rem;
+}
+
+.mechanic-subtitle {
+    font-size: 1.1rem;
+    color: var(--imperial-gold);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.mechanic-body p {
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.mechanic-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.mechanic-body ul li {
+    padding: 0.75rem 0;
+    padding-left: 2rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.mechanic-body ul li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: var(--imperial-gold);
+    font-size: 1.2rem;
+}
+
+.mechanic-body ul li strong {
+    color: var(--imperial-gold);
+}
+
+.mechanic-note {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: rgba(197, 160, 89, 0.1);
+    border-left: 4px solid var(--imperial-gold);
+    border-radius: 4px;
+}
+
+.mechanic-note p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .wiki-container {
+        flex-direction: column;
+    }
+
+    .wiki-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 2px solid rgba(197, 160, 89, 0.3);
+    }
+
+    .wiki-content {
+        padding: 2rem 1.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .wiki-sidebar {
+        padding: 1.5rem 1rem;
+    }
+
+    .wiki-content {
+        padding: 1.5rem 1rem;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+    }
+
+    .factions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .arch-node {
+        padding: 1rem;
+    }
+
+    .arch-icon {
+        font-size: 2rem;
+    }
+}
+
+/* Admin Edit Panel */
+.admin-edit-panel {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 18, 22, 0.95);
+    border-left: 3px solid var(--imperial-gold);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+    padding: 1rem 2rem;
+    margin: -3rem -3rem 2rem -3rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.btn-edit {
+    background: transparent;
+    color: var(--imperial-gold);
+    border: 2px solid var(--imperial-gold);
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
+}
+
+.btn-edit:hover {
+    background: var(--imperial-gold);
+    color: var(--imperial-bg);
+    box-shadow: 0 0 25px rgba(197, 160, 89, 0.5);
+    transform: translateY(-2px);
+}
+
+.edit-icon {
+    font-size: 1.2rem;
+}
+
+.edit-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-save {
+    background: var(--imperial-gold);
+    color: var(--imperial-bg);
+    border: 2px solid var(--imperial-gold);
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
+}
+
+.btn-save:hover:not(:disabled) {
+    background: #B8964D;
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
+}
+
+.btn-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 107, 107, 0.1);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+}
+
+.spinner-small {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--imperial-bg);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Status Messages */
+.status-message {
+    padding: 1rem 1.5rem;
+    margin: 0 0 1.5rem 0;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.status-message.success {
+    background: rgba(81, 207, 102, 0.1);
+    border: 1px solid rgba(81, 207, 102, 0.3);
+    color: #51cf66;
+}
+
+.status-message.error {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+}
+
+/* Edit Mode Container */
+.edit-mode-container {
+    background: rgba(15, 18, 22, 0.8);
+    border: 2px solid var(--imperial-gold);
+    border-radius: 8px;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.edit-textarea {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    min-height: 400px;
+    resize: vertical;
+}
+
+.help-text {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--imperial-text);
+    opacity: 0.6;
+    font-style: italic;
+}

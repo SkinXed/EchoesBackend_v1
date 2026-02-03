@@ -1,0 +1,500 @@
+/* Shop Container */
+.shop-container {
+    min-height: 100vh;
+    padding: 3rem 2rem;
+    background: #0a0a0a;
+}
+
+.shop-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #c5a059;
+}
+
+.shop-header h1 {
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 3rem;
+    margin: 0 0 1rem 0;
+    color: #c5a059;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+}
+
+.shop-header p {
+    color: #E0E0E0;
+    opacity: 0.8;
+    font-size: 1.1rem;
+}
+
+/* Admin Tools */
+.admin-tools {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.btn-add-item {
+    background: #c5a059;
+    color: #0a0a0a;
+    border: 2px solid #c5a059;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
+}
+
+.btn-add-item:hover {
+    background: transparent;
+    color: #c5a059;
+    box-shadow: 0 0 30px rgba(197, 160, 89, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-add-item .icon {
+    font-size: 1.5rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: rgba(15, 18, 22, 0.98);
+    border: 2px solid #c5a059;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 50px rgba(197, 160, 89, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+.modal-header h2 {
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 1.5rem;
+    margin: 0;
+    color: #c5a059;
+    letter-spacing: 0.1em;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: #c5a059;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+/* Form Styles */
+.item-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.description-textarea {
+    min-height: 100px;
+    font-family: 'Courier New', monospace;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #c5a059;
+    border: 2px solid #c5a059;
+    border-radius: 4px;
+    padding: 0.875rem 1.5rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(197, 160, 89, 0.1);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+}
+
+/* Category Filter */
+.category-filter {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    background: transparent;
+    color: #E0E0E0;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    border-color: #c5a059;
+    color: #c5a059;
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+}
+
+.filter-btn.active {
+    background: rgba(197, 160, 89, 0.2);
+    border-color: #c5a059;
+    color: #c5a059;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+}
+
+/* Loading & Empty States */
+.loading-container {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(197, 160, 89, 0.2);
+    border-top-color: #c5a059;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #E0E0E0;
+    opacity: 0.7;
+    font-size: 1.1rem;
+}
+
+/* Shop Grid */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Shop Card */
+.shop-card {
+    background: linear-gradient(135deg, rgba(15, 18, 22, 0.95), rgba(10, 12, 15, 0.95));
+    border: 1px solid #c5a059;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.shop-card:hover {
+    box-shadow: 0 8px 32px rgba(197, 160, 89, 0.4);
+    transform: translateY(-5px);
+}
+
+/* Rare/Special Items */
+.shop-card.rare {
+    border: 2px solid #c5a059;
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(197, 160, 89, 0.7);
+    }
+}
+
+/* Admin Actions */
+.admin-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.btn-edit-small,
+.btn-delete-small {
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid #c5a059;
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-edit-small:hover {
+    background: #c5a059;
+    transform: scale(1.1);
+}
+
+.btn-delete-small {
+    border-color: #ff6b6b;
+}
+
+.btn-delete-small:hover {
+    background: #ff6b6b;
+    transform: scale(1.1);
+}
+
+/* Item Image */
+.item-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-bottom: 2px solid #c5a059;
+    background: rgba(5, 5, 5, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.shop-card:hover .item-image {
+    transform: scale(1.05);
+}
+
+.item-image.placeholder {
+    object-fit: contain;
+    opacity: 0.3;
+}
+
+.item-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    opacity: 0.3;
+}
+
+/* Item Content */
+.item-content {
+    padding: 1.5rem;
+}
+
+.item-category {
+    font-size: 0.75rem;
+    color: #c5a059;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.item-name {
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 1.3rem;
+    margin: 0 0 1rem 0;
+    color: #c5a059;
+    letter-spacing: 0.05em;
+}
+
+.item-description {
+    color: #E0E0E0;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    min-height: 3rem;
+}
+
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(197, 160, 89, 0.2);
+}
+
+.item-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-label {
+    font-size: 0.75rem;
+    color: #E0E0E0;
+    opacity: 0.7;
+    letter-spacing: 0.1em;
+}
+
+.price-value {
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 1.5rem;
+    color: #c5a059;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.btn-purchase {
+    background: #c5a059;
+    color: #0a0a0a;
+    border: 2px solid #c5a059;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-purchase:hover {
+    background: transparent;
+    color: #c5a059;
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-purchase.disabled {
+    background: #444;
+    color: #888;
+    border-color: #444;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-purchase.disabled:hover {
+    background: #444;
+    color: #888;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .shop-header h1 {
+        font-size: 2rem;
+    }
+
+    .shop-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .category-filter {
+        flex-direction: column;
+    }
+
+    .filter-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-add-item {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .item-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .btn-purchase {
+        width: 100%;
+    }
+}

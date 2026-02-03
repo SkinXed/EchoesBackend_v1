@@ -5,6 +5,7 @@ using Echoes.API.Data;
 using Echoes.API.Models.DTOs;
 using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Entities.Inventory;
+using EchoesOfImperial.Shared.DTOs;
 using System.Security.Claims;
 
 namespace Echoes.API.Controllers;
@@ -103,6 +104,110 @@ public class CharacterController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving character data");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Get detailed character profile for the current user
+    /// GET /api/character/profile
+    /// </summary>
+    [HttpGet("profile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CharacterDetailsDto>> GetCharacterProfile()
+    {
+        try
+        {
+            // Extract character ID from JWT token
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value
+                ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var characterId))
+            {
+                return Unauthorized(new { error = "Invalid token - no character ID" });
+            }
+
+            var character = await _context.Characters
+                .Include(c => c.ActiveShip)
+                .FirstOrDefaultAsync(c => c.Id == characterId);
+
+            if (character == null)
+            {
+                return NotFound(new { error = "Character not found" });
+            }
+
+            // Map race ID to race name
+            var raceName = character.RaceId switch
+            {
+                1 => "Caldari",
+                2 => "Gallente",
+                3 => "Amarr",
+                4 => "Minmatar",
+                _ => "Unknown"
+            };
+
+            var profileDto = new CharacterDetailsDto
+            {
+                Id = character.Id,
+                Name = character.Name,
+                AccountId = character.AccountId,
+                CreatedAt = character.CreatedAt,
+                LastLogin = character.LastLogin,
+                LastLogout = character.LastLogout,
+                
+                IsMain = character.IsMain,
+                IsOnline = character.IsOnline,
+                IsDocked = character.IsDocked,
+                InWarp = character.InWarp,
+                SecurityStatus = character.SecurityStatus,
+                
+                RaceId = character.RaceId,
+                RaceName = raceName,
+                BloodlineId = character.BloodlineId,
+                AncestryId = character.AncestryId,
+                CorporationId = character.CorporationId,
+                CorporationName = null, // TODO: Load from corporation table when available
+                CorporationRole = character.CorporationRole,
+                
+                Perception = character.Perception,
+                Memory = character.Memory,
+                Willpower = character.Willpower,
+                Intelligence = character.Intelligence,
+                Charisma = character.Charisma,
+                
+                WalletBalance = character.WalletBalance,
+                TotalISKEarned = character.TotalISKEarned,
+                TotalISKLost = character.TotalISKLost,
+                
+                TotalSkillPoints = character.TotalSkillPoints,
+                UnallocatedSkillPoints = character.UnallocatedSkillPoints,
+                SkillTrainingEnd = character.SkillTrainingEnd,
+                CurrentTrainingSkill = null, // TODO: Load from training queue when available
+                
+                TotalKills = character.TotalKills,
+                TotalDeaths = character.TotalDeaths,
+                TotalShipsDestroyed = character.TotalShipsDestroyed,
+                TotalShipsLost = character.TotalShipsLost,
+                
+                ActiveShipItemId = character.ActiveShipItemId,
+                ActiveShipName = character.ActiveShip != null ? $"Ship #{character.ActiveShip.ItemId}" : null,
+                ActiveShipType = null, // TODO: Load ship type name from item type when available
+                
+                ActiveCloneId = character.ActiveCloneId,
+                JumpCloneCount = character.JumpCloneCount,
+                MaxJumpClones = character.MaxJumpClones,
+                CloneExpiration = character.CloneExpiration,
+                
+                TotalPlayTimeSeconds = character.TotalPlayTimeSeconds
+            };
+
+            return Ok(profileDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving character profile");
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
