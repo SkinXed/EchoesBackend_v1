@@ -96,6 +96,7 @@ dotnet run
 ### 📋 Project Management
 - **[📊 STATUS.md](docs/STATUS.md)** - Real-time project health dashboard
 - **[🗺️ ROADMAP.md](ROADMAP.md)** - 4-milestone development roadmap
+- **[📋 PROJECT_INFO.md](docs/PROJECT_INFO.md)** - Comprehensive project information (C++/C# codebase statistics, technologies, architecture)
 - **[🏛️ CORE_ARCHITECTURE_BIBLE.md](docs/architecture/CORE_ARCHITECTURE_BIBLE.md)** - Complete architectural reference
 - **[📖 PROJECT_ECHOES_V1_MANIFEST.md](docs/PROJECT_ECHOES_V1_MANIFEST.md)** - Project manifest
 
@@ -239,6 +240,39 @@ ApiBaseUrl="http://localhost:5116/api"
 ```
 
 **📖 [Detailed Deployment Guide](docs/QUICK_START.md)**
+
+---
+
+## 📊 Project Statistics
+
+### Codebase Overview
+
+| Component | Count | Description |
+|-----------|-------|-------------|
+| **Backend C# Files** | 169 | Controllers, Services, Models, DTOs |
+| **Client C++ Files** | ~75 | Actors, Components, Subsystems, UI |
+| **Database Tables** | ~35 | Accounts, Characters, Inventory, Universe |
+| **API Controllers** | 17 | RESTful endpoints for all game systems |
+| **UE5 Subsystems** | 6 | Auth, Identity, Inventory, Ship Stats, Game State, Server Management |
+| **Documentation Files** | 70+ | Architecture, systems, UI/UX, gameplay guides |
+
+### Technology Breakdown
+
+**Backend Stack**:
+- ASP.NET Core 8 (C# 12.0)
+- Entity Framework Core 8
+- PostgreSQL 16+
+- JWT Authentication + Google OAuth
+- Swagger/OpenAPI Documentation
+
+**Client Stack**:
+- Unreal Engine 5.6 (C++ 20)
+- UMG (Unreal Motion Graphics)
+- Niagara VFX System
+- Enhanced Input System
+- HTTP Module for REST API
+
+**📖 [View Complete Project Information](docs/PROJECT_INFO.md)**
 
 ---
 
