@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "EchoesStationMenuWidget.h"
+#include "EchoesServerGameMode.h"
 
 AStationActor::AStationActor()
 {
@@ -460,42 +461,55 @@ void AStationActor::InitiateUndocking(APlayerController* PlayerController)
 	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PlayerController->GetName());
 	UE_LOG(LogTemp, Log, TEXT("Station: %s"), *StationName);
 
-	// Get player's pawn (if any)
-	APawn* CurrentPawn = PlayerController->GetPawn();
-	if (CurrentPawn)
+	// Get the GameMode to handle undocking logic
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (!GameModeBase)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Current pawn: %s"), *CurrentPawn->GetName());
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to get GameMode"));
+		return;
 	}
 
-	// Calculate spawn position near station (100m away)
-	FVector StationLocation = GetActorLocation();
-	FVector SpawnOffset = FVector(10000.0f, 0.0f, 0.0f); // 100m in front of station
-	FVector SpawnLocation = StationLocation + SpawnOffset;
-	FRotator SpawnRotation = GetActorRotation();
-
-	UE_LOG(LogTemp, Log, TEXT("Spawn location: %s"), *SpawnLocation.ToString());
-
-	// TODO: Implement full undocking sequence:
-	// 1. Notify backend to update character state (POST /api/character/undock)
-	// 2. Spawn player's active ship at calculated position
-	// 3. Possess the ship
-	// 4. Remove player from station "instance"
-	// 5. Enable ship controls
-	// 6. Play undocking animation/effects
-
-	// Get game instance for backend communication
-	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
-	if (GameInstance && IsValid(GameInstance))
+	// Cast to EchoesServerGameMode
+	AEchoesServerGameMode* GameMode = Cast<AEchoesServerGameMode>(GameModeBase);
+	if (!GameMode)
 	{
-		// TODO: Call backend undock endpoint
-		// This would require an HTTP subsystem or service
-		UE_LOG(LogTemp, Warning, TEXT("⚠ Backend undock notification not implemented"));
-
-		// TODO: Spawn ship actor
-		// For now, just log what should happen
-		UE_LOG(LogTemp, Warning, TEXT("⚠ Ship spawning not implemented"));
-		UE_LOG(LogTemp, Log, TEXT("Should spawn ship at: %s"), *SpawnLocation.ToString());
+		UE_LOG(LogTemp, Error, TEXT("✗ GameMode is not AEchoesServerGameMode"));
+		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("✓ Undocking sequence initiated (partial implementation)"));
+	// Delegate undocking logic to GameMode
+	GameMode->RequestUndock(PlayerController);
+
+	UE_LOG(LogTemp, Log, TEXT("✓ Undocking request forwarded to GameMode"));
+}
+
+void AStationActor::ClientRPC_CloseStationMenu_Implementation()
+{
+	UE_LOG(LogTemp, Log, TEXT("ClientRPC_CloseStationMenu called on client"));
+
+	// Get player controller
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (!PC)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController on client"));
+		return;
+	}
+
+	// TODO: In production, this should close the actual station menu widget
+	// For now, just log that the menu should be closed
+	UE_LOG(LogTemp, Log, TEXT("✓ Station menu should be closed now"));
+	
+	// If you have a reference to the menu widget, close it here:
+	// Example:
+	// if (StationMenuWidget && StationMenuWidget->IsInViewport())
+	// {
+	//     StationMenuWidget->RemoveFromViewport();
+	//     StationMenuWidget = nullptr;
+	// }
+	
+	// Re-enable game input if it was disabled
+	// PC->SetInputMode(FInputModeGameOnly());
+	// PC->bShowMouseCursor = false;
+}
+
 }

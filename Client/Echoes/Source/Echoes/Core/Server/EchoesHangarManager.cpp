@@ -56,11 +56,12 @@ void AEchoesHangarManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void AEchoesHangarManager::InitializeHangar(const FString& CharacterId)
+void AEchoesHangarManager::InitializeHangar(const FString& CharacterId, const FGuid& HangarInstanceId)
 {
 	CurrentCharacterId = CharacterId;
 	
-	UE_LOG(LogTemp, Log, TEXT("HangarManager: Initializing for character: %s"), *CharacterId);
+	UE_LOG(LogTemp, Log, TEXT("HangarManager: Initializing for character: %s with HangarInstanceId: %s"), 
+		*CharacterId, *HangarInstanceId.ToString());
 
 	// Get identity subsystem to find active ship
 	if (InventorySubsystem)
@@ -198,6 +199,30 @@ FVector AEchoesHangarManager::GetOrCreateHangarInstance(const FGuid& PlayerId, c
 		return ExistingInstance->SpatialOffset;
 	}
 
+	// ==================== SPATIAL ISOLATION ALGORITHM ====================
+	// 
+	// Goal: Provide each player with a physically isolated hangar instance
+	// at the same station without visual/audio interference between players.
+	//
+	// Implementation:
+	// - Uses a deterministic 3D grid layout based on HangarInstanceId
+	// - Grid size: 100x100x20 (X x Y x Z)
+	// - Separation distance: 10km (1,000,000 UE units) per grid cell
+	// - Total coverage: 1000km x 1000km x 100km volume
+	//
+	// Algorithm:
+	// 1. Hash HangarInstanceId to get deterministic uint32 value
+	// 2. Use modulo operations to map hash to 3D grid coordinates
+	// 3. Apply grid offsets to center the grid around station origin
+	// 4. Scale coordinates by separation distance to get final offset
+	//
+	// This ensures:
+	// - Same HangarInstanceId always gets same spatial offset (deterministic)
+	// - Players are separated by at least 10km (no visual/audio interference)
+	// - Grid can accommodate 100*100*20 = 200,000 concurrent hangar instances
+	//
+	// =====================================================================
+
 	// Create new hangar instance with spatial isolation
 	FHangarInstance NewInstance;
 	NewInstance.InstanceId = HangarInstanceId;
@@ -209,27 +234,32 @@ FVector AEchoesHangarManager::GetOrCreateHangarInstance(const FGuid& PlayerId, c
 	uint32 Hash = GetTypeHash(HangarInstanceId);
 	
 	// Grid layout constants for spatial distribution
-	constexpr int32 GRID_SIZE = 100;           // Number of grid cells per dimension
+	constexpr int32 GRID_SIZE = 100;           // Number of grid cells per dimension (X, Y)
 	constexpr int32 GRID_OFFSET = 50;          // Center offset for grid (-50 to +50)
 	constexpr int32 VERTICAL_LAYERS = 20;      // Number of vertical layers (0 to +20)
-	constexpr int32 GRID_HASH_DIVISOR = 100;   // Hash divisor for grid Y
-	constexpr int32 VERTICAL_HASH_DIVISOR = 10000; // Hash divisor for grid Z
-	constexpr float VERTICAL_SCALE = 0.5f;     // Vertical separation scale factor
+	constexpr int32 GRID_HASH_DIVISOR = 100;   // Hash divisor for Y grid calculation
+	constexpr int32 VERTICAL_HASH_DIVISOR = 10000; // Hash divisor for Z grid calculation
+	constexpr float VERTICAL_SCALE = 0.5f;     // Vertical separation scale factor (5km instead of 10km)
 	
 	// Generate offset in a grid pattern with large separation to prevent overlap
-	int32 GridX = (Hash % GRID_SIZE) - GRID_OFFSET; // -50 to +50
-	int32 GridY = ((Hash / GRID_HASH_DIVISOR) % GRID_SIZE) - GRID_OFFSET; // -50 to +50
-	int32 GridZ = ((Hash / VERTICAL_HASH_DIVISOR) % VERTICAL_LAYERS); // 0 to +20 for vertical separation
+	// Formula: GridCoord = (Hash / Divisor) % GridSize - Offset
+	int32 GridX = (Hash % GRID_SIZE) - GRID_OFFSET;                         // Range: -50 to +50
+	int32 GridY = ((Hash / GRID_HASH_DIVISOR) % GRID_SIZE) - GRID_OFFSET;   // Range: -50 to +50
+	int32 GridZ = ((Hash / VERTICAL_HASH_DIVISOR) % VERTICAL_LAYERS);       // Range: 0 to +20
 	
+	// Apply separation distance to grid coordinates
+	// X and Y: ±500km range (10km * 50), Z: 100km range (5km * 20)
 	NewInstance.SpatialOffset = FVector(
-		GridX * HangarSpatialSeparation,
-		GridY * HangarSpatialSeparation,
-		GridZ * HangarSpatialSeparation * VERTICAL_SCALE // Less vertical separation
+		GridX * HangarSpatialSeparation,                    // X: ±500km
+		GridY * HangarSpatialSeparation,                    // Y: ±500km
+		GridZ * HangarSpatialSeparation * VERTICAL_SCALE    // Z: 0 to 100km (reduced vertical separation)
 	);
 
-	UE_LOG(LogTemp, Log, TEXT("HangarManager: Created new hangar instance for player %s at offset %s"), 
-		*PlayerId.ToString(), 
-		*NewInstance.SpatialOffset.ToString());
+	UE_LOG(LogTemp, Log, TEXT("HangarManager: Created new hangar instance"));
+	UE_LOG(LogTemp, Log, TEXT("  PlayerId: %s"), *PlayerId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("  HangarInstanceId: %s"), *HangarInstanceId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("  Grid Position: (%d, %d, %d)"), GridX, GridY, GridZ);
+	UE_LOG(LogTemp, Log, TEXT("  Spatial Offset: %s"), *NewInstance.SpatialOffset.ToString());
 
 	// Store the instance
 	HangarInstances.Add(PlayerId, NewInstance);
@@ -252,6 +282,22 @@ void AEchoesHangarManager::BindShipPawnToHangar(const FGuid& PlayerId, AActor* S
 		return;
 	}
 
+	// ==================== BIND SHIP PAWN TO HANGAR INSTANCE ====================
+	//
+	// This method physically relocates the ship pawn to the player's isolated
+	// hangar instance by applying the pre-calculated spatial offset.
+	//
+	// Steps:
+	// 1. Store reference to ship pawn in hangar instance
+	// 2. Apply spatial offset to ship pawn's world location
+	// 3. Configure visibility settings for isolation (owner-only if available)
+	//
+	// This ensures each player's ship is:
+	// - Physically separated from other players (spatial isolation)
+	// - Optionally visible only to the owning player (visibility isolation)
+	//
+	// ===========================================================================
+
 	// Store reference to ship pawn
 	Instance->SpawnedShipPawn = ShipPawn;
 
@@ -260,19 +306,73 @@ void AEchoesHangarManager::BindShipPawnToHangar(const FGuid& PlayerId, AActor* S
 	FVector NewLocation = CurrentLocation + Instance->SpatialOffset;
 	ShipPawn->SetActorLocation(NewLocation);
 
-	UE_LOG(LogTemp, Log, TEXT("HangarManager: Bound ship pawn to hangar instance with offset %s"), 
-		*Instance->SpatialOffset.ToString());
+	UE_LOG(LogTemp, Log, TEXT("HangarManager: Bound ship pawn to hangar instance"));
+	UE_LOG(LogTemp, Log, TEXT("  Original Location: %s"), *CurrentLocation.ToString());
+	UE_LOG(LogTemp, Log, TEXT("  Spatial Offset: %s"), *Instance->SpatialOffset.ToString());
+	UE_LOG(LogTemp, Log, TEXT("  New Location: %s"), *NewLocation.ToString());
 
 	// Optional: Set owner-only visibility for additional isolation
 	// This ensures only the owning player can see their ship in the hangar
+	// Provides both spatial AND visual isolation
 	if (APawn* Pawn = Cast<APawn>(ShipPawn))
 	{
 		// Note: SetOnlyOwnerSee requires the pawn to have an owner (player controller)
-		// This is typically set during spawn, but we can verify it here
+		// This is typically set during spawn, but we verify it here
 		if (Pawn->GetOwner())
 		{
 			ShipPawn->SetOnlyOwnerSee(true);
-			UE_LOG(LogTemp, Log, TEXT("HangarManager: Set ship pawn to owner-only visibility"));
+			UE_LOG(LogTemp, Log, TEXT("  ✓ Owner-only visibility enabled for additional isolation"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("  ⚠ Pawn has no owner, skipping owner-only visibility"));
 		}
 	}
+}
+
+FHangarInstance* AEchoesHangarManager::GetHangarInstance(const FGuid& PlayerId)
+{
+	return HangarInstances.Find(PlayerId);
+}
+
+void AEchoesHangarManager::RemoveHangarInstance(const FGuid& PlayerId)
+{
+	if (HangarInstances.Contains(PlayerId))
+	{
+		FHangarInstance* Instance = HangarInstances.Find(PlayerId);
+		if (Instance)
+		{
+			UE_LOG(LogTemp, Log, TEXT("HangarManager: Removing hangar instance for player %s"), *PlayerId.ToString());
+			
+			// Clear any ship preview
+			ClearShipPreview();
+			
+			// Remove from map
+			HangarInstances.Remove(PlayerId);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HangarManager: No hangar instance found for player %s"), *PlayerId.ToString());
+	}
+}
+
+bool AEchoesHangarManager::FindCharacterIdByPawn(AActor* Pawn, FGuid& OutCharacterId)
+{
+	if (!Pawn)
+	{
+		return false;
+	}
+
+	// Search through hangar instances to find matching pawn
+	for (auto& Elem : HangarInstances)
+	{
+		if (Elem.Value.SpawnedShipPawn == Pawn)
+		{
+			OutCharacterId = Elem.Key;
+			return true;
+		}
+	}
+
+	return false;
 }

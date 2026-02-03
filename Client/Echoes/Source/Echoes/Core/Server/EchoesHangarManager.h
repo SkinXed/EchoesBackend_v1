@@ -54,9 +54,13 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:	
-	/** Initialize hangar for specific character */
+	/** 
+	 * Initialize hangar for specific character with spatial isolation
+	 * @param CharacterId - Character GUID (FString format for Blueprint compatibility)
+	 * @param HangarInstanceId - Unique hangar instance ID from backend for spatial isolation
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
-	void InitializeHangar(const FString& CharacterId);
+	void InitializeHangar(const FString& CharacterId, const FGuid& HangarInstanceId);
 
 	/**
 	 * Get or create a hangar instance for a player
@@ -87,6 +91,30 @@ public:
 	/** Clear current ship preview */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
 	void ClearShipPreview();
+
+	/**
+	 * Get hangar instance for a player
+	 * @param PlayerId - Character/Player GUID
+	 * @return Pointer to hangar instance if found, nullptr otherwise
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	FHangarInstance* GetHangarInstance(const FGuid& PlayerId);
+
+	/**
+	 * Remove hangar instance for a player (cleanup on undock)
+	 * @param PlayerId - Character/Player GUID
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	void RemoveHangarInstance(const FGuid& PlayerId);
+
+	/**
+	 * Find player character ID by pawn
+	 * @param Pawn - Ship pawn to search for
+	 * @param OutCharacterId - Output character ID if found
+	 * @return True if found
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	bool FindCharacterIdByPawn(AActor* Pawn, FGuid& OutCharacterId);
 
 protected:
 	/** Called when fitting changes (from inventory subsystem) */
