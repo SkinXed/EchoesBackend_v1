@@ -107,6 +107,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
 	void RemoveHangarInstance(const FGuid& PlayerId);
 
+	/**
+	 * Find player character ID by pawn
+	 * @param Pawn - Ship pawn to search for
+	 * @param OutCharacterId - Output character ID if found
+	 * @return True if found
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	bool FindCharacterIdByPawn(AActor* Pawn, FGuid& OutCharacterId);
+
 protected:
 	/** Called when fitting changes (from inventory subsystem) */
 	UFUNCTION()

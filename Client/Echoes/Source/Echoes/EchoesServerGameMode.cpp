@@ -940,27 +940,19 @@ void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
 		return;
 	}
 
-	// Try to get character ID from player state or pawn owner
-	FGuid CharacterId;
-	
-	// For now, we'll iterate through hangar instances to find the one with matching pawn
-	// In production, you'd want to store CharacterId in player state
-	FHangarInstance* PlayerHangarInstance = nullptr;
+	// Find character ID by searching for pawn in hangar instances
 	FGuid PlayerCharacterId;
-	
-	for (auto& Elem : HangarManager->HangarInstances)
-	{
-		if (Elem.Value.SpawnedShipPawn == PlayerPawn)
-		{
-			PlayerHangarInstance = &Elem.Value;
-			PlayerCharacterId = Elem.Key;
-			break;
-		}
-	}
-
-	if (!PlayerHangarInstance)
+	if (!HangarManager->FindCharacterIdByPawn(PlayerPawn, PlayerCharacterId))
 	{
 		UE_LOG(LogTemp, Error, TEXT("✗ No hangar instance found for player's pawn"));
+		return;
+	}
+
+	// Get the hangar instance
+	FHangarInstance* PlayerHangarInstance = HangarManager->GetHangarInstance(PlayerCharacterId);
+	if (!PlayerHangarInstance)
+	{
+		UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve hangar instance"));
 		return;
 	}
 

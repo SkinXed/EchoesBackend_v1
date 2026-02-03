@@ -356,3 +356,23 @@ void AEchoesHangarManager::RemoveHangarInstance(const FGuid& PlayerId)
 		UE_LOG(LogTemp, Warning, TEXT("HangarManager: No hangar instance found for player %s"), *PlayerId.ToString());
 	}
 }
+
+bool AEchoesHangarManager::FindCharacterIdByPawn(AActor* Pawn, FGuid& OutCharacterId)
+{
+	if (!Pawn)
+	{
+		return false;
+	}
+
+	// Search through hangar instances to find matching pawn
+	for (auto& Elem : HangarInstances)
+	{
+		if (Elem.Value.SpawnedShipPawn == Pawn)
+		{
+			OutCharacterId = Elem.Key;
+			return true;
+		}
+	}
+
+	return false;
+}
