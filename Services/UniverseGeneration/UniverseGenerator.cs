@@ -229,6 +229,7 @@ namespace Echoes.API.Services.UniverseGeneration
             try
             {
                 // Порядок важен из-за внешних ключей!
+                await _context.GameServers.ExecuteDeleteAsync();
                 await _context.Anomalies.ExecuteDeleteAsync();
                 await _context.Wormholes.ExecuteDeleteAsync();
                 await _context.PlanetResources.ExecuteDeleteAsync();

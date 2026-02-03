@@ -116,6 +116,28 @@ namespace Echoes.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "race_configs",
+                columns: table => new
+                {
+                    RaceId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RaceName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    StartingSystemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartingStationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DefaultShipTypeId = table.Column<int>(type: "integer", nullable: false),
+                    RaceBonuses = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    StartingSkillPoints = table.Column<int>(type: "integer", nullable: false),
+                    StartingISK = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_race_configs", x => x.RaceId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "shop_items",
                 columns: table => new
                 {
@@ -615,6 +637,12 @@ namespace Echoes.API.Migrations
                     structure_resistance_kinetic = table.Column<decimal>(type: "numeric(5,3)", precision: 5, scale: 3, nullable: false),
                     structure_resistance_explosive = table.Column<decimal>(type: "numeric(5,3)", precision: 5, scale: 3, nullable: false),
                     ship_bonuses = table.Column<string>(type: "jsonb", nullable: false),
+                    base_mass = table.Column<decimal>(type: "numeric", nullable: false),
+                    thrust = table.Column<decimal>(type: "numeric", nullable: false),
+                    rotation_speed = table.Column<decimal>(type: "numeric", nullable: false),
+                    warp_speed = table.Column<decimal>(type: "numeric", nullable: false),
+                    inertia_multiplier = table.Column<decimal>(type: "numeric", nullable: false),
+                    max_velocity = table.Column<decimal>(type: "numeric", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
@@ -1324,6 +1352,7 @@ namespace Echoes.API.Migrations
                     VelocityY = table.Column<float>(type: "real", nullable: false),
                     VelocityZ = table.Column<float>(type: "real", nullable: false),
                     StationId = table.Column<Guid>(type: "uuid", nullable: true),
+                    HangarInstanceId = table.Column<Guid>(type: "uuid", nullable: true),
                     ShipItemId = table.Column<long>(type: "bigint", nullable: true),
                     IsDocked = table.Column<bool>(type: "boolean", nullable: false),
                     InWarp = table.Column<bool>(type: "boolean", nullable: false),
@@ -1368,6 +1397,7 @@ namespace Echoes.API.Migrations
                     UnallocatedSkillPoints = table.Column<int>(type: "integer", nullable: false),
                     SkillTrainingEnd = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ActiveShipItemId = table.Column<long>(type: "bigint", nullable: true),
+                    HomeStationId = table.Column<Guid>(type: "uuid", nullable: true),
                     SettingsJson = table.Column<string>(type: "text", nullable: false),
                     IsMain = table.Column<bool>(type: "boolean", nullable: false),
                     IsOnline = table.Column<bool>(type: "boolean", nullable: false),
@@ -1426,6 +1456,37 @@ namespace Echoes.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ship_instances",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ship_type_id = table.Column<int>(type: "integer", nullable: false),
+                    character_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    location_system_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
+                    is_docked = table.Column<bool>(type: "boolean", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ship_instances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ship_instances_Characters_character_id",
+                        column: x => x.character_id,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ship_instances_ships_ship_type_id",
+                        column: x => x.ship_type_id,
+                        principalTable: "ships",
+                        principalColumn: "ship_type_id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "training_queues",
                 columns: table => new
                 {
@@ -1458,6 +1519,33 @@ namespace Echoes.API.Migrations
                         principalTable: "character_skills_enhanced",
                         principalColumn: "character_skill_id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ship_instance_modules",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ship_instance_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    module_type_id = table.Column<int>(type: "integer", nullable: false),
+                    mass = table.Column<decimal>(type: "numeric", nullable: false),
+                    slot = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    slot_index = table.Column<int>(type: "integer", nullable: false),
+                    is_online = table.Column<bool>(type: "boolean", nullable: false),
+                    thrust_bonus = table.Column<decimal>(type: "numeric", nullable: false),
+                    inertia_modifier = table.Column<decimal>(type: "numeric", nullable: false),
+                    rotation_bonus = table.Column<decimal>(type: "numeric", nullable: false),
+                    max_velocity_modifier = table.Column<decimal>(type: "numeric", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ship_instance_modules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ship_instance_modules_ship_instances_ship_instance_id",
+                        column: x => x.ship_instance_id,
+                        principalTable: "ship_instances",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -1815,6 +1903,21 @@ namespace Echoes.API.Migrations
                 column: "ship_asset_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ship_instance_modules_ship_instance_id",
+                table: "ship_instance_modules",
+                column: "ship_instance_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ship_instances_character_id",
+                table: "ship_instances",
+                column: "character_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ship_instances_ship_type_id",
+                table: "ship_instances",
+                column: "ship_type_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ships_race",
                 table: "ships",
                 column: "race");
@@ -2098,7 +2201,10 @@ namespace Echoes.API.Migrations
                 name: "player_inventory_items");
 
             migrationBuilder.DropTable(
-                name: "ships");
+                name: "race_configs");
+
+            migrationBuilder.DropTable(
+                name: "ship_instance_modules");
 
             migrationBuilder.DropTable(
                 name: "Stargates");
@@ -2131,6 +2237,9 @@ namespace Echoes.API.Migrations
                 name: "shop_items");
 
             migrationBuilder.DropTable(
+                name: "ship_instances");
+
+            migrationBuilder.DropTable(
                 name: "ticket_messages");
 
             migrationBuilder.DropTable(
@@ -2146,6 +2255,9 @@ namespace Echoes.API.Migrations
                 name: "Planets");
 
             migrationBuilder.DropTable(
+                name: "ships");
+
+            migrationBuilder.DropTable(
                 name: "support_tickets");
 
             migrationBuilder.DropTable(
@@ -2155,22 +2267,22 @@ namespace Echoes.API.Migrations
                 name: "containers");
 
             migrationBuilder.DropTable(
-                name: "item_types");
-
-            migrationBuilder.DropTable(
                 name: "SolarSystems");
 
             migrationBuilder.DropTable(
-                name: "item_groups");
+                name: "item_types");
 
             migrationBuilder.DropTable(
                 name: "Constellations");
 
             migrationBuilder.DropTable(
-                name: "item_categories");
+                name: "item_groups");
 
             migrationBuilder.DropTable(
                 name: "Regions");
+
+            migrationBuilder.DropTable(
+                name: "item_categories");
 
             migrationBuilder.DropTable(
                 name: "universe_generation_configs");

@@ -940,16 +940,15 @@ void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
 		return;
 	}
 
-	// Find character ID by searching for pawn in hangar instances
-	FGuid PlayerCharacterId;
-	if (!HangarManager->FindCharacterIdByPawn(PlayerPawn, PlayerCharacterId))
+	// 1. Находим персонажа по его пешке в ангаре
+	FGuid CharacterId;
+	if (!HangarManager->FindCharacterIdByPawn(PlayerPawn, CharacterId))
 	{
-		UE_LOG(LogTemp, Error, TEXT("✗ No hangar instance found for player's pawn"));
+		UE_LOG(LogTemp, Error, TEXT("RequestUndock: Hangar instance not found for pawn"));
 		return;
 	}
 
-	// Get the hangar instance
-	FHangarInstance PlayerHangarInstance = HangarManager->GetHangarInstance(PlayerCharacterId);
+	FHangarInstance PlayerHangarInstance = HangarManager->GetHangarInstance(CharacterId);
 	if (!PlayerHangarInstance.InstanceId.IsValid())
 	{
 		UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve hangar instance"));
@@ -1054,7 +1053,7 @@ void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
 	//
 	// ===============================================================
 
-	HangarManager->RemoveHangarInstance(PlayerCharacterId);
+	HangarManager->RemoveHangarInstance(CharacterId);
 	UE_LOG(LogTemp, Log, TEXT("✓ Hangar instance cleared"));
 
 	// ==================== INITIAL IMPULSE ====================

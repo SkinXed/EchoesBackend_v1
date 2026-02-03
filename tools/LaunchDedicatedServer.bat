@@ -14,11 +14,11 @@ REM ============================================================================
 
 REM Path to Unreal Engine Editor executable
 REM Default location for UE5: C:\Program Files\Epic Games\UE_5.X\Engine\Binaries\Win64\UnrealEditor.exe
-set "UNREAL_EDITOR=C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe"
+set "UNREAL_EDITOR=C:\Program Files\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor.exe
 
 REM Path to the Echoes .uproject file
 REM Use absolute path or relative to this script location
-set "PROJECT_FILE=%~dp0Client\Echoes\Echoes.uproject"
+set "PROJECT_FILE=C:\Reposetory\EchoesBackend_v1\Client\Echoes\Echoes.uproject"
 
 REM Map to load (without .umap extension)
 REM Available maps: GameLevel, LoginMap, EntryMap, CharacterSelectMap
@@ -42,7 +42,7 @@ set "SYSTEM_ID=00000000-0000-0000-0000-000000000001"
 
 REM Region ID for RegionalCluster mode (use valid GUID)
 REM Only used when SERVER_TYPE=RegionalCluster
-set "REGION_ID=00000000-0000-0000-0000-000000000010"
+set "REGION_ID=00000000-0000-0000-0000-000000000001"
 
 REM ============================================================================
 REM VALIDATION
@@ -63,7 +63,7 @@ if not exist "%UNREAL_EDITOR%" (
     echo.
     echo Typical locations:
     echo   C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe
-    echo   C:\Program Files\Epic Games\UE_5.4\Engine\Binaries\Win64\UnrealEditor.exe
+    echo   C:\Program Files\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor.exe
     echo.
     pause
     exit /b 1

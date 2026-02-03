@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Echoes.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260201005757_AddRaceConfigs")]
-    partial class AddRaceConfigs
+    [Migration("20260203124638_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -937,6 +937,9 @@ namespace Echoes.API.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CharacterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("HangarInstanceId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("InWarp")

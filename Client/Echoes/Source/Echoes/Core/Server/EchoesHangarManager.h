@@ -17,6 +17,7 @@ USTRUCT(BlueprintType)
 struct FHangarInstance
 {
 	GENERATED_BODY()
+	
 
 	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
 	FGuid InstanceId;
@@ -28,7 +29,7 @@ struct FHangarInstance
 	FGuid StationId;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
-	FVector SpatialOffset;
+	FVector SpatialOffset = FVector::ZeroVector;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
 	AActor* SpawnedShipPawn = nullptr;
