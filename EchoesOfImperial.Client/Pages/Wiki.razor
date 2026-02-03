@@ -11,17 +11,17 @@
         
         <nav class="wiki-nav">
             <button class="wiki-nav-item @(selectedSection == "architecture" ? "active" : "")" 
-                    @onclick="() => SelectSection(\"architecture\")">
+                    @onclick="SelectArchitecture">
                 <span class="nav-icon">📐</span>
                 <span>Architecture</span>
             </button>
             <button class="wiki-nav-item @(selectedSection == "factions" ? "active" : "")" 
-                    @onclick="() => SelectSection(\"factions\")">
+                    @onclick="SelectFactions">
                 <span class="nav-icon">⚔️</span>
                 <span>Great Factions</span>
             </button>
             <button class="wiki-nav-item @(selectedSection == "mechanics" ? "active" : "")" 
-                    @onclick="() => SelectSection(\"mechanics\")">
+                    @onclick="SelectMechanics">
                 <span class="nav-icon">⚙️</span>
                 <span>Game Mechanics</span>
             </button>
@@ -49,9 +49,19 @@
 @code {
     private string selectedSection = "architecture";
 
-    private void SelectSection(string section)
+    private void SelectArchitecture()
     {
-        selectedSection = section;
+        selectedSection = "architecture";
+    }
+
+    private void SelectFactions()
+    {
+        selectedSection = "factions";
+    }
+
+    private void SelectMechanics()
+    {
+        selectedSection = "mechanics";
     }
 
     private RenderFragment ArchitectureContent => __builder =>
