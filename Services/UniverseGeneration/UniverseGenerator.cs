@@ -51,6 +51,35 @@ namespace Echoes.API.Services.UniverseGeneration
         private readonly Random _random = new();
         private const long AU_TO_METERS = 149_597_870_700;
         private const long LIGHTYEAR_TO_METERS = 9_460_730_472_580_800;
+        
+        // Static Starting System constants
+        // Faction 1: Solaris - Genesis/Apex Terminal in Aethelgard
+        public static readonly Guid GENESIS_SYSTEM_ID = new Guid("00000000-0000-0000-0000-000000000001");
+        public static readonly Guid APEX_TERMINAL_STATION_ID = new Guid("00000000-0000-0000-0000-000000000002");
+        private const string GENESIS_SYSTEM_NAME = "Genesis";
+        private const string AETHELGARD_REGION_NAME = "Aethelgard";
+        private const string APEX_TERMINAL_NAME = "Apex Terminal";
+        
+        // Faction 2: Krios - Zenith/Vertex Hub in Hyperion
+        public static readonly Guid ZENITH_SYSTEM_ID = new Guid("00000000-0000-0000-0000-000000000003");
+        public static readonly Guid VERTEX_HUB_STATION_ID = new Guid("00000000-0000-0000-0000-000000000004");
+        private const string ZENITH_SYSTEM_NAME = "Zenith";
+        private const string HYPERION_REGION_NAME = "Hyperion";
+        private const string VERTEX_HUB_NAME = "Vertex Hub";
+        
+        // Faction 3: Acheron - Nadir/Obelisk Bastion in Erebus
+        public static readonly Guid NADIR_SYSTEM_ID = new Guid("00000000-0000-0000-0000-000000000005");
+        public static readonly Guid OBELISK_BASTION_STATION_ID = new Guid("00000000-0000-0000-0000-000000000006");
+        private const string NADIR_SYSTEM_NAME = "Nadir";
+        private const string EREBUS_REGION_NAME = "Erebus";
+        private const string OBELISK_BASTION_NAME = "Obelisk Bastion";
+        
+        // Faction 4: Valerion - Aegis/Sanctuary Anchor in Thalassa
+        public static readonly Guid AEGIS_SYSTEM_ID = new Guid("00000000-0000-0000-0000-000000000007");
+        public static readonly Guid SANCTUARY_ANCHOR_STATION_ID = new Guid("00000000-0000-0000-0000-000000000008");
+        private const string AEGIS_SYSTEM_NAME = "Aegis";
+        private const string THALASSA_REGION_NAME = "Thalassa";
+        private const string SANCTUARY_ANCHOR_NAME = "Sanctuary Anchor";
 
         public UniverseGenerator(
            DatabaseContext context,
@@ -1177,6 +1206,28 @@ namespace Echoes.API.Services.UniverseGeneration
             int totalConstellations = await _context.Constellations.CountAsync();
             var progress = new ProgressTracker(totalConstellations, "констелляций", _logger, Math.Max(1, totalConstellations / 20));
 
+            // CREATE STATIC STARTING SYSTEMS for all 4 factions
+            // Only create if database is empty (no solar systems exist yet)
+            var existingSystems = await _context.SolarSystems.AnyAsync();
+            if (!existingSystems)
+            {
+                // Faction 1: Solaris - Genesis in Aethelgard
+                await CreateGenesisStartingSystemAsync(config, usedNames);
+                totalSystems++;
+                
+                // Faction 2: Krios - Zenith in Hyperion
+                await CreateZenithStartingSystemAsync(config, usedNames);
+                totalSystems++;
+                
+                // Faction 3: Acheron - Nadir in Erebus
+                await CreateNadirStartingSystemAsync(config, usedNames);
+                totalSystems++;
+                
+                // Faction 4: Valerion - Aegis in Thalassa
+                await CreateAegisStartingSystemAsync(config, usedNames);
+                totalSystems++;
+            }
+
             while (hasMore)
             {
                 // 1. Читаем пачку констелляций. AsNoTracking ускоряет чтение.
@@ -1281,6 +1332,356 @@ namespace Echoes.API.Services.UniverseGeneration
             _logger.LogInformation($"✅ Создано солнечных систем: {totalSystems}");
 
             return totalSystems;
+        }
+
+        /// <summary>
+        /// Creates the static starting system "Genesis" in region "Aethelgard" with a fixed ID.
+        /// This is always the first system created for new player spawning.
+        /// </summary>
+        private async Task CreateGenesisStartingSystemAsync(UniverseConfig config, HashSet<string> usedNames)
+        {
+            _logger.LogInformation("🌠 Создание стартовой системы Genesis в регионе Aethelgard...");
+
+            // Find or create Aethelgard region
+            var aethelgardRegion = await _context.Regions
+                .FirstOrDefaultAsync(r => r.Name == AETHELGARD_REGION_NAME || r.Name.Contains(AETHELGARD_REGION_NAME));
+
+            if (aethelgardRegion == null)
+            {
+                // If Aethelgard region doesn't exist yet, create it first
+                aethelgardRegion = new Region
+                {
+                    Id = Guid.NewGuid(),
+                    Name = AETHELGARD_REGION_NAME,
+                    RegionCode = "RG0001",
+                    Type = RegionType.Empire,
+                    AverageSecurity = 0.9f, // High security for starting region
+                    PositionX = 0, // Center of the universe
+                    PositionY = 0,
+                    PositionZ = 0,
+                    FactionId = null,
+                    Description = "The starting region for new pilots. A safe and prosperous area of space.",
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Regions.AddAsync(aethelgardRegion);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"✅ Создан регион {AETHELGARD_REGION_NAME}");
+            }
+
+            // Find or create a constellation in Aethelgard
+            var constellation = await _context.Constellations
+                .FirstOrDefaultAsync(c => c.RegionId == aethelgardRegion.Id);
+
+            if (constellation == null)
+            {
+                constellation = new Constellation
+                {
+                    Id = Guid.NewGuid(),
+                    Name = $"{AETHELGARD_REGION_NAME} Prime",
+                    RegionId = aethelgardRegion.Id,
+                    PositionX = aethelgardRegion.PositionX,
+                    PositionY = aethelgardRegion.PositionY,
+                    PositionZ = aethelgardRegion.PositionZ,
+                    AverageSecurity = 1.0f,
+                    FactionId = null,
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Constellations.AddAsync(constellation);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"✅ Создана констелляция {constellation.Name}");
+            }
+
+            // Create Genesis system with fixed ID
+            var genesisSystem = new SolarSystem
+            {
+                Id = GENESIS_SYSTEM_ID,
+                Name = GENESIS_SYSTEM_NAME,
+                ConstellationId = constellation.Id,
+                SecurityStatus = 1.0f, // Maximum security for starter system
+                RegionId = aethelgardRegion.Id,
+                PositionX = constellation.PositionX,
+                PositionY = constellation.PositionY,
+                PositionZ = constellation.PositionZ,
+                StarClass = StarClass.G, // G-class star (like our Sun)
+                LuminosityClass = StarLuminosityClass.V, // Main sequence
+                TemperatureClass = StarTemperature.Moderate,
+                Temperature = 5778, // Temperature similar to our Sun
+                SolarRadius = 1.0f,
+                SolarMass = 1.0f,
+                Luminosity = 1.0f,
+                NumberOfStars = 1,
+                Radius = 10_000_000, // 10 million km radius
+                FactionId = null,
+                HasAsteroidBelts = true,
+                HasStations = true,
+                CreatedAt = DateTime.UtcNow,
+                Description = "Genesis - The starting system for all new pilots. A stable G-class star system with excellent infrastructure and resources for beginners."
+            };
+
+            await _context.SolarSystems.AddAsync(genesisSystem);
+            await _context.SaveChangesAsync();
+            usedNames.Add(GENESIS_SYSTEM_NAME);
+
+            _logger.LogInformation($"✅ Создана стартовая система {GENESIS_SYSTEM_NAME} с ID: {GENESIS_SYSTEM_ID}");
+
+            // Create Apex Terminal station in Genesis
+            await CreateApexTerminalStationAsync(genesisSystem);
+        }
+
+        /// <summary>
+        /// Creates the Apex Terminal station in the Genesis system.
+        /// This is the starting station for all new players.
+        /// </summary>
+        private async Task CreateApexTerminalStationAsync(SolarSystem genesisSystem)
+        {
+            _logger.LogInformation("🏢 Создание стартовой станции Apex Terminal...");
+
+            // Position station at a safe orbital distance from the star
+            var stationOrbitDistance = 150_000_000L; // 150 million km (roughly 1 AU)
+            var (stationX, stationY, stationZ) = _random.CalculateOrbitalPosition(
+                stationOrbitDistance,
+                genesisSystem.PositionX,
+                genesisSystem.PositionY,
+                genesisSystem.PositionZ
+            );
+
+            var apexTerminal = new Station
+            {
+                Id = APEX_TERMINAL_STATION_ID,
+                Name = APEX_TERMINAL_NAME,
+                SolarSystemId = GENESIS_SYSTEM_ID,
+                Type = StationType.TradingHub, // Trading hub for new players
+                PositionX = stationX,
+                PositionY = stationY,
+                PositionZ = stationZ,
+                DockingCapacity = 10000, // Large capacity for many new players
+                IsOperational = true,
+                FactionId = null,
+                Services = "Docking,Repair,Refuel,Trading,Manufacturing,Research,Cloning,Insurance",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _context.Stations.AddAsync(apexTerminal);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"✅ Создана стартовая станция {APEX_TERMINAL_NAME} с ID: {APEX_TERMINAL_STATION_ID}");
+        }
+
+        /// <summary>
+        /// Creates the Zenith starting system in Hyperion region for Faction 2 (Krios).
+        /// </summary>
+        private async Task CreateZenithStartingSystemAsync(UniverseConfig config, HashSet<string> usedNames)
+        {
+            _logger.LogInformation("🌠 Создание стартовой системы Zenith в регионе Hyperion для фракции Krios...");
+
+            var (system, constellation) = await CreateStartingSystemAsync(
+                ZENITH_SYSTEM_ID, ZENITH_SYSTEM_NAME,
+                HYPERION_REGION_NAME, "RG0002",
+                StarClass.F, // F-class star
+                5500, // F-class temperature
+                1.2f, 1.1f, 1.3f, // radius, mass, luminosity
+                100_000_000L, 100_000_000L, 10_000_000L, // region position offset from center
+                "Zenith - A bright F-class star system in Hyperion region, home to the Krios faction."
+            );
+
+            usedNames.Add(ZENITH_SYSTEM_NAME);
+            _logger.LogInformation($"✅ Создана стартовая система {ZENITH_SYSTEM_NAME} с ID: {ZENITH_SYSTEM_ID}");
+
+            await CreateStationAsync(
+                VERTEX_HUB_STATION_ID, VERTEX_HUB_NAME,
+                ZENITH_SYSTEM_ID, system,
+                "Vertex Hub - The primary station for Krios faction pilots."
+            );
+        }
+
+        /// <summary>
+        /// Creates the Nadir starting system in Erebus region for Faction 3 (Acheron).
+        /// </summary>
+        private async Task CreateNadirStartingSystemAsync(UniverseConfig config, HashSet<string> usedNames)
+        {
+            _logger.LogInformation("🌠 Создание стартовой системы Nadir в регионе Erebus для фракции Acheron...");
+
+            var (system, constellation) = await CreateStartingSystemAsync(
+                NADIR_SYSTEM_ID, NADIR_SYSTEM_NAME,
+                EREBUS_REGION_NAME, "RG0003",
+                StarClass.G, // G-class star
+                5700, // G-class temperature
+                1.0f, 1.0f, 1.0f, // radius, mass, luminosity
+                -100_000_000L, 100_000_000L, 10_000_000L, // region position offset from center
+                "Nadir - A stable G-class star system in Erebus region, stronghold of the Acheron faction."
+            );
+
+            usedNames.Add(NADIR_SYSTEM_NAME);
+            _logger.LogInformation($"✅ Создана стартовая система {NADIR_SYSTEM_NAME} с ID: {NADIR_SYSTEM_ID}");
+
+            await CreateStationAsync(
+                OBELISK_BASTION_STATION_ID, OBELISK_BASTION_NAME,
+                NADIR_SYSTEM_ID, system,
+                "Obelisk Bastion - The fortified station of the Acheron faction."
+            );
+        }
+
+        /// <summary>
+        /// Creates the Aegis starting system in Thalassa region for Faction 4 (Valerion).
+        /// </summary>
+        private async Task CreateAegisStartingSystemAsync(UniverseConfig config, HashSet<string> usedNames)
+        {
+            _logger.LogInformation("🌠 Создание стартовой системы Aegis в регионе Thalassa для фракции Valerion...");
+
+            var (system, constellation) = await CreateStartingSystemAsync(
+                AEGIS_SYSTEM_ID, AEGIS_SYSTEM_NAME,
+                THALASSA_REGION_NAME, "RG0004",
+                StarClass.F, // F-class star
+                6000, // F-class temperature
+                1.3f, 1.2f, 1.4f, // radius, mass, luminosity
+                100_000_000L, -100_000_000L, 10_000_000L, // region position offset from center
+                "Aegis - A luminous F-class star system in Thalassa region, sanctuary of the Valerion faction."
+            );
+
+            usedNames.Add(AEGIS_SYSTEM_NAME);
+            _logger.LogInformation($"✅ Создана стартовая система {AEGIS_SYSTEM_NAME} с ID: {AEGIS_SYSTEM_ID}");
+
+            await CreateStationAsync(
+                SANCTUARY_ANCHOR_STATION_ID, SANCTUARY_ANCHOR_NAME,
+                AEGIS_SYSTEM_ID, system,
+                "Sanctuary Anchor - The peaceful station serving the Valerion faction."
+            );
+        }
+
+        /// <summary>
+        /// Helper method to create a starting system with its region and constellation.
+        /// </summary>
+        private async Task<(SolarSystem system, Constellation constellation)> CreateStartingSystemAsync(
+            Guid systemId, string systemName,
+            string regionName, string regionCode,
+            StarClass starClass, int temperature,
+            float solarRadius, float solarMass, float luminosity,
+            long regionPosX, long regionPosY, long regionPosZ,
+            string description)
+        {
+            // Find or create region
+            var region = await _context.Regions
+                .FirstOrDefaultAsync(r => r.Name == regionName || r.Name.Contains(regionName));
+
+            if (region == null)
+            {
+                region = new Region
+                {
+                    Id = Guid.NewGuid(),
+                    Name = regionName,
+                    RegionCode = regionCode,
+                    Type = RegionType.Empire,
+                    AverageSecurity = 0.9f,
+                    PositionX = regionPosX,
+                    PositionY = regionPosY,
+                    PositionZ = regionPosZ,
+                    FactionId = null,
+                    Description = $"The {regionName} region - home to one of the major factions.",
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Regions.AddAsync(region);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"✅ Создан регион {regionName}");
+            }
+
+            // Find or create constellation
+            var constellation = await _context.Constellations
+                .FirstOrDefaultAsync(c => c.RegionId == region.Id);
+
+            if (constellation == null)
+            {
+                constellation = new Constellation
+                {
+                    Id = Guid.NewGuid(),
+                    Name = $"{regionName} Prime",
+                    RegionId = region.Id,
+                    PositionX = region.PositionX,
+                    PositionY = region.PositionY,
+                    PositionZ = region.PositionZ,
+                    AverageSecurity = 1.0f,
+                    FactionId = null,
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Constellations.AddAsync(constellation);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"✅ Создана констелляция {constellation.Name}");
+            }
+
+            // Determine temperature class based on star class
+            var tempClass = starClass == StarClass.F ? StarTemperature.Hot : StarTemperature.Moderate;
+
+            // Create system with fixed ID
+            var system = new SolarSystem
+            {
+                Id = systemId,
+                Name = systemName,
+                ConstellationId = constellation.Id,
+                SecurityStatus = 1.0f,
+                RegionId = region.Id,
+                PositionX = constellation.PositionX,
+                PositionY = constellation.PositionY,
+                PositionZ = constellation.PositionZ,
+                StarClass = starClass,
+                LuminosityClass = StarLuminosityClass.V,
+                TemperatureClass = tempClass,
+                Temperature = temperature,
+                SolarRadius = solarRadius,
+                SolarMass = solarMass,
+                Luminosity = luminosity,
+                NumberOfStars = 1,
+                Radius = 10_000_000,
+                FactionId = null,
+                HasAsteroidBelts = true,
+                HasStations = true,
+                CreatedAt = DateTime.UtcNow,
+                Description = description
+            };
+
+            await _context.SolarSystems.AddAsync(system);
+            await _context.SaveChangesAsync();
+
+            return (system, constellation);
+        }
+
+        /// <summary>
+        /// Helper method to create a station in a starting system.
+        /// </summary>
+        private async Task CreateStationAsync(
+            Guid stationId, string stationName,
+            Guid systemId, SolarSystem system,
+            string description)
+        {
+            _logger.LogInformation($"🏢 Создание стартовой станции {stationName}...");
+
+            // Position station at 1 AU from the star
+            var stationOrbitDistance = 150_000_000L; // 150 million km (roughly 1 AU)
+            var (stationX, stationY, stationZ) = _random.CalculateOrbitalPosition(
+                stationOrbitDistance,
+                system.PositionX,
+                system.PositionY,
+                system.PositionZ
+            );
+
+            var station = new Station
+            {
+                Id = stationId,
+                Name = stationName,
+                SolarSystemId = systemId,
+                Type = StationType.TradingHub,
+                PositionX = stationX,
+                PositionY = stationY,
+                PositionZ = stationZ,
+                DockingCapacity = 10000,
+                IsOperational = true,
+                FactionId = null,
+                Services = "Docking,Repair,Refuel,Trading,Manufacturing,Research,Cloning,Insurance",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _context.Stations.AddAsync(station);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"✅ Создана стартовая станция {stationName} с ID: {stationId}");
         }
 
         private (StarClass, StarLuminosityClass, StarTemperature) GenerateStarCharacteristics(StarConfig config)
@@ -1543,6 +1944,12 @@ namespace Echoes.API.Services.UniverseGeneration
                     // Сначала вычисляем радиус планеты
                     long planetRadius = _random.Next(100, 100_000); // или другое подходящее максимальное значение
 
+                    // Calculate orbital position for planet relative to star (at 0,0,0 of solar system)
+                    var (planetX, planetY, planetZ) = _random.CalculateOrbitalPosition(
+                        orbitDistance,
+                        0, 0, 0  // Star is at center of solar system
+                    );
+
                     var planet = new Planet
                     {
                         Id = Guid.NewGuid(),
@@ -1558,6 +1965,9 @@ namespace Echoes.API.Services.UniverseGeneration
                         HasMoons = hasMoons,
                         IsColonizable = planetType != "Gas Giant" && planetType != "Lava" && _random.Chance(0.3f),
                         FactionId = system.FactionId,
+                        PositionX = planetX,
+                        PositionY = planetY,
+                        PositionZ = planetZ,
                         CreatedAt = DateTime.UtcNow,
                         Description = GeneratePlanetDescription(planetType, system.SecurityStatus)
                     };
@@ -1628,15 +2038,29 @@ namespace Echoes.API.Services.UniverseGeneration
                         moonRadius = 100;
                     }
 
+                    // Calculate orbit distance for this moon
+                    long moonOrbitDistance = _random.Next(10000, 1000000); // 10к - 1 млн км
+                    
+                    // Calculate orbital position relative to planet
+                    var (moonX, moonY, moonZ) = _random.CalculateOrbitalPosition(
+                        moonOrbitDistance,
+                        planet.PositionX,
+                        planet.PositionY,
+                        planet.PositionZ
+                    );
+
                     var moon = new Moon
                     {
                         Id = Guid.NewGuid(),
                         Name = $"{planet.Name}{config.NamingConfig.MoonNameSuffixes[_random.Next(config.NamingConfig.MoonNameSuffixes.Count)]}",
                         PlanetId = planet.Id,
                         Radius = moonRadius, // Используем исправленное значение
-                        OrbitDistance = _random.Next(10000, 1000000), // 10к - 1 млн км
+                        OrbitDistance = moonOrbitDistance,
                         OrbitPeriod = _random.Next(1, 30 * 24), // часы
                         HasResources = _random.Chance(0.5f),
+                        PositionX = moonX,
+                        PositionY = moonY,
+                        PositionZ = moonZ,
                         CreatedAt = DateTime.UtcNow
                     };
 
@@ -2871,6 +3295,41 @@ namespace Echoes.API.Services.UniverseGeneration
         public static T Choice<T>(this Random random, params T[] options)
         {
             return options[random.Next(options.Length)];
+        }
+        
+        /// <summary>
+        /// Calculate 3D cartesian position from orbital parameters.
+        /// </summary>
+        /// <param name="random">Random instance for angle generation</param>
+        /// <param name="orbitDistance">Distance from center point</param>
+        /// <param name="centerX">X coordinate of center (star for planets, planet for moons)</param>
+        /// <param name="centerY">Y coordinate of center</param>
+        /// <param name="centerZ">Z coordinate of center</param>
+        /// <returns>Tuple with calculated X, Y, Z coordinates</returns>
+        public static (long X, long Y, long Z) CalculateOrbitalPosition(
+            this Random random,
+            long orbitDistance,
+            long centerX = 0,
+            long centerY = 0,
+            long centerZ = 0)
+        {
+            // Generate random angle for orbital position (0 to 2π)
+            double angle = random.NextDouble() * 2 * Math.PI;
+            
+            // Generate random orbital inclination (-15° to +15° from XY plane)
+            double inclination = (random.NextDouble() - 0.5) * 0.5; // ~±15° in radians
+            
+            // Calculate position in orbital plane
+            double x = orbitDistance * Math.Cos(angle);
+            double y = orbitDistance * Math.Sin(angle);
+            double z = orbitDistance * Math.Sin(inclination);
+            
+            // Add center offset
+            return (
+                centerX + (long)x,
+                centerY + (long)y,
+                centerZ + (long)z
+            );
         }
     }
 }

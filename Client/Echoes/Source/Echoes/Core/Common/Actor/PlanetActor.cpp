@@ -3,8 +3,11 @@
 #include "PlanetActor.h"
 #include "Net/UnrealNetwork.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "TimerManager.h"
+#include "Engine/StaticMesh.h"
 
 APlanetActor::APlanetActor()
 {
@@ -45,6 +48,11 @@ APlanetActor::APlanetActor()
 	RingComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Ring"));
 	RingComponent->SetupAttachment(PlanetMeshComponent);
 	RingComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Create orbit spline component (will be initialized client-only)
+	// Note: We create it here but don't attach it yet - it will be set up in ClientOnly_DrawOrbit
+	OrbitSplineComponent = nullptr;
+	OrbitMeshComponent = nullptr;
 }
 
 void APlanetActor::BeginPlay()
@@ -55,6 +63,12 @@ void APlanetActor::BeginPlay()
 	if (!HasAuthority())
 	{
 		ApplyVisualConfiguration();
+		
+		// Draw orbit on client if orbit parameters are set
+		if (OrbitDistance > 0.0f && VisualData.bShowOrbit)
+		{
+			ClientOnly_DrawOrbit();
+		}
 	}
 }
 
@@ -214,4 +228,89 @@ void APlanetActor::OnRep_PlanetData()
 {
 	// When data is replicated, apply visual configuration on client
 	ApplyVisualConfiguration();
+}
+
+// ==================== Orbit Visualization ====================
+
+void APlanetActor::SetOrbitParameters(float InOrbitDistance, const FVector& InSystemOffset)
+{
+	OrbitDistance = InOrbitDistance;
+	SystemOffset = InSystemOffset;
+	
+	UE_LOG(LogTemp, Verbose, TEXT("Planet %s: Orbit parameters set - Distance: %.1f km, SystemOffset: %s"),
+		*PlanetName, OrbitDistance, *SystemOffset.ToString());
+}
+
+void APlanetActor::ClientOnly_DrawOrbit()
+{
+	// Only execute on client (not server)
+	if (HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ClientOnly_DrawOrbit called on server for planet %s - ignoring"), *PlanetName);
+		return;
+	}
+
+	// Don't draw if orbit is disabled or orbit distance is 0
+	if (!VisualData.bShowOrbit || OrbitDistance <= 0.0f)
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Drawing orbit for planet %s (Distance: %.1f km)"), *PlanetName, OrbitDistance);
+
+	// Calculate orbit radius in Unreal Units
+	// OrbitDistance is in km, need to convert to cm using UniverseToWorldScale
+	// Get the world generator's scale factor (default: 0.0001)
+	const float UniverseToWorldScale = 0.0001f; // 1 km = 10 cm
+	const double OrbitRadiusUU = static_cast<double>(OrbitDistance) * static_cast<double>(UniverseToWorldScale) * 100000.0; // km to cm
+
+	// Create spline component if not already created
+	if (!OrbitSplineComponent)
+	{
+		OrbitSplineComponent = NewObject<USplineComponent>(this, TEXT("OrbitSpline"));
+		OrbitSplineComponent->RegisterComponent();
+		OrbitSplineComponent->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		OrbitSplineComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		OrbitSplineComponent->SetVisibility(true);
+	}
+
+	// Clear existing spline points
+	OrbitSplineComponent->ClearSplinePoints();
+
+	// Generate orbit circle points
+	const int32 NumSegments = VisualData.OrbitSegments;
+	const float AngleStep = 360.0f / NumSegments;
+
+	// The orbit center is at the system offset (where the star is)
+	// But the planet itself is already positioned at SystemOffset + PlanetPosition
+	// So we need to draw the orbit relative to the star (at SystemOffset)
+	const FVector OrbitCenter = SystemOffset;
+
+	for (int32 i = 0; i <= NumSegments; ++i)
+	{
+		const float Angle = FMath::DegreesToRadians(AngleStep * i);
+		const float X = FMath::Cos(Angle) * OrbitRadiusUU;
+		const float Y = FMath::Sin(Angle) * OrbitRadiusUU;
+		const FVector PointLocation = OrbitCenter + FVector(X, Y, 0.0f);
+		
+		// Add point to spline (in world space, will be converted to local)
+		const FVector LocalPoint = GetTransform().InverseTransformPosition(PointLocation);
+		OrbitSplineComponent->AddSplinePoint(LocalPoint, ESplineCoordinateSpace::Local, false);
+	}
+
+	// Update spline
+	OrbitSplineComponent->UpdateSpline();
+	OrbitSplineComponent->SetClosedLoop(true);
+
+	// Set spline color and thickness via material
+	OrbitSplineComponent->SetDrawDebug(true);
+	OrbitSplineComponent->SetUnselectedSplineSegmentColor(FLinearColor(
+		VisualData.OrbitColor.R,
+		VisualData.OrbitColor.G,
+		VisualData.OrbitColor.B,
+		VisualData.OrbitColor.A
+	));
+
+	UE_LOG(LogTemp, Log, TEXT("✓ Orbit drawn for planet %s: %d segments, Radius: %.1f UU, Center: %s"),
+		*PlanetName, NumSegments, OrbitRadiusUU, *OrbitCenter.ToString());
 }

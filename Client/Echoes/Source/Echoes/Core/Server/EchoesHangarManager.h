@@ -11,10 +11,35 @@ class USceneComponent;
 class UStaticMeshComponent;
 
 /**
+ * Hangar instance structure for spatial isolation
+ */
+USTRUCT(BlueprintType)
+struct FHangarInstance
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
+	FGuid InstanceId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
+	FGuid PlayerId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
+	FGuid StationId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
+	FVector SpatialOffset;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hangar")
+	AActor* SpawnedShipPawn = nullptr;
+};
+
+/**
  * AEchoesHangarManager
  * 
  * Manages the hangar scene, spawning and updating the ship preview.
  * Subscribes to inventory subsystem to react to fitting changes.
+ * Implements spatial isolation for each player's hangar instance.
  */
 UCLASS()
 class ECHOES_API AEchoesHangarManager : public AActor
@@ -29,9 +54,31 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:	
-	/** Initialize hangar for specific character */
+	/** 
+	 * Initialize hangar for specific character with spatial isolation
+	 * @param CharacterId - Character GUID (FString format for Blueprint compatibility)
+	 * @param HangarInstanceId - Unique hangar instance ID from backend for spatial isolation
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
-	void InitializeHangar(const FString& CharacterId);
+	void InitializeHangar(const FString& CharacterId, const FGuid& HangarInstanceId);
+
+	/**
+	 * Get or create a hangar instance for a player
+	 * @param PlayerId - Character/Player GUID
+	 * @param StationId - Station GUID where hangar is located
+	 * @param HangarInstanceId - Unique hangar instance ID from backend
+	 * @return Spatial offset vector for this player's hangar
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	FVector GetOrCreateHangarInstance(const FGuid& PlayerId, const FGuid& StationId, const FGuid& HangarInstanceId);
+
+	/**
+	 * Bind ship pawn to hangar instance with spatial isolation
+	 * @param PlayerId - Character/Player GUID
+	 * @param ShipPawn - Ship pawn to bind
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	void BindShipPawnToHangar(const FGuid& PlayerId, AActor* ShipPawn);
 
 	/** Spawn ship preview mesh at target point */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
@@ -44,6 +91,30 @@ public:
 	/** Clear current ship preview */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
 	void ClearShipPreview();
+
+	/**
+	 * Get hangar instance for a player
+	 * @param PlayerId - Character/Player GUID
+	 * @return Pointer to hangar instance if found, nullptr otherwise
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	FHangarInstance* GetHangarInstance(const FGuid& PlayerId);
+
+	/**
+	 * Remove hangar instance for a player (cleanup on undock)
+	 * @param PlayerId - Character/Player GUID
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	void RemoveHangarInstance(const FGuid& PlayerId);
+
+	/**
+	 * Find player character ID by pawn
+	 * @param Pawn - Ship pawn to search for
+	 * @param OutCharacterId - Output character ID if found
+	 * @return True if found
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	bool FindCharacterIdByPawn(AActor* Pawn, FGuid& OutCharacterId);
 
 protected:
 	/** Called when fitting changes (from inventory subsystem) */
@@ -83,4 +154,12 @@ protected:
 	/** Cached inventory subsystem reference */
 	UPROPERTY()
 	UEchoesInventorySubsystem* InventorySubsystem;
+
+	/** Map of active hangar instances per player */
+	UPROPERTY()
+	TMap<FGuid, FHangarInstance> HangarInstances;
+
+	/** Spatial separation distance between hangar instances (in cm) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hangar")
+	float HangarSpatialSeparation = 1000000.0f; // 10km separation
 };

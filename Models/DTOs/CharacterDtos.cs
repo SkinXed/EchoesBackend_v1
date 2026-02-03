@@ -141,6 +141,7 @@ namespace Echoes.API.Models.DTOs
         public int PortraitId { get; set; } = 1;
         public int BloodlineId { get; set; } = 1;
         public int AncestryId { get; set; } = 1;
+        public int FactionId { get; set; } = 1; // 1=Solaris, 2=Krios, 3=Acheron, 4=Valerion
     }
     
     /// <summary>
@@ -178,6 +179,7 @@ namespace Echoes.API.Models.DTOs
         public double PositionX { get; set; }
         public double PositionY { get; set; }
         public double PositionZ { get; set; }
+        public Guid? HangarInstanceId { get; set; }
     }
     
     /// <summary>

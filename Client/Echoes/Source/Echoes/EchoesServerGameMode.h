@@ -53,6 +53,9 @@ struct FCharacterLocationData
 	double PositionZ = 0.0;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	FGuid HangarInstanceId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int32 ActiveShipTypeId = 0;
 };
 
@@ -161,10 +164,12 @@ public:
 	/**
 	 * Spawn player at station (docked state)
 	 * @param PC - Player controller
+	 * @param CharacterId - Character/Player GUID for hangar isolation
 	 * @param StationId - Station GUID
 	 * @param ShipTypeId - Active ship type ID for mesh lookup
+	 * @param HangarInstanceId - Unique hangar instance ID for player isolation
 	 */
-	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId, int32 ShipTypeId);
+	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& CharacterId, const FGuid& StationId, int32 ShipTypeId, const FGuid& HangarInstanceId);
 
 	/**
 	 * Spawn player in space
@@ -179,6 +184,13 @@ public:
 	 * Get API base URL from configuration
 	 */
 	FString GetApiBaseUrl() const;
+
+	/**
+	 * Request player undocking from station
+	 * Moves player from hangar instance back to space near station
+	 * @param PC - Player controller requesting undock
+	 */
+	void RequestUndock(APlayerController* PC);
 
 protected:
 	// ==================== Internal Logic ====================
@@ -221,6 +233,10 @@ private:
 	/** Inventory subsystem reference */
 	UPROPERTY()
 	UEchoesInventorySubsystem* InventorySubsystem;
+
+	/** Hangar manager for player isolation */
+	UPROPERTY()
+	class AEchoesHangarManager* HangarManager;
 
 	// ==================== State ====================
 

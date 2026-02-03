@@ -279,6 +279,12 @@ public class CharacterController : ControllerBase
             {
                 return BadRequest(new { error = "Invalid race ID. Must be 1 (Caldari), 2 (Gallente), 3 (Amarr), or 4 (Minmatar)" });
             }
+            
+            // Validate faction ID (1-4 for the main factions)
+            if (request.FactionId < 1 || request.FactionId > 4)
+            {
+                return BadRequest(new { error = "Invalid faction ID. Must be 1 (Solaris), 2 (Krios), 3 (Acheron), or 4 (Valerion)" });
+            }
 
             // Get race configuration
             var raceConfig = await _context.RaceConfigs
@@ -293,39 +299,48 @@ public class CharacterController : ControllerBase
             var startingShip = await _context.ItemTypesInventory
                 .FirstOrDefaultAsync(i => i.TypeId == raceConfig.DefaultShipTypeId);
 
-            // Resolve starting station and solar system
+            // Determine starting location based on FactionId
+            Guid startingSystemId;
+            Guid startingStationId;
+            
+            switch (request.FactionId)
+            {
+                case 1: // Solaris - Genesis/Apex Terminal
+                    startingSystemId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.GENESIS_SYSTEM_ID;
+                    startingStationId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.APEX_TERMINAL_STATION_ID;
+                    break;
+                case 2: // Krios - Zenith/Vertex Hub
+                    startingSystemId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.ZENITH_SYSTEM_ID;
+                    startingStationId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.VERTEX_HUB_STATION_ID;
+                    break;
+                case 3: // Acheron - Nadir/Obelisk Bastion
+                    startingSystemId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.NADIR_SYSTEM_ID;
+                    startingStationId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.OBELISK_BASTION_STATION_ID;
+                    break;
+                case 4: // Valerion - Aegis/Sanctuary Anchor
+                    startingSystemId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.AEGIS_SYSTEM_ID;
+                    startingStationId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.SANCTUARY_ANCHOR_STATION_ID;
+                    break;
+                default:
+                    return BadRequest(new { error = "Invalid faction ID" });
+            }
+            
+            // Verify starting station exists
             var startingStation = await _context.Stations
-                .FirstOrDefaultAsync(s => s.Id == raceConfig.StartingStationId);
+                .FirstOrDefaultAsync(s => s.Id == startingStationId);
 
             if (startingStation == null)
             {
-                // TODO: Fix race_configs.StartingStationId values. This fallback is for testing only.
-                startingStation = await _context.Stations
-                    .FirstOrDefaultAsync(s => s.SolarSystemId != Guid.Empty);
-
-                if (startingStation == null)
-                {
-                    return BadRequest(new { error = "Starting station not found for selected race" });
-                }
+                return BadRequest(new { error = $"Starting station not found for faction {request.FactionId}. Please ensure the universe has been generated." });
             }
 
-            Guid startingSystemId = raceConfig.StartingSystemId;
-            if (startingSystemId == Guid.Empty)
-            {
-                if (startingStation.SolarSystemId == Guid.Empty)
-                {
-                    return BadRequest(new { error = "Starting station has no solar system" });
-                }
-
-                startingSystemId = startingStation.SolarSystemId;
-            }
-
+            // Verify solar system exists
             var solarSystemExists = await _context.SolarSystems
                 .AnyAsync(s => s.Id == startingSystemId);
 
             if (!solarSystemExists)
             {
-                return BadRequest(new { error = "Starting solar system not found for selected race" });
+                return BadRequest(new { error = $"Starting system not found for faction {request.FactionId}. Please ensure the universe has been generated." });
             }
 
             // Create new character
@@ -337,13 +352,13 @@ public class CharacterController : ControllerBase
                 RaceId = request.RaceId,
                 BloodlineId = request.BloodlineId,
                 AncestryId = request.AncestryId,
-                HomeStationId = startingStation.Id,
+                HomeStationId = startingStationId, // Use faction-based starting station
                 WalletBalance = raceConfig.StartingISK,
                 SecurityStatus = 0.0f,
                 TotalSkillPoints = 0,
                 UnallocatedSkillPoints = raceConfig.StartingSkillPoints,
                 IsOnline = false,
-                IsDocked = true,
+                IsDocked = true, // All new characters start docked
                 InWarp = false,
                 CreatedAt = DateTime.UtcNow,
                 LastLogin = DateTime.UtcNow
@@ -351,17 +366,17 @@ public class CharacterController : ControllerBase
 
             _context.Characters.Add(character);
 
-            // Create character location at home station
-            // Note: Position coordinates will be set from station data when character spawns
+            // Create character location at faction's home station
             var characterLocation = new CharacterLocation
             {
                 Id = Guid.NewGuid(),
                 CharacterId = character.Id,
-                StationId = startingStation.Id,
-                SolarSystemId = startingSystemId,
+                StationId = startingStationId, // Use faction-based starting station
+                SolarSystemId = startingSystemId, // Use faction-based starting system
                 LocationType = Models.Enums.LocationType.Docked,
                 IsDocked = true,
                 InWarp = false,
+                HangarInstanceId = Guid.NewGuid(), // Create unique hangar instance for this character
                 LastUpdate = DateTime.UtcNow
             };
 
@@ -445,6 +460,28 @@ public class CharacterController : ControllerBase
 
                     if (homeStation != null)
                     {
+                        // Create new location with hangar instance
+                        var hangarInstanceId = Guid.NewGuid();
+                        
+                        var newLocation = new CharacterLocation
+                        {
+                            Id = Guid.NewGuid(),
+                            CharacterId = id,
+                            StationId = homeStation.Id,
+                            SolarSystemId = homeStation.SolarSystemId,
+                            PositionX = homeStation.PositionX,
+                            PositionY = homeStation.PositionY,
+                            PositionZ = homeStation.PositionZ,
+                            IsDocked = true,
+                            InWarp = false,
+                            HangarInstanceId = hangarInstanceId,
+                            LocationType = Models.Enums.LocationType.Docked,
+                            LastUpdate = DateTime.UtcNow
+                        };
+                        
+                        _context.CharacterLocations.Add(newLocation);
+                        await _context.SaveChangesAsync();
+                        
                         return Ok(new CharacterLocationDto
                         {
                             CharacterId = id,
@@ -456,12 +493,21 @@ public class CharacterController : ControllerBase
                             SolarSystemName = homeStation.SolarSystem?.Name ?? "Unknown",
                             PositionX = homeStation.PositionX,
                             PositionY = homeStation.PositionY,
-                            PositionZ = homeStation.PositionZ
+                            PositionZ = homeStation.PositionZ,
+                            HangarInstanceId = hangarInstanceId
                         });
                     }
                 }
 
                 return NotFound(new { error = "Character location not found" });
+            }
+
+            // Ensure HangarInstanceId exists for existing location
+            if (!location.HangarInstanceId.HasValue)
+            {
+                location.HangarInstanceId = Guid.NewGuid();
+                _context.CharacterLocations.Update(location);
+                await _context.SaveChangesAsync();
             }
 
             var locationDto = new CharacterLocationDto
@@ -475,7 +521,8 @@ public class CharacterController : ControllerBase
                 SolarSystemName = location.SolarSystem?.Name,
                 PositionX = location.PositionX,
                 PositionY = location.PositionY,
-                PositionZ = location.PositionZ
+                PositionZ = location.PositionZ,
+                HangarInstanceId = location.HangarInstanceId.Value
             };
 
             return Ok(locationDto);
@@ -527,7 +574,7 @@ public class CharacterController : ControllerBase
 
             var character = await _context.Characters
                 .Include(c => c.CurrentLocation)
-                .ThenInclude(cl => cl.SolarSystem)
+                .ThenInclude(cl => cl!.SolarSystem)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (character == null)

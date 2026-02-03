@@ -144,6 +144,28 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
 	const FServerRegionalClusterConfig& GetRegionalConfig() const { return CachedRegionalConfig; }
 
+	/**
+	 * Get cached server system configuration (DedicatedSystem mode)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	const FServerSystemConfig& GetSystemConfig() const { return CachedConfig; }
+
+	/**
+	 * Check if server has received and cached configuration
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	bool HasCachedConfig() const 
+	{ 
+		if (IsRegionalCluster())
+		{
+			return CachedRegionalConfig.Systems.Num() > 0;
+		}
+		else
+		{
+			return !CachedConfig.SystemName.IsEmpty();
+		}
+	}
+
 protected:
 	// ==================== HTTP Response Handlers ====================
 
@@ -193,6 +215,26 @@ protected:
 	FString GetServerSecret() const;
 
 	/**
+	 * Get register endpoint from configuration with fallback
+	 */
+	FString GetRegisterEndpoint() const;
+
+	/**
+	 * Get heartbeat endpoint from configuration with fallback
+	 */
+	FString GetHeartbeatEndpoint() const;
+
+	/**
+	 * Get config endpoint from configuration with fallback
+	 */
+	FString GetConfigEndpoint() const;
+
+	/**
+	 * Get unregister endpoint from configuration with fallback
+	 */
+	FString GetUnregisterEndpoint() const;
+
+	/**
 	 * Check if this is a dedicated server
 	 */
 	bool IsDedicatedServer() const;
@@ -232,6 +274,22 @@ private:
 	/** Server secret for authentication (X-Server-Secret header) */
 	UPROPERTY(Config)
 	FString ServerSecret;
+
+	/** API endpoint for server registration */
+	UPROPERTY(Config)
+	FString RegisterEndpoint;
+
+	/** API endpoint for heartbeat */
+	UPROPERTY(Config)
+	FString HeartbeatEndpoint;
+
+	/** API endpoint for server configuration */
+	UPROPERTY(Config)
+	FString ConfigEndpoint;
+
+	/** API endpoint for server unregistration */
+	UPROPERTY(Config)
+	FString UnregisterEndpoint;
 
 	// ==================== Server State ====================
 
