@@ -294,38 +294,38 @@ public class CharacterController : ControllerBase
                 .FirstOrDefaultAsync(i => i.TypeId == raceConfig.DefaultShipTypeId);
 
             // Resolve starting station and solar system
+            // All new characters start at Genesis system in Apex Terminal
             var startingStation = await _context.Stations
-                .FirstOrDefaultAsync(s => s.Id == raceConfig.StartingStationId);
+                .FirstOrDefaultAsync(s => s.Id == Echoes.API.Services.UniverseGeneration.UniverseGenerator.APEX_TERMINAL_STATION_ID);
 
             if (startingStation == null)
             {
-                // TODO: Fix race_configs.StartingStationId values. This fallback is for testing only.
+                // Fallback: try race config station
                 startingStation = await _context.Stations
-                    .FirstOrDefaultAsync(s => s.SolarSystemId != Guid.Empty);
-
+                    .FirstOrDefaultAsync(s => s.Id == raceConfig.StartingStationId);
+                    
                 if (startingStation == null)
                 {
-                    return BadRequest(new { error = "Starting station not found for selected race" });
+                    // Last resort: any station in Genesis system
+                    startingStation = await _context.Stations
+                        .FirstOrDefaultAsync(s => s.SolarSystemId == Echoes.API.Services.UniverseGeneration.UniverseGenerator.GENESIS_SYSTEM_ID);
+                        
+                    if (startingStation == null)
+                    {
+                        return BadRequest(new { error = "Starting station not found. Please ensure the universe has been generated." });
+                    }
                 }
             }
 
-            Guid startingSystemId = raceConfig.StartingSystemId;
-            if (startingSystemId == Guid.Empty)
-            {
-                if (startingStation.SolarSystemId == Guid.Empty)
-                {
-                    return BadRequest(new { error = "Starting station has no solar system" });
-                }
-
-                startingSystemId = startingStation.SolarSystemId;
-            }
+            // Use Genesis system as starting location
+            Guid startingSystemId = Echoes.API.Services.UniverseGeneration.UniverseGenerator.GENESIS_SYSTEM_ID;
 
             var solarSystemExists = await _context.SolarSystems
                 .AnyAsync(s => s.Id == startingSystemId);
 
             if (!solarSystemExists)
             {
-                return BadRequest(new { error = "Starting solar system not found for selected race" });
+                return BadRequest(new { error = "Genesis starting system not found. Please ensure the universe has been generated." });
             }
 
             // Create new character

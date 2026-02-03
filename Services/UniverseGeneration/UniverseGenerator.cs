@@ -51,6 +51,13 @@ namespace Echoes.API.Services.UniverseGeneration
         private readonly Random _random = new();
         private const long AU_TO_METERS = 149_597_870_700;
         private const long LIGHTYEAR_TO_METERS = 9_460_730_472_580_800;
+        
+        // Static Starting System constants
+        public static readonly Guid GENESIS_SYSTEM_ID = new Guid("00000000-0000-0000-0000-000000000001");
+        public static readonly Guid APEX_TERMINAL_STATION_ID = new Guid("00000000-0000-0000-0000-000000000002");
+        private const string GENESIS_SYSTEM_NAME = "Genesis";
+        private const string AETHELGARD_REGION_NAME = "Aethelgard";
+        private const string APEX_TERMINAL_NAME = "Apex Terminal";
 
         public UniverseGenerator(
            DatabaseContext context,
@@ -1177,6 +1184,15 @@ namespace Echoes.API.Services.UniverseGeneration
             int totalConstellations = await _context.Constellations.CountAsync();
             var progress = new ProgressTracker(totalConstellations, "констелляций", _logger, Math.Max(1, totalConstellations / 20));
 
+            // CREATE STATIC STARTING SYSTEM: Genesis in Aethelgard
+            // Only create if database is empty (no solar systems exist yet)
+            var existingSystems = await _context.SolarSystems.AnyAsync();
+            if (!existingSystems)
+            {
+                await CreateGenesisStartingSystemAsync(config, usedNames);
+                totalSystems++; // Count Genesis system
+            }
+
             while (hasMore)
             {
                 // 1. Читаем пачку констелляций. AsNoTracking ускоряет чтение.
@@ -1281,6 +1297,139 @@ namespace Echoes.API.Services.UniverseGeneration
             _logger.LogInformation($"✅ Создано солнечных систем: {totalSystems}");
 
             return totalSystems;
+        }
+
+        /// <summary>
+        /// Creates the static starting system "Genesis" in region "Aethelgard" with a fixed ID.
+        /// This is always the first system created for new player spawning.
+        /// </summary>
+        private async Task CreateGenesisStartingSystemAsync(UniverseConfig config, HashSet<string> usedNames)
+        {
+            _logger.LogInformation("🌠 Создание стартовой системы Genesis в регионе Aethelgard...");
+
+            // Find or create Aethelgard region
+            var aethelgardRegion = await _context.Regions
+                .FirstOrDefaultAsync(r => r.Name == AETHELGARD_REGION_NAME || r.Name.Contains(AETHELGARD_REGION_NAME));
+
+            if (aethelgardRegion == null)
+            {
+                // If Aethelgard region doesn't exist yet, create it first
+                aethelgardRegion = new Region
+                {
+                    Id = Guid.NewGuid(),
+                    Name = AETHELGARD_REGION_NAME,
+                    RegionCode = "RG0001",
+                    Type = RegionType.Empire,
+                    AverageSecurity = 0.9f, // High security for starting region
+                    PositionX = 0, // Center of the universe
+                    PositionY = 0,
+                    PositionZ = 0,
+                    FactionId = null,
+                    Description = "The starting region for new pilots. A safe and prosperous area of space.",
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Regions.AddAsync(aethelgardRegion);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"✅ Создан регион {AETHELGARD_REGION_NAME}");
+            }
+
+            // Find or create a constellation in Aethelgard
+            var constellation = await _context.Constellations
+                .FirstOrDefaultAsync(c => c.RegionId == aethelgardRegion.Id);
+
+            if (constellation == null)
+            {
+                constellation = new Constellation
+                {
+                    Id = Guid.NewGuid(),
+                    Name = $"{AETHELGARD_REGION_NAME} Prime",
+                    RegionId = aethelgardRegion.Id,
+                    PositionX = aethelgardRegion.PositionX,
+                    PositionY = aethelgardRegion.PositionY,
+                    PositionZ = aethelgardRegion.PositionZ,
+                    AverageSecurity = 1.0f,
+                    FactionId = null,
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Constellations.AddAsync(constellation);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"✅ Создана констелляция {constellation.Name}");
+            }
+
+            // Create Genesis system with fixed ID
+            var genesisSystem = new SolarSystem
+            {
+                Id = GENESIS_SYSTEM_ID,
+                Name = GENESIS_SYSTEM_NAME,
+                ConstellationId = constellation.Id,
+                SecurityStatus = 1.0f, // Maximum security for starter system
+                RegionId = aethelgardRegion.Id,
+                PositionX = constellation.PositionX,
+                PositionY = constellation.PositionY,
+                PositionZ = constellation.PositionZ,
+                StarClass = StarClass.G, // G-class star (like our Sun)
+                LuminosityClass = StarLuminosityClass.V, // Main sequence
+                TemperatureClass = StarTemperature.Moderate,
+                Temperature = 5778, // Temperature similar to our Sun
+                SolarRadius = 1.0f,
+                SolarMass = 1.0f,
+                Luminosity = 1.0f,
+                NumberOfStars = 1,
+                Radius = 10_000_000, // 10 million km radius
+                FactionId = null,
+                HasAsteroidBelts = true,
+                HasStations = true,
+                CreatedAt = DateTime.UtcNow,
+                Description = "Genesis - The starting system for all new pilots. A stable G-class star system with excellent infrastructure and resources for beginners."
+            };
+
+            await _context.SolarSystems.AddAsync(genesisSystem);
+            await _context.SaveChangesAsync();
+            usedNames.Add(GENESIS_SYSTEM_NAME);
+
+            _logger.LogInformation($"✅ Создана стартовая система {GENESIS_SYSTEM_NAME} с ID: {GENESIS_SYSTEM_ID}");
+
+            // Create Apex Terminal station in Genesis
+            await CreateApexTerminalStationAsync(genesisSystem);
+        }
+
+        /// <summary>
+        /// Creates the Apex Terminal station in the Genesis system.
+        /// This is the starting station for all new players.
+        /// </summary>
+        private async Task CreateApexTerminalStationAsync(SolarSystem genesisSystem)
+        {
+            _logger.LogInformation("🏢 Создание стартовой станции Apex Terminal...");
+
+            // Position station at a safe orbital distance from the star
+            var stationOrbitDistance = 150_000_000L; // 150 million km (roughly 1 AU)
+            var (stationX, stationY, stationZ) = _random.CalculateOrbitalPosition(
+                stationOrbitDistance,
+                genesisSystem.PositionX,
+                genesisSystem.PositionY,
+                genesisSystem.PositionZ
+            );
+
+            var apexTerminal = new Station
+            {
+                Id = APEX_TERMINAL_STATION_ID,
+                Name = APEX_TERMINAL_NAME,
+                SolarSystemId = GENESIS_SYSTEM_ID,
+                Type = StationType.TradingHub, // Trading hub for new players
+                PositionX = stationX,
+                PositionY = stationY,
+                PositionZ = stationZ,
+                DockingCapacity = 10000, // Large capacity for many new players
+                IsOperational = true,
+                FactionId = null,
+                Services = "Docking,Repair,Refuel,Trading,Manufacturing,Research,Cloning,Insurance",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _context.Stations.AddAsync(apexTerminal);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"✅ Создана стартовая станция {APEX_TERMINAL_NAME} с ID: {APEX_TERMINAL_STATION_ID}");
         }
 
         private (StarClass, StarLuminosityClass, StarTemperature) GenerateStarCharacteristics(StarConfig config)
