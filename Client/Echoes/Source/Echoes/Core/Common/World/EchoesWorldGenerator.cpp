@@ -55,6 +55,28 @@ void AEchoesWorldGenerator::BeginPlay()
 				&AEchoesWorldGenerator::OnRegionalClusterConfigReceived);
 
 			UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Successfully subscribed to config delegates"));
+
+			// CRITICAL FIX: Check if config was already received before we subscribed
+			// This prevents race condition where HTTP response arrives before BeginPlay
+			if (ServerManagementSubsystem->IsServerRegistered() && ServerManagementSubsystem->HasCachedConfig())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("EchoesWorldGenerator: Server already registered with cached config, triggering generation now"));
+				
+				if (ServerManagementSubsystem->IsRegionalCluster())
+				{
+					// Regional cluster mode - get cached config
+					const FServerRegionalClusterConfig& CachedRegionalConfig = ServerManagementSubsystem->GetRegionalConfig();
+					UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Found cached regional config with %d systems"), CachedRegionalConfig.Systems.Num());
+					OnRegionalClusterConfigReceived(CachedRegionalConfig);
+				}
+				else
+				{
+					// Dedicated system mode - get cached config
+					const FServerSystemConfig& CachedSystemConfig = ServerManagementSubsystem->GetSystemConfig();
+					UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Found cached system config for %s"), *CachedSystemConfig.SystemName);
+					OnServerConfigReceived(CachedSystemConfig);
+				}
+			}
 		}
 		else
 		{
@@ -797,13 +819,16 @@ void AEchoesWorldGenerator::SpawnWormholes(const TArray<FWormholeConfig>& Wormho
 FVector AEchoesWorldGenerator::ConvertCoordinates(int64 X, int64 Y, int64 Z) const
 {
 	// Convert from km to Unreal Units (cm)
+	// CRITICAL FIX: Use double precision to avoid jitter at large distances
 	// UniverseToWorldScale is the scaling factor
 	// Example: 1 km = 0.1 cm (1:1,000,000 scale)
 	
-	float WorldX = static_cast<float>(X) * UniverseToWorldScale * 100000.0f; // km to cm
-	float WorldY = static_cast<float>(Y) * UniverseToWorldScale * 100000.0f;
-	float WorldZ = static_cast<float>(Z) * UniverseToWorldScale * 100000.0f;
+	// Convert to double first to maintain precision for large coordinates
+	double WorldX = static_cast<double>(X) * static_cast<double>(UniverseToWorldScale) * 100000.0; // km to cm
+	double WorldY = static_cast<double>(Y) * static_cast<double>(UniverseToWorldScale) * 100000.0;
+	double WorldZ = static_cast<double>(Z) * static_cast<double>(UniverseToWorldScale) * 100000.0;
 
+	// FVector supports double precision in UE5 (Large World Coordinates)
 	return FVector(WorldX, WorldY, WorldZ);
 }
 

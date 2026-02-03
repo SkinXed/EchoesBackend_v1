@@ -61,13 +61,15 @@ public:
 	 * Universe to World Scale Constant
 	 * Converts database coordinates (km or AU) to Unreal Units (cm)
 	 * 
-	 * Default: 1 km = 100 cm (1:100,000 scale)
+	 * Default: 1 km = 0.0001 * 100000 cm = 10 cm (1:10,000 scale)
 	 * This prevents floating-point precision issues at astronomical distances
 	 * 
-	 * Example: Planet at 150,000,000 km (1 AU) -> 150,000 cm (1,500 m) in Unreal
+	 * IMPORTANT: ConvertCoordinates uses DOUBLE PRECISION to avoid jitter
+	 * 
+	 * Example: Planet at 150,000,000 km (1 AU) -> 1,500,000 cm (15 km) in Unreal
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generation|Scale")
-	float UniverseToWorldScale = 0.0001f; // 1 km = 0.1 cm
+	float UniverseToWorldScale = 0.0001f; // 1 km = 10 cm (configurable)
 
 	/**
 	 * Regional distance scale for separating multiple systems
