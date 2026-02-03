@@ -1543,6 +1543,12 @@ namespace Echoes.API.Services.UniverseGeneration
                     // Сначала вычисляем радиус планеты
                     long planetRadius = _random.Next(100, 100_000); // или другое подходящее максимальное значение
 
+                    // Calculate orbital position for planet relative to star (at 0,0,0 of solar system)
+                    var (planetX, planetY, planetZ) = _random.CalculateOrbitalPosition(
+                        orbitDistance,
+                        0, 0, 0  // Star is at center of solar system
+                    );
+
                     var planet = new Planet
                     {
                         Id = Guid.NewGuid(),
@@ -1558,6 +1564,9 @@ namespace Echoes.API.Services.UniverseGeneration
                         HasMoons = hasMoons,
                         IsColonizable = planetType != "Gas Giant" && planetType != "Lava" && _random.Chance(0.3f),
                         FactionId = system.FactionId,
+                        PositionX = planetX,
+                        PositionY = planetY,
+                        PositionZ = planetZ,
                         CreatedAt = DateTime.UtcNow,
                         Description = GeneratePlanetDescription(planetType, system.SecurityStatus)
                     };
@@ -1628,15 +1637,29 @@ namespace Echoes.API.Services.UniverseGeneration
                         moonRadius = 100;
                     }
 
+                    // Calculate orbit distance for this moon
+                    long moonOrbitDistance = _random.Next(10000, 1000000); // 10к - 1 млн км
+                    
+                    // Calculate orbital position relative to planet
+                    var (moonX, moonY, moonZ) = _random.CalculateOrbitalPosition(
+                        moonOrbitDistance,
+                        planet.PositionX,
+                        planet.PositionY,
+                        planet.PositionZ
+                    );
+
                     var moon = new Moon
                     {
                         Id = Guid.NewGuid(),
                         Name = $"{planet.Name}{config.NamingConfig.MoonNameSuffixes[_random.Next(config.NamingConfig.MoonNameSuffixes.Count)]}",
                         PlanetId = planet.Id,
                         Radius = moonRadius, // Используем исправленное значение
-                        OrbitDistance = _random.Next(10000, 1000000), // 10к - 1 млн км
+                        OrbitDistance = moonOrbitDistance,
                         OrbitPeriod = _random.Next(1, 30 * 24), // часы
                         HasResources = _random.Chance(0.5f),
+                        PositionX = moonX,
+                        PositionY = moonY,
+                        PositionZ = moonZ,
                         CreatedAt = DateTime.UtcNow
                     };
 
@@ -2871,6 +2894,41 @@ namespace Echoes.API.Services.UniverseGeneration
         public static T Choice<T>(this Random random, params T[] options)
         {
             return options[random.Next(options.Length)];
+        }
+        
+        /// <summary>
+        /// Calculate 3D cartesian position from orbital parameters.
+        /// </summary>
+        /// <param name="random">Random instance for angle generation</param>
+        /// <param name="orbitDistance">Distance from center point</param>
+        /// <param name="centerX">X coordinate of center (star for planets, planet for moons)</param>
+        /// <param name="centerY">Y coordinate of center</param>
+        /// <param name="centerZ">Z coordinate of center</param>
+        /// <returns>Tuple with calculated X, Y, Z coordinates</returns>
+        public static (long X, long Y, long Z) CalculateOrbitalPosition(
+            this Random random,
+            long orbitDistance,
+            long centerX = 0,
+            long centerY = 0,
+            long centerZ = 0)
+        {
+            // Generate random angle for orbital position (0 to 2π)
+            double angle = random.NextDouble() * 2 * Math.PI;
+            
+            // Generate random orbital inclination (-15° to +15° from XY plane)
+            double inclination = (random.NextDouble() - 0.5) * 0.5; // ~±15° in radians
+            
+            // Calculate position in orbital plane
+            double x = orbitDistance * Math.Cos(angle);
+            double y = orbitDistance * Math.Sin(angle);
+            double z = orbitDistance * Math.Sin(inclination);
+            
+            // Add center offset
+            return (
+                centerX + (long)x,
+                centerY + (long)y,
+                centerZ + (long)z
+            );
         }
     }
 }
