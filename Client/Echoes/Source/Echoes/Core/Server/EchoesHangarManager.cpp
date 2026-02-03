@@ -208,15 +208,23 @@ FVector AEchoesHangarManager::GetOrCreateHangarInstance(const FGuid& PlayerId, c
 	// Use a deterministic hash to ensure same instance ID always gets same offset
 	uint32 Hash = GetTypeHash(HangarInstanceId);
 	
+	// Grid layout constants for spatial distribution
+	constexpr int32 GRID_SIZE = 100;           // Number of grid cells per dimension
+	constexpr int32 GRID_OFFSET = 50;          // Center offset for grid (-50 to +50)
+	constexpr int32 VERTICAL_LAYERS = 20;      // Number of vertical layers (0 to +20)
+	constexpr int32 GRID_HASH_DIVISOR = 100;   // Hash divisor for grid Y
+	constexpr int32 VERTICAL_HASH_DIVISOR = 10000; // Hash divisor for grid Z
+	constexpr float VERTICAL_SCALE = 0.5f;     // Vertical separation scale factor
+	
 	// Generate offset in a grid pattern with large separation to prevent overlap
-	int32 GridX = (Hash % 100) - 50; // -50 to +50
-	int32 GridY = ((Hash / 100) % 100) - 50;
-	int32 GridZ = ((Hash / 10000) % 20); // 0 to +20 for vertical separation
+	int32 GridX = (Hash % GRID_SIZE) - GRID_OFFSET; // -50 to +50
+	int32 GridY = ((Hash / GRID_HASH_DIVISOR) % GRID_SIZE) - GRID_OFFSET; // -50 to +50
+	int32 GridZ = ((Hash / VERTICAL_HASH_DIVISOR) % VERTICAL_LAYERS); // 0 to +20 for vertical separation
 	
 	NewInstance.SpatialOffset = FVector(
 		GridX * HangarSpatialSeparation,
 		GridY * HangarSpatialSeparation,
-		GridZ * HangarSpatialSeparation * 0.5f // Less vertical separation
+		GridZ * HangarSpatialSeparation * VERTICAL_SCALE // Less vertical separation
 	);
 
 	UE_LOG(LogTemp, Log, TEXT("HangarManager: Created new hangar instance for player %s at offset %s"), 

@@ -461,6 +461,12 @@ void AEchoesServerGameMode::OnCharacterLocationReceived(
 		UE_LOG(LogTemp, Log, TEXT("✓ HangarInstanceId parsed: %s"), *LocationData.HangarInstanceId.ToString());
 	}
 
+	// Parse characterId for player identification
+	if (JsonObject->HasField(TEXT("characterId")) && !JsonObject->GetStringField(TEXT("characterId")).IsEmpty())
+	{
+		FGuid::Parse(JsonObject->GetStringField(TEXT("characterId")), LocationData.CharacterId);
+	}
+
 	// Get active ship type ID (query from inventory or default)
 	// For now, use a default ship type ID (will be improved with proper inventory query)
 	LocationData.ActiveShipTypeId = 670; // Default: Ibis (Caldari rookie ship)
@@ -492,7 +498,7 @@ void AEchoesServerGameMode::PerformSpawnWithLocationData(
 	if (LocationData.IsDocked)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Character is docked at station: %s"), *LocationData.StationName);
-		SpawnPlayerAtStation(PlayerController, LocationData.StationId, LocationData.ActiveShipTypeId, LocationData.HangarInstanceId);
+		SpawnPlayerAtStation(PlayerController, LocationData.CharacterId, LocationData.StationId, LocationData.ActiveShipTypeId, LocationData.HangarInstanceId);
 	}
 	else
 	{
@@ -560,7 +566,7 @@ bool AEchoesServerGameMode::ExtractLoginOptions(const FString& Options, FString&
 	return bFoundToken && bFoundCharacterId;
 }
 
-void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId, int32 ShipTypeId, const FGuid& HangarInstanceId)
+void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FGuid& CharacterId, const FGuid& StationId, int32 ShipTypeId, const FGuid& HangarInstanceId)
 {
 	if (!PC)
 	{
@@ -577,8 +583,8 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
 	UE_LOG(LogTemp, Log, TEXT("║    SPAWNING PLAYER AT STATION (DOCKED STATE)            ║"));
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
-	UE_LOG(LogTemp, Log, TEXT("StationId: %s, ShipTypeId: %d, HangarInstanceId: %s"), 
-		*StationId.ToString(), ShipTypeId, *HangarInstanceId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("CharacterId: %s, StationId: %s, ShipTypeId: %d, HangarInstanceId: %s"), 
+		*CharacterId.ToString(), *StationId.ToString(), ShipTypeId, *HangarInstanceId.ToString());
 
 	// Try to get ship definition from ItemTypeRegistry (with nullptr safety check)
 	FEchoesItemDefinitionRow ShipDef;
@@ -654,35 +660,24 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	// Get or create hangar instance for this player
 	
 	FVector HangarOffset = FVector::ZeroVector;
-	if (HangarManager)
+	if (HangarManager && CharacterId.IsValid())
 	{
-		// Extract player/character ID from PlayerController
-		FGuid PlayerId;
-		if (PC->PlayerState)
-		{
-			// Try to parse character ID from player state or connection
-			FString Options = PC->PlayerState->SavedNetworkAddress;
-			FString Token;
-			ExtractLoginOptions(Options, Token, PlayerId);
-		}
+		// Get spatial offset for this player's hangar instance
+		HangarOffset = HangarManager->GetOrCreateHangarInstance(CharacterId, StationId, HangarInstanceId);
+		UE_LOG(LogTemp, Log, TEXT("✓ Hangar instance offset: %s"), *HangarOffset.ToString());
 
-		if (PlayerId.IsValid())
-		{
-			// Get spatial offset for this player's hangar instance
-			HangarOffset = HangarManager->GetOrCreateHangarInstance(PlayerId, StationId, HangarInstanceId);
-			UE_LOG(LogTemp, Log, TEXT("✓ Hangar instance offset: %s"), *HangarOffset.ToString());
-
-			// Bind the ship pawn to the hangar instance
-			HangarManager->BindShipPawnToHangar(PlayerId, PlayerPawn);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("⚠ Could not extract PlayerId for hangar isolation"));
-		}
+		// Bind the ship pawn to the hangar instance (will be called after pawn spawn)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("⚠ HangarManager not available - no spatial isolation"));
+		if (!HangarManager)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("⚠ HangarManager not available - no spatial isolation"));
+		}
+		if (!CharacterId.IsValid())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("⚠ CharacterId invalid - no spatial isolation"));
+		}
 	}
 
 	// ==================== MOVE PAWN TO STATION ====================
@@ -695,6 +690,12 @@ void AEchoesServerGameMode::SpawnPlayerAtStation(APlayerController* PC, const FG
 	// So we just use station location as base
 	PlayerPawn->SetActorLocation(StationLocation);
 	PlayerPawn->SetActorRotation(StationRotation);
+	
+	// Bind pawn to hangar instance for isolation
+	if (HangarManager && CharacterId.IsValid())
+	{
+		HangarManager->BindShipPawnToHangar(CharacterId, PlayerPawn);
+	}
 	
 	UE_LOG(LogTemp, Log, TEXT("✓ Pawn moved to station location: %s"), *StationLocation.ToString());
 

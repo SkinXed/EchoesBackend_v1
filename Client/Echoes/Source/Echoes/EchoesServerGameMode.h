@@ -164,11 +164,12 @@ public:
 	/**
 	 * Spawn player at station (docked state)
 	 * @param PC - Player controller
+	 * @param CharacterId - Character/Player GUID for hangar isolation
 	 * @param StationId - Station GUID
 	 * @param ShipTypeId - Active ship type ID for mesh lookup
 	 * @param HangarInstanceId - Unique hangar instance ID for player isolation
 	 */
-	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& StationId, int32 ShipTypeId, const FGuid& HangarInstanceId);
+	void SpawnPlayerAtStation(APlayerController* PC, const FGuid& CharacterId, const FGuid& StationId, int32 ShipTypeId, const FGuid& HangarInstanceId);
 
 	/**
 	 * Spawn player in space

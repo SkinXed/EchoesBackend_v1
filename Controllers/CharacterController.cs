@@ -460,8 +460,27 @@ public class CharacterController : ControllerBase
 
                     if (homeStation != null)
                     {
-                        // Create or get hangar instance for this character at home station
+                        // Create new location with hangar instance
                         var hangarInstanceId = Guid.NewGuid();
+                        
+                        var newLocation = new CharacterLocation
+                        {
+                            Id = Guid.NewGuid(),
+                            CharacterId = id,
+                            StationId = homeStation.Id,
+                            SolarSystemId = homeStation.SolarSystemId,
+                            PositionX = homeStation.PositionX,
+                            PositionY = homeStation.PositionY,
+                            PositionZ = homeStation.PositionZ,
+                            IsDocked = true,
+                            InWarp = false,
+                            HangarInstanceId = hangarInstanceId,
+                            LocationType = Models.Enums.LocationType.Docked,
+                            LastUpdate = DateTime.UtcNow
+                        };
+                        
+                        _context.CharacterLocations.Add(newLocation);
+                        await _context.SaveChangesAsync();
                         
                         return Ok(new CharacterLocationDto
                         {
@@ -483,6 +502,14 @@ public class CharacterController : ControllerBase
                 return NotFound(new { error = "Character location not found" });
             }
 
+            // Ensure HangarInstanceId exists for existing location
+            if (!location.HangarInstanceId.HasValue)
+            {
+                location.HangarInstanceId = Guid.NewGuid();
+                _context.CharacterLocations.Update(location);
+                await _context.SaveChangesAsync();
+            }
+
             var locationDto = new CharacterLocationDto
             {
                 CharacterId = id,
@@ -495,7 +522,7 @@ public class CharacterController : ControllerBase
                 PositionX = location.PositionX,
                 PositionY = location.PositionY,
                 PositionZ = location.PositionZ,
-                HangarInstanceId = location.HangarInstanceId ?? Guid.NewGuid() // Ensure hangar instance exists
+                HangarInstanceId = location.HangarInstanceId.Value
             };
 
             return Ok(locationDto);
