@@ -1,4 +1,7 @@
 @page "/wiki"
+@using EchoesOfImperial.Shared.DTOs
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Wiki - Echoes of Imperial</PageTitle>
 
@@ -29,18 +32,81 @@
     </div>
 
     <div class="wiki-content">
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="admin-edit-panel">
+                    @if (!isEditMode)
+                    {
+                        <button class="btn-edit" @onclick="EnterEditMode" title="Edit this section">
+                            <span class="edit-icon">✏️</span>
+                            EDIT
+                        </button>
+                    }
+                    else
+                    {
+                        <div class="edit-controls">
+                            <button class="btn-save" @onclick="SaveChanges" disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <span class="spinner-small"></span>
+                                    <span>SAVING...</span>
+                                }
+                                else
+                                {
+                                    <span>💾 SAVE CHANGES</span>
+                                }
+                            </button>
+                            <button class="btn-cancel" @onclick="CancelEdit">
+                                ✕ CANCEL
+                            </button>
+                        </div>
+                    }
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        @if (!string.IsNullOrEmpty(statusMessage))
+        {
+            <div class="status-message @statusClass">
+                @statusMessage
+            </div>
+        }
+
         <div class="content-panel">
-            @if (selectedSection == "architecture")
+            @if (!isEditMode)
             {
-                @ArchitectureContent
+                @if (selectedSection == "architecture")
+                {
+                    @ArchitectureContent
+                }
+                else if (selectedSection == "factions")
+                {
+                    @FactionsContent
+                }
+                else if (selectedSection == "mechanics")
+                {
+                    @MechanicsContent
+                }
             }
-            else if (selectedSection == "factions")
+            else
             {
-                @FactionsContent
-            }
-            else if (selectedSection == "mechanics")
-            {
-                @MechanicsContent
+                <div class="edit-mode-container">
+                    <div class="form-group">
+                        <label>SECTION NAME</label>
+                        <input type="text" @bind="editSectionName" class="form-control" readonly />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>TITLE</label>
+                        <input type="text" @bind="editTitle" class="form-control" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CONTENT (HTML)</label>
+                        <textarea @bind="editContent" class="form-control edit-textarea" rows="20"></textarea>
+                        <p class="help-text">You can use HTML tags for formatting</p>
+                    </div>
+                </div>
             }
         </div>
     </div>
@@ -48,20 +114,156 @@
 
 @code {
     private string selectedSection = "architecture";
+    private bool isEditMode = false;
+    private bool isSaving = false;
+    private string? statusMessage;
+    private string statusClass = "";
+    
+    // Edit mode fields
+    private string editSectionName = "";
+    private string editTitle = "";
+    private string editContent = "";
 
     private void SelectArchitecture()
     {
         selectedSection = "architecture";
+        ExitEditMode();
     }
 
     private void SelectFactions()
     {
         selectedSection = "factions";
+        ExitEditMode();
     }
 
     private void SelectMechanics()
     {
         selectedSection = "mechanics";
+        ExitEditMode();
+    }
+
+    private void EnterEditMode()
+    {
+        isEditMode = true;
+        editSectionName = selectedSection;
+        
+        // Load current content based on selected section
+        switch (selectedSection)
+        {
+            case "architecture":
+                editTitle = "SYSTEM ARCHITECTURE";
+                editContent = GetArchitectureHtml();
+                break;
+            case "factions":
+                editTitle = "GREAT FACTIONS";
+                editContent = GetFactionsHtml();
+                break;
+            case "mechanics":
+                editTitle = "GAME MECHANICS";
+                editContent = GetMechanicsHtml();
+                break;
+        }
+        
+        statusMessage = null;
+    }
+
+    private void CancelEdit()
+    {
+        ExitEditMode();
+    }
+
+    private void ExitEditMode()
+    {
+        isEditMode = false;
+        editSectionName = "";
+        editTitle = "";
+        editContent = "";
+        statusMessage = null;
+    }
+
+    private async Task SaveChanges()
+    {
+        isSaving = true;
+        statusMessage = null;
+        
+        try
+        {
+            var updateDto = new WikiPageUpdateDto
+            {
+                SectionName = editSectionName,
+                Title = editTitle,
+                ContentHtml = editContent
+            };
+
+            // For now, we'll use a hardcoded ID for each section
+            // In a real implementation, you'd load the actual page IDs from the database
+            var pageId = GetPageIdForSection(editSectionName);
+            
+            var response = await Http.PutAsJsonAsync($"api/wiki/{pageId}", updateDto);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                statusMessage = "✓ Changes saved successfully!";
+                statusClass = "success";
+                ExitEditMode();
+                StateHasChanged();
+            }
+            else
+            {
+                statusMessage = "✗ Failed to save changes. Please try again.";
+                statusClass = "error";
+            }
+        }
+        catch (Exception ex)
+        {
+            statusMessage = $"✗ An error occurred: {ex.Message}";
+            statusClass = "error";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private Guid GetPageIdForSection(string section)
+    {
+        // This is a placeholder. In a real implementation, you would:
+        // 1. Load pages from the database on initialization
+        // 2. Match the section name to get the actual page ID
+        // For now, we'll use deterministic GUIDs based on section name
+        return section switch
+        {
+            "architecture" => new Guid("11111111-1111-1111-1111-111111111111"),
+            "factions" => new Guid("22222222-2222-2222-2222-222222222222"),
+            "mechanics" => new Guid("33333333-3333-3333-3333-333333333333"),
+            _ => Guid.NewGuid()
+        };
+    }
+
+    private string GetArchitectureHtml()
+    {
+        return @"<h1>SYSTEM ARCHITECTURE</h1>
+<p>The Echoes of Imperial infrastructure follows a robust multi-tier architecture...</p>
+<h3>Hierarchy Overview</h3>
+<p>PostgreSQL → API → UE5 Server → Client</p>
+<h3>Network Protocol Standard</h3>
+<p><strong>Critical Rule:</strong> All GUIDs are transmitted as String format for network exchange.</p>";
+    }
+
+    private string GetFactionsHtml()
+    {
+        return @"<h1>GREAT FACTIONS</h1>
+<p>Four powerful factions vie for control of the known universe...</p>
+<h3>☀️ Solaris Union (Capital: Genesis)</h3>
+<p>The Solaris Union stands as a beacon of progress and enlightenment...</p>";
+    }
+
+    private string GetMechanicsHtml()
+    {
+        return @"<h1>GAME MECHANICS</h1>
+<p>Core gameplay systems that define the Echoes of Imperial experience.</p>
+<h3>🏠 Personal Hangar</h3>
+<p>Your Private Space - isolated sanctuary within the vast universe...</p>";
     }
 
     private RenderFragment ArchitectureContent => __builder =>
