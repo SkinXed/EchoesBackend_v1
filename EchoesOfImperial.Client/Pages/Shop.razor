@@ -293,7 +293,7 @@
     {
         if (selectedCategory == null)
         {
-            filteredItems = shopItems;
+            filteredItems = shopItems.ToList(); // Create defensive copy
         }
         else
         {
@@ -412,7 +412,7 @@
             
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<dynamic>();
+                // Successfully submitted purchase request
                 await JSRuntime.InvokeVoidAsync("alert", 
                     $"Purchase request submitted!\n\nItem: {item.Name}\nPrice: {FormatPrice(item.Price)}\nStatus: PENDING\n\n" +
                     $"Imperial Treasury is processing your request...");
