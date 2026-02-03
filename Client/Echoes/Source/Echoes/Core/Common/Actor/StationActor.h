@@ -101,6 +101,13 @@ public:
 		const FGuid& InHangarStorageId);
 
 	/**
+	 * Client RPC to close station menu on player's screen
+	 * Called after successful undocking
+	 */
+	UFUNCTION(Client, Reliable)
+	void ClientRPC_CloseStationMenu();
+
+	/**
 	 * Server RPC to request undocking from station
 	 * Called from client when player clicks Undock button
 	 */

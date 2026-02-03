@@ -329,3 +329,30 @@ void AEchoesHangarManager::BindShipPawnToHangar(const FGuid& PlayerId, AActor* S
 		}
 	}
 }
+
+FHangarInstance* AEchoesHangarManager::GetHangarInstance(const FGuid& PlayerId)
+{
+	return HangarInstances.Find(PlayerId);
+}
+
+void AEchoesHangarManager::RemoveHangarInstance(const FGuid& PlayerId)
+{
+	if (HangarInstances.Contains(PlayerId))
+	{
+		FHangarInstance* Instance = HangarInstances.Find(PlayerId);
+		if (Instance)
+		{
+			UE_LOG(LogTemp, Log, TEXT("HangarManager: Removing hangar instance for player %s"), *PlayerId.ToString());
+			
+			// Clear any ship preview
+			ClearShipPreview();
+			
+			// Remove from map
+			HangarInstances.Remove(PlayerId);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HangarManager: No hangar instance found for player %s"), *PlayerId.ToString());
+	}
+}

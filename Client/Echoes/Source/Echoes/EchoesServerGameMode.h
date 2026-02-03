@@ -185,6 +185,13 @@ public:
 	 */
 	FString GetApiBaseUrl() const;
 
+	/**
+	 * Request player undocking from station
+	 * Moves player from hangar instance back to space near station
+	 * @param PC - Player controller requesting undock
+	 */
+	void RequestUndock(APlayerController* PC);
+
 protected:
 	// ==================== Internal Logic ====================
 

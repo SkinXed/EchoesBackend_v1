@@ -92,6 +92,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
 	void ClearShipPreview();
 
+	/**
+	 * Get hangar instance for a player
+	 * @param PlayerId - Character/Player GUID
+	 * @return Pointer to hangar instance if found, nullptr otherwise
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	FHangarInstance* GetHangarInstance(const FGuid& PlayerId);
+
+	/**
+	 * Remove hangar instance for a player (cleanup on undock)
+	 * @param PlayerId - Character/Player GUID
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Hangar")
+	void RemoveHangarInstance(const FGuid& PlayerId);
+
 protected:
 	/** Called when fitting changes (from inventory subsystem) */
 	UFUNCTION()
