@@ -65,6 +65,12 @@ namespace Echoes.API.Data
         // Configuration entities
         public DbSet<Models.Config.RaceConfig> RaceConfigs { get; set; }
 
+        // News entities
+        public DbSet<Echoes.API.Models.Entities.News.NewsPost> NewsPosts { get; set; }
+        
+        // Wiki entities
+        public DbSet<Echoes.API.Models.Entities.Wiki.WikiPage> WikiPages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
