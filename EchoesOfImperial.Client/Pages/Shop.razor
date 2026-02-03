@@ -412,10 +412,37 @@
             
             if (response.IsSuccessStatusCode)
             {
-                // Successfully submitted purchase request
-                await JSRuntime.InvokeVoidAsync("alert", 
-                    $"Purchase request submitted!\n\nItem: {item.Name}\nPrice: {FormatPrice(item.Price)}\nStatus: PENDING\n\n" +
-                    $"Imperial Treasury is processing your request...");
+                var result = await response.Content.ReadFromJsonAsync<PurchaseResponse>();
+                if (result != null)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", 
+                        $"✓ Purchase Successful!\n\n" +
+                        $"Item: {result.Item.Name}\n" +
+                        $"Price: {FormatPrice(result.Item.Price)}\n\n" +
+                        $"Previous Balance: {FormatPrice(result.PreviousBalance)}\n" +
+                        $"New Balance: {FormatPrice(result.NewBalance)}\n\n" +
+                        $"Imperial Treasury: Transaction completed.");
+                    
+                    // Reload items to refresh UI
+                    await LoadShopItems();
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                if (errorResponse != null)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", 
+                        $"✗ Purchase Failed\n\n" +
+                        $"{errorResponse.Error}\n\n" +
+                        $"Current Balance: {FormatPrice(errorResponse.CurrentBalance ?? 0)}\n" +
+                        $"Required: {FormatPrice(errorResponse.RequiredAmount ?? 0)}\n" +
+                        $"Deficit: {FormatPrice(errorResponse.Deficit ?? 0)}");
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Purchase failed: Insufficient funds");
+                }
             }
             else
             {
@@ -428,6 +455,32 @@
             Console.WriteLine($"Purchase error: {ex.Message}");
             await JSRuntime.InvokeVoidAsync("alert", $"Purchase failed: {ex.Message}");
         }
+    }
+
+    // Response DTOs for purchase
+    private class PurchaseResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public ItemInfo Item { get; set; } = new();
+        public long PreviousBalance { get; set; }
+        public long NewBalance { get; set; }
+        public long TransactionId { get; set; }
+    }
+
+    private class ItemInfo
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public long Price { get; set; }
+    }
+
+    private class ErrorResponse
+    {
+        public string Error { get; set; } = string.Empty;
+        public long? CurrentBalance { get; set; }
+        public long? RequiredAmount { get; set; }
+        public long? Deficit { get; set; }
     }
 
     private string FormatPrice(long price)

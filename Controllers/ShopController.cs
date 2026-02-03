@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Echoes.API.Data;
 using Echoes.API.Models.Entities.Shop;
+using Echoes.API.Models.Entities.Inventory;
+using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Enums;
 using EchoesOfImperial.Shared.DTOs;
 using System.Security.Claims;
@@ -263,40 +265,125 @@ public class ShopController : ControllerBase
     }
 
     /// <summary>
-    /// Purchase a shop item (Placeholder implementation)
+    /// Purchase a shop item with wallet balance
+    /// POST /api/shop/purchase/{id}
     /// </summary>
     /// <param name="id">Item ID to purchase</param>
-    /// <returns>Purchase status</returns>
+    /// <returns>Purchase result with updated balance</returns>
     [HttpPost("purchase/{id}")]
     public async Task<ActionResult> PurchaseItem(Guid id)
     {
+        // Use IDbContextTransaction for atomicity
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        
         try
         {
-            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? User.FindFirst("username")?.Value ?? "Pilot";
+            // 1. Get character ID from JWT token
+            var characterIdClaim = User.FindFirst("CharacterId")?.Value;
+            if (string.IsNullOrEmpty(characterIdClaim) || !Guid.TryParse(characterIdClaim, out var characterId))
+            {
+                _logger.LogWarning("[PURCHASE FAILED] Invalid or missing character ID in token");
+                return Unauthorized(new { error = "Imperial Treasury: Authentication required" });
+            }
 
+            // 2. Find character in database
+            var character = await _context.Characters
+                .Include(c => c.Wallets)
+                .FirstOrDefaultAsync(c => c.Id == characterId);
+
+            if (character == null)
+            {
+                _logger.LogWarning("[PURCHASE FAILED] Character not found: {CharacterId}", characterId);
+                return NotFound(new { error = "Imperial Treasury: Pilot record not found" });
+            }
+
+            // 3. Find shop item
             var shopItem = await _context.ShopItems.FindAsync(id);
             if (shopItem == null || !shopItem.IsActive)
             {
-                return NotFound(new { error = "Item not found or unavailable" });
+                _logger.LogWarning("[PURCHASE FAILED] Item not found or unavailable: {ItemId}", id);
+                return NotFound(new { error = "Imperial Treasury: Item not available" });
             }
 
-            // PLACEHOLDER: Will be implemented with wallet integration
-            _logger.LogInformation("[PURCHASE] {UserName} requesting to purchase: {ItemName} (Price: {Price})", 
-                userName, shopItem.Name, shopItem.Price);
+            // 4. Check sufficient funds
+            if (character.WalletBalance < shopItem.Price)
+            {
+                _logger.LogInformation("[PURCHASE DENIED] {CharacterName} insufficient funds for {ItemName}. Has: {Balance}, Needs: {Price}", 
+                    character.Name, shopItem.Name, character.WalletBalance, shopItem.Price);
+                return BadRequest(new { 
+                    error = "Imperial Treasury: Insufficient Funds",
+                    currentBalance = character.WalletBalance,
+                    requiredAmount = shopItem.Price,
+                    deficit = shopItem.Price - character.WalletBalance
+                });
+            }
 
-            Console.WriteLine($"Requesting Imperial Treasury... {userName} wants to purchase {shopItem.Name} for {shopItem.Price} credits");
+            // 5. Deduct from wallet balance
+            var oldBalance = character.WalletBalance;
+            character.WalletBalance -= shopItem.Price;
+
+            // 6. Create player inventory item (redeem queue for in-game)
+            var inventoryItem = new PlayerInventoryItem
+            {
+                Id = Guid.NewGuid(),
+                PlayerId = characterId,
+                ShopItemId = id,
+                Quantity = 1,
+                AcquiredDate = DateTime.UtcNow,
+                IsRedeemed = false,
+                Notes = $"Purchased from Imperial Store"
+            };
+
+            _context.PlayerInventoryItems.Add(inventoryItem);
+
+            // 7. Create wallet transaction for history
+            var walletTransaction = new WalletTransaction
+            {
+                TransactionId = DateTime.UtcNow.Ticks,
+                WalletId = characterId, // Use character ID as wallet ID for now
+                TransactionType = WalletTransactionType.MarketBuy,
+                Amount = -(decimal)shopItem.Price,
+                NewBalance = (decimal)character.WalletBalance,
+                Description = $"Purchased {shopItem.Name} from Imperial Store",
+                ReferenceId = id,
+                ReferenceType = "ShopPurchase",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.WalletTransactions.Add(walletTransaction);
+
+            // 8. Save changes
+            await _context.SaveChangesAsync();
+
+            // 9. Commit transaction
+            await transaction.CommitAsync();
+
+            _logger.LogInformation("[PURCHASE SUCCESS] {CharacterName} purchased {ItemName} for {Price} credits. New balance: {NewBalance}", 
+                character.Name, shopItem.Name, shopItem.Price, character.WalletBalance);
 
             return Ok(new { 
-                message = "Purchase request received. Imperial Treasury processing...",
-                item = shopItem.Name,
-                price = shopItem.Price,
-                status = "PENDING"
+                success = true,
+                message = "Imperial Treasury: Purchase completed successfully",
+                item = new {
+                    id = shopItem.Id,
+                    name = shopItem.Name,
+                    price = shopItem.Price
+                },
+                previousBalance = oldBalance,
+                newBalance = character.WalletBalance,
+                transactionId = walletTransaction.TransactionId
             });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error processing purchase for item {ItemId}", id);
-            return StatusCode(500, new { error = "Purchase failed" });
+            // Rollback transaction on any error
+            await transaction.RollbackAsync();
+            
+            _logger.LogError(ex, "[PURCHASE ERROR] Failed to process purchase for item {ItemId}", id);
+            return StatusCode(500, new { 
+                error = "Imperial Treasury: Transaction failed. Your funds remain secure.",
+                details = ex.Message 
+            });
         }
     }
 }
