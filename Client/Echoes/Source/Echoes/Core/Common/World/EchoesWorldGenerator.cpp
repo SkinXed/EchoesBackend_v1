@@ -821,7 +821,8 @@ FVector AEchoesWorldGenerator::ConvertCoordinates(int64 X, int64 Y, int64 Z) con
 	// Convert from km to Unreal Units (cm)
 	// CRITICAL FIX: Use double precision to avoid jitter at large distances
 	// UniverseToWorldScale is the scaling factor
-	// Example: 1 km = 0.1 cm (1:1,000,000 scale)
+	// Formula: km * UniverseToWorldScale * 100000 (km to cm conversion factor)
+	// Example: 1 km * 0.0001 * 100000 = 10 cm (1:10,000,000 scale)
 	
 	// Convert to double first to maintain precision for large coordinates
 	double WorldX = static_cast<double>(X) * static_cast<double>(UniverseToWorldScale) * 100000.0; // km to cm
