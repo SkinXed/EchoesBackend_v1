@@ -504,21 +504,26 @@ void UEchoesServerManagementSubsystem::OnConfigResponseReceived(
 				UE_LOG(LogEchoesServer, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
 				UE_LOG(LogEchoesServer, Log, TEXT("║    REGIONAL CLUSTER CONFIGURATION RECEIVED              ║"));
 				UE_LOG(LogEchoesServer, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+				UE_LOG(LogEchoesServer, Log, TEXT("  Server Instance: %s"), *ServerInstanceId);
 				UE_LOG(LogEchoesServer, Log, TEXT("  Region: %s (%s)"), *CachedRegionalConfig.RegionName, *CachedRegionalConfig.RegionCode);
 				UE_LOG(LogEchoesServer, Log, TEXT("  Systems: %d"), CachedRegionalConfig.Systems.Num());
 				UE_LOG(LogEchoesServer, Log, TEXT("  Total Planets: %d"), CachedRegionalConfig.TotalPlanets);
 				UE_LOG(LogEchoesServer, Log, TEXT("  Total Stargates: %d"), CachedRegionalConfig.TotalStargates);
 				UE_LOG(LogEchoesServer, Log, TEXT("  Total Stations: %d"), CachedRegionalConfig.TotalStations);
 				UE_LOG(LogEchoesServer, Log, TEXT("  Average Security: %.2f"), CachedRegionalConfig.AverageSecurity);
+				UE_LOG(LogEchoesServer, Log, TEXT(""));
+				UE_LOG(LogEchoesServer, Log, TEXT("  Systems assigned to this instance:"));
 
-				// Log individual systems
-				for (const FServerSystemConfig& System : CachedRegionalConfig.Systems)
+				// Log individual systems with enhanced detail
+				for (int32 i = 0; i < CachedRegionalConfig.Systems.Num(); ++i)
 				{
-					UE_LOG(LogEchoesServer, Log, TEXT("    - %s [%.0f, %.0f, %.0f]"), 
-						*System.SystemName,
-						(float)System.PositionX,
-						(float)System.PositionY,
-						(float)System.PositionZ);
+					const FServerSystemConfig& System = CachedRegionalConfig.Systems[i];
+					UE_LOG(LogEchoesServer, Log, TEXT("    [%02d] %s"), i + 1, *System.SystemName);
+					UE_LOG(LogEchoesServer, Log, TEXT("         ID: %s"), *System.SystemId.ToString());
+					UE_LOG(LogEchoesServer, Log, TEXT("         Coords: [%lld, %lld, %lld]"), 
+						System.PositionX, System.PositionY, System.PositionZ);
+					UE_LOG(LogEchoesServer, Log, TEXT("         Objects: %d planets, %d stations, %d gates"),
+						System.Planets.Num(), System.Stations.Num(), System.Stargates.Num());
 				}
 
 				// Broadcast to listeners (e.g., WorldGenerator)
@@ -538,13 +543,22 @@ void UEchoesServerManagementSubsystem::OnConfigResponseReceived(
 				// Cache configuration
 				CachedConfig = ConfigResponse.Config;
 
-				UE_LOG(LogEchoesServer, Log, TEXT("✓ UNIVERSE CONFIGURATION RECEIVED"));
+				UE_LOG(LogEchoesServer, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+				UE_LOG(LogEchoesServer, Log, TEXT("║    DEDICATED SYSTEM CONFIGURATION RECEIVED              ║"));
+				UE_LOG(LogEchoesServer, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+				UE_LOG(LogEchoesServer, Log, TEXT("  Server Instance: %s"), *ServerInstanceId);
 				UE_LOG(LogEchoesServer, Log, TEXT("  System: %s"), *CachedConfig.SystemName);
-				UE_LOG(LogEchoesServer, Log, TEXT("  Planets: %d"), CachedConfig.Planets.Num());
-				UE_LOG(LogEchoesServer, Log, TEXT("  Stargates: %d"), CachedConfig.Stargates.Num());
-				UE_LOG(LogEchoesServer, Log, TEXT("  Stations: %d"), CachedConfig.Stations.Num());
-				UE_LOG(LogEchoesServer, Log, TEXT("  Anomalies: %d"), CachedConfig.Anomalies.Num());
-				UE_LOG(LogEchoesServer, Log, TEXT("  Wormholes: %d"), CachedConfig.Wormholes.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("  System ID: %s"), *CachedConfig.SystemId.ToString());
+				UE_LOG(LogEchoesServer, Log, TEXT("  Star Class: %s"), *CachedConfig.StarClass);
+				UE_LOG(LogEchoesServer, Log, TEXT("  Security: %.2f"), CachedConfig.SecurityStatus);
+				UE_LOG(LogEchoesServer, Log, TEXT(""));
+				UE_LOG(LogEchoesServer, Log, TEXT("  Object counts:"));
+				UE_LOG(LogEchoesServer, Log, TEXT("    Planets: %d"), CachedConfig.Planets.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("    Stargates: %d"), CachedConfig.Stargates.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("    Stations: %d"), CachedConfig.Stations.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("    Asteroid Belts: %d"), CachedConfig.AsteroidBelts.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("    Anomalies: %d"), CachedConfig.Anomalies.Num());
+				UE_LOG(LogEchoesServer, Log, TEXT("    Wormholes: %d"), CachedConfig.Wormholes.Num());
 
 				// Broadcast to listeners (e.g., WorldGenerator)
 				OnServerConfigReceived.Broadcast(CachedConfig);

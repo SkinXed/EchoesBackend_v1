@@ -66,6 +66,23 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Planet")
 	void ApplySeedVariation();
 
+	// ==================== Orbit Visualization ====================
+
+	/**
+	 * Set orbit parameters for this planet (called by WorldGenerator)
+	 * @param InOrbitDistance - Distance from star in km
+	 * @param InSystemOffset - Global offset for regional cluster mode
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Planet|Orbit")
+	void SetOrbitParameters(float InOrbitDistance, const FVector& InSystemOffset);
+
+	/**
+	 * Create and draw the orbital path (client-only)
+	 * Should be called after SetOrbitParameters
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Planet|Orbit")
+	void ClientOnly_DrawOrbit();
+
 	// ==================== Getters ====================
 
 	UFUNCTION(BlueprintPure, Category = "Echoes|Planet")
@@ -102,6 +119,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* RingComponent;
 
+	/** Orbit spline component (client-only, for visual orbit path) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Orbit")
+	class USplineComponent* OrbitSplineComponent;
+
+	/** Orbit mesh component (renders the orbit spline, client-only) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Orbit")
+	class USplineMeshComponent* OrbitMeshComponent;
+
 	// ==================== Planet Data (Replicated) ====================
 
 	/** Unique planet ID from database */
@@ -127,6 +152,16 @@ protected:
 	/** Visual configuration data */
 	UPROPERTY(BlueprintReadOnly, Category = "Planet")
 	FPlanetVisualRow VisualData;
+
+	// ==================== Orbit Data ====================
+
+	/** Distance from star (orbit radius) in km */
+	UPROPERTY(BlueprintReadOnly, Category = "Planet|Orbit")
+	float OrbitDistance = 0.0f;
+
+	/** System global offset (for regional cluster mode) */
+	UPROPERTY(BlueprintReadOnly, Category = "Planet|Orbit")
+	FVector SystemOffset = FVector::ZeroVector;
 
 	// ==================== Replication ====================
 

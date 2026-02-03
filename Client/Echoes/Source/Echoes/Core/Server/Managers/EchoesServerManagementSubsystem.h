@@ -144,6 +144,28 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
 	const FServerRegionalClusterConfig& GetRegionalConfig() const { return CachedRegionalConfig; }
 
+	/**
+	 * Get cached server system configuration (DedicatedSystem mode)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	const FServerSystemConfig& GetSystemConfig() const { return CachedConfig; }
+
+	/**
+	 * Check if server has received and cached configuration
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Server")
+	bool HasCachedConfig() const 
+	{ 
+		if (IsRegionalCluster())
+		{
+			return CachedRegionalConfig.Systems.Num() > 0;
+		}
+		else
+		{
+			return !CachedConfig.SystemName.IsEmpty();
+		}
+	}
+
 protected:
 	// ==================== HTTP Response Handlers ====================
 
