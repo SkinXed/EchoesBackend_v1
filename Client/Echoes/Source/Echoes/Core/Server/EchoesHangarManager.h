@@ -95,10 +95,10 @@ public:
 	/**
 	 * Get hangar instance for a player
 	 * @param PlayerId - Character/Player GUID
-	 * @return Pointer to hangar instance if found, nullptr otherwise
+	 * @return Hangar instance if found, default-constructed otherwise
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Hangar")
-	FHangarInstance* GetHangarInstance(const FGuid& PlayerId);
+	FHangarInstance GetHangarInstance(const FGuid& PlayerId);
 
 	/**
 	 * Remove hangar instance for a player (cleanup on undock)

@@ -27,6 +27,8 @@ struct FPlanetVisualRow;
 	DECLARE_FUNCTION(execGetPlanetType); \
 	DECLARE_FUNCTION(execGetPlanetName); \
 	DECLARE_FUNCTION(execGetPlanetId); \
+	DECLARE_FUNCTION(execClientOnly_DrawOrbit); \
+	DECLARE_FUNCTION(execSetOrbitParameters); \
 	DECLARE_FUNCTION(execApplySeedVariation); \
 	DECLARE_FUNCTION(execInitializePlanet);
 

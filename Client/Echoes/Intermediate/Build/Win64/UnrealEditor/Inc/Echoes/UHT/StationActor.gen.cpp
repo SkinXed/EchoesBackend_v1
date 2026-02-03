@@ -30,6 +30,47 @@ NIAGARA_API UClass* Z_Construct_UClass_UNiagaraComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_Echoes();
 // ********** End Cross Module References **********************************************************
 
+// ********** Begin Class AStationActor Function ClientRPC_CloseStationMenu ************************
+static FName NAME_AStationActor_ClientRPC_CloseStationMenu = FName(TEXT("ClientRPC_CloseStationMenu"));
+void AStationActor::ClientRPC_CloseStationMenu()
+{
+	UFunction* Func = FindFunctionChecked(NAME_AStationActor_ClientRPC_CloseStationMenu);
+	ProcessEvent(Func,NULL);
+}
+struct Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Client RPC to close station menu on player's screen\n\x09 * Called after successful undocking\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Actor/StationActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Client RPC to close station menu on player's screen\nCalled after successful undocking" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_AStationActor, nullptr, "ClientRPC_CloseStationMenu", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x01020CC0, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu_Statics::Function_MetaDataParams), Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AStationActor::execClientRPC_CloseStationMenu)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ClientRPC_CloseStationMenu_Implementation();
+	P_NATIVE_END;
+}
+// ********** End Class AStationActor Function ClientRPC_CloseStationMenu **************************
+
 // ********** Begin Class AStationActor Function ClientRPC_OpenStationMenu *************************
 struct StationActor_eventClientRPC_OpenStationMenu_Parms
 {
@@ -723,6 +764,7 @@ void AStationActor::StaticRegisterNativesAStationActor()
 {
 	UClass* Class = AStationActor::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "ClientRPC_CloseStationMenu", &AStationActor::execClientRPC_CloseStationMenu },
 		{ "ClientRPC_OpenStationMenu", &AStationActor::execClientRPC_OpenStationMenu },
 		{ "GetStationId", &AStationActor::execGetStationId },
 		{ "GetStationName", &AStationActor::execGetStationName },
@@ -845,6 +887,7 @@ struct Z_Construct_UClass_AStationActor_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_AStationActor_ClientRPC_CloseStationMenu, "ClientRPC_CloseStationMenu" }, // 697895661
 		{ &Z_Construct_UFunction_AStationActor_ClientRPC_OpenStationMenu, "ClientRPC_OpenStationMenu" }, // 2192380974
 		{ &Z_Construct_UFunction_AStationActor_GetStationId, "GetStationId" }, // 2571789804
 		{ &Z_Construct_UFunction_AStationActor_GetStationName, "GetStationName" }, // 1094968963
@@ -934,10 +977,10 @@ AStationActor::~AStationActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 899962597U) },
+		{ Z_Construct_UClass_AStationActor, AStationActor::StaticClass, TEXT("AStationActor"), &Z_Registration_Info_UClass_AStationActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AStationActor), 883592870U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_3981142721(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_3671602211(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

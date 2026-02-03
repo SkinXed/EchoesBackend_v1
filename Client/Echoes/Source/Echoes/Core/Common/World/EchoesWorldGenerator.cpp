@@ -66,9 +66,9 @@ void AEchoesWorldGenerator::BeginPlay()
 				if (ServerManagementSubsystem->IsRegionalCluster())
 				{
 					// Regional cluster mode - get cached config
-					const FServerRegionalClusterConfig& CachedRegionalConfig = ServerManagementSubsystem->GetRegionalConfig();
-					UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Found cached regional config with %d systems"), CachedRegionalConfig.Systems.Num());
-					OnRegionalClusterConfigReceived(CachedRegionalConfig);
+					const FServerRegionalClusterConfig& CachedRegionalConfigRef = ServerManagementSubsystem->GetRegionalConfig();
+					UE_LOG(LogTemp, Log, TEXT("EchoesWorldGenerator: Found cached regional config with %d systems"), CachedRegionalConfigRef.Systems.Num());
+					OnRegionalClusterConfigReceived(CachedRegionalConfigRef);
 				}
 				else
 				{

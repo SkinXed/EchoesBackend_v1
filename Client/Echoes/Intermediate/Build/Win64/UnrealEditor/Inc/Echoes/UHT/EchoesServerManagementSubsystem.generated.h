@@ -36,6 +36,8 @@ ECHOES_API void FOnRegionalClusterConfigReceived_DelegateWrapper(const FMulticas
 
 // ********** Begin Class UEchoesServerManagementSubsystem *****************************************
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHasCachedConfig); \
+	DECLARE_FUNCTION(execGetSystemConfig); \
 	DECLARE_FUNCTION(execGetRegionalConfig); \
 	DECLARE_FUNCTION(execIsRegionalCluster); \
 	DECLARE_FUNCTION(execGetServerType); \

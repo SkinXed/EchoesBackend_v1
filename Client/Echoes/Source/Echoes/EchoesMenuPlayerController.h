@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Core/Common/Networking/EchoesAuthSubsystem.h"
 #include "EchoesMenuPlayerController.generated.h"
 
 class UEchoesCharacterSelectWidget;
@@ -80,6 +81,12 @@ protected:
 	 */
 	UFUNCTION()
 	void OnPreloadComplete(ENextState NextState);
+
+	/**
+	 * Handle login success
+	 */
+	UFUNCTION()
+	void OnLoginSuccess(const FAuthResponse& AuthResponse);
 
 	// ==================== Widget Classes ====================
 

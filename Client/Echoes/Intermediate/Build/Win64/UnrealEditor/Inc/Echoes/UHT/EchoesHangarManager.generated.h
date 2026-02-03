@@ -16,23 +16,39 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
+class AActor;
 struct FEchoesShipFitting;
 struct FGuid;
+struct FHangarInstance;
+
+// ********** Begin ScriptStruct FHangarInstance ***************************************************
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_19_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FHangarInstance_Statics; \
+	ECHOES_API static class UScriptStruct* StaticStruct();
+
+
+struct FHangarInstance;
+// ********** End ScriptStruct FHangarInstance *****************************************************
 
 // ********** Begin Class AEchoesHangarManager *****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnShipFittingFailed); \
 	DECLARE_FUNCTION(execOnShipFittingReceived); \
 	DECLARE_FUNCTION(execOnFittingChanged); \
+	DECLARE_FUNCTION(execFindCharacterIdByPawn); \
+	DECLARE_FUNCTION(execRemoveHangarInstance); \
+	DECLARE_FUNCTION(execGetHangarInstance); \
 	DECLARE_FUNCTION(execClearShipPreview); \
 	DECLARE_FUNCTION(execUpdateShipMesh); \
 	DECLARE_FUNCTION(execSpawnShipPreview); \
+	DECLARE_FUNCTION(execBindShipPawnToHangar); \
+	DECLARE_FUNCTION(execGetOrCreateHangarInstance); \
 	DECLARE_FUNCTION(execInitializeHangar);
 
 
 ECHOES_API UClass* Z_Construct_UClass_AEchoesHangarManager_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEchoesHangarManager(); \
 	friend struct Z_Construct_UClass_AEchoesHangarManager_Statics; \
@@ -43,7 +59,7 @@ public: \
 	DECLARE_SERIALIZER(AEchoesHangarManager)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AEchoesHangarManager(AEchoesHangarManager&&) = delete; \
 	AEchoesHangarManager(const AEchoesHangarManager&) = delete; \
@@ -53,13 +69,13 @@ public: \
 	NO_API virtual ~AEchoesHangarManager();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_19_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_44_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_22_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesHangarManager_h_47_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

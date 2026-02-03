@@ -27,6 +27,7 @@ struct FStationVisualRow;
 #define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_StationActor_h_21_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual bool ServerRPC_RequestUndock_Validate(APlayerController* ); \
 	virtual void ServerRPC_RequestUndock_Implementation(APlayerController* PlayerController); \
+	virtual void ClientRPC_CloseStationMenu_Implementation(); \
 	virtual void ClientRPC_OpenStationMenu_Implementation(const FString& InStationName, const FString& InStationType, FGuid const& InHangarStorageId); \
 	virtual bool ServerRPC_RequestDocking_Validate(APlayerController* ); \
 	virtual void ServerRPC_RequestDocking_Implementation(APlayerController* PlayerController); \
@@ -34,6 +35,7 @@ struct FStationVisualRow;
 	DECLARE_FUNCTION(execHandleHangarReceived); \
 	DECLARE_FUNCTION(execOnRep_StationData); \
 	DECLARE_FUNCTION(execServerRPC_RequestUndock); \
+	DECLARE_FUNCTION(execClientRPC_CloseStationMenu); \
 	DECLARE_FUNCTION(execClientRPC_OpenStationMenu); \
 	DECLARE_FUNCTION(execHasDockingAccess); \
 	DECLARE_FUNCTION(execServerRPC_RequestDocking); \

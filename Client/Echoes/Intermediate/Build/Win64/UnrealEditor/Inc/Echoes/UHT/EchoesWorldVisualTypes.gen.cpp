@@ -17,12 +17,14 @@ COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector2D();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FAnomalyVisualRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FAsteroidBeltVisualRow();
+ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FMoonVisualRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FPlanetVisualRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FStargateVisualRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FStarVisualRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FStationVisualRow();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FWormholeVisualRow();
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_UMaterialInterface_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UParticleSystem_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_USoundBase_NoRegister();
 ENGINE_API UScriptStruct* Z_Construct_UScriptStruct_FTableRowBase();
@@ -104,12 +106,68 @@ struct Z_Construct_UScriptStruct_FPlanetVisualRow_Statics
 		{ "ToolTip", "Emissive intensity for lava/volcanic planets" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bShowOrbit_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Whether to display orbital path for this planet type */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Whether to display orbital path for this planet type" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitColor_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Color of the orbital path line */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Color of the orbital path line" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitLineThickness_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Thickness of the orbital path line in world units */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Thickness of the orbital path line in world units" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitSegments_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Number of segments for orbit circle (higher = smoother) */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Number of segments for orbit circle (higher = smoother)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitMaterial_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Material to use for orbit rendering (optional, for advanced effects) */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Material to use for orbit rendering (optional, for advanced effects)" },
+#endif
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FSoftClassPropertyParams NewProp_ActorClass;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_ActorScale;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_AtmosphereScale;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_CloudRotationSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_EmissiveIntensity;
+	static void NewProp_bShowOrbit_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bShowOrbit;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_OrbitColor;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_OrbitLineThickness;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_OrbitSegments;
+	static const UECodeGen_Private::FSoftObjectPropertyParams NewProp_OrbitMaterial;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static void* NewStructOps()
 	{
@@ -122,12 +180,26 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FPlanet
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_AtmosphereScale = { "AtmosphereScale", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, AtmosphereScale), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AtmosphereScale_MetaData), NewProp_AtmosphereScale_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_CloudRotationSpeed = { "CloudRotationSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, CloudRotationSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CloudRotationSpeed_MetaData), NewProp_CloudRotationSpeed_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_EmissiveIntensity = { "EmissiveIntensity", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, EmissiveIntensity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EmissiveIntensity_MetaData), NewProp_EmissiveIntensity_MetaData) };
+void Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_bShowOrbit_SetBit(void* Obj)
+{
+	((FPlanetVisualRow*)Obj)->bShowOrbit = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_bShowOrbit = { "bShowOrbit", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(FPlanetVisualRow), &Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_bShowOrbit_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bShowOrbit_MetaData), NewProp_bShowOrbit_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitColor = { "OrbitColor", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, OrbitColor), Z_Construct_UScriptStruct_FLinearColor, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitColor_MetaData), NewProp_OrbitColor_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitLineThickness = { "OrbitLineThickness", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, OrbitLineThickness), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitLineThickness_MetaData), NewProp_OrbitLineThickness_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitSegments = { "OrbitSegments", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, OrbitSegments), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitSegments_MetaData), NewProp_OrbitSegments_MetaData) };
+const UECodeGen_Private::FSoftObjectPropertyParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitMaterial = { "OrbitMaterial", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::SoftObject, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPlanetVisualRow, OrbitMaterial), Z_Construct_UClass_UMaterialInterface_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitMaterial_MetaData), NewProp_OrbitMaterial_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_ActorClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_ActorScale,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_AtmosphereScale,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_CloudRotationSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_EmissiveIntensity,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_bShowOrbit,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitColor,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitLineThickness,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitSegments,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewProp_OrbitMaterial,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::StructParams = {
@@ -1086,20 +1158,175 @@ UScriptStruct* Z_Construct_UScriptStruct_FWormholeVisualRow()
 }
 // ********** End ScriptStruct FWormholeVisualRow **************************************************
 
+// ********** Begin ScriptStruct FMoonVisualRow ****************************************************
+static_assert(std::is_polymorphic<FMoonVisualRow>() == std::is_polymorphic<FTableRowBase>(), "USTRUCT FMoonVisualRow cannot be polymorphic unless super FTableRowBase is polymorphic");
+static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FMoonVisualRow;
+class UScriptStruct* FMoonVisualRow::StaticStruct()
+{
+	if (!Z_Registration_Info_UScriptStruct_FMoonVisualRow.OuterSingleton)
+	{
+		Z_Registration_Info_UScriptStruct_FMoonVisualRow.OuterSingleton = GetStaticStruct(Z_Construct_UScriptStruct_FMoonVisualRow, (UObject*)Z_Construct_UPackage__Script_Echoes(), TEXT("MoonVisualRow"));
+	}
+	return Z_Registration_Info_UScriptStruct_FMoonVisualRow.OuterSingleton;
+}
+struct Z_Construct_UScriptStruct_FMoonVisualRow_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n * Visual configuration for moons\n * Maps moon types from database to Unreal assets\n */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Visual configuration for moons\nMaps moon types from database to Unreal assets" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActorClass_MetaData[] = {
+		{ "Category", "Visual" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Moon blueprint actor */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Moon blueprint actor" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActorScale_MetaData[] = {
+		{ "Category", "Visual" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Scale applied to the moon actor */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Scale applied to the moon actor" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bShowOrbit_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Whether to display orbital path for this moon type */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Whether to display orbital path for this moon type" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitColor_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Color of the orbital path line */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Color of the orbital path line" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitLineThickness_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Thickness of the orbital path line in world units */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Thickness of the orbital path line in world units" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitSegments_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Number of segments for orbit circle (higher = smoother) */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Number of segments for orbit circle (higher = smoother)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitMaterial_MetaData[] = {
+		{ "Category", "Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Material to use for orbit rendering (optional, for advanced effects) */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Types/EchoesWorldVisualTypes.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Material to use for orbit rendering (optional, for advanced effects)" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FSoftClassPropertyParams NewProp_ActorClass;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ActorScale;
+	static void NewProp_bShowOrbit_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bShowOrbit;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_OrbitColor;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_OrbitLineThickness;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_OrbitSegments;
+	static const UECodeGen_Private::FSoftObjectPropertyParams NewProp_OrbitMaterial;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static void* NewStructOps()
+	{
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FMoonVisualRow>();
+	}
+	static const UECodeGen_Private::FStructParams StructParams;
+};
+const UECodeGen_Private::FSoftClassPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_ActorClass = { "ActorClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::SoftClass, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMoonVisualRow, ActorClass), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActorClass_MetaData), NewProp_ActorClass_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_ActorScale = { "ActorScale", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMoonVisualRow, ActorScale), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActorScale_MetaData), NewProp_ActorScale_MetaData) };
+void Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_bShowOrbit_SetBit(void* Obj)
+{
+	((FMoonVisualRow*)Obj)->bShowOrbit = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_bShowOrbit = { "bShowOrbit", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(FMoonVisualRow), &Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_bShowOrbit_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bShowOrbit_MetaData), NewProp_bShowOrbit_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitColor = { "OrbitColor", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMoonVisualRow, OrbitColor), Z_Construct_UScriptStruct_FLinearColor, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitColor_MetaData), NewProp_OrbitColor_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitLineThickness = { "OrbitLineThickness", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMoonVisualRow, OrbitLineThickness), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitLineThickness_MetaData), NewProp_OrbitLineThickness_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitSegments = { "OrbitSegments", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMoonVisualRow, OrbitSegments), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitSegments_MetaData), NewProp_OrbitSegments_MetaData) };
+const UECodeGen_Private::FSoftObjectPropertyParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitMaterial = { "OrbitMaterial", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::SoftObject, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMoonVisualRow, OrbitMaterial), Z_Construct_UClass_UMaterialInterface_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitMaterial_MetaData), NewProp_OrbitMaterial_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FMoonVisualRow_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_ActorClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_ActorScale,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_bShowOrbit,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitColor,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitLineThickness,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitSegments,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewProp_OrbitMaterial,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FMoonVisualRow_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FMoonVisualRow_Statics::StructParams = {
+	(UObject* (*)())Z_Construct_UPackage__Script_Echoes,
+	Z_Construct_UScriptStruct_FTableRowBase,
+	&NewStructOps,
+	"MoonVisualRow",
+	Z_Construct_UScriptStruct_FMoonVisualRow_Statics::PropPointers,
+	UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FMoonVisualRow_Statics::PropPointers),
+	sizeof(FMoonVisualRow),
+	alignof(FMoonVisualRow),
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	EStructFlags(0x00000001),
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FMoonVisualRow_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FMoonVisualRow_Statics::Struct_MetaDataParams)
+};
+UScriptStruct* Z_Construct_UScriptStruct_FMoonVisualRow()
+{
+	if (!Z_Registration_Info_UScriptStruct_FMoonVisualRow.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUScriptStruct(Z_Registration_Info_UScriptStruct_FMoonVisualRow.InnerSingleton, Z_Construct_UScriptStruct_FMoonVisualRow_Statics::StructParams);
+	}
+	return Z_Registration_Info_UScriptStruct_FMoonVisualRow.InnerSingleton;
+}
+// ********** End ScriptStruct FMoonVisualRow ******************************************************
+
 // ********** Begin Registration *******************************************************************
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FPlanetVisualRow::StaticStruct, Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewStructOps, TEXT("PlanetVisualRow"), &Z_Registration_Info_UScriptStruct_FPlanetVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlanetVisualRow), 3120595805U) },
+		{ FPlanetVisualRow::StaticStruct, Z_Construct_UScriptStruct_FPlanetVisualRow_Statics::NewStructOps, TEXT("PlanetVisualRow"), &Z_Registration_Info_UScriptStruct_FPlanetVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlanetVisualRow), 2020727050U) },
 		{ FStarVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStarVisualRow_Statics::NewStructOps, TEXT("StarVisualRow"), &Z_Registration_Info_UScriptStruct_FStarVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStarVisualRow), 3346617476U) },
 		{ FStationVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStationVisualRow_Statics::NewStructOps, TEXT("StationVisualRow"), &Z_Registration_Info_UScriptStruct_FStationVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStationVisualRow), 3921162257U) },
 		{ FStargateVisualRow::StaticStruct, Z_Construct_UScriptStruct_FStargateVisualRow_Statics::NewStructOps, TEXT("StargateVisualRow"), &Z_Registration_Info_UScriptStruct_FStargateVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FStargateVisualRow), 3791110868U) },
 		{ FAsteroidBeltVisualRow::StaticStruct, Z_Construct_UScriptStruct_FAsteroidBeltVisualRow_Statics::NewStructOps, TEXT("AsteroidBeltVisualRow"), &Z_Registration_Info_UScriptStruct_FAsteroidBeltVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAsteroidBeltVisualRow), 3102877830U) },
 		{ FAnomalyVisualRow::StaticStruct, Z_Construct_UScriptStruct_FAnomalyVisualRow_Statics::NewStructOps, TEXT("AnomalyVisualRow"), &Z_Registration_Info_UScriptStruct_FAnomalyVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAnomalyVisualRow), 1127289124U) },
 		{ FWormholeVisualRow::StaticStruct, Z_Construct_UScriptStruct_FWormholeVisualRow_Statics::NewStructOps, TEXT("WormholeVisualRow"), &Z_Registration_Info_UScriptStruct_FWormholeVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FWormholeVisualRow), 429817243U) },
+		{ FMoonVisualRow::StaticStruct, Z_Construct_UScriptStruct_FMoonVisualRow_Statics::NewStructOps, TEXT("MoonVisualRow"), &Z_Registration_Info_UScriptStruct_FMoonVisualRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FMoonVisualRow), 3004093717U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_3699972880(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_2382025409(TEXT("/Script/Echoes"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesWorldVisualTypes_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

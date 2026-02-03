@@ -14,6 +14,7 @@ void EmptyLinkFunctionForGeneratedCodeEchoesServerGameMode() {}
 
 // ********** Begin Cross Module References ********************************************************
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
+ECHOES_API UClass* Z_Construct_UClass_AEchoesHangarManager_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesServerGameMode();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesServerGameMode_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesWorldGenerator_NoRegister();
@@ -122,6 +123,10 @@ struct Z_Construct_UScriptStruct_FCharacterLocationData_Statics
 		{ "Category", "Character" },
 		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HangarInstanceId_MetaData[] = {
+		{ "Category", "Character" },
+		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActiveShipTypeId_MetaData[] = {
 		{ "Category", "Character" },
 		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
@@ -139,6 +144,7 @@ struct Z_Construct_UScriptStruct_FCharacterLocationData_Statics
 	static const UECodeGen_Private::FDoublePropertyParams NewProp_PositionX;
 	static const UECodeGen_Private::FDoublePropertyParams NewProp_PositionY;
 	static const UECodeGen_Private::FDoublePropertyParams NewProp_PositionZ;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_HangarInstanceId;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_ActiveShipTypeId;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static void* NewStructOps()
@@ -165,6 +171,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FCharacter
 const UECodeGen_Private::FDoublePropertyParams Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_PositionX = { "PositionX", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Double, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCharacterLocationData, PositionX), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PositionX_MetaData), NewProp_PositionX_MetaData) };
 const UECodeGen_Private::FDoublePropertyParams Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_PositionY = { "PositionY", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Double, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCharacterLocationData, PositionY), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PositionY_MetaData), NewProp_PositionY_MetaData) };
 const UECodeGen_Private::FDoublePropertyParams Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_PositionZ = { "PositionZ", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Double, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCharacterLocationData, PositionZ), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PositionZ_MetaData), NewProp_PositionZ_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_HangarInstanceId = { "HangarInstanceId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCharacterLocationData, HangarInstanceId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HangarInstanceId_MetaData), NewProp_HangarInstanceId_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_ActiveShipTypeId = { "ActiveShipTypeId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FCharacterLocationData, ActiveShipTypeId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActiveShipTypeId_MetaData), NewProp_ActiveShipTypeId_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FCharacterLocationData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_CharacterId,
@@ -177,6 +184,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FC
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_PositionX,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_PositionY,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_PositionZ,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_HangarInstanceId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewProp_ActiveShipTypeId,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FCharacterLocationData_Statics::PropPointers) < 2048);
@@ -498,6 +506,15 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 		{ "ToolTip", "Inventory subsystem reference" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HangarManager_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Hangar manager for player isolation */" },
+#endif
+		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Hangar manager for player isolation" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bWorldGenerated_MetaData[] = {
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether world has been generated */" },
@@ -531,6 +548,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_WorldGenerator;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_JumpManager;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_InventorySubsystem;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HangarManager;
 	static void NewProp_bWorldGenerated_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bWorldGenerated;
 	static void NewProp_bWaitingForConfig_SetBit(void* Obj);
@@ -556,6 +574,7 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerG
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_WorldGenerator = { "WorldGenerator", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, WorldGenerator), Z_Construct_UClass_AEchoesWorldGenerator_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WorldGenerator_MetaData), NewProp_WorldGenerator_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_JumpManager = { "JumpManager", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, JumpManager), Z_Construct_UClass_UEchoesJumpManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JumpManager_MetaData), NewProp_JumpManager_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_InventorySubsystem = { "InventorySubsystem", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, InventorySubsystem), Z_Construct_UClass_UEchoesInventorySubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InventorySubsystem_MetaData), NewProp_InventorySubsystem_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_HangarManager = { "HangarManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, HangarManager), Z_Construct_UClass_AEchoesHangarManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HangarManager_MetaData), NewProp_HangarManager_MetaData) };
 void Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_bWorldGenerated_SetBit(void* Obj)
 {
 	((AEchoesServerGameMode*)Obj)->bWorldGenerated = 1;
@@ -577,6 +596,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEchoesSe
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_WorldGenerator,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_JumpManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_InventorySubsystem,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_HangarManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_bWorldGenerated,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_bWaitingForConfig,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_bSubscribedToConfigDelegate,
@@ -618,13 +638,13 @@ AEchoesServerGameMode::~AEchoesServerGameMode() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FCharacterLocationData::StaticStruct, Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewStructOps, TEXT("CharacterLocationData"), &Z_Registration_Info_UScriptStruct_FCharacterLocationData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCharacterLocationData), 4259181453U) },
+		{ FCharacterLocationData::StaticStruct, Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewStructOps, TEXT("CharacterLocationData"), &Z_Registration_Info_UScriptStruct_FCharacterLocationData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCharacterLocationData), 1656272466U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesServerGameMode, AEchoesServerGameMode::StaticClass, TEXT("AEchoesServerGameMode"), &Z_Registration_Info_UClass_AEchoesServerGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesServerGameMode), 4217501391U) },
+		{ Z_Construct_UClass_AEchoesServerGameMode, AEchoesServerGameMode::StaticClass, TEXT("AEchoesServerGameMode"), &Z_Registration_Info_UClass_AEchoesServerGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesServerGameMode), 3228322181U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_565899276(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_4180432631(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

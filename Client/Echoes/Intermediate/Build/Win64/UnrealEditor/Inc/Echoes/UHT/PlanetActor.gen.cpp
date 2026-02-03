@@ -14,10 +14,13 @@ void EmptyLinkFunctionForGeneratedCodePlanetActor() {}
 
 // ********** Begin Cross Module References ********************************************************
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FGuid();
+COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ECHOES_API UClass* Z_Construct_UClass_APlanetActor();
 ECHOES_API UClass* Z_Construct_UClass_APlanetActor_NoRegister();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FPlanetVisualRow();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
+ENGINE_API UClass* Z_Construct_UClass_USplineComponent_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_USplineMeshComponent_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UStaticMeshComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_Echoes();
 // ********** End Cross Module References **********************************************************
@@ -57,6 +60,42 @@ DEFINE_FUNCTION(APlanetActor::execApplySeedVariation)
 	P_NATIVE_END;
 }
 // ********** End Class APlanetActor Function ApplySeedVariation ***********************************
+
+// ********** Begin Class APlanetActor Function ClientOnly_DrawOrbit *******************************
+struct Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Planet|Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Create and draw the orbital path (client-only)\n\x09 * Should be called after SetOrbitParameters\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Create and draw the orbital path (client-only)\nShould be called after SetOrbitParameters" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_APlanetActor, nullptr, "ClientOnly_DrawOrbit", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit_Statics::Function_MetaDataParams), Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit_Statics::Function_MetaDataParams)},  };
+UFunction* Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(APlanetActor::execClientOnly_DrawOrbit)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ClientOnly_DrawOrbit();
+	P_NATIVE_END;
+}
+// ********** End Class APlanetActor Function ClientOnly_DrawOrbit *********************************
 
 // ********** Begin Class APlanetActor Function GetPlanetId ****************************************
 struct Z_Construct_UFunction_APlanetActor_GetPlanetId_Statics
@@ -324,7 +363,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_APlanetActor_I
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InType = { "InType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InType_MetaData), NewProp_InType_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InRadius = { "InRadius", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InRadius), METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InSeed = { "InSeed", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InSeed), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InVisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 3120595805
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InVisualData = { "InVisualData", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventInitializePlanet_Parms, InVisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InVisualData_MetaData), NewProp_InVisualData_MetaData) }; // 2020727050
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InPlanetId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlanetActor_InitializePlanet_Statics::NewProp_InName,
@@ -389,12 +428,70 @@ DEFINE_FUNCTION(APlanetActor::execOnRep_PlanetData)
 }
 // ********** End Class APlanetActor Function OnRep_PlanetData *************************************
 
+// ********** Begin Class APlanetActor Function SetOrbitParameters *********************************
+struct Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics
+{
+	struct PlanetActor_eventSetOrbitParameters_Parms
+	{
+		float InOrbitDistance;
+		FVector InSystemOffset;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Planet|Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Set orbit parameters for this planet (called by WorldGenerator)\n\x09 * @param InOrbitDistance - Distance from star in km\n\x09 * @param InSystemOffset - Global offset for regional cluster mode\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Set orbit parameters for this planet (called by WorldGenerator)\n@param InOrbitDistance - Distance from star in km\n@param InSystemOffset - Global offset for regional cluster mode" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_InSystemOffset_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_InOrbitDistance;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_InSystemOffset;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::NewProp_InOrbitDistance = { "InOrbitDistance", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventSetOrbitParameters_Parms, InOrbitDistance), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::NewProp_InSystemOffset = { "InSystemOffset", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlanetActor_eventSetOrbitParameters_Parms, InSystemOffset), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InSystemOffset_MetaData), NewProp_InSystemOffset_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::NewProp_InOrbitDistance,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::NewProp_InSystemOffset,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_APlanetActor, nullptr, "SetOrbitParameters", Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::PropPointers), sizeof(Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::PlanetActor_eventSetOrbitParameters_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04C20401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::Function_MetaDataParams), Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::PlanetActor_eventSetOrbitParameters_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_APlanetActor_SetOrbitParameters()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_APlanetActor_SetOrbitParameters_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(APlanetActor::execSetOrbitParameters)
+{
+	P_GET_PROPERTY(FFloatProperty,Z_Param_InOrbitDistance);
+	P_GET_STRUCT_REF(FVector,Z_Param_Out_InSystemOffset);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SetOrbitParameters(Z_Param_InOrbitDistance,Z_Param_Out_InSystemOffset);
+	P_NATIVE_END;
+}
+// ********** End Class APlanetActor Function SetOrbitParameters ***********************************
+
 // ********** Begin Class APlanetActor *************************************************************
 void APlanetActor::StaticRegisterNativesAPlanetActor()
 {
 	UClass* Class = APlanetActor::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
 		{ "ApplySeedVariation", &APlanetActor::execApplySeedVariation },
+		{ "ClientOnly_DrawOrbit", &APlanetActor::execClientOnly_DrawOrbit },
 		{ "GetPlanetId", &APlanetActor::execGetPlanetId },
 		{ "GetPlanetName", &APlanetActor::execGetPlanetName },
 		{ "GetPlanetType", &APlanetActor::execGetPlanetType },
@@ -402,6 +499,7 @@ void APlanetActor::StaticRegisterNativesAPlanetActor()
 		{ "GetSeed", &APlanetActor::execGetSeed },
 		{ "InitializePlanet", &APlanetActor::execInitializePlanet },
 		{ "OnRep_PlanetData", &APlanetActor::execOnRep_PlanetData },
+		{ "SetOrbitParameters", &APlanetActor::execSetOrbitParameters },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -491,6 +589,28 @@ struct Z_Construct_UClass_APlanetActor_Statics
 		{ "ToolTip", "Ring mesh component (optional, for gas giants)" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitSplineComponent_MetaData[] = {
+		{ "Category", "Components|Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Orbit spline component (client-only, for visual orbit path) */" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Orbit spline component (client-only, for visual orbit path)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitMeshComponent_MetaData[] = {
+		{ "Category", "Components|Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Orbit mesh component (renders the orbit spline, client-only) */" },
+#endif
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Orbit mesh component (renders the orbit spline, client-only)" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PlanetId_MetaData[] = {
 		{ "Category", "Planet" },
 #if !UE_BUILD_SHIPPING
@@ -551,28 +671,54 @@ struct Z_Construct_UClass_APlanetActor_Statics
 		{ "ToolTip", "Visual configuration data" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OrbitDistance_MetaData[] = {
+		{ "Category", "Planet|Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Distance from star (orbit radius) in km */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Distance from star (orbit radius) in km" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SystemOffset_MetaData[] = {
+		{ "Category", "Planet|Orbit" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** System global offset (for regional cluster mode) */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Actor/PlanetActor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "System global offset (for regional cluster mode)" },
+#endif
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PlanetMeshComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CloudLayerComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_AtmosphereComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_RingComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_OrbitSplineComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_OrbitMeshComponent;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_PlanetId;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_PlanetName;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_PlanetType;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_Radius;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Seed;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_VisualData;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_OrbitDistance;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_SystemOffset;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_APlanetActor_ApplySeedVariation, "ApplySeedVariation" }, // 698242928
+		{ &Z_Construct_UFunction_APlanetActor_ClientOnly_DrawOrbit, "ClientOnly_DrawOrbit" }, // 3565815499
 		{ &Z_Construct_UFunction_APlanetActor_GetPlanetId, "GetPlanetId" }, // 735537990
 		{ &Z_Construct_UFunction_APlanetActor_GetPlanetName, "GetPlanetName" }, // 3184214214
 		{ &Z_Construct_UFunction_APlanetActor_GetPlanetType, "GetPlanetType" }, // 3563501123
 		{ &Z_Construct_UFunction_APlanetActor_GetRadius, "GetRadius" }, // 443128008
 		{ &Z_Construct_UFunction_APlanetActor_GetSeed, "GetSeed" }, // 3271480025
-		{ &Z_Construct_UFunction_APlanetActor_InitializePlanet, "InitializePlanet" }, // 2301507822
+		{ &Z_Construct_UFunction_APlanetActor_InitializePlanet, "InitializePlanet" }, // 1337176067
 		{ &Z_Construct_UFunction_APlanetActor_OnRep_PlanetData, "OnRep_PlanetData" }, // 2063678419
+		{ &Z_Construct_UFunction_APlanetActor_SetOrbitParameters, "SetOrbitParameters" }, // 3916911801
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -584,23 +730,31 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlanetActor_S
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_CloudLayerComponent = { "CloudLayerComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, CloudLayerComponent), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CloudLayerComponent_MetaData), NewProp_CloudLayerComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_AtmosphereComponent = { "AtmosphereComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, AtmosphereComponent), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AtmosphereComponent_MetaData), NewProp_AtmosphereComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_RingComponent = { "RingComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, RingComponent), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RingComponent_MetaData), NewProp_RingComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_OrbitSplineComponent = { "OrbitSplineComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, OrbitSplineComponent), Z_Construct_UClass_USplineComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitSplineComponent_MetaData), NewProp_OrbitSplineComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_OrbitMeshComponent = { "OrbitMeshComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, OrbitMeshComponent), Z_Construct_UClass_USplineMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitMeshComponent_MetaData), NewProp_OrbitMeshComponent_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetId = { "PlanetId", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, PlanetId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlanetId_MetaData), NewProp_PlanetId_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetName = { "PlanetName", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, PlanetName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlanetName_MetaData), NewProp_PlanetName_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetType = { "PlanetType", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, PlanetType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlanetType_MetaData), NewProp_PlanetType_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_Radius = { "Radius", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, Radius), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Radius_MetaData), NewProp_Radius_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_Seed = { "Seed", "OnRep_PlanetData", (EPropertyFlags)0x0020080100000034, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, Seed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Seed_MetaData), NewProp_Seed_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, VisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 3120595805
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_VisualData = { "VisualData", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, VisualData), Z_Construct_UScriptStruct_FPlanetVisualRow, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_VisualData_MetaData), NewProp_VisualData_MetaData) }; // 2020727050
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_OrbitDistance = { "OrbitDistance", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, OrbitDistance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OrbitDistance_MetaData), NewProp_OrbitDistance_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_APlanetActor_Statics::NewProp_SystemOffset = { "SystemOffset", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlanetActor, SystemOffset), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SystemOffset_MetaData), NewProp_SystemOffset_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_APlanetActor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_CloudLayerComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_AtmosphereComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_RingComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_OrbitSplineComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_OrbitMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetName,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_PlanetType,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_Radius,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_Seed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_VisualData,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_OrbitDistance,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlanetActor_Statics::NewProp_SystemOffset,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_APlanetActor_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_APlanetActor_Statics::DependentSingletons[])() = {
@@ -656,10 +810,10 @@ APlanetActor::~APlanetActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_APlanetActor, APlanetActor::StaticClass, TEXT("APlanetActor"), &Z_Registration_Info_UClass_APlanetActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlanetActor), 2085936617U) },
+		{ Z_Construct_UClass_APlanetActor, APlanetActor::StaticClass, TEXT("APlanetActor"), &Z_Registration_Info_UClass_APlanetActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlanetActor), 2497337942U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_94852668(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_3755468818(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_PlanetActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -21,7 +21,7 @@ struct FServerRegionalClusterConfig;
 struct FServerSystemConfig;
 
 // ********** Begin Class AEchoesWorldGenerator ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execIsRegionalCluster); \
 	DECLARE_FUNCTION(execGetSystemGlobalOffset); \
 	DECLARE_FUNCTION(execIsSystemOnThisServer); \
@@ -36,7 +36,7 @@ struct FServerSystemConfig;
 
 ECHOES_API UClass* Z_Construct_UClass_AEchoesWorldGenerator_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEchoesWorldGenerator(); \
 	friend struct Z_Construct_UClass_AEchoesWorldGenerator_Statics; \
@@ -47,7 +47,7 @@ public: \
 	DECLARE_SERIALIZER(AEchoesWorldGenerator)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AEchoesWorldGenerator(AEchoesWorldGenerator&&) = delete; \
 	AEchoesWorldGenerator(const AEchoesWorldGenerator&) = delete; \
@@ -57,13 +57,13 @@ public: \
 	NO_API virtual ~AEchoesWorldGenerator();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_46_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_47_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_49_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h_50_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -2,6 +2,7 @@
 
 #include "EchoesHangarManager.h"
 #include "Core/Common/Networking/EchoesInventorySubsystem.h"
+#include "Components/PrimitiveComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -314,25 +315,34 @@ void AEchoesHangarManager::BindShipPawnToHangar(const FGuid& PlayerId, AActor* S
 	// Optional: Set owner-only visibility for additional isolation
 	// This ensures only the owning player can see their ship in the hangar
 	// Provides both spatial AND visual isolation
-	if (APawn* Pawn = Cast<APawn>(ShipPawn))
+	if (ShipPawn->GetOwner())
 	{
-		// Note: SetOnlyOwnerSee requires the pawn to have an owner (player controller)
-		// This is typically set during spawn, but we verify it here
-		if (Pawn->GetOwner())
+		TArray<UPrimitiveComponent*> PrimitiveComponents;
+		ShipPawn->GetComponents<UPrimitiveComponent>(PrimitiveComponents);
+
+		for (UPrimitiveComponent* PrimitiveComponent : PrimitiveComponents)
 		{
-			ShipPawn->SetOnlyOwnerSee(true);
-			UE_LOG(LogTemp, Log, TEXT("  ✓ Owner-only visibility enabled for additional isolation"));
+			if (PrimitiveComponent)
+			{
+				PrimitiveComponent->SetOnlyOwnerSee(true);
+			}
 		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("  ⚠ Pawn has no owner, skipping owner-only visibility"));
-		}
+
+		UE_LOG(LogTemp, Log, TEXT("  ✓ Owner-only visibility enabled for additional isolation"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("  ⚠ Pawn has no owner, skipping owner-only visibility"));
 	}
 }
 
-FHangarInstance* AEchoesHangarManager::GetHangarInstance(const FGuid& PlayerId)
+FHangarInstance AEchoesHangarManager::GetHangarInstance(const FGuid& PlayerId)
 {
-	return HangarInstances.Find(PlayerId);
+    if (FHangarInstance* Found = HangarInstances.Find(PlayerId))
+    {
+        return *Found;
+    }
+    return FHangarInstance();
 }
 
 void AEchoesHangarManager::RemoveHangarInstance(const FGuid& PlayerId)

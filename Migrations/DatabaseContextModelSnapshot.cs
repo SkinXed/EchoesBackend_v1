@@ -936,6 +936,9 @@ namespace Echoes.API.Migrations
                     b.Property<Guid>("CharacterId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("HangarInstanceId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("InWarp")
                         .HasColumnType("boolean");
 

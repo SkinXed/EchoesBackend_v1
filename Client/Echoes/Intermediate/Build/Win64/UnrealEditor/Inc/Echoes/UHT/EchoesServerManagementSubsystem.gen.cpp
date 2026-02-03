@@ -326,6 +326,110 @@ DEFINE_FUNCTION(UEchoesServerManagementSubsystem::execGetServerType)
 }
 // ********** End Class UEchoesServerManagementSubsystem Function GetServerType ********************
 
+// ********** Begin Class UEchoesServerManagementSubsystem Function GetSystemConfig ****************
+struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics
+{
+	struct EchoesServerManagementSubsystem_eventGetSystemConfig_Parms
+	{
+		FServerSystemConfig ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Server" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Get cached server system configuration (DedicatedSystem mode)\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Get cached server system configuration (DedicatedSystem mode)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000008000582, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesServerManagementSubsystem_eventGetSystemConfig_Parms, ReturnValue), Z_Construct_UScriptStruct_FServerSystemConfig, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) }; // 1674105224
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesServerManagementSubsystem, nullptr, "GetSystemConfig", Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::EchoesServerManagementSubsystem_eventGetSystemConfig_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::EchoesServerManagementSubsystem_eventGetSystemConfig_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesServerManagementSubsystem::execGetSystemConfig)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(FServerSystemConfig*)Z_Param__Result=P_THIS->GetSystemConfig();
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesServerManagementSubsystem Function GetSystemConfig ******************
+
+// ********** Begin Class UEchoesServerManagementSubsystem Function HasCachedConfig ****************
+struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics
+{
+	struct EchoesServerManagementSubsystem_eventHasCachedConfig_Parms
+	{
+		bool ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Echoes|Server" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n\x09 * Check if server has received and cached configuration\n\x09 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Check if server has received and cached configuration" },
+#endif
+	};
+#endif // WITH_METADATA
+	static void NewProp_ReturnValue_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+void Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+{
+	((EchoesServerManagementSubsystem_eventHasCachedConfig_Parms*)Obj)->ReturnValue = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(EchoesServerManagementSubsystem_eventHasCachedConfig_Parms), &Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesServerManagementSubsystem, nullptr, "HasCachedConfig", Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::EchoesServerManagementSubsystem_eventHasCachedConfig_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::EchoesServerManagementSubsystem_eventHasCachedConfig_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UEchoesServerManagementSubsystem::execHasCachedConfig)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(bool*)Z_Param__Result=P_THIS->HasCachedConfig();
+	P_NATIVE_END;
+}
+// ********** End Class UEchoesServerManagementSubsystem Function HasCachedConfig ******************
+
 // ********** Begin Class UEchoesServerManagementSubsystem Function IsRegionalCluster **************
 struct Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsRegionalCluster_Statics
 {
@@ -616,6 +720,8 @@ void UEchoesServerManagementSubsystem::StaticRegisterNativesUEchoesServerManagem
 		{ "GetRegionalConfig", &UEchoesServerManagementSubsystem::execGetRegionalConfig },
 		{ "GetServerId", &UEchoesServerManagementSubsystem::execGetServerId },
 		{ "GetServerType", &UEchoesServerManagementSubsystem::execGetServerType },
+		{ "GetSystemConfig", &UEchoesServerManagementSubsystem::execGetSystemConfig },
+		{ "HasCachedConfig", &UEchoesServerManagementSubsystem::execHasCachedConfig },
 		{ "IsRegionalCluster", &UEchoesServerManagementSubsystem::execIsRegionalCluster },
 		{ "IsServerRegistered", &UEchoesServerManagementSubsystem::execIsServerRegistered },
 		{ "ServerOnly_GetConfig", &UEchoesServerManagementSubsystem::execServerOnly_GetConfig },
@@ -705,6 +811,42 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 		{ "ToolTip", "Server secret for authentication (X-Server-Secret header)" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RegisterEndpoint_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** API endpoint for server registration */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "API endpoint for server registration" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HeartbeatEndpoint_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** API endpoint for heartbeat */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "API endpoint for heartbeat" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ConfigEndpoint_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** API endpoint for server configuration */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "API endpoint for server configuration" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_UnregisterEndpoint_MetaData[] = {
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** API endpoint for server unregistration */" },
+#endif
+		{ "ModuleRelativePath", "Core/Server/Managers/EchoesServerManagementSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "API endpoint for server unregistration" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ServerInstanceId_MetaData[] = {
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Unique instance ID for this server (GUID) */" },
@@ -791,6 +933,10 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnRegionalClusterConfigReceived;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_BackendURL;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ServerSecret;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_RegisterEndpoint;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_HeartbeatEndpoint;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ConfigEndpoint;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_UnregisterEndpoint;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ServerInstanceId;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_ServerId;
 	static void NewProp_bIsRegistered_SetBit(void* Obj);
@@ -808,6 +954,8 @@ struct Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetRegionalConfig, "GetRegionalConfig" }, // 7635550
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerId, "GetServerId" }, // 1107558125
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetServerType, "GetServerType" }, // 3359078857
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_GetSystemConfig, "GetSystemConfig" }, // 3009144984
+		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_HasCachedConfig, "HasCachedConfig" }, // 341470364
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsRegionalCluster, "IsRegionalCluster" }, // 3722830661
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_IsServerRegistered, "IsServerRegistered" }, // 428410746
 		{ &Z_Construct_UFunction_UEchoesServerManagementSubsystem_ServerOnly_GetConfig, "ServerOnly_GetConfig" }, // 1797996127
@@ -825,6 +973,10 @@ const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEc
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_OnRegionalClusterConfigReceived = { "OnRegionalClusterConfigReceived", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, OnRegionalClusterConfigReceived), Z_Construct_UDelegateFunction_Echoes_OnRegionalClusterConfigReceived__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnRegionalClusterConfigReceived_MetaData), NewProp_OnRegionalClusterConfigReceived_MetaData) }; // 711187048
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_BackendURL = { "BackendURL", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, BackendURL), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_BackendURL_MetaData), NewProp_BackendURL_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerSecret = { "ServerSecret", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, ServerSecret), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerSecret_MetaData), NewProp_ServerSecret_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_RegisterEndpoint = { "RegisterEndpoint", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, RegisterEndpoint), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RegisterEndpoint_MetaData), NewProp_RegisterEndpoint_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_HeartbeatEndpoint = { "HeartbeatEndpoint", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, HeartbeatEndpoint), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HeartbeatEndpoint_MetaData), NewProp_HeartbeatEndpoint_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ConfigEndpoint = { "ConfigEndpoint", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, ConfigEndpoint), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ConfigEndpoint_MetaData), NewProp_ConfigEndpoint_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_UnregisterEndpoint = { "UnregisterEndpoint", nullptr, (EPropertyFlags)0x0040000000004000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, UnregisterEndpoint), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UnregisterEndpoint_MetaData), NewProp_UnregisterEndpoint_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerInstanceId = { "ServerInstanceId", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, ServerInstanceId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerInstanceId_MetaData), NewProp_ServerInstanceId_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerId = { "ServerId", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesServerManagementSubsystem, ServerId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerId_MetaData), NewProp_ServerId_MetaData) };
 void Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_bIsRegistered_SetBit(void* Obj)
@@ -843,6 +995,10 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesSe
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_OnRegionalClusterConfigReceived,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_BackendURL,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerSecret,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_RegisterEndpoint,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_HeartbeatEndpoint,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ConfigEndpoint,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_UnregisterEndpoint,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerInstanceId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_ServerId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesServerManagementSubsystem_Statics::NewProp_bIsRegistered,
@@ -891,10 +1047,10 @@ UEchoesServerManagementSubsystem::~UEchoesServerManagementSubsystem() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesServerManagementSubsystem, UEchoesServerManagementSubsystem::StaticClass, TEXT("UEchoesServerManagementSubsystem"), &Z_Registration_Info_UClass_UEchoesServerManagementSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerManagementSubsystem), 3911746889U) },
+		{ Z_Construct_UClass_UEchoesServerManagementSubsystem, UEchoesServerManagementSubsystem::StaticClass, TEXT("UEchoesServerManagementSubsystem"), &Z_Registration_Info_UClass_UEchoesServerManagementSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerManagementSubsystem), 1730470460U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_3867458592(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_783106418(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_Managers_EchoesServerManagementSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

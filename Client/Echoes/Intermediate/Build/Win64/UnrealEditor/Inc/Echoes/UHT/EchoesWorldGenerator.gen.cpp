@@ -20,6 +20,7 @@ ECHOES_API UClass* Z_Construct_UClass_AAnomalyActor_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_AAsteroidBeltActor_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesWorldGenerator();
 ECHOES_API UClass* Z_Construct_UClass_AEchoesWorldGenerator_NoRegister();
+ECHOES_API UClass* Z_Construct_UClass_AMoonActor_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_APlanetActor_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_AStarActor_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_AStargateActor_NoRegister();
@@ -638,11 +639,11 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_UniverseToWorldScale_MetaData[] = {
 		{ "Category", "Generation|Scale" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Universe to World Scale Constant\n\x09 * Converts database coordinates (km or AU) to Unreal Units (cm)\n\x09 * \n\x09 * Default: 1 km = 100 cm (1:100,000 scale)\n\x09 * This prevents floating-point precision issues at astronomical distances\n\x09 * \n\x09 * Example: Planet at 150,000,000 km (1 AU) -> 150,000 cm (1,500 m) in Unreal\n\x09 */" },
+		{ "Comment", "/**\n\x09 * Universe to World Scale Constant\n\x09 * Converts database coordinates (km or AU) to Unreal Units (cm)\n\x09 * \n\x09 * Default: 1 km = 0.0001 * 100000 cm = 10 cm (1:10,000,000 scale)\n\x09 * This prevents floating-point precision issues at astronomical distances\n\x09 * \n\x09 * IMPORTANT: ConvertCoordinates uses DOUBLE PRECISION to avoid jitter\n\x09 * \n\x09 * Example: Planet at 150,000,000 km (1 AU) -> 1,500,000,000 cm (15,000 km) in Unreal\n\x09 */" },
 #endif
 		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Universe to World Scale Constant\nConverts database coordinates (km or AU) to Unreal Units (cm)\n\nDefault: 1 km = 100 cm (1:100,000 scale)\nThis prevents floating-point precision issues at astronomical distances\n\nExample: Planet at 150,000,000 km (1 AU) -> 150,000 cm (1,500 m) in Unreal" },
+		{ "ToolTip", "Universe to World Scale Constant\nConverts database coordinates (km or AU) to Unreal Units (cm)\n\nDefault: 1 km = 0.0001 * 100000 cm = 10 cm (1:10,000,000 scale)\nThis prevents floating-point precision issues at astronomical distances\n\nIMPORTANT: ConvertCoordinates uses DOUBLE PRECISION to avoid jitter\n\nExample: Planet at 150,000,000 km (1 AU) -> 1,500,000,000 cm (15,000 km) in Unreal" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RegionDistanceScale_MetaData[] = {
@@ -689,6 +690,10 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 		{ "Category", "Generation|DataTables" },
 		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MoonDataTable_MetaData[] = {
+		{ "Category", "Generation|DataTables" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PlanetActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
 #if !UE_BUILD_SHIPPING
@@ -698,6 +703,10 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Actor classes to spawn" },
 #endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MoonActorClass_MetaData[] = {
+		{ "Category", "Generation|ActorClasses" },
+		{ "ModuleRelativePath", "Core/Common/World/EchoesWorldGenerator.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StarActorClass_MetaData[] = {
 		{ "Category", "Generation|ActorClasses" },
@@ -751,7 +760,9 @@ struct Z_Construct_UClass_AEchoesWorldGenerator_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_AsteroidBeltDataTable;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_AnomalyDataTable;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_WormholeDataTable;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MoonDataTable;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_PlanetActorClass;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_MoonActorClass;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_StarActorClass;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_StationActorClass;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_StargateActorClass;
@@ -790,7 +801,9 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesWorldGe
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_AsteroidBeltDataTable = { "AsteroidBeltDataTable", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, AsteroidBeltDataTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AsteroidBeltDataTable_MetaData), NewProp_AsteroidBeltDataTable_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_AnomalyDataTable = { "AnomalyDataTable", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, AnomalyDataTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AnomalyDataTable_MetaData), NewProp_AnomalyDataTable_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_WormholeDataTable = { "WormholeDataTable", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, WormholeDataTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WormholeDataTable_MetaData), NewProp_WormholeDataTable_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_MoonDataTable = { "MoonDataTable", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, MoonDataTable), Z_Construct_UClass_UDataTable_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoonDataTable_MetaData), NewProp_MoonDataTable_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_PlanetActorClass = { "PlanetActorClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, PlanetActorClass), Z_Construct_UClass_UClass, Z_Construct_UClass_APlanetActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlanetActorClass_MetaData), NewProp_PlanetActorClass_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_MoonActorClass = { "MoonActorClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, MoonActorClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AMoonActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoonActorClass_MetaData), NewProp_MoonActorClass_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_StarActorClass = { "StarActorClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, StarActorClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AStarActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StarActorClass_MetaData), NewProp_StarActorClass_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_StationActorClass = { "StationActorClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, StationActorClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AStationActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StationActorClass_MetaData), NewProp_StationActorClass_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_StargateActorClass = { "StargateActorClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesWorldGenerator, StargateActorClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AStargateActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StargateActorClass_MetaData), NewProp_StargateActorClass_MetaData) };
@@ -810,7 +823,9 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEchoesWo
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_AsteroidBeltDataTable,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_AnomalyDataTable,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_WormholeDataTable,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_MoonDataTable,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_PlanetActorClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_MoonActorClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_StarActorClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_StationActorClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEchoesWorldGenerator_Statics::NewProp_StargateActorClass,
@@ -858,10 +873,10 @@ AEchoesWorldGenerator::~AEchoesWorldGenerator() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesWorldGenerator, AEchoesWorldGenerator::StaticClass, TEXT("AEchoesWorldGenerator"), &Z_Registration_Info_UClass_AEchoesWorldGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesWorldGenerator), 1427787739U) },
+		{ Z_Construct_UClass_AEchoesWorldGenerator, AEchoesWorldGenerator::StaticClass, TEXT("AEchoesWorldGenerator"), &Z_Registration_Info_UClass_AEchoesWorldGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesWorldGenerator), 79128700U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_1851897804(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_3790713074(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_World_EchoesWorldGenerator_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

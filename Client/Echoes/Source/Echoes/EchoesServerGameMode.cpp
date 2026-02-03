@@ -949,14 +949,14 @@ void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
 	}
 
 	// Get the hangar instance
-	FHangarInstance* PlayerHangarInstance = HangarManager->GetHangarInstance(PlayerCharacterId);
-	if (!PlayerHangarInstance)
+	FHangarInstance PlayerHangarInstance = HangarManager->GetHangarInstance(PlayerCharacterId);
+	if (!PlayerHangarInstance.InstanceId.IsValid())
 	{
 		UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve hangar instance"));
 		return;
 	}
 
-	FGuid StationId = PlayerHangarInstance->StationId;
+	FGuid StationId = PlayerHangarInstance.StationId;
 	UE_LOG(LogTemp, Log, TEXT("✓ Found player's hangar at station: %s"), *StationId.ToString());
 
 	// ==================== FIND STATION ACTOR ====================
