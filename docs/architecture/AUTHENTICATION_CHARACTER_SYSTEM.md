@@ -11,7 +11,7 @@ This implementation provides a comprehensive authentication system, character se
 - **RaceConfig Entity** (`Models/Config/RaceConfig.cs`)
   - Stores race metadata: RaceID, RaceName, Description, RaceBonuses
   - Contains starting location data: StartingSystemId, StartingStationId
-  - Defines default ship type and starting resources (ISK, skill points)
+  - Defines default ship type and starting resources (credits, skill points)
 
 - **Database Integration**
   - Added RaceConfigs DbSet to DatabaseContext

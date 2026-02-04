@@ -222,12 +222,12 @@ struct FCurrentSessionData
 
 **Backend (RaceConfig table):**
 ```
-RaceId | RaceName  | StartingStationId | DefaultShipTypeId | StartingISK
--------|-----------|-------------------|-------------------|------------
-1      | Caldari   | guid              | 670 (Ibis)       | 5000000
-2      | Gallente  | guid              | 606 (Velator)    | 5000000
-3      | Amarr     | guid              | 596 (Impairor)   | 5000000
-4      | Minmatar  | guid              | 588 (Reaper)     | 5000000
+RaceId | RaceName  | StartingStationId | DefaultShipTypeId | StartingCredits
+-------|-----------|-------------------|-------------------|-----------------
+1      | Caldari   | guid              | 670 (Ibis)        | 5000000
+2      | Gallente  | guid              | 606 (Velator)     | 5000000
+3      | Amarr     | guid              | 596 (Impairor)    | 5000000
+4      | Minmatar  | guid              | 588 (Reaper)      | 5000000
 ```
 
 **Race Bonuses:**

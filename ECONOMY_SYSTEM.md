@@ -1,7 +1,7 @@
 # Economy & Trade System - Echoes of Imperial
 
 ## Overview
-The Echoes of Imperial economy system provides a complete marketplace where pilots can purchase items, ships, and services using their in-game currency (ISK/Credits). All transactions are logged and protected by atomic database operations.
+The Echoes of Imperial economy system provides a complete marketplace where pilots can purchase items, ships, and services using their in-game currency (credits). All transactions are logged and protected by atomic database operations.
 
 ---
 
@@ -122,7 +122,7 @@ CREATE TABLE shop_items (
 
 **Categories:**
 - `Equipment` - Ships, modules, weapons
-- `Credits` - ISK/credit bundles
+- `Credits` - Credit bundles
 - `VipStatus` - Premium subscriptions
 - `Consumables` - Boosters, ammunition
 - `Cosmetic` - Ship skins, character customization
@@ -133,13 +133,13 @@ CREATE TABLE characters (
     id UUID PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     account_id UUID NOT NULL,
-    wallet_balance BIGINT DEFAULT 1000000,  -- Starting balance: 1M ISK
+    wallet_balance BIGINT DEFAULT 1000000,  -- Starting balance: 1M credits
     -- ... other character fields
 );
 ```
 
 **Wallet Balance Rules:**
-- Initial balance: 1,000,000 ISK (1M)
+- Initial balance: 1,000,000 credits (1M)
 - Type: `BIGINT` (range: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)
 - Allows negative balance (for debt/loans in future)
 - Updated via atomic transactions only
@@ -417,7 +417,7 @@ X-User-Role: Admin
 
 ### Multi-Currency Support
 - Implement `CharacterWallet` table for multiple currency types
-- Support ISK, PLEX, Aurum, Loyalty Points, Skill Points
+- Support Credits, PLEX, Aurum, Loyalty Points, Skill Points
 - Update purchase flow to specify currency type
 
 ### Market System
