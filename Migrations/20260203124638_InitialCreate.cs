@@ -128,7 +128,7 @@ namespace Echoes.API.Migrations
                     DefaultShipTypeId = table.Column<int>(type: "integer", nullable: false),
                     RaceBonuses = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     StartingSkillPoints = table.Column<int>(type: "integer", nullable: false),
-                    StartingISK = table.Column<long>(type: "bigint", nullable: false),
+                    StartingCredits = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

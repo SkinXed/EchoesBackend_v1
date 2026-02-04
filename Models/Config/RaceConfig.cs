@@ -47,9 +47,9 @@ namespace Echoes.API.Models.Config
         public int StartingSkillPoints { get; set; } = 50000;
 
         /// <summary>
-        /// Starting ISK (credits) for this race
+        /// Starting credits for this race
         /// </summary>
-        public long StartingISK { get; set; } = 5000000;
+        public long StartingCredits { get; set; } = 5000000;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

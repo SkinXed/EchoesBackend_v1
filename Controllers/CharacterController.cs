@@ -458,7 +458,7 @@ public class CharacterController : ControllerBase
                 BloodlineId = request.BloodlineId,
                 AncestryId = request.AncestryId,
                 HomeStationId = startingStationId, // Use faction-based starting station
-                WalletBalance = raceConfig.StartingISK,
+                WalletBalance = raceConfig.StartingCredits,
                 SecurityStatus = 0.0f,
                 TotalSkillPoints = 0,
                 UnallocatedSkillPoints = raceConfig.StartingSkillPoints,

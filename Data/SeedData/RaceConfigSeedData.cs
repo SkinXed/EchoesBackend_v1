@@ -37,7 +37,7 @@ namespace Echoes.API.Data.SeedData
                     StartingStationId = Guid.Empty, // Will be set by DbInitializer
                     DefaultShipTypeId = 670, // Caldari Rookie Ship (Ibis)
                     StartingSkillPoints = 50000,
-                    StartingISK = 5000000,
+                    StartingCredits = 5000000,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 },
@@ -51,7 +51,7 @@ namespace Echoes.API.Data.SeedData
                     StartingStationId = Guid.Empty, // Will be set by DbInitializer
                     DefaultShipTypeId = 606, // Gallente Rookie Ship (Velator)
                     StartingSkillPoints = 50000,
-                    StartingISK = 5000000,
+                    StartingCredits = 5000000,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 },
@@ -65,7 +65,7 @@ namespace Echoes.API.Data.SeedData
                     StartingStationId = Guid.Empty, // Will be set by DbInitializer
                     DefaultShipTypeId = 596, // Amarr Rookie Ship (Impairor)
                     StartingSkillPoints = 50000,
-                    StartingISK = 5000000,
+                    StartingCredits = 5000000,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 },
@@ -79,7 +79,7 @@ namespace Echoes.API.Data.SeedData
                     StartingStationId = Guid.Empty, // Will be set by DbInitializer
                     DefaultShipTypeId = 588, // Minmatar Rookie Ship (Reaper)
                     StartingSkillPoints = 50000,
-                    StartingISK = 5000000,
+                    StartingCredits = 5000000,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 }

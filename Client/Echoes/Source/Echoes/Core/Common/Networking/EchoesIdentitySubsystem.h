@@ -31,10 +31,6 @@ struct FEchoesCharacter
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	int64 Credits = 0;
 
-	/** ISK balance (alias for WalletBalance for EVE-style naming) */
-	UPROPERTY(BlueprintReadWrite, Category = "Character")
-	int64 ISK = 0;
-
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	float SecurityStatus = 0.0f;
 

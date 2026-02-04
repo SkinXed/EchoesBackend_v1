@@ -185,7 +185,6 @@ void UEchoesIdentitySubsystem::OnCharacterDataReceived(
 		{
 			// Store selected character
 			SelectedCharacter = CharacterData;
-			SelectedCharacter.ISK = CharacterData.WalletBalance; // Alias for EVE-style
 			SelectedCharacter.Credits = CharacterData.WalletBalance;
 			SelectedCharacter.ExperiencePoints = CharacterData.TotalSkillPoints;
 
@@ -243,7 +242,6 @@ bool UEchoesIdentitySubsystem::ParseCharacterData(const FString& JsonString, FEc
 	}
 
 	JsonObject->TryGetNumberField(TEXT("walletBalance"), OutCharacter.WalletBalance);
-	OutCharacter.ISK = OutCharacter.WalletBalance; // Alias
 	OutCharacter.Credits = JsonObject->HasField(TEXT("credits"))
 		? JsonObject->GetNumberField(TEXT("credits"))
 		: OutCharacter.WalletBalance;

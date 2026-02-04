@@ -195,7 +195,7 @@ namespace Echoes.API.Models.DTOs
         public Guid StartingStationId { get; set; }
         public int DefaultShipTypeId { get; set; }
         public int StartingSkillPoints { get; set; }
-        public long StartingISK { get; set; }
+        public long StartingCredits { get; set; }
     }
 
     /// <summary>

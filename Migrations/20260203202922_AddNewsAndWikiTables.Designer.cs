@@ -54,7 +54,7 @@ namespace Echoes.API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<long>("StartingISK")
+                    b.Property<long>("StartingCredits")
                         .HasColumnType("bigint");
 
                     b.Property<int>("StartingSkillPoints")
