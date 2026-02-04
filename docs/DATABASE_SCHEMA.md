@@ -115,9 +115,9 @@ CREATE TABLE characters (
     memory                  INTEGER DEFAULT 20,
     
     -- Financial
-    wallet_balance          BIGINT DEFAULT 100000,  -- Starting ISK: 100,000
-    total_isk_earned        BIGINT DEFAULT 0,
-    total_isk_lost          BIGINT DEFAULT 0,
+    wallet_balance          BIGINT DEFAULT 100000,  -- Starting credits: 100,000
+    total_credits_earned    BIGINT DEFAULT 0,
+    total_credits_lost      BIGINT DEFAULT 0,
     
     -- Skills
     total_skill_points      BIGINT DEFAULT 0,
@@ -155,7 +155,7 @@ CREATE INDEX idx_characters_active_ship ON characters(active_ship_item_id);
 **Key Features:**
 - One account can have multiple characters
 - Attributes range: 20-50 (default 20)
-- Wallet balance in ISK (integer for precision)
+- Wallet balance in credits (integer for precision)
 - Security status: -10 (criminal) to +10 (lawful)
 - Active ship reference (nullable)
 
@@ -249,7 +249,7 @@ CREATE INDEX idx_character_skills_skill_id ON character_skills(skill_id);
 
 ### 6. `character_wallets` Table
 
-**Purpose:** Multi-currency wallet system (future ISK + PLEX support)
+**Purpose:** Multi-currency wallet system (future Credits + PLEX support)
 
 ```sql
 CREATE TABLE character_wallets (
@@ -699,7 +699,7 @@ CREATE TABLE item_types_inventory (
     
     volume              DOUBLE PRECISION DEFAULT 0,  -- m³
     mass                DOUBLE PRECISION DEFAULT 0,  -- kg
-    base_price          BIGINT DEFAULT 0,  -- ISK
+    base_price          BIGINT DEFAULT 0,  -- Credits
     
     icon                VARCHAR(255),
     published           BOOLEAN DEFAULT TRUE,
@@ -833,7 +833,7 @@ CREATE TABLE shop_items (
     id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name                VARCHAR(200) NOT NULL,
     description         TEXT,
-    price               BIGINT NOT NULL,  -- ISK cost
+    price               BIGINT NOT NULL,  -- Credits cost
     
     image_url           VARCHAR(500),
     category            VARCHAR(50),  -- Equipment, Credits, VIP, Consumables, Cosmetic
@@ -860,7 +860,7 @@ CREATE INDEX idx_shop_items_item_type ON shop_items(item_type_id);
 
 **Categories:**
 - **Equipment**: Ships, modules, ammo
-- **Credits**: ISK bundles
+- **Credits**: Credit bundles
 - **VIP**: Subscription packs
 - **Consumables**: Boosters, skill extractors
 - **Cosmetic**: Ship skins

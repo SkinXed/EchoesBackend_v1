@@ -495,7 +495,7 @@ Single API server instance. No horizontal scaling.
 ### Priority 1: Player-to-Player Trading
 
 **Description:**
-Allow players to trade items and ISK directly.
+Allow players to trade items and credits directly.
 
 **Implementation:**
 1. Create `trades` table

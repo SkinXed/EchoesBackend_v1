@@ -65,8 +65,8 @@ struct FEchoesCharacter
     FGuid CharacterId;
     FString Name;
     FGuid AccountId;
-    int64 WalletBalance;      // ISK in EVE terms
-    int64 ISK;                // Alias for WalletBalance
+    int64 WalletBalance;      // Credits balance
+    int64 Credits;            // Alias for WalletBalance
     float SecurityStatus;
     int64 CurrentShipId;
     FGuid CorporationId;
@@ -101,7 +101,7 @@ auto IdentitySubsystem = GetGameInstance()->GetSubsystem<UEchoesIdentitySubsyste
 IdentitySubsystem->Identity_FetchCharacter(
     FOnCharacterDataReceived::CreateLambda([](const FEchoesCharacter& Character) {
         UE_LOG(LogTemp, Log, TEXT("Character: %s"), *Character.Name);
-        UE_LOG(LogTemp, Log, TEXT("ISK Balance: %lld"), Character.ISK);
+        UE_LOG(LogTemp, Log, TEXT("Credits Balance: %lld"), Character.Credits);
         UE_LOG(LogTemp, Log, TEXT("Security Status: %.2f"), Character.SecurityStatus);
         UE_LOG(LogTemp, Log, TEXT("Skill Points: %d"), Character.TotalSkillPoints);
     }),

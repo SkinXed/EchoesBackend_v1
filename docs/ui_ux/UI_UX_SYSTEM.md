@@ -115,7 +115,7 @@ Response 201 Created:
 - PortraitId: Integer > 0
 
 **Starting Resources:**
-- ISK: 5,000,000
+- Credits: 5,000,000
 - Skill Points: 50,000 (unallocated)
 - Ship: Rookie ship (auto-assigned)
 
@@ -198,7 +198,7 @@ auto IdentitySubsystem = GetGameInstance()->GetSubsystem<UEchoesIdentitySubsyste
 FOnCharacterCreated OnSuccess;
 OnSuccess.BindLambda([](const FEchoesCharacter& NewCharacter)
 {
-    UE_LOG(LogTemp, Log, TEXT("Character created: %s with %lld ISK"),
+    UE_LOG(LogTemp, Log, TEXT("Character created: %s with %lld credits"),
         *NewCharacter.Name, NewCharacter.WalletBalance);
     
     // Character is automatically selected and ready to use
@@ -591,12 +591,12 @@ void UW_Login::OnLoginFailure(const FString& Error)
 │  │ Character List (ScrollBox)    │  │
 │  │  ┌─────────────────────────┐  │  │
 │  │  │ [Portrait] Name         │  │  │
-│  │  │ ISK: 5,000,000         │  │  │
+│  │  │ Credits: 5,000,000     │  │  │
 │  │  │ Ship: Capsule          │  │  │
 │  │  └─────────────────────────┘  │  │
 │  │  ┌─────────────────────────┐  │  │
 │  │  │ [Portrait] Name 2       │  │  │
-│  │  │ ISK: 10,000,000        │  │  │
+│  │  │ Credits: 10,000,000    │  │  │
 │  │  │ Ship: Frigate          │  │  │
 │  │  └─────────────────────────┘  │  │
 │  └───────────────────────────────┘  │
