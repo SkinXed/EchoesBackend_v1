@@ -29,7 +29,7 @@ namespace Echoes.API.Models.Entities.Character
         [Column("balance_updated_at")]
         public DateTime BalanceUpdatedAt { get; set; } = DateTime.UtcNow;
         
-        // Для ISK дополнительная информация
+        // Additional information for Credits wallet
         [Column("wallet_name")]
         public string? WalletName { get; set; }
         

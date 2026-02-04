@@ -21,7 +21,7 @@ namespace Echoes.API.Models.Entities.Character
         public Guid AccountId { get; set; }
 
         // EVE-статистика
-        public long WalletBalance { get; set; } = 1000000; // 1M ISK стартовых
+        public long WalletBalance { get; set; } = 1000000; // 1M credits starting balance
         public float SecurityStatus { get; set; } = 0.0f;
         public DateTime CloneExpiration { get; set; } = DateTime.UtcNow.AddDays(30);
 
@@ -153,7 +153,7 @@ namespace Echoes.API.Models.Entities.Character
             return Wallets?.FirstOrDefault(w => w.CurrencyType == currencyType)?.Balance ?? 0;
         }
         
-        public bool CanAfford(decimal amount, CurrencyType currencyType = CurrencyType.ISK)
+        public bool CanAfford(decimal amount, CurrencyType currencyType = CurrencyType.Credits)
         {
             return GetWalletBalance(currencyType) >= amount;
         }

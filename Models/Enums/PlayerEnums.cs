@@ -54,7 +54,7 @@
     /// </summary>
     public enum CurrencyType : int
     {
-        ISK = 0,           // Основная валюта
+        Credits = 0,       // Primary currency (formerly ISK)
         PLEX = 1,          // PLEX (30 дней игры)
         Aurum = 2,         // Премьер валюта
         LoyaltyPoints = 3, // Очки лояльности
