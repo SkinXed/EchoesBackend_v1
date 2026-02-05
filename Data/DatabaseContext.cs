@@ -216,6 +216,8 @@ namespace Echoes.API.Data
             );
 
             // Seed data for SkillGroups
+            // NOTE: IDs are sequential (1-15) but enum SkillGroup uses non-sequential values (0,1,2,3,4,10,11...)
+            // When migrating from enum to FK, a data mapping will be needed
             modelBuilder.Entity<SkillGroupEntity>().HasData(
                 new SkillGroupEntity { SkillGroupId = 1, Name = "Gunnery", Description = "Weapon skills", ConfigJson = "{}", CreatedAt = seedDate, UpdatedAt = seedDate },
                 new SkillGroupEntity { SkillGroupId = 2, Name = "Missiles", Description = "Missile skills", ConfigJson = "{}", CreatedAt = seedDate, UpdatedAt = seedDate },
