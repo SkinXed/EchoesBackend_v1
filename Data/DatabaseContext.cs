@@ -26,6 +26,9 @@ namespace Echoes.API.Data
         public DbSet<CharacterContract> CharacterContracts { get; set; }
         public DbSet<CharacterWallet> CharacterWallets { get; set; }
         public DbSet<WalletTransaction> WalletTransactions { get; set; }
+        public DbSet<Faction> Factions { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<SkillGroupEntity> SkillGroups { get; set; }
 
         // Universe entities
         public DbSet<Region> Regions { get; set; }
@@ -174,6 +177,65 @@ namespace Echoes.API.Data
                 .WithMany()
                 .HasForeignKey(cc => cc.AcceptorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // ==============================================
+            // FACTION AND SKILL GROUP ENTITIES
+            // ==============================================
+            
+            // Faction table configuration
+            modelBuilder.Entity<Faction>().ToTable("factions");
+            
+            // SkillGroup table configuration
+            modelBuilder.Entity<SkillGroupEntity>().ToTable("skill_groups");
+            
+            // Skill table configuration
+            modelBuilder.Entity<Skill>().ToTable("skills");
+            
+            // Character -> Faction (many-to-one)
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Faction)
+                .WithMany(f => f.Characters)
+                .HasForeignKey(c => c.FactionId)
+                .OnDelete(DeleteBehavior.Restrict);
+                
+            // Character.FactionId index
+            modelBuilder.Entity<Character>()
+                .HasIndex(c => c.FactionId);
+            
+            // Skill -> SkillGroup (many-to-one)
+            modelBuilder.Entity<Skill>()
+                .HasOne(s => s.SkillGroup)
+                .WithMany(sg => sg.Skills)
+                .HasForeignKey(s => s.SkillGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            // Seed data for Factions
+            modelBuilder.Entity<Faction>().HasData(
+                new Faction { FactionId = 1, Name = "Arden", ConfigJson = "{}", Description = "Faction Arden", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Faction { FactionId = 2, Name = "Nova", ConfigJson = "{}", Description = "Faction Nova", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Faction { FactionId = 3, Name = "Solaris", ConfigJson = "{}", Description = "Faction Solaris", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Faction { FactionId = 4, Name = "Valerion", ConfigJson = "{}", Description = "Faction Valerion", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            );
+            
+            // Seed data for SkillGroups
+            modelBuilder.Entity<SkillGroupEntity>().HasData(
+                new SkillGroupEntity { SkillGroupId = 1, Name = "Gunnery", ConfigJson = "{}", Description = "Gunnery skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 2, Name = "Missiles", ConfigJson = "{}", Description = "Missile skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 3, Name = "Drones", ConfigJson = "{}", Description = "Drone skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 4, Name = "Navigation", ConfigJson = "{}", Description = "Navigation skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 5, Name = "Targeting", ConfigJson = "{}", Description = "Targeting skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 6, Name = "Engineering", ConfigJson = "{}", Description = "Engineering skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 7, Name = "Electronics", ConfigJson = "{}", Description = "Electronics skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 8, Name = "Mechanics", ConfigJson = "{}", Description = "Mechanics skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 9, Name = "Shield", ConfigJson = "{}", Description = "Shield skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 10, Name = "Armor", ConfigJson = "{}", Description = "Armor skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 11, Name = "SpaceshipCommand", ConfigJson = "{}", Description = "Spaceship Command skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 12, Name = "Frigate", ConfigJson = "{}", Description = "Frigate skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 13, Name = "Cruiser", ConfigJson = "{}", Description = "Cruiser skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 14, Name = "Battleship", ConfigJson = "{}", Description = "Battleship skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new SkillGroupEntity { SkillGroupId = 15, Name = "Industrial", ConfigJson = "{}", Description = "Industrial skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            );
+
 
             // ==============================================
             // UNIVERSE ENTITIES
