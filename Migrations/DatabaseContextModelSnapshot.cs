@@ -1225,37 +1225,37 @@ namespace Echoes.API.Migrations
                         {
                             FactionId = 1,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6613),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Faction Arden",
                             Name = "Arden",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6613)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             FactionId = 2,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6616),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Faction Nova",
                             Name = "Nova",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6616)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             FactionId = 3,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6618),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Faction Solaris",
                             Name = "Solaris",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6619)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             FactionId = 4,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6621),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Faction Valerion",
                             Name = "Valerion",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6621)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -1372,136 +1372,136 @@ namespace Echoes.API.Migrations
                         {
                             SkillGroupId = 1,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6840),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Gunnery skills",
                             Name = "Gunnery",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6840)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 2,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6842),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Missile skills",
                             Name = "Missiles",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6843)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 3,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6845),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Drone skills",
                             Name = "Drones",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6845)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 4,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6854),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Navigation skills",
                             Name = "Navigation",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6854)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 5,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6856),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Targeting skills",
                             Name = "Targeting",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6857)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 6,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6858),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Engineering skills",
                             Name = "Engineering",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6859)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 7,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6861),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Electronics skills",
                             Name = "Electronics",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6861)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 8,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6863),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Mechanics skills",
                             Name = "Mechanics",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6864)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 9,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6865),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Shield skills",
                             Name = "Shield",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6866)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 10,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6868),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Armor skills",
                             Name = "Armor",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6868)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 11,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6870),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Spaceship Command skills",
                             Name = "SpaceshipCommand",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6870)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 12,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6872),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Frigate skills",
                             Name = "Frigate",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6873)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 13,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6874),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Cruiser skills",
                             Name = "Cruiser",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6875)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 14,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6877),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Battleship skills",
                             Name = "Battleship",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6877)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             SkillGroupId = 15,
                             ConfigJson = "{}",
-                            CreatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6879),
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Industrial skills",
                             Name = "Industrial",
-                            UpdatedAt = new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6880)
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 

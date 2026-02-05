@@ -210,30 +210,31 @@ namespace Echoes.API.Data
                 .OnDelete(DeleteBehavior.Restrict);
             
             // Seed data for Factions
+            var seedDate = new DateTime(2026, 2, 5, 0, 0, 0, DateTimeKind.Utc);
             modelBuilder.Entity<Faction>().HasData(
-                new Faction { FactionId = 1, Name = "Arden", ConfigJson = "{}", Description = "Faction Arden", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Faction { FactionId = 2, Name = "Nova", ConfigJson = "{}", Description = "Faction Nova", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Faction { FactionId = 3, Name = "Solaris", ConfigJson = "{}", Description = "Faction Solaris", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Faction { FactionId = 4, Name = "Valerion", ConfigJson = "{}", Description = "Faction Valerion", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new Faction { FactionId = 1, Name = "Arden", ConfigJson = "{}", Description = "Faction Arden", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new Faction { FactionId = 2, Name = "Nova", ConfigJson = "{}", Description = "Faction Nova", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new Faction { FactionId = 3, Name = "Solaris", ConfigJson = "{}", Description = "Faction Solaris", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new Faction { FactionId = 4, Name = "Valerion", ConfigJson = "{}", Description = "Faction Valerion", CreatedAt = seedDate, UpdatedAt = seedDate }
             );
             
             // Seed data for SkillGroups
             modelBuilder.Entity<SkillGroupEntity>().HasData(
-                new SkillGroupEntity { SkillGroupId = 1, Name = "Gunnery", ConfigJson = "{}", Description = "Gunnery skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 2, Name = "Missiles", ConfigJson = "{}", Description = "Missile skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 3, Name = "Drones", ConfigJson = "{}", Description = "Drone skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 4, Name = "Navigation", ConfigJson = "{}", Description = "Navigation skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 5, Name = "Targeting", ConfigJson = "{}", Description = "Targeting skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 6, Name = "Engineering", ConfigJson = "{}", Description = "Engineering skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 7, Name = "Electronics", ConfigJson = "{}", Description = "Electronics skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 8, Name = "Mechanics", ConfigJson = "{}", Description = "Mechanics skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 9, Name = "Shield", ConfigJson = "{}", Description = "Shield skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 10, Name = "Armor", ConfigJson = "{}", Description = "Armor skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 11, Name = "SpaceshipCommand", ConfigJson = "{}", Description = "Spaceship Command skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 12, Name = "Frigate", ConfigJson = "{}", Description = "Frigate skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 13, Name = "Cruiser", ConfigJson = "{}", Description = "Cruiser skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 14, Name = "Battleship", ConfigJson = "{}", Description = "Battleship skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new SkillGroupEntity { SkillGroupId = 15, Name = "Industrial", ConfigJson = "{}", Description = "Industrial skills", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new SkillGroupEntity { SkillGroupId = 1, Name = "Gunnery", ConfigJson = "{}", Description = "Gunnery skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 2, Name = "Missiles", ConfigJson = "{}", Description = "Missile skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 3, Name = "Drones", ConfigJson = "{}", Description = "Drone skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 4, Name = "Navigation", ConfigJson = "{}", Description = "Navigation skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 5, Name = "Targeting", ConfigJson = "{}", Description = "Targeting skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 6, Name = "Engineering", ConfigJson = "{}", Description = "Engineering skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 7, Name = "Electronics", ConfigJson = "{}", Description = "Electronics skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 8, Name = "Mechanics", ConfigJson = "{}", Description = "Mechanics skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 9, Name = "Shield", ConfigJson = "{}", Description = "Shield skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 10, Name = "Armor", ConfigJson = "{}", Description = "Armor skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 11, Name = "SpaceshipCommand", ConfigJson = "{}", Description = "Spaceship Command skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 12, Name = "Frigate", ConfigJson = "{}", Description = "Frigate skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 13, Name = "Cruiser", ConfigJson = "{}", Description = "Cruiser skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 14, Name = "Battleship", ConfigJson = "{}", Description = "Battleship skills", CreatedAt = seedDate, UpdatedAt = seedDate },
+                new SkillGroupEntity { SkillGroupId = 15, Name = "Industrial", ConfigJson = "{}", Description = "Industrial skills", CreatedAt = seedDate, UpdatedAt = seedDate }
             );
 
 

@@ -65,10 +65,10 @@ namespace Echoes.API.Migrations
                 columns: new[] { "faction_id", "config_json", "created_at", "description", "name", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6613), "Faction Arden", "Arden", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6613) },
-                    { 2, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6616), "Faction Nova", "Nova", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6616) },
-                    { 3, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6618), "Faction Solaris", "Solaris", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6619) },
-                    { 4, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6621), "Faction Valerion", "Valerion", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6621) }
+                    { 1, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Faction Arden", "Arden", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Faction Nova", "Nova", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 3, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Faction Solaris", "Solaris", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 4, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Faction Valerion", "Valerion", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.InsertData(
@@ -76,21 +76,21 @@ namespace Echoes.API.Migrations
                 columns: new[] { "skill_group_id", "config_json", "created_at", "description", "name", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6840), "Gunnery skills", "Gunnery", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6840) },
-                    { 2, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6842), "Missile skills", "Missiles", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6843) },
-                    { 3, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6845), "Drone skills", "Drones", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6845) },
-                    { 4, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6854), "Navigation skills", "Navigation", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6854) },
-                    { 5, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6856), "Targeting skills", "Targeting", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6857) },
-                    { 6, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6858), "Engineering skills", "Engineering", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6859) },
-                    { 7, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6861), "Electronics skills", "Electronics", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6861) },
-                    { 8, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6863), "Mechanics skills", "Mechanics", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6864) },
-                    { 9, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6865), "Shield skills", "Shield", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6866) },
-                    { 10, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6868), "Armor skills", "Armor", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6868) },
-                    { 11, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6870), "Spaceship Command skills", "SpaceshipCommand", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6870) },
-                    { 12, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6872), "Frigate skills", "Frigate", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6873) },
-                    { 13, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6874), "Cruiser skills", "Cruiser", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6875) },
-                    { 14, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6877), "Battleship skills", "Battleship", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6877) },
-                    { 15, "{}", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6879), "Industrial skills", "Industrial", new DateTime(2026, 2, 5, 2, 44, 49, 405, DateTimeKind.Utc).AddTicks(6880) }
+                    { 1, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Gunnery skills", "Gunnery", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Missile skills", "Missiles", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 3, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Drone skills", "Drones", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 4, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Navigation skills", "Navigation", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 5, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Targeting skills", "Targeting", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 6, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Engineering skills", "Engineering", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 7, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Electronics skills", "Electronics", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 8, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Mechanics skills", "Mechanics", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 9, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Shield skills", "Shield", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 10, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Armor skills", "Armor", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 11, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Spaceship Command skills", "SpaceshipCommand", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 12, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Frigate skills", "Frigate", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 13, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Cruiser skills", "Cruiser", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 14, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Battleship skills", "Battleship", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 15, "{}", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc), "Industrial skills", "Industrial", new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.CreateIndex(
