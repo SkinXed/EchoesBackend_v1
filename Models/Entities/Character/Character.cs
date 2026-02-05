@@ -31,6 +31,9 @@ namespace Echoes.API.Models.Entities.Character
         public long CorporationRole { get; set; } = 0;
 
         // Фракция и раса (как в EVE)
+        [Column("faction_id")]
+        [ForeignKey(nameof(Faction))]
+        public int FactionId { get; set; }
         public int RaceId { get; set; } = 1; // Amarr, Caldari, etc
         public int BloodlineId { get; set; } = 1;
         public int AncestryId { get; set; } = 1;
@@ -89,6 +92,7 @@ namespace Echoes.API.Models.Entities.Character
 
         // Навигационные свойства
         public virtual Account Account { get; set; } = null!;
+        public virtual Faction Faction { get; set; } = null!;
         public virtual CharacterLocation? CurrentLocation { get; set; }
         public virtual InventoryItem? ActiveShip { get; set; }
         public virtual ICollection<CharacterSkill> Skills { get; set; } = new List<CharacterSkill>();
@@ -157,27 +161,6 @@ namespace Echoes.API.Models.Entities.Character
         {
             return GetWalletBalance(currencyType) >= amount;
         }
-    }
-
-    [Table("character_skills")]
-    public class CharacterSkill 
-    {
-        [Key]
-        public Guid Id { get; set; }
-
-        [ForeignKey(nameof(Character))]
-        public Guid CharacterId { get; set; }
-
-        public int SkillId { get; set; } // ID из статики
-        public int Level { get; set; } = 0;
-        public int Skillpoints { get; set; } = 0;
-
-        // Тренировка
-        public bool IsActive { get; set; } = false;
-        public DateTime? TrainingStart { get; set; }
-        public DateTime? TrainingEnd { get; set; }
-
-        public virtual Character Character { get; set; } = null!;
     }
 
     [Table("character_implants")]
