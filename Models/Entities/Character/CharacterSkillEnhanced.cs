@@ -46,6 +46,10 @@ namespace Echoes.API.Models.Entities.Character
         [Column("is_active")]
         public bool IsActive { get; set; } = true;
         
+        [Timestamp]
+        [Column("row_version")]
+        public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+        
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
