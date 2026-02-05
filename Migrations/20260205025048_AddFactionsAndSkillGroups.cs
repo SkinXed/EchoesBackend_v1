@@ -24,7 +24,7 @@ namespace Echoes.API.Migrations
                 table: "Characters",
                 type: "integer",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 1);
 
             migrationBuilder.CreateTable(
                 name: "factions",

@@ -33,7 +33,7 @@ namespace Echoes.API.Models.Entities.Character
         // Фракция и раса (как в EVE)
         [Column("faction_id")]
         [ForeignKey(nameof(Faction))]
-        public int FactionId { get; set; }
+        public int FactionId { get; set; } = 1;
         public int RaceId { get; set; } = 1; // Amarr, Caldari, etc
         public int BloodlineId { get; set; } = 1;
         public int AncestryId { get; set; } = 1;

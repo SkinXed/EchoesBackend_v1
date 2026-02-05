@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Echoes.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260205024708_AddFactionsAndSkillGroups")]
+    [Migration("20260205025048_AddFactionsAndSkillGroups")]
     partial class AddFactionsAndSkillGroups
     {
         /// <inheritdoc />
