@@ -22,8 +22,9 @@ namespace Echoes.API.Models.Entities.Character
         public string Description { get; set; } = string.Empty;
         
         [Required]
-        [Column("skill_group")]
-        public SkillGroup SkillGroup { get; set; }
+        [Column("skill_group_id")]
+        [ForeignKey(nameof(SkillGroup))]
+        public int SkillGroupId { get; set; }
         
         [Required]
         [Column("skill_type")]
@@ -58,6 +59,7 @@ namespace Echoes.API.Models.Entities.Character
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
         // Навигационные свойства
+        public virtual SkillGroupEntity SkillGroup { get; set; } = null!;
         public virtual ICollection<CharacterSkillEnhanced> CharacterSkills { get; set; } = new List<CharacterSkillEnhanced>();
         
         // Методы
