@@ -207,32 +207,10 @@ public:
 	TArray<FCharacterInfo> Auth_GetCharacters() const { return CurrentAuthResponse.Characters; }
 
 	/**
-	 * Logout (clear token and session data)
+	 * Logout (clear token and session data from memory)
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
 	void Auth_Logout();
-
-	// ==================== Token Persistence ====================
-
-	/**
-	 * Save authentication token to disk
-	 * @param bRememberMe - If true, saves token for next session
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
-	void SaveAuthToken(bool bRememberMe);
-
-	/**
-	 * Load authentication token from disk
-	 * @return True if token was loaded and is valid
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
-	bool LoadAuthToken();
-
-	/**
-	 * Clear saved authentication token
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
-	void ClearSavedToken();
 
 	// ==================== Character Operations ====================
 
@@ -256,7 +234,31 @@ public:
 
 	/**
 	 * Connect to world with selected character
-	 * Gets server connection info and initiates ClientTravel
+	 * 
+	 * IMPORTANT: This initiates an ASYNC multi-step authentication flow:
+	 * 
+	 * STEP 1 (Client-side):
+	 *   - Request server connection info from backend API
+	 *   - Includes JWT token in Authorization header
+	 * 
+	 * STEP 2 (Client-side):
+	 *   - Receive server IP and port
+	 *   - Perform ClientTravel with Token and CharacterId in URL parameters
+	 *   - Client begins connecting to dedicated server
+	 * 
+	 * STEP 3 (Server-side - PostLogin):
+	 *   - Dedicated server extracts Token and CharacterId from connection URL
+	 *   - Server validates token with backend API
+	 *   - If INVALID: Player is kicked back to menu
+	 *   - If VALID: Continue to Step 4
+	 * 
+	 * STEP 4 (Server-side - After validation):
+	 *   - Server authorizes player spawn
+	 *   - Query character location from backend
+	 *   - Spawn player at correct location (space or station)
+	 *   - Load character HUD/widget
+	 *   - Broadcast OnEntryFlowComplete
+	 * 
 	 * @param CharacterId - Character to connect with
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")

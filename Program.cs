@@ -173,6 +173,10 @@ services.AddScoped<Echoes.API.Services.Inventory.IInventoryOperationsService, Ec
 // 3.4.2. Ship services
 services.AddScoped<Echoes.API.Services.Ship.IShipFittingService, Echoes.API.Services.Ship.ShipFittingService>();
 
+// 3.4.3. Training services
+services.AddScoped<TrainingService>();
+services.AddHostedService<TrainingWorker>();
+
 // 3.5. Controllers
 services.AddControllers()
     .AddJsonOptions(options =>
