@@ -154,7 +154,7 @@ public:
 	void OnCharacterLocationReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful, APlayerController* PlayerController, FString Token);
 
 	/**
-	 * Perform spawn after location data is received
+	 * Perform spawn with location data after it is received
 	 */
 	void PerformSpawnWithLocationData(const FCharacterLocationData& LocationData, APlayerController* PlayerController);
 

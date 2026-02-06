@@ -1215,11 +1215,11 @@ struct Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Logout_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Auth" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Logout (clear token and session data)\n\x09 */" },
+		{ "Comment", "/**\n\x09 * Logout (clear token and session data from memory)\n\x09 */" },
 #endif
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Logout (clear token and session data)" },
+		{ "ToolTip", "Logout (clear token and session data from memory)" },
 #endif
 	};
 #endif // WITH_METADATA
@@ -1322,42 +1322,6 @@ DEFINE_FUNCTION(UEchoesAuthSubsystem::execAuth_Register)
 }
 // ********** End Class UEchoesAuthSubsystem Function Auth_Register ********************************
 
-// ********** Begin Class UEchoesAuthSubsystem Function ClearSavedToken ****************************
-struct Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken_Statics
-{
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Echoes|Auth" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Clear saved authentication token\n\x09 */" },
-#endif
-		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Clear saved authentication token" },
-#endif
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesAuthSubsystem, nullptr, "ClearSavedToken", nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken_Statics::Function_MetaDataParams)},  };
-UFunction* Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(UEchoesAuthSubsystem::execClearSavedToken)
-{
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->ClearSavedToken();
-	P_NATIVE_END;
-}
-// ********** End Class UEchoesAuthSubsystem Function ClearSavedToken ******************************
-
 // ********** Begin Class UEchoesAuthSubsystem Function ConnectToWorld *****************************
 struct Z_Construct_UFunction_UEchoesAuthSubsystem_ConnectToWorld_Statics
 {
@@ -1369,11 +1333,11 @@ struct Z_Construct_UFunction_UEchoesAuthSubsystem_ConnectToWorld_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Character" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Connect to world with selected character\n\x09 * Gets server connection info and initiates ClientTravel\n\x09 * @param CharacterId - Character to connect with\n\x09 */" },
+		{ "Comment", "/**\n\x09 * Connect to world with selected character\n\x09 * \n\x09 * IMPORTANT: This initiates an ASYNC multi-step authentication flow:\n\x09 * \n\x09 * STEP 1 (Client-side):\n\x09 *   - Request server connection info from backend API\n\x09 *   - Includes JWT token in Authorization header\n\x09 * \n\x09 * STEP 2 (Client-side):\n\x09 *   - Receive server IP and port\n\x09 *   - Perform ClientTravel with Token and CharacterId in URL parameters\n\x09 *   - Client begins connecting to dedicated server\n\x09 * \n\x09 * STEP 3 (Server-side - PostLogin):\n\x09 *   - Dedicated server extracts Token and CharacterId from connection URL\n\x09 *   - Server validates token with backend API\n\x09 *   - If INVALID: Player is kicked back to menu\n\x09 *   - If VALID: Continue to Step 4\n\x09 * \n\x09 * STEP 4 (Server-side - After validation):\n\x09 *   - Server authorizes player spawn\n\x09 *   - Query character location from backend\n\x09 *   - Spawn player at correct location (space or station)\n\x09 *   - Load character HUD/widget\n\x09 *   - Broadcast OnEntryFlowComplete\n\x09 * \n\x09 * @param CharacterId - Character to connect with\n\x09 */" },
 #endif
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Connect to world with selected character\nGets server connection info and initiates ClientTravel\n@param CharacterId - Character to connect with" },
+		{ "ToolTip", "Connect to world with selected character\n\nIMPORTANT: This initiates an ASYNC multi-step authentication flow:\n\nSTEP 1 (Client-side):\n  - Request server connection info from backend API\n  - Includes JWT token in Authorization header\n\nSTEP 2 (Client-side):\n  - Receive server IP and port\n  - Perform ClientTravel with Token and CharacterId in URL parameters\n  - Client begins connecting to dedicated server\n\nSTEP 3 (Server-side - PostLogin):\n  - Dedicated server extracts Token and CharacterId from connection URL\n  - Server validates token with backend API\n  - If INVALID: Player is kicked back to menu\n  - If VALID: Continue to Step 4\n\nSTEP 4 (Server-side - After validation):\n  - Server authorizes player spawn\n  - Query character location from backend\n  - Spawn player at correct location (space or station)\n  - Load character HUD/widget\n  - Broadcast OnEntryFlowComplete\n\n@param CharacterId - Character to connect with" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterId_MetaData[] = {
@@ -1549,90 +1513,37 @@ DEFINE_FUNCTION(UEchoesAuthSubsystem::execFetchCharacterList)
 }
 // ********** End Class UEchoesAuthSubsystem Function FetchCharacterList ***************************
 
-// ********** Begin Class UEchoesAuthSubsystem Function LoadAuthToken ******************************
-struct Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics
-{
-	struct EchoesAuthSubsystem_eventLoadAuthToken_Parms
-	{
-		bool ReturnValue;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Echoes|Auth" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Load authentication token from disk\n\x09 * @return True if token was loaded and is valid\n\x09 */" },
-#endif
-		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Load authentication token from disk\n@return True if token was loaded and is valid" },
-#endif
-	};
-#endif // WITH_METADATA
-	static void NewProp_ReturnValue_SetBit(void* Obj);
-	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-void Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::NewProp_ReturnValue_SetBit(void* Obj)
-{
-	((EchoesAuthSubsystem_eventLoadAuthToken_Parms*)Obj)->ReturnValue = 1;
-}
-const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(EchoesAuthSubsystem_eventLoadAuthToken_Parms), &Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::NewProp_ReturnValue,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesAuthSubsystem, nullptr, "LoadAuthToken", Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::EchoesAuthSubsystem_eventLoadAuthToken_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::Function_MetaDataParams)},  };
-static_assert(sizeof(Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::EchoesAuthSubsystem_eventLoadAuthToken_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(UEchoesAuthSubsystem::execLoadAuthToken)
-{
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	*(bool*)Z_Param__Result=P_THIS->LoadAuthToken();
-	P_NATIVE_END;
-}
-// ********** End Class UEchoesAuthSubsystem Function LoadAuthToken ********************************
-
 // ********** Begin Class UEchoesAuthSubsystem Function SaveAuthToken ******************************
 struct Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics
 {
 	struct EchoesAuthSubsystem_eventSaveAuthToken_Parms
 	{
-		bool bRememberMe;
+		bool bRemember;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Echoes|Auth" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n\x09 * Save authentication token to disk\n\x09 * @param bRememberMe - If true, saves token for next session\n\x09 */" },
+		{ "Comment", "/**\n\x09 * Save auth token to disk (optional)\n\x09 * @param bRemember - True to remember token across sessions\n\x09 */" },
 #endif
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Save authentication token to disk\n@param bRememberMe - If true, saves token for next session" },
+		{ "ToolTip", "Save auth token to disk (optional)\n@param bRemember - True to remember token across sessions" },
 #endif
 	};
 #endif // WITH_METADATA
-	static void NewProp_bRememberMe_SetBit(void* Obj);
-	static const UECodeGen_Private::FBoolPropertyParams NewProp_bRememberMe;
+	static void NewProp_bRemember_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bRemember;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-void Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRememberMe_SetBit(void* Obj)
+void Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRemember_SetBit(void* Obj)
 {
-	((EchoesAuthSubsystem_eventSaveAuthToken_Parms*)Obj)->bRememberMe = 1;
+	((EchoesAuthSubsystem_eventSaveAuthToken_Parms*)Obj)->bRemember = 1;
 }
-const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRememberMe = { "bRememberMe", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(EchoesAuthSubsystem_eventSaveAuthToken_Parms), &Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRememberMe_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRemember = { "bRemember", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(EchoesAuthSubsystem_eventSaveAuthToken_Parms), &Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRemember_SetBit, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRememberMe,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::NewProp_bRemember,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UEchoesAuthSubsystem, nullptr, "SaveAuthToken", Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::PropPointers), sizeof(Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::EchoesAuthSubsystem_eventSaveAuthToken_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::Function_MetaDataParams), Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken_Statics::Function_MetaDataParams)},  };
@@ -1648,10 +1559,10 @@ UFunction* Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken()
 }
 DEFINE_FUNCTION(UEchoesAuthSubsystem::execSaveAuthToken)
 {
-	P_GET_UBOOL(Z_Param_bRememberMe);
+	P_GET_UBOOL(Z_Param_bRemember);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->SaveAuthToken(Z_Param_bRememberMe);
+	P_THIS->SaveAuthToken(Z_Param_bRemember);
 	P_NATIVE_END;
 }
 // ********** End Class UEchoesAuthSubsystem Function SaveAuthToken ********************************
@@ -1669,12 +1580,10 @@ void UEchoesAuthSubsystem::StaticRegisterNativesUEchoesAuthSubsystem()
 		{ "Auth_Login", &UEchoesAuthSubsystem::execAuth_Login },
 		{ "Auth_Logout", &UEchoesAuthSubsystem::execAuth_Logout },
 		{ "Auth_Register", &UEchoesAuthSubsystem::execAuth_Register },
-		{ "ClearSavedToken", &UEchoesAuthSubsystem::execClearSavedToken },
 		{ "ConnectToWorld", &UEchoesAuthSubsystem::execConnectToWorld },
 		{ "CreateCharacter", &UEchoesAuthSubsystem::execCreateCharacter },
 		{ "DeleteCharacter", &UEchoesAuthSubsystem::execDeleteCharacter },
 		{ "FetchCharacterList", &UEchoesAuthSubsystem::execFetchCharacterList },
-		{ "LoadAuthToken", &UEchoesAuthSubsystem::execLoadAuthToken },
 		{ "SaveAuthToken", &UEchoesAuthSubsystem::execSaveAuthToken },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -1828,15 +1737,13 @@ struct Z_Construct_UClass_UEchoesAuthSubsystem_Statics
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetToken, "Auth_GetToken" }, // 633235763
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_IsLoggedIn, "Auth_IsLoggedIn" }, // 2846008563
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login, "Auth_Login" }, // 700388799
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Logout, "Auth_Logout" }, // 2505138860
+		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Logout, "Auth_Logout" }, // 2554647189
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register, "Auth_Register" }, // 467027317
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_ClearSavedToken, "ClearSavedToken" }, // 4188288415
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_ConnectToWorld, "ConnectToWorld" }, // 2338996400
+		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_ConnectToWorld, "ConnectToWorld" }, // 4116319439
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_CreateCharacter, "CreateCharacter" }, // 3288174077
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_DeleteCharacter, "DeleteCharacter" }, // 2915549773
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_FetchCharacterList, "FetchCharacterList" }, // 1705971706
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_LoadAuthToken, "LoadAuthToken" }, // 2978226635
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken, "SaveAuthToken" }, // 3110014756
+		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_SaveAuthToken, "SaveAuthToken" }, // 1545950686
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -1907,10 +1814,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ FAuthResponse::StaticStruct, Z_Construct_UScriptStruct_FAuthResponse_Statics::NewStructOps, TEXT("AuthResponse"), &Z_Registration_Info_UScriptStruct_FAuthResponse, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAuthResponse), 2780569161U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesAuthSubsystem, UEchoesAuthSubsystem::StaticClass, TEXT("UEchoesAuthSubsystem"), &Z_Registration_Info_UClass_UEchoesAuthSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesAuthSubsystem), 3364659935U) },
+		{ Z_Construct_UClass_UEchoesAuthSubsystem, UEchoesAuthSubsystem::StaticClass, TEXT("UEchoesAuthSubsystem"), &Z_Registration_Info_UClass_UEchoesAuthSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesAuthSubsystem), 3044982792U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_693184064(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_3016036851(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

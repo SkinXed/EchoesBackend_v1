@@ -6,6 +6,7 @@
 #include "Json.h"
 #include "JsonUtilities.h"
 #include "Misc/ConfigCacheIni.h"
+#include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 
 void UEchoesAuthSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -901,4 +902,44 @@ void UEchoesAuthSubsystem::SetAuthSession(
 	CurrentAuthResponse.Characters = Characters;
 
 	UE_LOG(LogTemp, Log, TEXT("AuthSubsystem: Session cached. Characters=%d"), Characters.Num());
+}
+
+void UEchoesAuthSubsystem::SaveAuthToken(bool bRemember)
+{
+	if (!bRemember)
+	{
+		// Do not persist token
+		return;
+	}
+
+	if (JWTToken.IsEmpty())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SaveAuthToken: No token to save"));
+		return;
+	}
+
+	// Try to load settings, create if missing
+	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
+	if (!Settings)
+	{
+		UE_LOG(LogTemp, Error, TEXT("SaveAuthToken: Failed to create/load settings"));
+		return;
+	}
+
+	// Persist token into SaveGame object and write to slot
+	Settings->SavedAuthToken = JWTToken;
+	if (UEchoesLocalPlayerSettings::SaveSettings(Settings))
+	{
+		UE_LOG(LogTemp, Log, TEXT("SaveAuthToken: Token saved to SaveGame slot"));
+	}
+	else
+	{
+		// Fallback to config if SaveGame fails
+		if (GConfig)
+		{
+			GConfig->SetString(TEXT("/Script/Echoes.EchoesLocalPlayerSettings"), TEXT("SavedAuthToken"), *JWTToken, GGameIni);
+			GConfig->Flush(false, GGameIni);
+			UE_LOG(LogTemp, Warning, TEXT("SaveAuthToken: Token saved to config as fallback"));
+		}
+	}
 }

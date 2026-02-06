@@ -253,21 +253,9 @@
     <None Include="..\..\Source\Echoes.Target.cs"/>
     <None Include="..\..\Source\EchoesEditor.Target.cs"/>
     <None Include="..\..\.vsconfig"/>
-    <None Include="..\..\ARCHITECTURAL_IMPROVEMENTS.md"/>
-    <None Include="..\..\COMPLETE_INVENTORY_SYSTEM_SUMMARY.md"/>
-    <None Include="..\..\INVENTORY_COMPONENT_IMPLEMENTATION.md"/>
-    <None Include="..\..\INVENTORY_ENTRY_WIDGET_GUIDE.md"/>
-    <None Include="..\..\INVENTORY_UI_IMPLEMENTATION.md"/>
-    <None Include="..\..\INVENTORY_UI_QUICK_REFERENCE.md"/>
-    <None Include="..\..\INVENTORY_UI_SUMMARY.md"/>
-    <None Include="..\..\ITEM_ACTOR_GUIDE.md"/>
-    <None Include="..\..\ITEM_DEFINITIONS_GUIDE.md"/>
-    <None Include="..\..\NETWORK_SECURITY.md"/>
-    <None Include="..\..\QUICK_START_GUIDE.md"/>
-    <None Include="..\..\SERVER_MANAGEMENT_README.md"/>
-    <None Include="..\..\SHIP_MOVEMENT_SYSTEM.md"/>
-    <None Include="..\..\WORLD_GENERATOR_IMPLEMENTATION_SUMMARY.md"/>
-    <None Include="..\..\WORLD_GENERATOR_README.md"/>
+    <None Include="..\..\IMPLEMENTATION_SUMMARY.md"/>
+    <None Include="..\..\PROJECT_MANIFEST.md"/>
+    <None Include="..\..\README.md"/>
     <None Include="..\..\Config\DefaultEditor.ini"/>
     <None Include="..\..\Config\DefaultEngine.ini"/>
     <None Include="..\..\Config\DefaultGame.ini"/>
@@ -278,6 +266,14 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Echoes.h"/>
+    <ClCompile Include="..\..\Source\Echoes\EchoesMenuGameMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\EchoesMenuGameMode.h"/>
+    <ClCompile Include="..\..\Source\Echoes\EchoesMenuPlayerController.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\EchoesMenuPlayerController.h"/>
     <ClCompile Include="..\..\Source\Echoes\EchoesServerGameMode.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -298,6 +294,10 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\EchoesItemActor.h"/>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\MoonActor.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\MoonActor.h"/>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\PlanetActor.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -370,6 +370,10 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Core\Server\EchoesHangarManager.h"/>
+    <ClCompile Include="..\..\Source\Echoes\Core\Server\EchoesServerAuthSubsystem.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Server\EchoesServerAuthSubsystem.h"/>
     <ClInclude Include="..\..\Source\Echoes\Core\Server\EchoesServerDiscoveryTypes.h"/>
     <ClCompile Include="..\..\Source\Echoes\Core\Server\Managers\EchoesServerManagementSubsystem.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -387,6 +391,10 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\UI\Logic\EchoesInventoryItemObject.h"/>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesCharacterListEntry.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesCharacterListEntry.h"/>
     <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesCharacterSelectWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>

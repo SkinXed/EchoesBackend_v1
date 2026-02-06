@@ -166,6 +166,13 @@ public:
 		FOnRegisterFailure OnFailure);
 
 	/**
+	 * Save auth token to disk (optional)
+	 * @param bRemember - True to remember token across sessions
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
+	void SaveAuthToken(bool bRemember);
+
+	/**
 	 * Get current JWT token
 	 * Used by other subsystems (Inventory, ShipStats) to authenticate requests
 	 * 

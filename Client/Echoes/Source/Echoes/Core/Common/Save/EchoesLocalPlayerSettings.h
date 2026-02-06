@@ -26,6 +26,14 @@ public:
 	// ==================== Future Settings ====================
 	// Add graphics, audio, and gameplay settings here as needed
 
+	// ==================== Persistent Auth Token (optional) ====================
+	// Stored only if user chooses "Remember Me"
+	UPROPERTY(VisibleAnywhere, Category = "Auth")
+	FString SavedAuthToken;
+
+	/** Returns true if the saved token is non-empty (basic validity check) */
+	bool IsTokenValid() const { return !SavedAuthToken.IsEmpty(); }
+
 	// ==================== Static Methods ====================
 
 	/**

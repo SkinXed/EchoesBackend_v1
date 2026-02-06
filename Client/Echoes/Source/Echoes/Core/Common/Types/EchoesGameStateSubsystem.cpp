@@ -8,6 +8,12 @@
 // Configuration section name for level paths
 static const TCHAR* GameStateConfigSection = TEXT("/Script/Echoes.EchoesGameStateSubsystem");
 
+// Forward declarations of globals defined later in this file so functions above can use them
+extern FString LoginLevelPath;
+extern FString CharacterSelectLevelPath;
+extern FString HangarLevelPath;
+extern FString SpaceLevelPath;
+
 void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
@@ -186,3 +192,8 @@ void UEchoesGameStateSubsystem::TransitionToSpace(const FString& CharacterId, co
 		}
 	}
 }
+
+FString LoginLevelPath;
+FString CharacterSelectLevelPath;
+FString HangarLevelPath;
+FString SpaceLevelPath;
