@@ -54,16 +54,16 @@ public:
 
 	// Level paths (can be configured)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString LoginLevelPath = TEXT("/Game/Maps/L_MainMenu");
+	FString LoginLevelPath = TEXT("/Game/Project/Map/EntryMap");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString CharacterSelectLevelPath = TEXT("/Game/Maps/L_CharacterSelect");
+	FString CharacterSelectLevelPath = TEXT("/Game/Project/Map/EntryMap");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString HangarLevelPath = TEXT("/Game/Maps/L_Hangar");
+	FString HangarLevelPath = TEXT("/Game/Project/Map/GameLevel");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString SpaceLevelPath = TEXT("/Game/Maps/L_Space");
+	FString SpaceLevelPath = TEXT("/Game/Project/Map/GameLevel");
 
 	// Current context
 	UPROPERTY(BlueprintReadOnly, Category = "Echoes|GameState")
