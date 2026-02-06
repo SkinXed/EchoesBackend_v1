@@ -43,6 +43,10 @@ void UEchoesGameStateSubsystem::TransitionToLogin()
 			{
 				PC->ClientTravel(LoginLevelPath, TRAVEL_Absolute);
 			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("TransitionToLogin: Cannot transition - PlayerController is null"));
+			}
 		}
 	}
 }
@@ -67,6 +71,10 @@ void UEchoesGameStateSubsystem::TransitionToCharacterSelect()
 			if (APlayerController* PC = World->GetFirstPlayerController())
 			{
 				PC->ClientTravel(CharacterSelectLevelPath, TRAVEL_Absolute);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("TransitionToCharacterSelect: Cannot transition - PlayerController is null"));
 			}
 		}
 	}
@@ -94,6 +102,10 @@ void UEchoesGameStateSubsystem::TransitionToHangar(const FString& CharacterId)
 			{
 				PC->ClientTravel(HangarLevelPath, TRAVEL_Absolute);
 			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("TransitionToHangar: Cannot transition - PlayerController is null"));
+			}
 		}
 	}
 }
@@ -120,6 +132,10 @@ void UEchoesGameStateSubsystem::TransitionToSpace(const FString& CharacterId, co
 			if (APlayerController* PC = World->GetFirstPlayerController())
 			{
 				PC->ClientTravel(SpaceLevelPath, TRAVEL_Absolute);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("TransitionToSpace: Cannot transition - PlayerController is null"));
 			}
 		}
 	}

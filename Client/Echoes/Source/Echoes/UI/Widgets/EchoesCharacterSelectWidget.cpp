@@ -151,6 +151,11 @@ void UEchoesCharacterSelectWidget::OnLogoutButtonClicked()
 		{
 			PC->ClientTravel(TEXT("EntryMap"), TRAVEL_Absolute);
 		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("CharacterSelect: Cannot logout - PlayerController is null"));
+			SetStatusText("Error: Failed to logout", FLinearColor::Red);
+		}
 	}
 }
 
