@@ -186,6 +186,13 @@ public:
 	FString GetApiBaseUrl() const;
 
 	/**
+	 * Kick player back to menu map with logging
+	 * @param Player - Player controller to kick
+	 * @param Reason - Reason for kicking (for logging)
+	 */
+	void KickPlayerToMenu(APlayerController* Player, const FString& Reason);
+
+	/**
 	 * Request player undocking from station
 	 * Moves player from hangar instance back to space near station
 	 * @param PC - Player controller requesting undock

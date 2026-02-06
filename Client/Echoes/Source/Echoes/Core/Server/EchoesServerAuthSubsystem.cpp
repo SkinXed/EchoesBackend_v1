@@ -66,12 +66,28 @@ void UEchoesServerAuthSubsystem::ValidateClientToken(
 
 	HttpRequest->SetContentAsString(JsonString);
 
-	// Bind response handler
-	HttpRequest->OnProcessRequestComplete().BindUObject(
-		this,
-		&UEchoesServerAuthSubsystem::OnValidateTokenResponseReceived,
-		OnSuccess,
-		OnFailure
+	// Bind response handler with weak self reference to prevent crashes if subsystem is destroyed
+	TWeakObjectPtr<UEchoesServerAuthSubsystem> WeakThis(this);
+	HttpRequest->OnProcessRequestComplete().BindLambda(
+		[WeakThis, OnSuccess, OnFailure](
+			FHttpRequestPtr Request,
+			FHttpResponsePtr Response,
+			bool bWasSuccessful)
+		{
+			// Check if the subsystem still exists
+			if (!WeakThis.IsValid())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("ServerAuthSubsystem was destroyed before token validation completed"));
+				if (OnFailure)
+				{
+					OnFailure(TEXT("Subsystem destroyed"));
+				}
+				return;
+			}
+
+			// Call the instance method with valid this pointer
+			WeakThis->OnValidateTokenResponseReceived(Request, Response, bWasSuccessful, OnSuccess, OnFailure);
+		}
 	);
 
 	// Send request

@@ -181,11 +181,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 			UGameInstance* GameInstance = GetGameInstance();
 			if (!GameInstance)
 			{
-				UE_LOG(LogTemp, Error, TEXT("✗ GameInstance is null - cannot validate token"));
-				if (NewPlayer)
-				{
-					NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
-				}
+				KickPlayerToMenu(NewPlayer, TEXT("GameInstance is null - cannot validate token"));
 				return;
 			}
 
@@ -210,49 +206,26 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 						}
 						else
 						{
-							UE_LOG(LogTemp, Error, TEXT("✗ Character ID mismatch! Expected=%s, Got=%s"),
-								*CharacterId.ToString(), *ValidatedCharacterId.ToString());
-							
-							// Kick player back to menu
-							if (NewPlayer)
-							{
-								NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
-							}
+							KickPlayerToMenu(NewPlayer, FString::Printf(
+								TEXT("Character ID mismatch! Expected=%s, Got=%s"),
+								*CharacterId.ToString(), *ValidatedCharacterId.ToString()));
 						}
 					},
 					// OnFailure
 					[this, NewPlayer](const FString& Error)
 					{
-						UE_LOG(LogTemp, Error, TEXT("✗ Authentication failed: %s"), *Error);
-						
-						// Kick player back to menu
-						if (NewPlayer)
-						{
-							NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
-						}
+						KickPlayerToMenu(NewPlayer, FString::Printf(TEXT("Authentication failed: %s"), *Error));
 					}
 				);
 			}
 			else
 			{
-				UE_LOG(LogTemp, Error, TEXT("✗ ServerAuthSubsystem not available - kicking player"));
-				
-				// Critical: Do NOT allow spawn without authentication
-				if (NewPlayer)
-				{
-					NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
-				}
+				KickPlayerToMenu(NewPlayer, TEXT("ServerAuthSubsystem not available"));
 			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("✗ Failed to extract login options - kicking player"));
-			
-			// Kick player if no valid token provided
-			if (NewPlayer)
-			{
-				NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
-			}
+			KickPlayerToMenu(NewPlayer, TEXT("Failed to extract login options - no valid token"));
 		}
 	}
 }
@@ -966,6 +939,18 @@ FString AEchoesServerGameMode::GetApiBaseUrl() const
 
 	// Default to localhost
 	return TEXT("http://localhost:5116/api");
+}
+
+void AEchoesServerGameMode::KickPlayerToMenu(APlayerController* Player, const FString& Reason)
+{
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("✗ KickPlayerToMenu: Player is null (Reason: %s)"), *Reason);
+		return;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("✗ Kicking player to menu: %s"), *Reason);
+	Player->ClientTravel(MenuMapPath, TRAVEL_Absolute);
 }
 
 void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
