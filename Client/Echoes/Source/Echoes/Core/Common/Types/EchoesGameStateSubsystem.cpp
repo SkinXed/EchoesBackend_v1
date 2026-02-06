@@ -5,6 +5,9 @@
 #include "Engine/World.h"
 #include "Misc/ConfigCacheIni.h"
 
+// Configuration section name for level paths
+static const TCHAR* GameStateConfigSection = TEXT("/Script/Echoes.EchoesGameStateSubsystem");
+
 void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
@@ -13,7 +16,7 @@ void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	
 	// Load level paths from configuration
 	if (!GConfig->GetString(
-		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		GameStateConfigSection,
 		TEXT("LoginLevelPath"),
 		LoginLevelPath,
 		GGameIni))
@@ -24,7 +27,7 @@ void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 
 	if (!GConfig->GetString(
-		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		GameStateConfigSection,
 		TEXT("CharacterSelectLevelPath"),
 		CharacterSelectLevelPath,
 		GGameIni))
@@ -34,7 +37,7 @@ void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 
 	if (!GConfig->GetString(
-		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		GameStateConfigSection,
 		TEXT("HangarLevelPath"),
 		HangarLevelPath,
 		GGameIni))
@@ -44,7 +47,7 @@ void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 
 	if (!GConfig->GetString(
-		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		GameStateConfigSection,
 		TEXT("SpaceLevelPath"),
 		SpaceLevelPath,
 		GGameIni))
