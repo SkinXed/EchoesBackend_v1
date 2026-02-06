@@ -207,32 +207,10 @@ public:
 	TArray<FCharacterInfo> Auth_GetCharacters() const { return CurrentAuthResponse.Characters; }
 
 	/**
-	 * Logout (clear token and session data)
+	 * Logout (clear token and session data from memory)
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
 	void Auth_Logout();
-
-	// ==================== Token Persistence ====================
-
-	/**
-	 * Save authentication token to disk
-	 * @param bRememberMe - If true, saves token for next session
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
-	void SaveAuthToken(bool bRememberMe);
-
-	/**
-	 * Load authentication token from disk
-	 * @return True if token was loaded and is valid
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
-	bool LoadAuthToken();
-
-	/**
-	 * Clear saved authentication token
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Echoes|Auth")
-	void ClearSavedToken();
 
 	// ==================== Character Operations ====================
 

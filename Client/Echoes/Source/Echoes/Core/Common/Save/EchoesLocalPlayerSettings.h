@@ -10,12 +10,10 @@
  * UEchoesLocalPlayerSettings
  * 
  * Save game class for persistent local player settings
- * Stores JWT token, character selection, and preferences
+ * Stores player preferences like graphics, audio, and keybindings
  * 
- * Usage:
- * - AuthSubsystem saves token when "Remember Me" is checked
- * - Preload widget loads token on cold start
- * - Persists between game sessions
+ * Note: JWT tokens are no longer saved to disk for security reasons.
+ * Tokens are now stored only in memory via UEchoesAuthSubsystem.
  */
 UCLASS()
 class ECHOES_API UEchoesLocalPlayerSettings : public USaveGame
@@ -25,31 +23,8 @@ class ECHOES_API UEchoesLocalPlayerSettings : public USaveGame
 public:
 	UEchoesLocalPlayerSettings();
 
-	// ==================== Saved Data ====================
-
-	/** Saved JWT authentication token */
-	UPROPERTY()
-	FString SavedAuthToken;
-
-	/** Saved character ID (last selected) */
-	UPROPERTY()
-	FGuid SavedCharacterId;
-
-	/** Account ID associated with token */
-	UPROPERTY()
-	FGuid SavedAccountId;
-
-	/** When the token was saved */
-	UPROPERTY()
-	FDateTime TokenSavedAt;
-
-	/** Token expiration time */
-	UPROPERTY()
-	FDateTime TokenExpiresAt;
-
-	/** Remember me flag */
-	UPROPERTY()
-	bool bRememberMe;
+	// ==================== Future Settings ====================
+	// Add graphics, audio, and gameplay settings here as needed
 
 	// ==================== Static Methods ====================
 
@@ -70,16 +45,4 @@ public:
 	 * Get the save slot name
 	 */
 	static FString GetSaveSlotName();
-
-	// ==================== Instance Methods ====================
-
-	/**
-	 * Check if saved token is still valid (not expired)
-	 */
-	bool IsTokenValid() const;
-
-	/**
-	 * Clear all saved data
-	 */
-	void Clear();
 };
