@@ -8,6 +8,9 @@
 #include "GameFramework/Actor.h"
 #include "Core/Common/Interfaces/ShipFittingInterface.h"
 #include "Core/Common/Types/EchoesGameState.h"
+#include "Http.h"
+#include "Interfaces/IHttpRequest.h"
+#include "Interfaces/IHttpResponse.h"
 #include "ServerDataManager.generated.h"
 
 /**
@@ -106,6 +109,49 @@ public:
 		const FCommon_ShipFittingData& FittingData,
 		FCommon_ShipFittingData& OutFinalStats
 	);
+
+	/**
+	 * Request Fitting Data from ASP.NET API
+	 * Makes HTTP GET request to backend to fetch character's fitting data
+	 * @param CharacterID - Character ID to fetch fitting for
+	 * @param APIBaseURLOverride - Optional API base URL override
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Server|Data|HTTP")
+	void ServerOnly_RequestFittingFromAPI(const FString& CharacterID, const FString& APIBaseURLOverride = TEXT(""));
+
+	/**
+	 * Get API Base URL from configuration
+	 * Returns the configured API base URL or default
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Server|Data|HTTP")
+	FString GetAPIBaseURL() const;
+
+	/**
+	 * Get Server Secret from configuration
+	 * Returns the X-Server-Secret header value
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Server|Data|HTTP")
+	FString GetServerSecret() const;
+
+private:
+	/**
+	 * HTTP Response Handler for Fitting Request
+	 * Called when HTTP request for fitting data completes
+	 */
+	void OnFittingDataReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		FString CharacterID
+	);
+
+	/** API Base URL (configurable) */
+	UPROPERTY(EditDefaultsOnly, Category = "Server|Configuration")
+	FString APIBaseURL = TEXT("http://localhost:5116");
+
+	/** Server Secret for API authentication */
+	UPROPERTY(EditDefaultsOnly, Category = "Server|Configuration")
+	FString ServerSecret = TEXT("UE5-Server-Secret-Change-Me-In-Production");
 
 private:
 	/**

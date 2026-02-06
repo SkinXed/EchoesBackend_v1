@@ -541,3 +541,204 @@ void AServerDataManager::ExtractModifiersFromSlot(const FCommon_ItemSlot& Slot, 
 	// In production, this would query a database or item definition system
 	// to get the actual stat modifiers for each module type
 }
+
+// ============================================================================
+// HTTP Request Implementation
+// ============================================================================
+
+void AServerDataManager::ServerOnly_RequestFittingFromAPI(const FString& CharacterID, const FString& APIBaseURLOverride)
+{
+	// Validate server authority
+	if (!HasAuthority())
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: RequestFittingFromAPI called on client!"));
+		return;
+	}
+
+	// Validate parameters
+	if (CharacterID.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Character ID is empty!"));
+		return;
+	}
+
+	// Determine API base URL
+	FString BaseURL = APIBaseURLOverride.IsEmpty() ? APIBaseURL : APIBaseURLOverride;
+	if (BaseURL.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: API Base URL is not configured!"));
+		return;
+	}
+
+	// Construct full URL
+	FString URL = FString::Printf(TEXT("%s/api/fitting/%s"), *BaseURL, *CharacterID);
+	
+	UE_LOG(LogTemp, Log, TEXT("ServerDataManager: Requesting fitting data from: %s"), *URL);
+
+	// Create HTTP request
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
+	HttpRequest->SetVerb(TEXT("GET"));
+	HttpRequest->SetURL(URL);
+	
+	// Add X-Server-Secret header for authentication
+	if (!ServerSecret.IsEmpty())
+	{
+		HttpRequest->SetHeader(TEXT("X-Server-Secret"), ServerSecret);
+		UE_LOG(LogTemp, Log, TEXT("ServerDataManager: Added X-Server-Secret header"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ServerDataManager: Server secret is not configured! Request may fail authentication."));
+	}
+	
+	// Add content type header
+	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	
+	// Set timeout (30 seconds)
+	HttpRequest->SetTimeout(30.0f);
+	
+	// Bind callback
+	HttpRequest->OnProcessRequestComplete().BindUObject(
+		this,
+		&AServerDataManager::OnFittingDataReceived,
+		CharacterID
+	);
+	
+	// Send request
+	if (HttpRequest->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Log, TEXT("ServerDataManager: HTTP request sent for character %s"), *CharacterID);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Failed to send HTTP request for character %s"), *CharacterID);
+	}
+}
+
+void AServerDataManager::OnFittingDataReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful,
+	FString CharacterID)
+{
+	// Validate server authority
+	if (!HasAuthority())
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: OnFittingDataReceived called on client!"));
+		return;
+	}
+
+	// Check if request was successful
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: HTTP request failed for character %s"), *CharacterID);
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Request was not successful or response is invalid"));
+		
+		// TODO: Handle failure - kick player or return to hangar
+		// For now, just log the error
+		return;
+	}
+
+	// Check HTTP status code
+	int32 ResponseCode = Response->GetResponseCode();
+	FString ResponseContent = Response->GetContentAsString();
+	
+	UE_LOG(LogTemp, Log, TEXT("ServerDataManager: Received response code %d for character %s"), ResponseCode, *CharacterID);
+	
+	// Handle different response codes
+	if (ResponseCode == 200)
+	{
+		// Success - parse the fitting data
+		UE_LOG(LogTemp, Log, TEXT("ServerDataManager: Successfully received fitting data for character %s"), *CharacterID);
+		UE_LOG(LogTemp, Verbose, TEXT("ServerDataManager: Response content: %s"), *ResponseContent);
+		
+		// Parse JSON response
+		FCommon_ShipFittingData FittingData;
+		if (ServerOnly_ParseFittingDataFromJSON(ResponseContent, FittingData))
+		{
+			UE_LOG(LogTemp, Log, TEXT("ServerDataManager: Successfully parsed fitting data for character %s"), *CharacterID);
+			UE_LOG(LogTemp, Log, TEXT("ServerDataManager: High slots: %d, Mid slots: %d, Low slots: %d, Rig slots: %d"),
+				FittingData.HighSlots.Num(),
+				FittingData.MidSlots.Num(),
+				FittingData.LowSlots.Num(),
+				FittingData.RigSlots.Num());
+			
+			// Validate fitting data
+			if (!FittingData.IsValid())
+			{
+				UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Fitting data validation failed for character %s (PG: %.2f/%.2f, CPU: %.2f/%.2f)"),
+					*CharacterID,
+					FittingData.PowergridUsed,
+					FittingData.PowergridMax,
+					FittingData.CPUUsed,
+					FittingData.CPUMax);
+				
+				// Data is corrupted or invalid - kick player back to hangar
+				UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Invalid fitting detected. Player should be returned to hangar for safety."));
+				
+				// TODO: Implement player kickback to hangar
+				// This would involve calling a game mode function or player controller RPC
+				// For example: GameMode->ReturnPlayerToHangar(CharacterID);
+				return;
+			}
+			
+			// Fitting data is valid - synchronize to client
+			UE_LOG(LogTemp, Log, TEXT("ServerDataManager: Fitting data is valid. Ready for client synchronization."));
+			
+			// TODO: Call ClientRPC_SyncFitting to send data to the player's client
+			// This requires access to the player's controller or pawn
+			// For example: PlayerController->ClientRPC_SyncFitting(FittingData);
+			
+			// Note: The actual synchronization would be done by the EquipmentManagerComponent
+			// which should have a reference to this ServerDataManager
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Failed to parse fitting JSON for character %s"), *CharacterID);
+			UE_LOG(LogTemp, Error, TEXT("ServerDataManager: JSON content: %s"), *ResponseContent);
+			
+			// Parsing failed - data might be corrupted
+			UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Corrupted fitting data detected. Player should be returned to hangar for safety."));
+			
+			// TODO: Implement player kickback to hangar
+			return;
+		}
+	}
+	else if (ResponseCode == 404)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ServerDataManager: Character %s not found or has no active ship"), *CharacterID);
+		
+		// Character not found or has no ship - return to hangar
+		UE_LOG(LogTemp, Warning, TEXT("ServerDataManager: Player should be returned to hangar (no ship found)."));
+		
+		// TODO: Implement player kickback to hangar
+	}
+	else if (ResponseCode == 401)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Authentication failed (401 Unauthorized) for character %s"), *CharacterID);
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Check X-Server-Secret configuration!"));
+		
+		// Authentication failed - this is a configuration error
+		// Should not happen in production
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Unexpected response code %d for character %s"), ResponseCode, *CharacterID);
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Response: %s"), *ResponseContent);
+		
+		// Unexpected error - return to hangar for safety
+		UE_LOG(LogTemp, Error, TEXT("ServerDataManager: Unexpected error. Player should be returned to hangar for safety."));
+		
+		// TODO: Implement player kickback to hangar
+	}
+}
+
+FString AServerDataManager::GetAPIBaseURL() const
+{
+	return APIBaseURL;
+}
+
+FString AServerDataManager::GetServerSecret() const
+{
+	return ServerSecret;
+}
