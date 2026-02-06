@@ -234,7 +234,31 @@ public:
 
 	/**
 	 * Connect to world with selected character
-	 * Gets server connection info and initiates ClientTravel
+	 * 
+	 * IMPORTANT: This initiates an ASYNC multi-step authentication flow:
+	 * 
+	 * STEP 1 (Client-side):
+	 *   - Request server connection info from backend API
+	 *   - Includes JWT token in Authorization header
+	 * 
+	 * STEP 2 (Client-side):
+	 *   - Receive server IP and port
+	 *   - Perform ClientTravel with Token and CharacterId in URL parameters
+	 *   - Client begins connecting to dedicated server
+	 * 
+	 * STEP 3 (Server-side - PostLogin):
+	 *   - Dedicated server extracts Token and CharacterId from connection URL
+	 *   - Server validates token with backend API
+	 *   - If INVALID: Player is kicked back to menu
+	 *   - If VALID: Continue to Step 4
+	 * 
+	 * STEP 4 (Server-side - After validation):
+	 *   - Server authorizes player spawn
+	 *   - Query character location from backend
+	 *   - Spawn player at correct location (space or station)
+	 *   - Load character HUD/widget
+	 *   - Broadcast OnEntryFlowComplete
+	 * 
 	 * @param CharacterId - Character to connect with
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Character")
