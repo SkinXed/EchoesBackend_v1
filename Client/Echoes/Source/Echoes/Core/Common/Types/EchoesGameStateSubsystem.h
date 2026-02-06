@@ -53,7 +53,7 @@ public:
 	void TransitionToSpace(const FString& CharacterId, const FString& ShipId);
 
 	// Level paths (can be configured)
-	// Note: Login and CharacterSelect use the same map (EntryMap) with different UI widgets
+                            
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
 	FString LoginLevelPath = TEXT("/Game/Project/Map/EntryMap");
 
