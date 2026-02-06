@@ -178,8 +178,19 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 			UE_LOG(LogTemp, Log, TEXT("Extracted Token and CharacterId: %s"), *CharacterId.ToString());
 			
 			// Validate token through Backend API
+			UGameInstance* GameInstance = GetGameInstance();
+			if (!GameInstance)
+			{
+				UE_LOG(LogTemp, Error, TEXT("✗ GameInstance is null - cannot validate token"));
+				if (NewPlayer)
+				{
+					NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
+				}
+				return;
+			}
+
 			UEchoesServerAuthSubsystem* ServerAuthSubsystem = 
-				GetGameInstance()->GetSubsystem<UEchoesServerAuthSubsystem>();
+				GameInstance->GetSubsystem<UEchoesServerAuthSubsystem>();
 
 			if (ServerAuthSubsystem)
 			{

@@ -173,10 +173,12 @@ void UEchoesServerAuthSubsystem::OnValidateTokenResponseReceived(
 			}
 			else
 			{
-				// Token is invalid
-				FString ErrorMsg = JsonObject->HasField(TEXT("error"))
-					? JsonObject->GetStringField(TEXT("error"))
-					: TEXT("Token validation failed");
+				// Token is invalid - safely extract error message
+				FString ErrorMsg;
+				if (!JsonObject->TryGetStringField(TEXT("error"), ErrorMsg))
+				{
+					ErrorMsg = TEXT("Token validation failed");
+				}
 
 				UE_LOG(LogTemp, Warning, TEXT("✗ Token validation failed: %s"), *ErrorMsg);
 

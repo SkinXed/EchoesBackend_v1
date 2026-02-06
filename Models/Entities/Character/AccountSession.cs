@@ -23,13 +23,14 @@ namespace Echoes.API.Models.Entities.Character
         /// NOTE: For production use, consider storing a hash of the token (e.g., SHA-256)
         /// instead of the raw token to prevent token theft if the database is compromised.
         /// The validation endpoint would then compare hashes rather than raw tokens.
+        /// Max length of 4096 supports large JWT tokens with custom claims.
         /// </summary>
         [Required]
-        [MaxLength(1024)]
+        [MaxLength(4096)]
         public string SessionToken { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(1024)]
+        [MaxLength(4096)]
         public string RefreshToken { get; set; } = string.Empty;
 
         [Required]
