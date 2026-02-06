@@ -14,10 +14,8 @@ namespace Echoes.API.Models.Entities.Character
         public Guid Id { get; set; }
 
         [Required]
-        [ForeignKey("Account")]
         public Guid AccountId { get; set; }
 
-        [ForeignKey("Character")]
         public Guid? CharacterId { get; set; }
 
         /// <summary>
@@ -61,8 +59,10 @@ namespace Echoes.API.Models.Entities.Character
         public DateTime LastActivity { get; set; }
 
         // Navigation properties
+        [ForeignKey("AccountId")]
         public virtual Account? Account { get; set; }
 
+        [ForeignKey("CharacterId")]
         public virtual Character? Character { get; set; }
     }
 }
