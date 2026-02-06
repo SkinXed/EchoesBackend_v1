@@ -610,9 +610,9 @@ using (var scope = app.Services.CreateScope())
                 Console.WriteLine($"   │ Solar Systems        │ {stats.SolarSystems,8} │");
                 Console.WriteLine($"   │ Planets              │ {stats.Planets,8} │");
                 Console.WriteLine($"   │ Stations             │ {stats.Stations,8} │");
-                Console.WriteLine($"   │ Stargates            │ {stats.Stargates,8} │");
-                Console.WriteLine($"   │ Asteroid Belts       │ {stats.AsteroidBelts,8} │");
-                Console.WriteLine($"   │ Anomalies            │ {stats.Anomalies,8} │");
+                Console.WriteLine($"   │ Stargates            │ {stats.AsteroidBelts,8} │");
+                Console.WriteLine($"   │ Asteroid Belts       │ {stats.Anomalies,8} │");
+                Console.WriteLine($"   │ Anomalies            │ {stats.Wormholes,8} │");
                 Console.WriteLine($"   │ Wormholes            │ {stats.Wormholes,8} │");
                 Console.WriteLine($"   └──────────────────────┴──────────┘");
                 Console.WriteLine();
@@ -634,9 +634,9 @@ using (var scope = app.Services.CreateScope())
             Console.WriteLine($"   │ Solar Systems        │ {stats.SolarSystems,8} │");
             Console.WriteLine($"   │ Planets              │ {stats.Planets,8} │");
             Console.WriteLine($"   │ Stations             │ {stats.Stations,8} │");
-            Console.WriteLine($"   │ Stargates            │ {stats.Stargates,8} │");
-            Console.WriteLine($"   │ Asteroid Belts       │ {stats.AsteroidBelts,8} │");
-            Console.WriteLine($"   │ Anomalies            │ {stats.Anomalies,8} │");
+            Console.WriteLine($"   │ Stargates            │ {stats.AsteroidBelts,8} │");
+            Console.WriteLine($"   │ Asteroid Belts       │ {stats.Anomalies,8} │");
+            Console.WriteLine($"   │ Anomalies            │ {stats.Wormholes,8} │");
             Console.WriteLine($"   │ Wormholes            │ {stats.Wormholes,8} │");
             Console.WriteLine($"   └──────────────────────┴──────────┘");
             Console.WriteLine();
@@ -675,7 +675,7 @@ using (var scope = app.Services.CreateScope())
         var model = context.Model;
         Console.WriteLine($"🔍 Model created successfully with {model.GetEntityTypes().Count()} entities");
 
-        // Выводим все сущности для диагностики
+        // Выводим все сущности дляdiagnostics
         foreach (var entityType in model.GetEntityTypes())
         {
             Console.WriteLine($"   • {entityType.Name} -> {entityType.ClrType.FullName}");

@@ -405,6 +405,7 @@ namespace Echoes.API.Controllers.Management
                 .Include(s => s.Anomalies)
                 .Include(s => s.SourceWormholes)
                 .Include(s => s.TargetWormholes)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(s => s.Id == systemGuid);
 
             if (system == null)
@@ -568,6 +569,7 @@ namespace Echoes.API.Controllers.Management
                     .ThenInclude(c => c.SolarSystems)
                         .ThenInclude(s => s.AsteroidBelts)
                             .ThenInclude(ab => ab.Resources)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(r => r.Id == request.RegionId);
 
             if (region == null)

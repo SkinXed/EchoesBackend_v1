@@ -45,6 +45,7 @@ namespace Echoes.API.Controllers.Gameplay
                     .Include(s => s.Planets)
                     .Include(s => s.Stargates)
                     .ThenInclude(sg => sg.DestinationSolarSystem)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(s => s.Id == systemId);
 
                 if (system == null)

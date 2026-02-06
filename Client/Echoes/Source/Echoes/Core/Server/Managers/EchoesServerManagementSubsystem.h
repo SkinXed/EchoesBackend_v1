@@ -291,6 +291,14 @@ private:
 	UPROPERTY(Config)
 	FString UnregisterEndpoint;
 
+	/** Default SystemId for DedicatedSystem mode (optional, GUID string) */
+	UPROPERTY(Config)
+	FString DefaultSystemId;
+
+	/** Default RegionId for RegionalCluster mode (optional, GUID string) */
+	UPROPERTY(Config)
+	FString DefaultRegionId;
+
 	// ==================== Server State ====================
 
 	/** Unique instance ID for this server (GUID) */

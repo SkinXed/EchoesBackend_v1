@@ -85,14 +85,29 @@ void UEchoesServerManagementSubsystem::Initialize(FSubsystemCollectionBase& Coll
 		}
 	}
 
+	if (!CurrentRegionId.IsValid() && !DefaultRegionId.IsEmpty())
+	{
+		if (FGuid::Parse(DefaultRegionId, CurrentRegionId) && CurrentRegionId.IsValid())
+		{
+			ServerType = TEXT("RegionalCluster");
+			UE_LOG(LogEchoesServer, Log, TEXT("Using RegionId from config: %s"), *DefaultRegionId);
+		}
+	}
+
 	// Get solar system ID from command line (for DedicatedSystem mode)
 	FString SystemIdStr;
-	FGuid SystemId;
 	if (FParse::Value(FCommandLine::Get(), TEXT("SystemId="), SystemIdStr))
 	{
-		FGuid::Parse(SystemIdStr, SystemId);
-		CurrentSolarSystemId = SystemId;
+		FGuid::Parse(SystemIdStr, CurrentSolarSystemId);
 		UE_LOG(LogEchoesServer, Log, TEXT("Using SolarSystemId from command line: %s"), *SystemIdStr);
+	}
+
+	if (!CurrentSolarSystemId.IsValid() && !DefaultSystemId.IsEmpty())
+	{
+		if (FGuid::Parse(DefaultSystemId, CurrentSolarSystemId) && CurrentSolarSystemId.IsValid())
+		{
+			UE_LOG(LogEchoesServer, Log, TEXT("Using SolarSystemId from config: %s"), *DefaultSystemId);
+		}
 	}
 
 	// Get game port from command line or use default
@@ -114,11 +129,17 @@ void UEchoesServerManagementSubsystem::Initialize(FSubsystemCollectionBase& Coll
 	}
 	else
 	{
-		UE_LOG(LogEchoesServer, Log, TEXT("Solar System ID: %s"), *SystemId.ToString());
+		UE_LOG(LogEchoesServer, Log, TEXT("Solar System ID: %s"), *CurrentSolarSystemId.ToString());
+	}
+
+	if (!CurrentRegionId.IsValid() && !CurrentSolarSystemId.IsValid())
+	{
+		UE_LOG(LogEchoesServer, Warning, TEXT("No SystemId/RegionId provided. Skipping server registration."));
+		return;
 	}
 
 	// Register with backend
-	ServerOnly_Register(ServerInstanceId, Port, SystemId);
+	ServerOnly_Register(ServerInstanceId, Port, CurrentSolarSystemId);
 }
 
 void UEchoesServerManagementSubsystem::Deinitialize()
@@ -1096,7 +1117,8 @@ bool UEchoesServerManagementSubsystem::IsDedicatedServer() const
 		return false;
 	}
 
-	return World->GetNetMode() == NM_DedicatedServer;
+	const ENetMode NetMode = World->GetNetMode();
+	return NetMode == NM_DedicatedServer || NetMode == NM_ListenServer;
 }
 
 void UEchoesServerManagementSubsystem::CollectServerMetrics(

@@ -206,20 +206,17 @@ void UEchoesCharacterSelectWidget::OnCharacterListSelectionChanged(UObject* Sele
 void UEchoesCharacterSelectWidget::OnCharacterSelected(FGuid CharacterId)
 {
 	SetStatusText("Initiating Warp Drive...", FLinearColor::Green);
-	
-	// Формируем URL параметры для GameMode сервера
-	FString Options = "?CharacterId=" + CharacterId.ToString();
-	
-	UE_LOG(LogTemp, Log, TEXT("UI: Travel to GalaxyMap with Options: %s"), *Options);
 
-	// Абсолютный переход (Travel)
-	if (GalaxyLevelName.IsNone())
+	if (AuthSubsystem)
 	{
-		UE_LOG(LogTemp, Error, TEXT("CharacterSelect: GalaxyLevelName is not set"));
-		return;
+		UE_LOG(LogTemp, Log, TEXT("UI: Connecting to world for %s"), *CharacterId.ToString());
+		AuthSubsystem->ConnectToWorld(CharacterId);
 	}
-
-	UGameplayStatics::OpenLevel(this, GalaxyLevelName, true, Options);
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterSelect: AuthSubsystem not available"));
+		SetStatusText("Connection Error: Subsystem missing", FLinearColor::Red);
+	}
 }
 
 void UEchoesCharacterSelectWidget::LaunchCharacter(FGuid CharacterId)
