@@ -143,14 +143,19 @@ void AEchoesServerGameMode::BeginPlay()
 
 void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 {
-	Super::PostLogin(NewPlayer);
-
+	// NOTE: We do NOT call Super::PostLogin() here because it automatically spawns the player
+	// We want to spawn the player ONLY after token validation succeeds
+	// The base class PostLogin() calls HandleStartingNewPlayer() which calls RestartPlayer()
+	
 	if (!HasAuthority())
 	{
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Player logged in: %s"), NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    PLAYER LOGIN - AWAITING TOKEN VALIDATION            ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Player: %s"), NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
 
 	// Check if world is generated
 	if (!bWorldGenerated)
@@ -195,13 +200,21 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 					// OnSuccess
 					[this, NewPlayer, CharacterId](const FGuid& ValidatedCharacterId, const FGuid& AccountId)
 					{
-						UE_LOG(LogTemp, Log, TEXT("✓ Client authenticated: Character=%s, Account=%s"),
-							*ValidatedCharacterId.ToString(), *AccountId.ToString());
+						UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+						UE_LOG(LogTemp, Log, TEXT("║    ✓ TOKEN VALIDATED - SPAWNING PLAYER                  ║"));
+						UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+						UE_LOG(LogTemp, Log, TEXT("Character: %s"), *ValidatedCharacterId.ToString());
+						UE_LOG(LogTemp, Log, TEXT("Account: %s"), *AccountId.ToString());
 						
 						// Verify the character ID matches
 						if (ValidatedCharacterId == CharacterId)
 						{
-							// Spawn player at their saved location
+							// Now it's safe to spawn the player
+							// Call the base class HandleStartingNewPlayer to properly initialize the player
+							// This will trigger RestartPlayer() and spawn the pawn
+							HandleStartingNewPlayer(NewPlayer);
+							
+							// Then spawn at their saved location (this will reposition the pawn)
 							SpawnPlayerAtLocation(NewPlayer);
 						}
 						else
@@ -227,6 +240,27 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 		{
 			KickPlayerToMenu(NewPlayer, TEXT("Failed to extract login options - no valid token"));
 		}
+	}
+}
+
+void AEchoesServerGameMode::HandleStartingNewPlayer(APlayerController* NewPlayer)
+{
+	// This override prevents automatic spawning during PostLogin
+	// We only call this manually after token validation succeeds
+	// When called, it will properly initialize and spawn the player
+	
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	// Only spawn if we have a valid player controller
+	if (NewPlayer)
+	{
+		UE_LOG(LogTemp, Log, TEXT("HandleStartingNewPlayer: Spawning player after validation"));
+		
+		// Call the base class implementation to properly spawn the player
+		Super::HandleStartingNewPlayer(NewPlayer);
 	}
 }
 
