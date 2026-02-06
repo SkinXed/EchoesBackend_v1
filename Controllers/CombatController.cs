@@ -40,7 +40,14 @@ namespace Echoes.API.Controllers
                 }
 
                 // Get expected secret from configuration
-                var expectedSecret = _configuration["ServerSecret"] ?? "MySuperSecretKey";
+                var expectedSecret = _configuration["ServerSecret"];
+                
+                // Fail securely if secret is not configured or is set to the insecure default
+                if (string.IsNullOrEmpty(expectedSecret) || expectedSecret == "MySuperSecretKey")
+                {
+                    _logger.LogError("ServerSecret is not configured or is set to insecure default value");
+                    return StatusCode(500, new { message = "Server configuration error" });
+                }
                 
                 if (serverSecret != expectedSecret)
                 {
@@ -94,18 +101,21 @@ namespace Echoes.API.Controllers
         /// Character ID of the victim (killed player)
         /// </summary>
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "VictimId must be a positive integer")]
         public int VictimId { get; set; }
 
         /// <summary>
         /// Character ID of the killer (attacking player)
         /// </summary>
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "KillerId must be a positive integer")]
         public int KillerId { get; set; }
 
         /// <summary>
         /// Solar system ID where the kill occurred
         /// </summary>
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "SolarSystemId must be a positive integer")]
         public int SolarSystemId { get; set; }
 
         /// <summary>

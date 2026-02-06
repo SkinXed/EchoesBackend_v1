@@ -40,8 +40,9 @@ public class KillmailRequest
 
 **Configuration**:
 - The server secret is read from `appsettings.json` under key `"ServerSecret"`
-- Default fallback value: `"MySuperSecretKey"`
-- **Important**: Change this secret in production!
+- **Important**: Must be explicitly configured - the insecure default "MySuperSecretKey" will be rejected
+- Returns `500 Internal Server Error` if secret is not configured or is set to the default value
+- **Production Requirement**: Set a strong, unique secret in production environment variables
 
 #### Example Request:
 
@@ -213,13 +214,15 @@ if (CombatSubsystem)
 **Implementation**:
 - Game servers include `X-Server-Secret` header in all requests
 - Backend validates header before processing
-- Secret is configured in both `appsettings.json` (backend) and `DefaultGame.ini` (UE5)
+- Secret must be explicitly configured in both `appsettings.json` (backend) and `DefaultGame.ini` (UE5)
+- Insecure default value ("MySuperSecretKey") is rejected by the backend
 
 **Security Notes**:
-- ⚠️ Change the default secret (`MySuperSecretKey`) in production
+- ⚠️ Server will not start if secret is not configured or is set to the insecure default
 - Keep the secret confidential - do not commit to public repositories
 - Use environment variables for production deployments
 - Consider rotating the secret periodically
+- Use strong, randomly generated secrets (minimum 32 characters recommended)
 
 ### 2. Server-Only Execution
 
@@ -261,7 +264,7 @@ if (CombatSubsystem)
 
 ```json
 {
-  "ServerSecret": "MySuperSecretKey",
+  "ServerSecret": "YOUR_SECURE_SECRET_HERE_MIN_32_CHARS",
   "Logging": {
     "LogLevel": {
       "Default": "Information",
@@ -271,6 +274,8 @@ if (CombatSubsystem)
 }
 ```
 
+**Important**: Replace `YOUR_SECURE_SECRET_HERE_MIN_32_CHARS` with a strong, randomly generated secret.
+
 ### UE5 (DefaultGame.ini)
 
 ```ini
@@ -279,11 +284,14 @@ if (CombatSubsystem)
 BackendURL=http://localhost:5116
 
 ; Server authentication secret (must match backend)
-ServerSecret=MySuperSecretKey
+; WARNING: Using the insecure default will generate warnings
+ServerSecret=YOUR_SECURE_SECRET_HERE_MIN_32_CHARS
 
 ; Killmail endpoint (optional, uses default if not set)
 KillmailEndpoint=/api/combat/killmail
 ```
+
+**Important**: Replace `YOUR_SECURE_SECRET_HERE_MIN_32_CHARS` with the same secret configured in the backend.
 
 ## Testing
 

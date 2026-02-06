@@ -17,11 +17,14 @@ void UCombatServerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 	LoadConfig();
 
-	// Default backend URL if not configured
-	if (BackendURL.IsEmpty() || BackendURL.Equals(TEXT("http:")))
+	// Validate backend URL configuration
+	if (BackendURL.IsEmpty())
 	{
 		BackendURL = TEXT("http://localhost:5116");
+		UE_LOG(LogEchoesCombat, Warning, TEXT("BackendURL not configured, using default: %s"), *BackendURL);
 	}
+	
+	// Clean up URL formatting
 	if (BackendURL.EndsWith(TEXT("/")))
 	{
 		BackendURL.LeftChopInline(1);
@@ -171,12 +174,20 @@ FString UCombatServerSubsystem::GetApiBaseUrl() const
 
 FString UCombatServerSubsystem::GetServerSecret() const
 {
-	// Return configured secret or fallback to placeholder
-	if (!ServerSecret.IsEmpty())
+	// Return configured secret or log error and fail
+	if (ServerSecret.IsEmpty())
 	{
-		return ServerSecret;
+		UE_LOG(LogEchoesCombat, Error, TEXT("ServerSecret not configured - authentication will fail"));
+		return TEXT("");
 	}
-	return TEXT("MySuperSecretKey");
+	
+	// Warn about insecure default
+	if (ServerSecret.Equals(TEXT("MySuperSecretKey")))
+	{
+		UE_LOG(LogEchoesCombat, Warning, TEXT("Using insecure default ServerSecret - change this in production!"));
+	}
+	
+	return ServerSecret;
 }
 
 FString UCombatServerSubsystem::GetKillmailEndpoint() const
