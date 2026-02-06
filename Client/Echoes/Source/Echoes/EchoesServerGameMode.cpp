@@ -205,7 +205,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 							// Kick player back to menu
 							if (NewPlayer)
 							{
-								NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+								NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
 							}
 						}
 					},
@@ -217,7 +217,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 						// Kick player back to menu
 						if (NewPlayer)
 						{
-							NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+							NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
 						}
 					}
 				);
@@ -229,7 +229,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 				// Critical: Do NOT allow spawn without authentication
 				if (NewPlayer)
 				{
-					NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+					NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
 				}
 			}
 		}
@@ -240,7 +240,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 			// Kick player if no valid token provided
 			if (NewPlayer)
 			{
-				NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+				NewPlayer->ClientTravel(MenuMapPath, TRAVEL_Absolute);
 			}
 		}
 	}

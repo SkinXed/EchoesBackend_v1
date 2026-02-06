@@ -251,4 +251,7 @@ private:
 	/** Whether we've subscribed to config delegate */
 	UPROPERTY()
 	bool bSubscribedToConfigDelegate;
+
+	/** Menu map path for kicking unauthenticated players */
+	static constexpr const TCHAR* MenuMapPath = TEXT("/Game/Maps/MenuMap");
 };

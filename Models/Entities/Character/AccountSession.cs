@@ -41,7 +41,11 @@ namespace Echoes.API.Models.Entities.Character
         [Required]
         public DateTime RefreshTokenExpiresAt { get; set; }
 
-        [MaxLength(50)]
+        /// <summary>
+        /// IP address of the client.
+        /// Max length of 45 supports full IPv6 addresses (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334).
+        /// </summary>
+        [MaxLength(45)]
         public string IPAddress { get; set; } = string.Empty;
 
         [MaxLength(500)]
