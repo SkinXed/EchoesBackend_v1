@@ -10,7 +10,7 @@
 #include "JsonObjectConverter.h"
 #include "Misc/ConfigCacheIni.h"
 
-const FString ClientVersion = TEXT("0.0.1");
+const FString ClientVersion = TEXT("0.1.0");
 
 void UEchoesPreloadWidget::NativeConstruct()
 {
