@@ -575,6 +575,10 @@ namespace Echoes.API.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
+                    b.Property<int>("FactionId")
+                        .HasColumnType("integer")
+                        .HasColumnName("faction_id");
+
                     b.Property<Guid?>("HomeStationId")
                         .HasColumnType("uuid");
 
@@ -669,6 +673,8 @@ namespace Echoes.API.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("ActiveShipItemId");
+
+                    b.HasIndex("FactionId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -1065,6 +1071,13 @@ namespace Echoes.API.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea")
+                        .HasColumnName("row_version");
+
                     b.Property<int>("SkillId")
                         .HasColumnType("integer")
                         .HasColumnName("skill_id");
@@ -1099,11 +1112,14 @@ namespace Echoes.API.Migrations
 
                     b.HasKey("CharacterSkillId");
 
-                    b.HasIndex("CharacterId");
-
                     b.HasIndex("SkillId");
 
-                    b.ToTable("character_skills_enhanced");
+                    b.HasIndex("CharacterId", "SkillId")
+                        .IsUnique();
+
+                    b.HasIndex("IsActive", "TrainingFinishedAt");
+
+                    b.ToTable("character_skills_enhanced", (string)null);
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterStanding", b =>
@@ -1178,6 +1194,84 @@ namespace Echoes.API.Migrations
                     b.ToTable("character_wallets");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.Faction", b =>
+                {
+                    b.Property<int>("FactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("faction_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FactionId"));
+
+                    b.Property<string>("ConfigJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("config_json");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("FactionId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("factions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            FactionId = 1,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Arden faction",
+                            Name = "Arden",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            FactionId = 2,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Nova faction",
+                            Name = "Nova",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            FactionId = 3,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Solaris faction",
+                            Name = "Solaris",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            FactionId = 4,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Valerion faction",
+                            Name = "Valerion",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Skill", b =>
                 {
                     b.Property<int>("SkillId")
@@ -1231,9 +1325,9 @@ namespace Echoes.API.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("secondary_attribute");
 
-                    b.Property<int>("SkillGroup")
+                    b.Property<int>("SkillGroupId")
                         .HasColumnType("integer")
-                        .HasColumnName("skill_group");
+                        .HasColumnName("skill_group_id");
 
                     b.Property<int>("SkillType")
                         .HasColumnType("integer")
@@ -1245,7 +1339,186 @@ namespace Echoes.API.Migrations
 
                     b.HasKey("SkillId");
 
-                    b.ToTable("skills");
+                    b.HasIndex("SkillGroupId");
+
+                    b.ToTable("skills", (string)null);
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.SkillGroupEntity", b =>
+                {
+                    b.Property<int>("SkillGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("skill_group_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SkillGroupId"));
+
+                    b.Property<string>("ConfigJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("config_json");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("SkillGroupId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("skill_groups", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            SkillGroupId = 1,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Gunnery skills",
+                            Name = "Gunnery",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 2,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Missile skills",
+                            Name = "Missiles",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 3,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Drone skills",
+                            Name = "Drones",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 4,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Navigation skills",
+                            Name = "Navigation",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 5,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Targeting skills",
+                            Name = "Targeting",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 6,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Engineering skills",
+                            Name = "Engineering",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 7,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Electronics skills",
+                            Name = "Electronics",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 8,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Mechanics skills",
+                            Name = "Mechanics",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 9,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Shield skills",
+                            Name = "Shield",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 10,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Armor skills",
+                            Name = "Armor",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 11,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Spaceship Command skills",
+                            Name = "SpaceshipCommand",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 12,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Frigate skills",
+                            Name = "Frigate",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 13,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Cruiser skills",
+                            Name = "Cruiser",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 14,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Battleship skills",
+                            Name = "Battleship",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            SkillGroupId = 15,
+                            ConfigJson = "{}",
+                            CreatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Industrial skills",
+                            Name = "Industrial",
+                            UpdatedAt = new DateTime(2026, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.SupportTicket", b =>
@@ -3679,9 +3952,17 @@ namespace Echoes.API.Migrations
                         .WithMany()
                         .HasForeignKey("ActiveShipItemId");
 
+                    b.HasOne("Echoes.API.Models.Entities.Character.Faction", "Faction")
+                        .WithMany("Characters")
+                        .HasForeignKey("FactionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Account");
 
                     b.Navigation("ActiveShip");
+
+                    b.Navigation("Faction");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.CharacterClone", b =>
@@ -3803,7 +4084,7 @@ namespace Echoes.API.Migrations
                     b.HasOne("Echoes.API.Models.Entities.Character.Skill", "Skill")
                         .WithMany("CharacterSkills")
                         .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Character");
@@ -3831,6 +4112,17 @@ namespace Echoes.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.Skill", b =>
+                {
+                    b.HasOne("Echoes.API.Models.Entities.Character.SkillGroupEntity", "SkillGroup")
+                        .WithMany("Skills")
+                        .HasForeignKey("SkillGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SkillGroup");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.SupportTicket", b =>
@@ -4315,9 +4607,19 @@ namespace Echoes.API.Migrations
                     b.Navigation("Transactions");
                 });
 
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.Faction", b =>
+                {
+                    b.Navigation("Characters");
+                });
+
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.Skill", b =>
                 {
                     b.Navigation("CharacterSkills");
+                });
+
+            modelBuilder.Entity("Echoes.API.Models.Entities.Character.SkillGroupEntity", b =>
+                {
+                    b.Navigation("Skills");
                 });
 
             modelBuilder.Entity("Echoes.API.Models.Entities.Character.SupportTicket", b =>

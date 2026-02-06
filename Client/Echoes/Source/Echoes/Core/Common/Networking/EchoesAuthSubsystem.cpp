@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EchoesAuthSubsystem.h"
-#include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Json.h"
@@ -132,9 +131,9 @@ void UEchoesAuthSubsystem::Auth_Register(
 
 void UEchoesAuthSubsystem::Auth_Logout()
 {
-	UE_LOG(LogTemp, Log, TEXT("User logged out"));
+	UE_LOG(LogTemp, Log, TEXT("User logged out - clearing in-memory token"));
 
-	// Clear token and session data
+	// Clear token and session data from memory only
 	JWTToken.Empty();
 	CurrentAuthResponse = FAuthResponse();
 }
@@ -489,61 +488,6 @@ FString UEchoesAuthSubsystem::GetServerSecret() const
 	return TEXT("UE5-Server-Secret-Change-Me-In-Production");
 }
 
-// ==================== Token Persistence ====================
-
-void UEchoesAuthSubsystem::SaveAuthToken(bool bRememberMe)
-{
-	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
-	
-	if (Settings)
-	{
-		Settings->SavedAuthToken = JWTToken;
-		Settings->SavedAccountId = CurrentAuthResponse.AccountId;
-		Settings->SavedCharacterId = CurrentAuthResponse.CharacterId;
-		Settings->TokenSavedAt = FDateTime::UtcNow();
-		Settings->TokenExpiresAt = CurrentAuthResponse.ExpiresAt;
-		Settings->bRememberMe = bRememberMe;
-
-		if (UEchoesLocalPlayerSettings::SaveSettings(Settings))
-		{
-			UE_LOG(LogTemp, Log, TEXT("Saved auth token to disk (RememberMe=%s)"), bRememberMe ? TEXT("true") : TEXT("false"));
-		}
-	}
-}
-
-bool UEchoesAuthSubsystem::LoadAuthToken()
-{
-	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
-	
-	if (Settings && Settings->IsTokenValid())
-	{
-		JWTToken = Settings->SavedAuthToken;
-		CurrentAuthResponse.AccountId = Settings->SavedAccountId;
-		CurrentAuthResponse.CharacterId = Settings->SavedCharacterId;
-		CurrentAuthResponse.ExpiresAt = Settings->TokenExpiresAt;
-		CurrentAuthResponse.Token = Settings->SavedAuthToken;
-		CurrentAuthResponse.Success = true;
-
-		UE_LOG(LogTemp, Log, TEXT("Loaded valid auth token from disk"));
-		return true;
-	}
-
-	UE_LOG(LogTemp, Warning, TEXT("No valid auth token found on disk"));
-	return false;
-}
-
-void UEchoesAuthSubsystem::ClearSavedToken()
-{
-	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
-	
-	if (Settings)
-	{
-		Settings->Clear();
-		UEchoesLocalPlayerSettings::SaveSettings(Settings);
-		UE_LOG(LogTemp, Log, TEXT("Cleared saved auth token"));
-	}
-}
-
 // ==================== Character Operations ====================
 
 void UEchoesAuthSubsystem::CreateCharacter(const FString& CharacterName, int32 RaceId)
@@ -835,6 +779,16 @@ void UEchoesAuthSubsystem::ConnectToWorld(const FGuid& CharacterId)
 		return;
 	}
 
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    INITIATING SERVER CONNECTION                         ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Character: %s"), *CharacterId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("NOTE: This begins async flow:"));
+	UE_LOG(LogTemp, Log, TEXT("  1. Client: Request server info from backend API"));
+	UE_LOG(LogTemp, Log, TEXT("  2. Client: Perform ClientTravel with Token + CharacterId"));
+	UE_LOG(LogTemp, Log, TEXT("  3. Server: Receive connection, validate token with API"));
+	UE_LOG(LogTemp, Log, TEXT("  4. Server: If valid, spawn player and load character widget"));
+
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
 	HttpRequest->SetVerb(TEXT("GET"));
@@ -849,7 +803,7 @@ void UEchoesAuthSubsystem::ConnectToWorld(const FGuid& CharacterId)
 
 	// Send request
 	HttpRequest->ProcessRequest();
-	UE_LOG(LogTemp, Log, TEXT("Requesting connect info for character: %s"), *CharacterId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("✓ Requesting connect info for character: %s"), *CharacterId.ToString());
 }
 
 void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
@@ -879,7 +833,12 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 			FString ServerIP = JsonObject->GetStringField(TEXT("serverIP"));
 			int32 ServerPort = (int32)JsonObject->GetNumberField(TEXT("serverPort"));
 
-			UE_LOG(LogTemp, Log, TEXT("Connect info received: %s:%d"), *ServerIP, ServerPort);
+			UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+			UE_LOG(LogTemp, Log, TEXT("║    SERVER INFO RECEIVED - INITIATING CLIENT TRAVEL      ║"));
+			UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+			UE_LOG(LogTemp, Log, TEXT("Connect info: %s:%d"), *ServerIP, ServerPort);
+			UE_LOG(LogTemp, Log, TEXT("IMPORTANT: Token validation happens SERVER-SIDE"));
+			UE_LOG(LogTemp, Log, TEXT("           Character widget loads AFTER validation"));
 
 			// Update current character ID
 			CurrentAuthResponse.CharacterId = CharacterId;
@@ -887,7 +846,8 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 			// Broadcast event
 			OnConnectInfoReceived.Broadcast(ServerIP, ServerPort);
 
-			// Perform ClientTravel
+			// Perform ClientTravel with Token and CharacterId in URL
+			// Server will extract these in PostLogin and validate with backend API
 			if (UWorld* World = GetWorld())
 			{
 				if (APlayerController* PC = World->GetFirstPlayerController())
@@ -895,10 +855,26 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 					FString ConnectURL = FString::Printf(TEXT("%s:%d?Token=%s&CharacterId=%s"),
 						*ServerIP, ServerPort, *JWTToken, *CharacterId.ToString());
 
-					UE_LOG(LogTemp, Log, TEXT("Traveling to: %s"), *ConnectURL);
+					UE_LOG(LogTemp, Log, TEXT("✓ Traveling to dedicated server..."));
+					UE_LOG(LogTemp, Log, TEXT("  Next: Server validates token and spawns player"));
 					PC->ClientTravel(ConnectURL, TRAVEL_Absolute);
 				}
+				else
+				{
+					UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController"));
+					OnConnectInfoFailed.Broadcast(TEXT("PlayerController not available"));
+				}
 			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to get World"));
+				OnConnectInfoFailed.Broadcast(TEXT("World not available"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to parse connect info response"));
+			OnConnectInfoFailed.Broadcast(TEXT("Invalid server response"));
 		}
 	}
 	else

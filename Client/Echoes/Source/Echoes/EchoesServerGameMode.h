@@ -107,6 +107,12 @@ protected:
 	 */
 	virtual void Logout(AController* Exiting) override;
 
+	/**
+	 * Override to prevent automatic player spawning until token validation completes
+	 * This ensures players stay in loading screen until authenticated
+	 */
+	virtual void HandleStartingNewPlayer(APlayerController* NewPlayer) override;
+
 public:
 	// ==================== World Generation Control ====================
 
@@ -186,6 +192,13 @@ public:
 	FString GetApiBaseUrl() const;
 
 	/**
+	 * Kick player back to menu map with logging
+	 * @param Player - Player controller to kick
+	 * @param Reason - Reason for kicking (for logging)
+	 */
+	void KickPlayerToMenu(APlayerController* Player, const FString& Reason);
+
+	/**
 	 * Request player undocking from station
 	 * Moves player from hangar instance back to space near station
 	 * @param PC - Player controller requesting undock
@@ -251,4 +264,10 @@ private:
 	/** Whether we've subscribed to config delegate */
 	UPROPERTY()
 	bool bSubscribedToConfigDelegate;
+
+	/** Per-player spawn authorization tracking (PlayerController -> bSpawnAllowed) */
+	TMap<APlayerController*, bool> PlayerSpawnAuthorization;
+
+	/** Menu map path for kicking unauthenticated players */
+	static constexpr const TCHAR* MenuMapPath = TEXT("/Game/Maps/MenuMap");
 };

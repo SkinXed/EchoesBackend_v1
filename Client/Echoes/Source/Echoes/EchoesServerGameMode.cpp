@@ -7,6 +7,7 @@
 #include "EchoesServerDiscoveryTypes.h"
 #include "EchoesInventorySubsystem.h"
 #include "EchoesAuthSubsystem.h"
+#include "Core/Server/EchoesServerAuthSubsystem.h"
 #include "Core/Server/EchoesHangarManager.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
@@ -142,14 +143,25 @@ void AEchoesServerGameMode::BeginPlay()
 
 void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 {
-	Super::PostLogin(NewPlayer);
-
 	if (!HasAuthority())
 	{
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Player logged in: %s"), NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    PLAYER LOGIN - AWAITING TOKEN VALIDATION            ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Player: %s"), NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
+
+	// Mark this player as NOT authorized to spawn yet (per-player tracking)
+	if (NewPlayer)
+	{
+		PlayerSpawnAuthorization.Add(NewPlayer, false);
+		UE_LOG(LogTemp, Log, TEXT("Added player to authorization tracking (not authorized yet)"));
+	}
+
+	// Call base class to do important initialization (but our HandleStartingNewPlayer override will prevent spawn)
+	Super::PostLogin(NewPlayer);
 
 	// Check if world is generated
 	if (!bWorldGenerated)
@@ -165,7 +177,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, spawning player..."));
+		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, validating player authentication..."));
 		
 		// Extract login options from URL
 		FString Options = NewPlayer->PlayerState ? NewPlayer->PlayerState->SavedNetworkAddress : TEXT("");
@@ -174,17 +186,115 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 
 		if (ExtractLoginOptions(Options, Token, CharacterId))
 		{
-			UE_LOG(LogTemp, Log, TEXT("Extracted CharacterId: %s"), *CharacterId.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Extracted Token and CharacterId: %s"), *CharacterId.ToString());
 			
-			// Spawn player at their saved location
-			SpawnPlayerAtLocation(NewPlayer);
+			// Validate token through Backend API
+			UGameInstance* GameInstance = GetGameInstance();
+			if (!GameInstance)
+			{
+				KickPlayerToMenu(NewPlayer, TEXT("GameInstance is null - cannot validate token"));
+				return;
+			}
+
+			UEchoesServerAuthSubsystem* ServerAuthSubsystem = 
+				GameInstance->GetSubsystem<UEchoesServerAuthSubsystem>();
+
+			if (ServerAuthSubsystem)
+			{
+				ServerAuthSubsystem->ValidateClientToken(
+					Token,
+					// OnSuccess
+					[this, NewPlayer, CharacterId](const FGuid& ValidatedCharacterId, const FGuid& AccountId)
+					{
+						UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+						UE_LOG(LogTemp, Log, TEXT("║    ✓ TOKEN VALIDATED - SPAWNING PLAYER                  ║"));
+						UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+						UE_LOG(LogTemp, Log, TEXT("Character: %s"), *ValidatedCharacterId.ToString());
+						UE_LOG(LogTemp, Log, TEXT("Account: %s"), *AccountId.ToString());
+						
+						// Verify the character ID matches
+						if (ValidatedCharacterId == CharacterId)
+						{
+							// Authorize THIS SPECIFIC PLAYER to spawn (per-player tracking)
+							// Check if player is still connected before authorizing
+							if (NewPlayer && PlayerSpawnAuthorization.Contains(NewPlayer))
+							{
+								PlayerSpawnAuthorization[NewPlayer] = true;
+								UE_LOG(LogTemp, Log, TEXT("Authorized player %s to spawn"), *NewPlayer->GetName());
+								
+								// Double-check player is still in map after authorization
+								if (PlayerSpawnAuthorization.Contains(NewPlayer))
+								{
+									// Spawn player at their saved location
+									// This will handle the spawn internally via RestartPlayer()
+									SpawnPlayerAtLocation(NewPlayer);
+								}
+								else
+								{
+									UE_LOG(LogTemp, Warning, TEXT("Player %s disconnected during authorization"), *NewPlayer->GetName());
+								}
+							}
+							else
+							{
+								UE_LOG(LogTemp, Warning, TEXT("Player not found in authorization tracking (may have disconnected during validation)"));
+							}
+						}
+						else
+						{
+							KickPlayerToMenu(NewPlayer, FString::Printf(
+								TEXT("Character ID mismatch! Expected=%s, Got=%s"),
+								*CharacterId.ToString(), *ValidatedCharacterId.ToString()));
+						}
+					},
+					// OnFailure
+					[this, NewPlayer](const FString& Error)
+					{
+						KickPlayerToMenu(NewPlayer, FString::Printf(TEXT("Authentication failed: %s"), *Error));
+					}
+				);
+			}
+			else
+			{
+				KickPlayerToMenu(NewPlayer, TEXT("ServerAuthSubsystem not available"));
+			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Failed to extract login options, using default spawn"));
-			SpawnPlayerAtLocation(NewPlayer);
+			KickPlayerToMenu(NewPlayer, TEXT("Failed to extract login options - no valid token"));
 		}
 	}
+}
+
+void AEchoesServerGameMode::HandleStartingNewPlayer(APlayerController* NewPlayer)
+{
+	// This override prevents automatic spawning during PostLogin
+	// We only spawn after token validation by setting per-player authorization flag
+	// and calling SpawnPlayerAtLocation() which handles spawning internally
+	
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	// Null check before accessing map
+	if (!NewPlayer)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer: NewPlayer is null"));
+		return;
+	}
+
+	// Safety check: Only allow spawn if this specific player's token was validated
+	bool* bIsAuthorized = PlayerSpawnAuthorization.Find(NewPlayer);
+	if (!bIsAuthorized || !(*bIsAuthorized))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer: Player %s not authorized to spawn yet (awaiting token validation or already disconnected)"),
+			*NewPlayer->GetName());
+		return;
+	}
+
+	// If this player is authorized, call the base class implementation
+	UE_LOG(LogTemp, Log, TEXT("HandleStartingNewPlayer: Allowing spawn for authorized player %s"), *NewPlayer->GetName());
+	Super::HandleStartingNewPlayer(NewPlayer);
 }
 
 void AEchoesServerGameMode::Logout(AController* Exiting)
@@ -197,6 +307,14 @@ void AEchoesServerGameMode::Logout(AController* Exiting)
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("Player logged out: %s"), Exiting ? *Exiting->GetName() : TEXT("Unknown"));
+
+	// Clean up authorization tracking for this player
+	APlayerController* PC = Cast<APlayerController>(Exiting);
+	if (PC && PlayerSpawnAuthorization.Contains(PC))
+	{
+		PlayerSpawnAuthorization.Remove(PC);
+		UE_LOG(LogTemp, Log, TEXT("Removed player from authorization tracking"));
+	}
 }
 
 void AEchoesServerGameMode::OnServerConfigReceived(const FServerSystemConfig& Config)
@@ -896,6 +1014,18 @@ FString AEchoesServerGameMode::GetApiBaseUrl() const
 
 	// Default to localhost
 	return TEXT("http://localhost:5116/api");
+}
+
+void AEchoesServerGameMode::KickPlayerToMenu(APlayerController* Player, const FString& Reason)
+{
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("✗ KickPlayerToMenu: Player is null (Reason: %s)"), *Reason);
+		return;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("✗ Kicking player to menu: %s"), *Reason);
+	Player->ClientTravel(MenuMapPath, TRAVEL_Absolute);
 }
 
 void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
