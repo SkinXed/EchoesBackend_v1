@@ -120,13 +120,34 @@ void UEchoesServerAuthSubsystem::OnValidateTokenResponseReceived(
 
 		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
 		{
-			bool bIsValid = JsonObject->GetBoolField(TEXT("isValid"));
+			// Safely check if isValid field exists
+			bool bIsValid = false;
+			if (!JsonObject->TryGetBoolField(TEXT("isValid"), bIsValid))
+			{
+				UE_LOG(LogTemp, Error, TEXT("Response missing 'isValid' field"));
+				if (OnFailure)
+				{
+					OnFailure(TEXT("Invalid response format"));
+				}
+				return;
+			}
 
 			if (bIsValid)
 			{
-				// Extract character and account IDs
-				FString CharacterIdStr = JsonObject->GetStringField(TEXT("characterId"));
-				FString AccountIdStr = JsonObject->GetStringField(TEXT("accountId"));
+				// Safely extract character and account IDs
+				FString CharacterIdStr;
+				FString AccountIdStr;
+
+				if (!JsonObject->TryGetStringField(TEXT("characterId"), CharacterIdStr) ||
+					!JsonObject->TryGetStringField(TEXT("accountId"), AccountIdStr))
+				{
+					UE_LOG(LogTemp, Error, TEXT("Response missing required fields (characterId or accountId)"));
+					if (OnFailure)
+					{
+						OnFailure(TEXT("Invalid response format"));
+					}
+					return;
+				}
 
 				FGuid CharacterId;
 				FGuid AccountId;

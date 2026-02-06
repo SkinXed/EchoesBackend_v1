@@ -18,6 +18,12 @@ namespace Echoes.API.Models.Entities.Character
 
         public Guid? CharacterId { get; set; }
 
+        /// <summary>
+        /// JWT token for this session.
+        /// NOTE: For production use, consider storing a hash of the token (e.g., SHA-256)
+        /// instead of the raw token to prevent token theft if the database is compromised.
+        /// The validation endpoint would then compare hashes rather than raw tokens.
+        /// </summary>
         [Required]
         [MaxLength(1024)]
         public string SessionToken { get; set; } = string.Empty;

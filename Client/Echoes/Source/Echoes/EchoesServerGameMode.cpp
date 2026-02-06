@@ -224,9 +224,13 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 			}
 			else
 			{
-				UE_LOG(LogTemp, Error, TEXT("ServerAuthSubsystem not available!"));
-				// Fallback: spawn without validation (not recommended for production)
-				SpawnPlayerAtLocation(NewPlayer);
+				UE_LOG(LogTemp, Error, TEXT("✗ ServerAuthSubsystem not available - kicking player"));
+				
+				// Critical: Do NOT allow spawn without authentication
+				if (NewPlayer)
+				{
+					NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+				}
 			}
 		}
 		else
