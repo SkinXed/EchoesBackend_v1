@@ -28,7 +28,6 @@ AEchoesServerGameMode::AEchoesServerGameMode()
 	bWorldGenerated = false;
 	bWaitingForConfig = false;
 	bSubscribedToConfigDelegate = false;
-	bPlayerSpawnAllowed = false;  // Only allow spawning after token validation
 
 	// Create jump manager component
 	JumpManager = CreateDefaultSubobject<UEchoesJumpManager>(TEXT("JumpManager"));
@@ -154,8 +153,12 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
 	UE_LOG(LogTemp, Log, TEXT("Player: %s"), NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
 
-	// Reset spawn flag for this player - they must validate first
-	bPlayerSpawnAllowed = false;
+	// Mark this player as NOT authorized to spawn yet (per-player tracking)
+	if (NewPlayer)
+	{
+		PlayerSpawnAuthorization.Add(NewPlayer, false);
+		UE_LOG(LogTemp, Log, TEXT("Added player to authorization tracking (not authorized yet)"));
+	}
 
 	// Call base class to do important initialization (but our HandleStartingNewPlayer override will prevent spawn)
 	Super::PostLogin(NewPlayer);
@@ -212,12 +215,20 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 						// Verify the character ID matches
 						if (ValidatedCharacterId == CharacterId)
 						{
-							// Allow spawning now that token is validated
-							bPlayerSpawnAllowed = true;
-							
-							// Spawn player at their saved location
-							// This will handle the spawn internally via RestartPlayer()
-							SpawnPlayerAtLocation(NewPlayer);
+							// Authorize THIS SPECIFIC PLAYER to spawn (per-player tracking)
+							if (NewPlayer && PlayerSpawnAuthorization.Contains(NewPlayer))
+							{
+								PlayerSpawnAuthorization[NewPlayer] = true;
+								UE_LOG(LogTemp, Log, TEXT("Authorized player %s to spawn"), *NewPlayer->GetName());
+								
+								// Spawn player at their saved location
+								// This will handle the spawn internally via RestartPlayer()
+								SpawnPlayerAtLocation(NewPlayer);
+							}
+							else
+							{
+								UE_LOG(LogTemp, Error, TEXT("Player not found in authorization tracking!"));
+							}
 						}
 						else
 						{
@@ -248,7 +259,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 void AEchoesServerGameMode::HandleStartingNewPlayer(APlayerController* NewPlayer)
 {
 	// This override prevents automatic spawning during PostLogin
-	// We only spawn after token validation by setting bPlayerSpawnAllowed = true
+	// We only spawn after token validation by setting per-player authorization flag
 	// and calling SpawnPlayerAtLocation() which handles spawning internally
 	
 	if (!HasAuthority())
@@ -256,17 +267,19 @@ void AEchoesServerGameMode::HandleStartingNewPlayer(APlayerController* NewPlayer
 		return;
 	}
 
-	// Safety check: Only allow spawn if token validation completed successfully
-	if (!bPlayerSpawnAllowed)
+	// Safety check: Only allow spawn if this specific player's token was validated
+	bool* bIsAuthorized = PlayerSpawnAuthorization.Find(NewPlayer);
+	if (!bIsAuthorized || !(*bIsAuthorized))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer called but spawning not allowed yet (awaiting token validation)"));
+		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer: Player %s not authorized to spawn yet (awaiting token validation)"),
+			NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
 		return;
 	}
 
-	// If spawning is allowed, call the base class implementation
+	// If this player is authorized, call the base class implementation
 	if (NewPlayer)
 	{
-		UE_LOG(LogTemp, Log, TEXT("HandleStartingNewPlayer: Allowing spawn after token validation"));
+		UE_LOG(LogTemp, Log, TEXT("HandleStartingNewPlayer: Allowing spawn for authorized player %s"), *NewPlayer->GetName());
 		Super::HandleStartingNewPlayer(NewPlayer);
 	}
 }
@@ -281,6 +294,14 @@ void AEchoesServerGameMode::Logout(AController* Exiting)
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("Player logged out: %s"), Exiting ? *Exiting->GetName() : TEXT("Unknown"));
+
+	// Clean up authorization tracking for this player
+	APlayerController* PC = Cast<APlayerController>(Exiting);
+	if (PC && PlayerSpawnAuthorization.Contains(PC))
+	{
+		PlayerSpawnAuthorization.Remove(PC);
+		UE_LOG(LogTemp, Log, TEXT("Removed player from authorization tracking"));
+	}
 }
 
 void AEchoesServerGameMode::OnServerConfigReceived(const FServerSystemConfig& Config)

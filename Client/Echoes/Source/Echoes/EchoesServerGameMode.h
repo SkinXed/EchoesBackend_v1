@@ -265,8 +265,8 @@ private:
 	UPROPERTY()
 	bool bSubscribedToConfigDelegate;
 
-	/** Whether player spawning is allowed (set after token validation) */
-	bool bPlayerSpawnAllowed;
+	/** Per-player spawn authorization tracking (PlayerController -> bSpawnAllowed) */
+	TMap<APlayerController*, bool> PlayerSpawnAuthorization;
 
 	/** Menu map path for kicking unauthenticated players */
 	static constexpr const TCHAR* MenuMapPath = TEXT("/Game/Maps/MenuMap");
