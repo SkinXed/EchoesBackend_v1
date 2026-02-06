@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EchoesAuthSubsystem.h"
-#include "Core/Common/Save/EchoesLocalPlayerSettings.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Json.h"
@@ -132,9 +131,9 @@ void UEchoesAuthSubsystem::Auth_Register(
 
 void UEchoesAuthSubsystem::Auth_Logout()
 {
-	UE_LOG(LogTemp, Log, TEXT("User logged out"));
+	UE_LOG(LogTemp, Log, TEXT("User logged out - clearing in-memory token"));
 
-	// Clear token and session data
+	// Clear token and session data from memory only
 	JWTToken.Empty();
 	CurrentAuthResponse = FAuthResponse();
 }
@@ -487,61 +486,6 @@ FString UEchoesAuthSubsystem::GetServerSecret() const
 
 	// Default secret (should be changed in production)
 	return TEXT("UE5-Server-Secret-Change-Me-In-Production");
-}
-
-// ==================== Token Persistence ====================
-
-void UEchoesAuthSubsystem::SaveAuthToken(bool bRememberMe)
-{
-	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
-	
-	if (Settings)
-	{
-		Settings->SavedAuthToken = JWTToken;
-		Settings->SavedAccountId = CurrentAuthResponse.AccountId;
-		Settings->SavedCharacterId = CurrentAuthResponse.CharacterId;
-		Settings->TokenSavedAt = FDateTime::UtcNow();
-		Settings->TokenExpiresAt = CurrentAuthResponse.ExpiresAt;
-		Settings->bRememberMe = bRememberMe;
-
-		if (UEchoesLocalPlayerSettings::SaveSettings(Settings))
-		{
-			UE_LOG(LogTemp, Log, TEXT("Saved auth token to disk (RememberMe=%s)"), bRememberMe ? TEXT("true") : TEXT("false"));
-		}
-	}
-}
-
-bool UEchoesAuthSubsystem::LoadAuthToken()
-{
-	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
-	
-	if (Settings && Settings->IsTokenValid())
-	{
-		JWTToken = Settings->SavedAuthToken;
-		CurrentAuthResponse.AccountId = Settings->SavedAccountId;
-		CurrentAuthResponse.CharacterId = Settings->SavedCharacterId;
-		CurrentAuthResponse.ExpiresAt = Settings->TokenExpiresAt;
-		CurrentAuthResponse.Token = Settings->SavedAuthToken;
-		CurrentAuthResponse.Success = true;
-
-		UE_LOG(LogTemp, Log, TEXT("Loaded valid auth token from disk"));
-		return true;
-	}
-
-	UE_LOG(LogTemp, Warning, TEXT("No valid auth token found on disk"));
-	return false;
-}
-
-void UEchoesAuthSubsystem::ClearSavedToken()
-{
-	UEchoesLocalPlayerSettings* Settings = UEchoesLocalPlayerSettings::LoadSettings();
-	
-	if (Settings)
-	{
-		Settings->Clear();
-		UEchoesLocalPlayerSettings::SaveSettings(Settings);
-		UE_LOG(LogTemp, Log, TEXT("Cleared saved auth token"));
-	}
 }
 
 // ==================== Character Operations ====================

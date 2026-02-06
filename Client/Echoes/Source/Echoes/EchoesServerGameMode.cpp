@@ -7,6 +7,7 @@
 #include "EchoesServerDiscoveryTypes.h"
 #include "EchoesInventorySubsystem.h"
 #include "EchoesAuthSubsystem.h"
+#include "Core/Server/EchoesServerAuthSubsystem.h"
 #include "Core/Server/EchoesHangarManager.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
@@ -165,7 +166,7 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, spawning player..."));
+		UE_LOG(LogTemp, Log, TEXT("✓ World is generated, validating player authentication..."));
 		
 		// Extract login options from URL
 		FString Options = NewPlayer->PlayerState ? NewPlayer->PlayerState->SavedNetworkAddress : TEXT("");
@@ -174,15 +175,69 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 
 		if (ExtractLoginOptions(Options, Token, CharacterId))
 		{
-			UE_LOG(LogTemp, Log, TEXT("Extracted CharacterId: %s"), *CharacterId.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Extracted Token and CharacterId: %s"), *CharacterId.ToString());
 			
-			// Spawn player at their saved location
-			SpawnPlayerAtLocation(NewPlayer);
+			// Validate token through Backend API
+			UEchoesServerAuthSubsystem* ServerAuthSubsystem = 
+				GetGameInstance()->GetSubsystem<UEchoesServerAuthSubsystem>();
+
+			if (ServerAuthSubsystem)
+			{
+				ServerAuthSubsystem->ValidateClientToken(
+					Token,
+					// OnSuccess
+					[this, NewPlayer, CharacterId](const FGuid& ValidatedCharacterId, const FGuid& AccountId)
+					{
+						UE_LOG(LogTemp, Log, TEXT("✓ Client authenticated: Character=%s, Account=%s"),
+							*ValidatedCharacterId.ToString(), *AccountId.ToString());
+						
+						// Verify the character ID matches
+						if (ValidatedCharacterId == CharacterId)
+						{
+							// Spawn player at their saved location
+							SpawnPlayerAtLocation(NewPlayer);
+						}
+						else
+						{
+							UE_LOG(LogTemp, Error, TEXT("✗ Character ID mismatch! Expected=%s, Got=%s"),
+								*CharacterId.ToString(), *ValidatedCharacterId.ToString());
+							
+							// Kick player back to menu
+							if (NewPlayer)
+							{
+								NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+							}
+						}
+					},
+					// OnFailure
+					[this, NewPlayer](const FString& Error)
+					{
+						UE_LOG(LogTemp, Error, TEXT("✗ Authentication failed: %s"), *Error);
+						
+						// Kick player back to menu
+						if (NewPlayer)
+						{
+							NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+						}
+					}
+				);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("ServerAuthSubsystem not available!"));
+				// Fallback: spawn without validation (not recommended for production)
+				SpawnPlayerAtLocation(NewPlayer);
+			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Failed to extract login options, using default spawn"));
-			SpawnPlayerAtLocation(NewPlayer);
+			UE_LOG(LogTemp, Warning, TEXT("✗ Failed to extract login options - kicking player"));
+			
+			// Kick player if no valid token provided
+			if (NewPlayer)
+			{
+				NewPlayer->ClientTravel(TEXT("/Game/Maps/MenuMap"), TRAVEL_Absolute);
+			}
 		}
 	}
 }

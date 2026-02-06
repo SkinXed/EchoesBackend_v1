@@ -5,12 +5,7 @@
 
 UEchoesLocalPlayerSettings::UEchoesLocalPlayerSettings()
 {
-	bRememberMe = false;
-	SavedAuthToken = TEXT("");
-	SavedCharacterId = FGuid();
-	SavedAccountId = FGuid();
-	TokenSavedAt = FDateTime::MinValue();
-	TokenExpiresAt = FDateTime::MinValue();
+	// Initialize with default values for future settings
 }
 
 UEchoesLocalPlayerSettings* UEchoesLocalPlayerSettings::LoadSettings()
@@ -24,8 +19,7 @@ UEchoesLocalPlayerSettings* UEchoesLocalPlayerSettings::LoadSettings()
 		
 		if (Settings)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Loaded LocalPlayerSettings: Token exists=%s"), 
-				Settings->SavedAuthToken.IsEmpty() ? TEXT("false") : TEXT("true"));
+			UE_LOG(LogTemp, Log, TEXT("Loaded LocalPlayerSettings"));
 			return Settings;
 		}
 	}
@@ -61,33 +55,4 @@ bool UEchoesLocalPlayerSettings::SaveSettings(UEchoesLocalPlayerSettings* Settin
 FString UEchoesLocalPlayerSettings::GetSaveSlotName()
 {
 	return TEXT("EchoesLocalPlayerSettings");
-}
-
-bool UEchoesLocalPlayerSettings::IsTokenValid() const
-{
-	// Check if token exists
-	if (SavedAuthToken.IsEmpty())
-	{
-		return false;
-	}
-
-	// Check if not expired
-	FDateTime Now = FDateTime::UtcNow();
-	if (TokenExpiresAt > FDateTime::MinValue() && TokenExpiresAt < Now)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Saved token has expired"));
-		return false;
-	}
-
-	return true;
-}
-
-void UEchoesLocalPlayerSettings::Clear()
-{
-	SavedAuthToken = TEXT("");
-	SavedCharacterId = FGuid();
-	SavedAccountId = FGuid();
-	TokenSavedAt = FDateTime::MinValue();
-	TokenExpiresAt = FDateTime::MinValue();
-	bRememberMe = false;
 }
