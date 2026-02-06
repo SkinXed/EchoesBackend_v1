@@ -52,21 +52,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|GameState")
 	void TransitionToSpace(const FString& CharacterId, const FString& ShipId);
 
-	// Level paths (can be configured)
-                            
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString LoginLevelPath = TEXT("/Game/Project/Map/EntryMap");
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString CharacterSelectLevelPath = TEXT("/Game/Project/Map/EntryMap");
-
-	// Note: Hangar and Space use the same map (GameLevel) - hangar is an isolated instance within the game world
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString HangarLevelPath = TEXT("/Game/Project/Map/GameLevel");
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Echoes|GameState")
-	FString SpaceLevelPath = TEXT("/Game/Project/Map/GameLevel");
-
 	// Current context
 	UPROPERTY(BlueprintReadOnly, Category = "Echoes|GameState")
 	FString CurrentCharacterId;
