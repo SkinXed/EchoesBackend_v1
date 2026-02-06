@@ -3,12 +3,55 @@
 #include "EchoesGameStateSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "Misc/ConfigCacheIni.h"
 
 void UEchoesGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
 	CurrentState = EEchoesGameState::Login;
+	
+	// Load level paths from configuration
+	if (!GConfig->GetString(
+		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		TEXT("LoginLevelPath"),
+		LoginLevelPath,
+		GGameIni))
+	{
+		// Fallback to default if not configured
+		LoginLevelPath = TEXT("/Game/Maps/L_MainMenu");
+		UE_LOG(LogTemp, Warning, TEXT("LoginLevelPath not configured, using default: %s"), *LoginLevelPath);
+	}
+
+	if (!GConfig->GetString(
+		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		TEXT("CharacterSelectLevelPath"),
+		CharacterSelectLevelPath,
+		GGameIni))
+	{
+		CharacterSelectLevelPath = TEXT("/Game/Maps/L_CharacterSelect");
+		UE_LOG(LogTemp, Warning, TEXT("CharacterSelectLevelPath not configured, using default: %s"), *CharacterSelectLevelPath);
+	}
+
+	if (!GConfig->GetString(
+		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		TEXT("HangarLevelPath"),
+		HangarLevelPath,
+		GGameIni))
+	{
+		HangarLevelPath = TEXT("/Game/Maps/L_Hangar");
+		UE_LOG(LogTemp, Warning, TEXT("HangarLevelPath not configured, using default: %s"), *HangarLevelPath);
+	}
+
+	if (!GConfig->GetString(
+		TEXT("/Script/Echoes.EchoesGameStateSubsystem"),
+		TEXT("SpaceLevelPath"),
+		SpaceLevelPath,
+		GGameIni))
+	{
+		SpaceLevelPath = TEXT("/Game/Maps/L_Space");
+		UE_LOG(LogTemp, Warning, TEXT("SpaceLevelPath not configured, using default: %s"), *SpaceLevelPath);
+	}
 	
 	UE_LOG(LogTemp, Log, TEXT("EchoesGameStateSubsystem initialized"));
 }
