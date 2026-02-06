@@ -779,6 +779,16 @@ void UEchoesAuthSubsystem::ConnectToWorld(const FGuid& CharacterId)
 		return;
 	}
 
+	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+	UE_LOG(LogTemp, Log, TEXT("║    INITIATING SERVER CONNECTION                         ║"));
+	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+	UE_LOG(LogTemp, Log, TEXT("Character: %s"), *CharacterId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("NOTE: This begins async flow:"));
+	UE_LOG(LogTemp, Log, TEXT("  1. Client: Request server info from backend API"));
+	UE_LOG(LogTemp, Log, TEXT("  2. Client: Perform ClientTravel with Token + CharacterId"));
+	UE_LOG(LogTemp, Log, TEXT("  3. Server: Receive connection, validate token with API"));
+	UE_LOG(LogTemp, Log, TEXT("  4. Server: If valid, spawn player and load character widget"));
+
 	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
 	HttpRequest->SetVerb(TEXT("GET"));
@@ -793,7 +803,7 @@ void UEchoesAuthSubsystem::ConnectToWorld(const FGuid& CharacterId)
 
 	// Send request
 	HttpRequest->ProcessRequest();
-	UE_LOG(LogTemp, Log, TEXT("Requesting connect info for character: %s"), *CharacterId.ToString());
+	UE_LOG(LogTemp, Log, TEXT("✓ Requesting connect info for character: %s"), *CharacterId.ToString());
 }
 
 void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
@@ -823,7 +833,12 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 			FString ServerIP = JsonObject->GetStringField(TEXT("serverIP"));
 			int32 ServerPort = (int32)JsonObject->GetNumberField(TEXT("serverPort"));
 
-			UE_LOG(LogTemp, Log, TEXT("Connect info received: %s:%d"), *ServerIP, ServerPort);
+			UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
+			UE_LOG(LogTemp, Log, TEXT("║    SERVER INFO RECEIVED - INITIATING CLIENT TRAVEL      ║"));
+			UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
+			UE_LOG(LogTemp, Log, TEXT("Connect info: %s:%d"), *ServerIP, ServerPort);
+			UE_LOG(LogTemp, Log, TEXT("IMPORTANT: Token validation happens SERVER-SIDE"));
+			UE_LOG(LogTemp, Log, TEXT("           Character widget loads AFTER validation"));
 
 			// Update current character ID
 			CurrentAuthResponse.CharacterId = CharacterId;
@@ -831,7 +846,8 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 			// Broadcast event
 			OnConnectInfoReceived.Broadcast(ServerIP, ServerPort);
 
-			// Perform ClientTravel
+			// Perform ClientTravel with Token and CharacterId in URL
+			// Server will extract these in PostLogin and validate with backend API
 			if (UWorld* World = GetWorld())
 			{
 				if (APlayerController* PC = World->GetFirstPlayerController())
@@ -839,10 +855,26 @@ void UEchoesAuthSubsystem::OnConnectInfoResponseReceived(
 					FString ConnectURL = FString::Printf(TEXT("%s:%d?Token=%s&CharacterId=%s"),
 						*ServerIP, ServerPort, *JWTToken, *CharacterId.ToString());
 
-					UE_LOG(LogTemp, Log, TEXT("Traveling to: %s"), *ConnectURL);
+					UE_LOG(LogTemp, Log, TEXT("✓ Traveling to dedicated server..."));
+					UE_LOG(LogTemp, Log, TEXT("  Next: Server validates token and spawns player"));
 					PC->ClientTravel(ConnectURL, TRAVEL_Absolute);
 				}
+				else
+				{
+					UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController"));
+					OnConnectInfoFailed.Broadcast(TEXT("PlayerController not available"));
+				}
 			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to get World"));
+				OnConnectInfoFailed.Broadcast(TEXT("World not available"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to parse connect info response"));
+			OnConnectInfoFailed.Broadcast(TEXT("Invalid server response"));
 		}
 	}
 	else
