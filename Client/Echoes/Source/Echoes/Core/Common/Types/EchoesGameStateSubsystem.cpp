@@ -38,7 +38,11 @@ void UEchoesGameStateSubsystem::TransitionToLogin()
 		}
 		else
 		{
-			UGameplayStatics::OpenLevel(World, FName(*LoginLevelPath));
+			// Use ClientTravel for proper multiplayer support
+			if (APlayerController* PC = World->GetFirstPlayerController())
+			{
+				PC->ClientTravel(LoginLevelPath, TRAVEL_Absolute);
+			}
 		}
 	}
 }
@@ -59,7 +63,11 @@ void UEchoesGameStateSubsystem::TransitionToCharacterSelect()
 		}
 		else
 		{
-			UGameplayStatics::OpenLevel(World, FName(*CharacterSelectLevelPath));
+			// Use ClientTravel for proper multiplayer support
+			if (APlayerController* PC = World->GetFirstPlayerController())
+			{
+				PC->ClientTravel(CharacterSelectLevelPath, TRAVEL_Absolute);
+			}
 		}
 	}
 }
@@ -81,7 +89,11 @@ void UEchoesGameStateSubsystem::TransitionToHangar(const FString& CharacterId)
 		}
 		else
 		{
-			UGameplayStatics::OpenLevel(World, FName(*HangarLevelPath));
+			// Use ClientTravel for proper multiplayer support
+			if (APlayerController* PC = World->GetFirstPlayerController())
+			{
+				PC->ClientTravel(HangarLevelPath, TRAVEL_Absolute);
+			}
 		}
 	}
 }
@@ -104,7 +116,11 @@ void UEchoesGameStateSubsystem::TransitionToSpace(const FString& CharacterId, co
 		}
 		else
 		{
-			UGameplayStatics::OpenLevel(World, FName(*SpaceLevelPath));
+			// Use ClientTravel for proper multiplayer support
+			if (APlayerController* PC = World->GetFirstPlayerController())
+			{
+				PC->ClientTravel(SpaceLevelPath, TRAVEL_Absolute);
+			}
 		}
 	}
 }

@@ -146,7 +146,11 @@ void UEchoesCharacterSelectWidget::OnLogoutButtonClicked()
 	}
 	else
 	{
-		UGameplayStatics::OpenLevel(this, FName("EntryMap"));
+		// Use ClientTravel for proper multiplayer support (disconnect from server)
+		if (APlayerController* PC = GetOwningPlayer())
+		{
+			PC->ClientTravel(TEXT("EntryMap"), TRAVEL_Absolute);
+		}
 	}
 }
 
@@ -207,19 +211,18 @@ void UEchoesCharacterSelectWidget::OnCharacterSelected(FGuid CharacterId)
 {
 	SetStatusText("Initiating Warp Drive...", FLinearColor::Green);
 	
-	// Формируем URL параметры для GameMode сервера
-	FString Options = "?CharacterId=" + CharacterId.ToString();
-	
-	UE_LOG(LogTemp, Log, TEXT("UI: Travel to GalaxyMap with Options: %s"), *Options);
+	UE_LOG(LogTemp, Log, TEXT("UI: Connecting to dedicated server for character: %s"), *CharacterId.ToString());
 
-	// Абсолютный переход (Travel)
-	if (GalaxyLevelName.IsNone())
+	// Use ConnectToWorld from AuthSubsystem which properly handles ClientTravel
+	if (AuthSubsystem)
 	{
-		UE_LOG(LogTemp, Error, TEXT("CharacterSelect: GalaxyLevelName is not set"));
-		return;
+		AuthSubsystem->ConnectToWorld(CharacterId);
 	}
-
-	UGameplayStatics::OpenLevel(this, GalaxyLevelName, true, Options);
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterSelect: AuthSubsystem is null, cannot connect to server"));
+		SetStatusText("Error: Authentication system unavailable", FLinearColor::Red);
+	}
 }
 
 void UEchoesCharacterSelectWidget::LaunchCharacter(FGuid CharacterId)
