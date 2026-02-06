@@ -216,18 +216,27 @@ void AEchoesServerGameMode::PostLogin(APlayerController* NewPlayer)
 						if (ValidatedCharacterId == CharacterId)
 						{
 							// Authorize THIS SPECIFIC PLAYER to spawn (per-player tracking)
+							// Check if player is still connected before authorizing
 							if (NewPlayer && PlayerSpawnAuthorization.Contains(NewPlayer))
 							{
 								PlayerSpawnAuthorization[NewPlayer] = true;
 								UE_LOG(LogTemp, Log, TEXT("Authorized player %s to spawn"), *NewPlayer->GetName());
 								
-								// Spawn player at their saved location
-								// This will handle the spawn internally via RestartPlayer()
-								SpawnPlayerAtLocation(NewPlayer);
+								// Double-check player is still in map after authorization
+								if (PlayerSpawnAuthorization.Contains(NewPlayer))
+								{
+									// Spawn player at their saved location
+									// This will handle the spawn internally via RestartPlayer()
+									SpawnPlayerAtLocation(NewPlayer);
+								}
+								else
+								{
+									UE_LOG(LogTemp, Warning, TEXT("Player %s disconnected during authorization"), *NewPlayer->GetName());
+								}
 							}
 							else
 							{
-								UE_LOG(LogTemp, Error, TEXT("Player not found in authorization tracking!"));
+								UE_LOG(LogTemp, Warning, TEXT("Player not found in authorization tracking (may have disconnected during validation)"));
 							}
 						}
 						else
@@ -267,21 +276,25 @@ void AEchoesServerGameMode::HandleStartingNewPlayer(APlayerController* NewPlayer
 		return;
 	}
 
+	// Null check before accessing map
+	if (!NewPlayer)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer: NewPlayer is null"));
+		return;
+	}
+
 	// Safety check: Only allow spawn if this specific player's token was validated
 	bool* bIsAuthorized = PlayerSpawnAuthorization.Find(NewPlayer);
 	if (!bIsAuthorized || !(*bIsAuthorized))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer: Player %s not authorized to spawn yet (awaiting token validation)"),
-			NewPlayer ? *NewPlayer->GetName() : TEXT("Unknown"));
+		UE_LOG(LogTemp, Warning, TEXT("HandleStartingNewPlayer: Player %s not authorized to spawn yet (awaiting token validation or already disconnected)"),
+			*NewPlayer->GetName());
 		return;
 	}
 
 	// If this player is authorized, call the base class implementation
-	if (NewPlayer)
-	{
-		UE_LOG(LogTemp, Log, TEXT("HandleStartingNewPlayer: Allowing spawn for authorized player %s"), *NewPlayer->GetName());
-		Super::HandleStartingNewPlayer(NewPlayer);
-	}
+	UE_LOG(LogTemp, Log, TEXT("HandleStartingNewPlayer: Allowing spawn for authorized player %s"), *NewPlayer->GetName());
+	Super::HandleStartingNewPlayer(NewPlayer);
 }
 
 void AEchoesServerGameMode::Logout(AController* Exiting)
