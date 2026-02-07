@@ -1,3 +1,6 @@
+using Echoes.API.Data;
+using Echoes.API.Models.DTOs.Combat;
+using Echoes.API.Services.Combat;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,13 +16,31 @@ namespace Echoes.API.Controllers
     {
         private readonly ILogger<CombatController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IKillmailService _killmailService;
 
         public CombatController(
             ILogger<CombatController> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IKillmailService killmailService)
         {
             _logger = logger;
             _configuration = configuration;
+            _killmailService = killmailService;
+        }
+
+        /// <summary>
+        /// Validate X-Server-Secret header
+        /// </summary>
+        private bool ValidateServerSecret()
+        {
+            if (!Request.Headers.TryGetValue("X-Server-Secret", out var serverSecret))
+                return false;
+
+            var expectedSecret = _configuration["ServerSecret"];
+            if (string.IsNullOrEmpty(expectedSecret) || expectedSecret == "MySuperSecretKey")
+                return false;
+
+            return serverSecret == expectedSecret;
         }
 
         /// <summary>
@@ -28,101 +49,122 @@ namespace Echoes.API.Controllers
         /// Requires X-Server-Secret header for authentication
         /// </summary>
         [HttpPost("killmail")]
-        public IActionResult ReportKill([FromBody] KillmailRequest request)
+        public async Task<IActionResult> ReportKill([FromBody] KillmailReportRequest request)
         {
             try
             {
-                // Security validation - check X-Server-Secret header
-                if (!Request.Headers.TryGetValue("X-Server-Secret", out var serverSecret))
+                if (!ValidateServerSecret())
                 {
-                    _logger.LogWarning("Killmail request received without X-Server-Secret header");
-                    return Unauthorized(new { message = "Missing X-Server-Secret header" });
+                    _logger.LogWarning("Killmail request with invalid or missing X-Server-Secret");
+                    return Unauthorized(new { error = "Invalid server secret" });
                 }
 
-                // Get expected secret from configuration
-                var expectedSecret = _configuration["ServerSecret"];
-                
-                // Fail securely if secret is not configured or is set to the insecure default
-                if (string.IsNullOrEmpty(expectedSecret) || expectedSecret == "MySuperSecretKey")
-                {
-                    _logger.LogError("ServerSecret is not configured or is set to insecure default value");
-                    return StatusCode(500, new { message = "Server configuration error" });
-                }
-                
-                if (serverSecret != expectedSecret)
-                {
-                    _logger.LogWarning("Killmail request received with invalid X-Server-Secret");
-                    return Unauthorized(new { message = "Invalid server secret" });
-                }
-
-                // Validate request data
                 if (request == null)
                 {
-                    return BadRequest(new { message = "Request body is required" });
+                    return BadRequest(new { error = "Request body is required" });
                 }
 
-                // Log killmail data
-                _logger.LogInformation(
-                    "Killmail received: Victim={VictimId}, Killer={KillerId}, System={SolarSystemId}, Ship={ShipType}",
-                    request.VictimId,
-                    request.KillerId,
-                    request.SolarSystemId,
-                    request.ShipType);
-
-                // TODO: Store killmail in database
-                // TODO: Broadcast killmail to interested clients
-                // TODO: Update player statistics
-                // TODO: Process bounty/insurance claims
-
-                // Return success response
-                return Ok(new
+                if (request.VictimId == Guid.Empty || request.FinalStrikerId == Guid.Empty)
                 {
-                    success = true,
-                    message = "Killmail recorded successfully",
-                    killmailId = Guid.NewGuid(), // Placeholder - would be actual DB ID
-                    timestamp = DateTime.UtcNow
-                });
+                    return BadRequest(new { error = "VictimId and FinalStrikerId are required" });
+                }
+
+                _logger.LogInformation(
+                    "Killmail received: Victim={VictimId}, Killer={KillerId}, System={SystemId}, Ship={ShipType}",
+                    request.VictimId, request.FinalStrikerId, request.SolarSystemId, request.ShipTypeName);
+
+                var result = await _killmailService.ProcessKillmailAsync(request);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing killmail");
-                return StatusCode(500, new { message = "Internal server error" });
+                return StatusCode(500, new { error = "Internal server error" });
             }
         }
-    }
-
-    /// <summary>
-    /// DTO for killmail data from game server
-    /// Field names must match JSON sent from UE5 CombatServerSubsystem
-    /// </summary>
-    public class KillmailRequest
-    {
-        /// <summary>
-        /// Character ID of the victim (killed player)
-        /// </summary>
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "VictimId must be a positive integer")]
-        public int VictimId { get; set; }
 
         /// <summary>
-        /// Character ID of the killer (attacking player)
+        /// Get a specific killmail by ID
+        /// GET /api/combat/killmail/{killmailId}
         /// </summary>
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "KillerId must be a positive integer")]
-        public int KillerId { get; set; }
+        [HttpGet("killmail/{killmailId}")]
+        public async Task<IActionResult> GetKillmail(Guid killmailId)
+        {
+            try
+            {
+                if (!ValidateServerSecret())
+                {
+                    return Unauthorized(new { error = "Invalid server secret" });
+                }
+
+                var killmail = await _killmailService.GetKillmailAsync(killmailId);
+                if (killmail == null)
+                {
+                    return NotFound(new { error = "Killmail not found" });
+                }
+
+                return Ok(killmail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving killmail {KillmailId}", killmailId);
+                return StatusCode(500, new { error = "Internal server error" });
+            }
+        }
 
         /// <summary>
-        /// Solar system ID where the kill occurred
+        /// Get killmails for a character
+        /// GET /api/combat/character/{characterId}/killmails
         /// </summary>
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "SolarSystemId must be a positive integer")]
-        public int SolarSystemId { get; set; }
+        [HttpGet("character/{characterId}/killmails")]
+        public async Task<IActionResult> GetCharacterKillmails(Guid characterId, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+        {
+            try
+            {
+                if (!ValidateServerSecret())
+                {
+                    return Unauthorized(new { error = "Invalid server secret" });
+                }
+
+                if (pageSize > 100) pageSize = 100;
+                if (page < 1) page = 1;
+
+                var killmails = await _killmailService.GetCharacterKillmailsAsync(characterId, page, pageSize);
+                return Ok(killmails);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving killmails for character {CharacterId}", characterId);
+                return StatusCode(500, new { error = "Internal server error" });
+            }
+        }
 
         /// <summary>
-        /// Type of ship that was destroyed
+        /// Get killmails for a solar system
+        /// GET /api/combat/system/{systemId}/killmails
         /// </summary>
-        [Required]
-        [StringLength(100)]
-        public string ShipType { get; set; } = string.Empty;
+        [HttpGet("system/{systemId}/killmails")]
+        public async Task<IActionResult> GetSystemKillmails(Guid systemId, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+        {
+            try
+            {
+                if (!ValidateServerSecret())
+                {
+                    return Unauthorized(new { error = "Invalid server secret" });
+                }
+
+                if (pageSize > 100) pageSize = 100;
+                if (page < 1) page = 1;
+
+                var killmails = await _killmailService.GetSystemKillmailsAsync(systemId, page, pageSize);
+                return Ok(killmails);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving killmails for system {SystemId}", systemId);
+                return StatusCode(500, new { error = "Internal server error" });
+            }
+        }
     }
 }

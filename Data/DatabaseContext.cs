@@ -27,6 +27,7 @@ namespace Echoes.API.Data
         public DbSet<CharacterContract> CharacterContracts { get; set; }
         public DbSet<CharacterWallet> CharacterWallets { get; set; }
         public DbSet<WalletTransaction> WalletTransactions { get; set; }
+        public DbSet<Killmail> Killmails { get; set; }
 
         // Universe entities
         public DbSet<Region> Regions { get; set; }
@@ -754,6 +755,26 @@ namespace Echoes.API.Data
                 entity.HasOne(e => e.Region)
                     .WithMany()
                     .HasForeignKey(e => e.RegionId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // =========================================================================
+            // Killmail configuration
+            // =========================================================================
+            modelBuilder.Entity<Killmail>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.VictimId);
+                entity.HasIndex(e => e.FinalStrikerId);
+                entity.HasIndex(e => e.SolarSystemId);
+                entity.HasIndex(e => e.KilledAt).IsDescending();
+
+                entity.Property(e => e.TotalLossValue).HasPrecision(18, 2);
+                entity.Property(e => e.KilledAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Victim)
+                    .WithMany()
+                    .HasForeignKey(e => e.VictimId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
         }
