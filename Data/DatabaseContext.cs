@@ -22,6 +22,7 @@ namespace Echoes.API.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterLocation> CharacterLocations { get; set; }
+        public DbSet<CharacterState> CharacterStates { get; set; }
         public DbSet<AccountSession> AccountSessions { get; set; }
         public DbSet<CharacterContract> CharacterContracts { get; set; }
         public DbSet<CharacterWallet> CharacterWallets { get; set; }
