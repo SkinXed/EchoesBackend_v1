@@ -34,7 +34,8 @@ namespace Echoes.API.Controllers
                     status = "online",
                     timestamp = DateTime.UtcNow,
                     database = dbConnected ? "connected" : "disconnected",
-                    version = "1.0.0"
+                    version = "1.0.0",
+                    minClientVersion = "0.1.0"
                 });
             }
             catch (Exception ex)

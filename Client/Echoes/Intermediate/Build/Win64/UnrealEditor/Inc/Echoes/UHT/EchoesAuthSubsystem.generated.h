@@ -132,15 +132,13 @@ ECHOES_API void FOnCharacterListUpdated_DelegateWrapper(const FMulticastScriptDe
 	DECLARE_FUNCTION(execFetchCharacterList); \
 	DECLARE_FUNCTION(execDeleteCharacter); \
 	DECLARE_FUNCTION(execCreateCharacter); \
-	DECLARE_FUNCTION(execClearSavedToken); \
-	DECLARE_FUNCTION(execLoadAuthToken); \
-	DECLARE_FUNCTION(execSaveAuthToken); \
 	DECLARE_FUNCTION(execAuth_Logout); \
 	DECLARE_FUNCTION(execAuth_GetCharacters); \
 	DECLARE_FUNCTION(execAuth_IsLoggedIn); \
 	DECLARE_FUNCTION(execAuth_GetCharacterId); \
 	DECLARE_FUNCTION(execAuth_GetAccountId); \
 	DECLARE_FUNCTION(execAuth_GetToken); \
+	DECLARE_FUNCTION(execSaveAuthToken); \
 	DECLARE_FUNCTION(execAuth_Register); \
 	DECLARE_FUNCTION(execAuth_Login);
 

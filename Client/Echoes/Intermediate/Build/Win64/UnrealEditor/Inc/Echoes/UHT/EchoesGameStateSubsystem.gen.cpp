@@ -405,28 +405,6 @@ struct Z_Construct_UClass_UEchoesGameStateSubsystem_Statics
 		{ "ToolTip", "Subsystem for managing game state transitions and level flow\nTracks current game state and provides transition functions" },
 #endif
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LoginLevelPath_MetaData[] = {
-		{ "Category", "Echoes|GameState" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// Level paths (can be configured)\n" },
-#endif
-		{ "ModuleRelativePath", "Core/Common/Types/EchoesGameStateSubsystem.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Level paths (can be configured)" },
-#endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterSelectLevelPath_MetaData[] = {
-		{ "Category", "Echoes|GameState" },
-		{ "ModuleRelativePath", "Core/Common/Types/EchoesGameStateSubsystem.h" },
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HangarLevelPath_MetaData[] = {
-		{ "Category", "Echoes|GameState" },
-		{ "ModuleRelativePath", "Core/Common/Types/EchoesGameStateSubsystem.h" },
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SpaceLevelPath_MetaData[] = {
-		{ "Category", "Echoes|GameState" },
-		{ "ModuleRelativePath", "Core/Common/Types/EchoesGameStateSubsystem.h" },
-	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CurrentCharacterId_MetaData[] = {
 		{ "Category", "Echoes|GameState" },
 #if !UE_BUILD_SHIPPING
@@ -445,10 +423,6 @@ struct Z_Construct_UClass_UEchoesGameStateSubsystem_Statics
 		{ "ModuleRelativePath", "Core/Common/Types/EchoesGameStateSubsystem.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FStrPropertyParams NewProp_LoginLevelPath;
-	static const UECodeGen_Private::FStrPropertyParams NewProp_CharacterSelectLevelPath;
-	static const UECodeGen_Private::FStrPropertyParams NewProp_HangarLevelPath;
-	static const UECodeGen_Private::FStrPropertyParams NewProp_SpaceLevelPath;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_CurrentCharacterId;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_CurrentShipId;
 	static const UECodeGen_Private::FBytePropertyParams NewProp_CurrentState_Underlying;
@@ -469,19 +443,11 @@ struct Z_Construct_UClass_UEchoesGameStateSubsystem_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_LoginLevelPath = { "LoginLevelPath", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, LoginLevelPath), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LoginLevelPath_MetaData), NewProp_LoginLevelPath_MetaData) };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CharacterSelectLevelPath = { "CharacterSelectLevelPath", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, CharacterSelectLevelPath), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterSelectLevelPath_MetaData), NewProp_CharacterSelectLevelPath_MetaData) };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_HangarLevelPath = { "HangarLevelPath", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, HangarLevelPath), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HangarLevelPath_MetaData), NewProp_HangarLevelPath_MetaData) };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_SpaceLevelPath = { "SpaceLevelPath", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, SpaceLevelPath), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SpaceLevelPath_MetaData), NewProp_SpaceLevelPath_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentCharacterId = { "CurrentCharacterId", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, CurrentCharacterId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentCharacterId_MetaData), NewProp_CurrentCharacterId_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentShipId = { "CurrentShipId", nullptr, (EPropertyFlags)0x0010000000000014, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, CurrentShipId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentShipId_MetaData), NewProp_CurrentShipId_MetaData) };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentState_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentState = { "CurrentState", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesGameStateSubsystem, CurrentState), Z_Construct_UEnum_Echoes_EEchoesGameState, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentState_MetaData), NewProp_CurrentState_MetaData) }; // 2708638279
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_LoginLevelPath,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CharacterSelectLevelPath,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_HangarLevelPath,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_SpaceLevelPath,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentCharacterId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentShipId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesGameStateSubsystem_Statics::NewProp_CurrentState_Underlying,
@@ -528,10 +494,10 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 		{ EEchoesGameState_StaticEnum, TEXT("EEchoesGameState"), &Z_Registration_Info_UEnum_EEchoesGameState, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 2708638279U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesGameStateSubsystem, UEchoesGameStateSubsystem::StaticClass, TEXT("UEchoesGameStateSubsystem"), &Z_Registration_Info_UClass_UEchoesGameStateSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesGameStateSubsystem), 2359323314U) },
+		{ Z_Construct_UClass_UEchoesGameStateSubsystem, UEchoesGameStateSubsystem::StaticClass, TEXT("UEchoesGameStateSubsystem"), &Z_Registration_Info_UClass_UEchoesGameStateSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesGameStateSubsystem), 4138254225U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesGameStateSubsystem_h__Script_Echoes_2571070090(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesGameStateSubsystem_h__Script_Echoes_1474074343(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesGameStateSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesGameStateSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesGameStateSubsystem_h__Script_Echoes_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesGameStateSubsystem_h__Script_Echoes_Statics::EnumInfo));

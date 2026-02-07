@@ -19,7 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 // ********** Begin Class UEchoesLocalPlayerSettings ***********************************************
 ECHOES_API UClass* Z_Construct_UClass_UEchoesLocalPlayerSettings_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_23_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_21_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesLocalPlayerSettings(); \
 	friend struct Z_Construct_UClass_UEchoesLocalPlayerSettings_Statics; \
@@ -30,7 +30,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesLocalPlayerSettings)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_23_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_21_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	UEchoesLocalPlayerSettings(UEchoesLocalPlayerSettings&&) = delete; \
 	UEchoesLocalPlayerSettings(const UEchoesLocalPlayerSettings&) = delete; \
@@ -40,12 +40,12 @@ public: \
 	NO_API virtual ~UEchoesLocalPlayerSettings();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_20_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_23_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_18_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_21_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_23_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_23_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_21_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Save_EchoesLocalPlayerSettings_h_21_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

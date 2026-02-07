@@ -4,6 +4,14 @@ EditorStartupMap=/Game/Maps/MainMenu.MainMenu
 GlobalDefaultGameMode=/Script/Echoes.EchoesGameModeBase
 GlobalDefaultServerGameMode=/Script/Echoes.EchoesServerGameMode
 
+[/Script/Echoes.EchoesGameStateSubsystem]
+; Game flow level paths - Configure these to match your actual level names
+; These paths are used for transitioning between different game states
+LoginLevelPath=/Game/Maps/L_MainMenu
+CharacterSelectLevelPath=/Game/Maps/L_CharacterSelect
+HangarLevelPath=/Game/Maps/L_Hangar
+SpaceLevelPath=/Game/Maps/L_Space
+
 [/Script/Echoes.EchoesGameSettings]
 ; Backend API configuration
 ; Development (local backend)
