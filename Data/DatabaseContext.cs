@@ -22,10 +22,14 @@ namespace Echoes.API.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterLocation> CharacterLocations { get; set; }
+        public DbSet<CharacterState> CharacterStates { get; set; }
         public DbSet<AccountSession> AccountSessions { get; set; }
         public DbSet<CharacterContract> CharacterContracts { get; set; }
         public DbSet<CharacterWallet> CharacterWallets { get; set; }
         public DbSet<WalletTransaction> WalletTransactions { get; set; }
+        
+        // Session entities
+        public DbSet<EchoesBackend_v1.Models.Entities.Session.PlayerSession> PlayerSessions { get; set; }
 
         // Universe entities
         public DbSet<Region> Regions { get; set; }
@@ -39,6 +43,7 @@ namespace Echoes.API.Data
         public DbSet<Stargate> Stargates { get; set; }
         public DbSet<AsteroidBelt> AsteroidBelts { get; set; }
         public DbSet<PlanetResource> PlanetResources { get; set; }
+        public DbSet<WorldObject> WorldObjects { get; set; }
         // Game server entities
         public DbSet<GameServerNode> GameServers { get; set; }
         // Universe generation configuration

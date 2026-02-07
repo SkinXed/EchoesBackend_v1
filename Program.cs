@@ -176,6 +176,10 @@ services.AddScoped<Echoes.API.Services.Ship.IShipFittingService, Echoes.API.Serv
 // 3.4.3. Repositories
 services.AddScoped<Echoes.API.Data.Repositories.FittingRepository>();
 
+// 3.4.4. Background Services
+services.AddHostedService<WorldObjectCleanupService>();
+services.AddHostedService<EchoesBackend_v1.Services.SessionCleanupService>();
+
 // 3.5. Controllers
 services.AddControllers()
     .AddJsonOptions(options =>
