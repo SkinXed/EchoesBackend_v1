@@ -1,7 +1,7 @@
 using Echoes.API.Data;
 using Echoes.API.Models.DTOs.Fitting;
+using Echoes.API.Models.Entities.Inventory;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace Echoes.API.Data.Repositories
 {
@@ -39,10 +39,8 @@ namespace Echoes.API.Data.Repositories
                     return null;
                 }
 
-                // Get character and active ship
+                // Get character
                 var character = await _context.Characters
-                    .Include(c => c.ActiveShip)
-                    .ThenInclude(ship => ship!.ItemType)
                     .FirstOrDefaultAsync(c => c.Id == charGuid);
 
                 if (character == null)
@@ -51,27 +49,31 @@ namespace Echoes.API.Data.Repositories
                     return null;
                 }
 
-                if (character.ActiveShip == null || character.ActiveShipItemId == null)
+                // Find active ship fitting for this character via Asset ownership
+                var activeFitting = await _context.ShipFittings
+                    .Include(sf => sf.ShipAsset)
+                        .ThenInclude(a => a.ItemType)
+                    .Include(sf => sf.FittedModules)
+                        .ThenInclude(fm => fm.ModuleAsset)
+                            .ThenInclude(a => a.ItemType)
+                    .Where(sf => sf.ShipAsset.OwnerId == charGuid && sf.IsActive)
+                    .FirstOrDefaultAsync();
+
+                if (activeFitting == null)
                 {
-                    _logger.LogWarning("Character {CharacterId} has no active ship", characterId);
+                    _logger.LogWarning("Character {CharacterId} has no active ship fitting", characterId);
                     return null;
                 }
 
-                // Get all modules fitted to the active ship
-                var fittedModules = await _context.InventoryItems
-                    .Include(i => i.ItemType)
-                    .Where(i => i.FittedToShipId == character.ActiveShipItemId)
-                    .ToListAsync();
-
                 _logger.LogInformation("Found {Count} fitted modules for character {CharacterId}", 
-                    fittedModules.Count, characterId);
+                    activeFitting.FittedModules.Count, characterId);
 
                 // Build fitting response
                 var response = new FittingResponse
                 {
-                    CharacterId = 0, // Will be set from parsed characterId if needed
-                    ShipItemId = character.ActiveShipItemId.Value,
-                    ShipTypeName = character.ActiveShip.ItemType?.Name ?? "Unknown Ship",
+                    CharacterId = 0,
+                    ShipItemId = character.ActiveShipItemId ?? 0,
+                    ShipTypeName = activeFitting.ShipAsset.ItemType?.Name ?? "Unknown Ship",
                     
                     // Resource limits (these should come from ship type data in production)
                     PowergridMax = 100.0f,
@@ -88,35 +90,37 @@ namespace Echoes.API.Data.Repositories
                 float powerUsed = 0;
                 float cpuUsed = 0;
 
-                foreach (var module in fittedModules)
+                foreach (var module in activeFitting.FittedModules)
                 {
+                    var slotTypeName = MapSlotType(module.SlotType);
+                    var moduleName = module.ModuleAsset?.ItemType?.Name ?? "Unknown Module";
+
                     var slotResponse = new ItemSlotResponse
                     {
-                        SlotIndex = module.FittedSlotIndex ?? 0,
-                        SlotType = DetermineSlotType(module.FittedSlotType),
-                        ItemID = (int)(module.ItemTypeId % int.MaxValue), // Convert long to int safely
-                        ItemName = module.ItemType?.Name ?? "Unknown Module",
-                        Quantity = module.Quantity,
+                        SlotIndex = module.SlotNumber,
+                        SlotType = DetermineSlotType(slotTypeName),
+                        ItemID = module.ModuleAsset?.ItemType?.TypeId ?? 0,
+                        ItemName = moduleName,
+                        Quantity = 1,
                         Cooldown = 0.0f,
-                        ModuleState = "Offline",
-                        IsActive = false,
+                        ModuleState = module.IsOnline ? "Active" : "Offline",
+                        IsActive = module.IsOnline,
                         CanActivate = true,
-                        PowergridRequired = GetModulePowergrid(module.ItemType?.Name ?? ""),
-                        CPURequired = GetModuleCPU(module.ItemType?.Name ?? ""),
-                        CapacitorCost = GetModuleCapCost(module.ItemType?.Name ?? "")
+                        PowergridRequired = GetModulePowergrid(moduleName),
+                        CPURequired = GetModuleCPU(moduleName),
+                        CapacitorCost = GetModuleCapCost(moduleName)
                     };
 
                     powerUsed += slotResponse.PowergridRequired;
                     cpuUsed += slotResponse.CPURequired;
 
                     // Add to appropriate slot array based on slot type
-                    switch (module.FittedSlotType?.ToLower())
+                    switch (slotTypeName)
                     {
                         case "high":
                             response.HighSlots.Add(slotResponse);
                             break;
                         case "mid":
-                        case "medium":
                             response.MidSlots.Add(slotResponse);
                             break;
                         case "low":
@@ -127,7 +131,7 @@ namespace Echoes.API.Data.Repositories
                             break;
                         default:
                             _logger.LogWarning("Unknown slot type: {SlotType} for module {ModuleName}", 
-                                module.FittedSlotType, module.ItemType?.Name);
+                                module.SlotType, moduleName);
                             break;
                     }
                 }
@@ -155,7 +159,23 @@ namespace Echoes.API.Data.Repositories
         }
 
         /// <summary>
-        /// Determine slot type from database string
+        /// Map integer slot type from FittedModule to string name
+        /// </summary>
+        private string MapSlotType(int slotType)
+        {
+            return slotType switch
+            {
+                0 => "high",
+                1 => "mid",
+                2 => "low",
+                3 => "rig",
+                4 => "subsystem",
+                _ => "unknown"
+            };
+        }
+
+        /// <summary>
+        /// Determine display slot type name
         /// </summary>
         private string DetermineSlotType(string? slotType)
         {
