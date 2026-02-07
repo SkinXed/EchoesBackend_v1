@@ -5,249 +5,200 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Http.h"
-#include "PersistenceComponent.h"
 #include "EchoesPersistenceSubsystem.generated.h"
 
+/** Custom log category for persistence operations */
+DECLARE_LOG_CATEGORY_EXTERN(LogEchoesPersistence, Log, All);
+
+// Forward declarations
+class UEchoesIdentitySubsystem;
+class UEchoesInventorySubsystem;
+class UEchoesMarketSubsystem;
+
+// ==================== Structures ====================
+
 /**
- * Structure for queued save request
- * Used to batch and manage state save requests
+ * Snapshot of persisted character state from backend
+ * Mirrors the data returned by GET /api/character/me
  */
-USTRUCT()
-struct FPersistenceSaveRequest
+USTRUCT(BlueprintType)
+struct FPersistenceCharacterState
 {
 	GENERATED_BODY()
 
-	/** Character ID to save */
+	UPROPERTY(BlueprintReadOnly, Category = "Persistence")
 	FGuid CharacterId;
 
-	/** State data to save */
-	FCommon_StateData StateData;
+	UPROPERTY(BlueprintReadOnly, Category = "Persistence")
+	int64 WalletBalance = 0;
 
-	/** Timestamp when request was queued */
-	FDateTime QueuedTime;
+	UPROPERTY(BlueprintReadOnly, Category = "Persistence")
+	bool IsDocked = true;
 
-	/** Whether this is a high priority request (e.g., logout) */
-	bool bHighPriority;
+	UPROPERTY(BlueprintReadOnly, Category = "Persistence")
+	FDateTime LastSyncTime;
 
-	/** 
-	 * Sequence number for optimistic concurrency control
-	 * Higher values indicate more recent updates
-	 * Used to prevent race conditions when updates arrive out of order
-	 */
-	int64 SequenceNumber;
-
-	FPersistenceSaveRequest()
-		: bHighPriority(false)
-		, SequenceNumber(0)
-	{
-		QueuedTime = FDateTime::UtcNow();
-		// Set sequence number using UTC ticks (100-nanosecond intervals since 0001-01-01)
-		SequenceNumber = QueuedTime.GetTicks();
-	}
+	UPROPERTY(BlueprintReadOnly, Category = "Persistence")
+	bool bIsValid = false;
 };
+
+/** Sync operation state */
+UENUM(BlueprintType)
+enum class EPersistenceSyncState : uint8
+{
+	Idle,
+	Syncing,
+	Error
+};
+
+// ==================== Delegates ====================
+
+/** Fired when character state is successfully synced from backend */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPersistenceStateSynced, const FPersistenceCharacterState&, State);
+
+/** Fired when a persistence sync operation fails */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPersistenceSyncFailed, const FString&, ErrorMessage);
+
+/** Fired when wallet balance changes after sync */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWalletBalanceChanged, int64, OldBalance, int64, NewBalance);
 
 /**
  * UEchoesPersistenceSubsystem
  * 
- * Centralized persistence management system for character state saves
- * GameInstanceSubsystem that manages all HTTP communication with backend API
+ * State persistence and synchronization subsystem for Echoes MMO
+ * Provides centralized wallet/inventory state refresh from ASP.NET backend
  * 
- * Architecture Benefits:
- * - Centralization: One HTTP client for all ships (not 1000 individual clients)
- * - Lifecycle Stability: Lives for entire game session (unlike ActorComponents)
- * - Request Management: Queue, batch, and throttle API calls
- * - Code Clarity: Separation of concerns (components collect data, subsystem sends it)
+ * Architecture:
+ * - GameInstanceSubsystem: Persists across level transitions
+ * - ServerOnly_ prefix: Methods intended for UE5 dedicated server
+ * - Reads ApiBaseUrl and X-Server-Secret from config (DefaultGame.ini)
+ * - Coordinates with IdentitySubsystem (character data), InventorySubsystem (items),
+ *   and MarketSubsystem (post-trade sync)
  * 
- * Usage:
- * - Components call ServerOnly_QueueStateSave() to request a save
- * - PlayerController calls ServerOnly_SaveStateImmediate() on logout
- * - Subsystem handles all HTTP communication and error handling
- * 
- * Features:
- * - Request queuing to prevent API spam
- * - Priority system (logout = high priority)
- * - Automatic retry on failure
- * - Centralized authentication (X-Server-Secret)
+ * Key Features:
+ * - ServerOnly_ForceSaveState(): Immediately syncs character state from backend
+ * - Auto-subscribes to MarketSubsystem.OnInventorySyncRequired for post-trade sync
+ * - Tracks last sync time and wallet delta for UI notifications
+ * - Prevents duplicate sync requests while one is in-flight
  */
-UCLASS(Config = Game)
+UCLASS()
 class ECHOES_API UEchoesPersistenceSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	// ==================== Subsystem Lifecycle ====================
-	
+	// Subsystem lifecycle
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	// ==================== Configuration ====================
-
-	/** Backend API base URL */
-	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
-	FString ApiBaseUrl = TEXT("http://localhost:5116/api");
-
-	/** Server secret for X-Server-Secret header authentication */
-	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
-	FString ServerSecret = TEXT("UE5-Server-Secret-Change-Me-In-Production");
-
-	/** Maximum number of requests in queue before dropping old ones */
-	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
-	int32 MaxQueueSize = 100;
-
-	/** Time between processing queued requests (seconds) */
-	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
-	float QueueProcessInterval = 1.0f;
-
-	/** 
-	 * Maximum number of requests to batch in a single bulk save operation
-	 * Higher values reduce API calls but increase payload size
-	 * Recommended: 20-50 for optimal balance
-	 */
-	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
-	int32 MaxBulkBatchSize = 50;
+	// ==================== Server-Only Persistence Functions ====================
 
 	/**
-	 * Enable bulk save optimization
-	 * When true, queued requests are batched into bulk API calls
-	 * When false, uses individual save requests (legacy behavior)
-	 */
-	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
-	bool bEnableBulkSave = true;
-
-	// ==================== Public Interface ====================
-
-	/**
-	 * Queue a state save request (non-blocking)
-	 * Used by heartbeat saves and periodic updates
-	 * Request will be processed when queue is serviced
+	 * Force synchronize character state from the backend database
+	 * Fetches latest wallet balance and character state via GET /api/character/me
+	 * Triggers inventory cache refresh via InventorySubsystem
+	 * Prevents duplicate requests while a sync is in-flight
 	 * 
-	 * @param CharacterId - Character ID to save
-	 * @param StateData - State data to save
-	 * @return True if successfully queued, false if queue is full
+	 * Call this after any operation that mutates server-side state (trades, purchases, etc.)
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Persistence")
-	bool ServerOnly_QueueStateSave(const FGuid& CharacterId, const FCommon_StateData& StateData);
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Persistence")
+	void ServerOnly_ForceSaveState();
 
 	/**
-	 * Save state immediately (blocking until HTTP request completes)
-	 * Used for critical saves like logout
-	 * Bypasses queue for high priority
+	 * Force sync for a specific character by ID
+	 * Used by MarketSubsystem.OnInventorySyncRequired delegate
 	 * 
-	 * @param CharacterId - Character ID to save
-	 * @param StateData - State data to save
+	 * @param CharacterId - Character whose state needs syncing
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Persistence")
-	void ServerOnly_SaveStateImmediate(const FGuid& CharacterId, const FCommon_StateData& StateData);
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Persistence")
+	void ServerOnly_ForceSaveStateForCharacter(const FGuid& CharacterId);
 
 	/**
-	 * Get number of requests currently in queue
-	 * @return Queue size
+	 * Sync only the wallet balance (lightweight, no inventory refresh)
 	 */
-	UFUNCTION(BlueprintPure, Category = "Persistence")
-	int32 GetQueueSize() const { return SaveQueue.Num(); }
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Persistence")
+	void ServerOnly_SyncWallet();
+
+	// ==================== State Accessors ====================
 
 	/**
-	 * Get total number of successful saves
-	 * @return Save count
+	 * Get the last synced character state
+	 * @return Cached persistence state (may be stale if not recently synced)
 	 */
-	UFUNCTION(BlueprintPure, Category = "Persistence")
-	int32 GetSaveCount() const { return TotalSaveCount; }
+	UFUNCTION(BlueprintPure, Category = "Echoes|Persistence")
+	FPersistenceCharacterState GetCachedState() const { return CachedState; }
 
 	/**
-	 * Get total number of failed saves
-	 * @return Fail count
+	 * Get the current sync state
+	 * @return Current sync operation state
 	 */
-	UFUNCTION(BlueprintPure, Category = "Persistence")
-	int32 GetFailCount() const { return TotalFailCount; }
+	UFUNCTION(BlueprintPure, Category = "Echoes|Persistence")
+	EPersistenceSyncState GetSyncState() const { return SyncState; }
+
+	/**
+	 * Get time since last successful sync
+	 * @return Seconds since last sync, or -1 if never synced
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Persistence")
+	float GetTimeSinceLastSync() const;
+
+	/**
+	 * Check if cached state is valid and not stale
+	 * @param MaxAgeSeconds - Maximum age in seconds before considered stale (default: 60)
+	 * @return True if state is valid and within max age
+	 */
+	UFUNCTION(BlueprintPure, Category = "Echoes|Persistence")
+	bool IsStateValid(float MaxAgeSeconds = 60.0f) const;
+
+	// ==================== Delegates ====================
+
+	/** Fired when character state is synced from backend */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Persistence")
+	FOnPersistenceStateSynced OnStateSynced;
+
+	/** Fired when sync fails */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Persistence")
+	FOnPersistenceSyncFailed OnSyncFailed;
+
+	/** Fired when wallet balance changes */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Persistence")
+	FOnWalletBalanceChanged OnWalletBalanceChanged;
 
 protected:
-	// ==================== Queue Processing ====================
+	// ==================== HTTP Response Handlers ====================
 
-	/**
-	 * Process queued save requests
-	 * Called periodically by timer
-	 */
-	void ProcessSaveQueue();
+	void OnCharacterStateReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful,
+		bool bRefreshInventory);
 
-	/**
-	 * Process queue using bulk save optimization
-	 * Batches multiple requests into a single API call
-	 * @param MaxBatchCount - Maximum number of requests to process in this batch
-	 */
-	void ServerOnly_ProcessQueueBulk(int32 MaxBatchCount);
+	// ==================== Helper Functions ====================
 
-	/**
-	 * Send a single save request to backend
-	 * @param Request - Save request to send
-	 */
-	void SendSaveRequest(const FPersistenceSaveRequest& Request);
+	/** Get JWT token from Auth subsystem */
+	FString GetAuthToken() const;
 
-	/**
-	 * Send bulk save request to backend
-	 * @param Requests - Array of save requests to send
-	 */
-	void SendBulkSaveRequest(const TArray<FPersistenceSaveRequest>& Requests);
+	/** Get API base URL from configuration */
+	FString GetApiBaseUrl() const;
 
-	/**
-	 * Build JSON payload for save request
-	 * @param StateData - State data to serialize
-	 * @param SequenceNumber - Sequence number for this save
-	 * @return JSON string
-	 */
-	FString BuildJsonPayload(const FCommon_StateData& StateData, int64 SequenceNumber);
+	/** Get server secret from configuration */
+	FString GetServerSecret() const;
 
-	/**
-	 * Build JSON payload for bulk save request
-	 * @param Requests - Array of save requests to serialize
-	 * @return JSON string
-	 */
-	FString BuildBulkJsonPayload(const TArray<FPersistenceSaveRequest>& Requests);
+	/** Subscribe to market subsystem events */
+	void BindToMarketSubsystem();
 
-	// ==================== HTTP Callbacks ====================
+private:
+	/** HTTP module reference */
+	FHttpModule* Http = nullptr;
 
-	/**
-	 * Callback for successful save
-	 * @param CharacterId - Character that was saved
-	 * @param Response - HTTP response body
-	 */
-	void OnSaveSuccess(const FGuid& CharacterId, const FString& Response);
+	/** Cached character persistence state */
+	UPROPERTY()
+	FPersistenceCharacterState CachedState;
 
-	/**
-	 * Callback for successful bulk save
-	 * @param Response - HTTP response body
-	 */
-	void OnBulkSaveSuccess(const FString& Response);
+	/** Current sync operation state */
+	EPersistenceSyncState SyncState = EPersistenceSyncState::Idle;
 
-	/**
-	 * Callback for failed save
-	 * @param CharacterId - Character that failed to save
-	 * @param Error - Error message
-	 */
-	void OnSaveError(const FGuid& CharacterId, const FString& Error);
-
-	/**
-	 * Callback for failed bulk save
-	 * @param Error - Error message
-	 */
-	void OnBulkSaveError(const FString& Error);
-
-	// ==================== Internal State ====================
-
-	/** Queue of pending save requests */
-	TArray<FPersistenceSaveRequest> SaveQueue;
-
-	/** Timer handle for queue processing */
-	FTimerHandle QueueProcessTimerHandle;
-
-	/** Total number of successful saves */
-	int32 TotalSaveCount;
-
-	/** Total number of failed saves */
-	int32 TotalFailCount;
-
-	/** Whether a save request is currently in progress */
-	bool bSaveInProgress;
-
-	/** World reference for timer management */
-	UWorld* CachedWorld;
+	/** Handler for OnInventorySyncRequired from MarketSubsystem */
+	UFUNCTION()
+	void HandleMarketInventorySync(const FGuid& CharacterId);
 };
