@@ -210,7 +210,10 @@
         Research = 10,
         PlayerTrade = 11,
         Duel = 12,
-        KillRight = 13
+        KillRight = 13,
+        BrokerFee = 14,
+        TransactionTax = 15,
+        MarketEscrow = 16
     }
     
     /// <summary>

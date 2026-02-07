@@ -4,6 +4,7 @@ using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Models.Entities.Universe;
 using Echoes.API.Models.Entities.Inventory;
+using Echoes.API.Models.Entities.Market;
 using Echoes.API.Models.Entities.Shop;
 using Echoes.API.Models.Enums;
 using Echoes.Server.Models.Entities.Universe;
@@ -22,6 +23,7 @@ namespace Echoes.API.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterLocation> CharacterLocations { get; set; }
+        public DbSet<CharacterState> CharacterStates { get; set; }
         public DbSet<AccountSession> AccountSessions { get; set; }
         public DbSet<CharacterContract> CharacterContracts { get; set; }
         public DbSet<CharacterWallet> CharacterWallets { get; set; }
@@ -30,7 +32,7 @@ namespace Echoes.API.Data
         public DbSet<SkillGroupEntity> SkillGroups { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<CharacterSkillEnhanced> CharacterSkillsEnhanced { get; set; }
-
+        public DbSet<Killmail> Killmails { get; set; }
         // Universe entities
         public DbSet<Region> Regions { get; set; }
         public DbSet<Constellation> Constellations { get; set; }
@@ -43,6 +45,7 @@ namespace Echoes.API.Data
         public DbSet<Stargate> Stargates { get; set; }
         public DbSet<AsteroidBelt> AsteroidBelts { get; set; }
         public DbSet<PlanetResource> PlanetResources { get; set; }
+        public DbSet<WorldObject> WorldObjects { get; set; }
         // Game server entities
         public DbSet<GameServerNode> GameServers { get; set; }
         // Universe generation configuration
@@ -67,6 +70,9 @@ namespace Echoes.API.Data
         
         // Shop entities
         public DbSet<ShopItem> ShopItems { get; set; }
+        
+        // Market entities
+        public DbSet<MarketOrder> MarketOrders { get; set; }
         
         // Configuration entities
         public DbSet<Models.Config.RaceConfig> RaceConfigs { get; set; }
@@ -823,6 +829,58 @@ namespace Echoes.API.Data
                 new SkillGroupEntity { SkillGroupId = 14, Name = "Battleship", Description = "Battleship skills", ConfigJson = "{}", CreatedAt = seedTime, UpdatedAt = seedTime },
                 new SkillGroupEntity { SkillGroupId = 15, Name = "Industrial", Description = "Industrial skills", ConfigJson = "{}", CreatedAt = seedTime, UpdatedAt = seedTime }
             );
+            // =========================================================================
+            // MarketOrder configuration
+            // =========================================================================
+            modelBuilder.Entity<MarketOrder>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => new { e.RegionId, e.ItemId, e.Status });
+                entity.HasIndex(e => e.CharacterId);
+                entity.HasIndex(e => e.StationId);
+                entity.HasIndex(e => e.IssuedAt).IsDescending();
+
+                entity.Property(e => e.Price).HasPrecision(18, 2);
+                entity.Property(e => e.BrokerFee).HasPrecision(18, 2);
+                entity.Property(e => e.Escrow).HasPrecision(18, 2);
+                entity.Property(e => e.IssuedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.Status).HasConversion<string>();
+
+                entity.HasOne(e => e.Character)
+                    .WithMany()
+                    .HasForeignKey(e => e.CharacterId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Station)
+                    .WithMany()
+                    .HasForeignKey(e => e.StationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Region)
+                    .WithMany()
+                    .HasForeignKey(e => e.RegionId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // =========================================================================
+            // Killmail configuration
+            // =========================================================================
+            modelBuilder.Entity<Killmail>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.VictimId);
+                entity.HasIndex(e => e.FinalStrikerId);
+                entity.HasIndex(e => e.SolarSystemId);
+                entity.HasIndex(e => e.KilledAt).IsDescending();
+
+                entity.Property(e => e.TotalLossValue).HasPrecision(18, 2);
+                entity.Property(e => e.KilledAt).HasDefaultValueSql("NOW()");
+
+                entity.HasOne(e => e.Victim)
+                    .WithMany()
+                    .HasForeignKey(e => e.VictimId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

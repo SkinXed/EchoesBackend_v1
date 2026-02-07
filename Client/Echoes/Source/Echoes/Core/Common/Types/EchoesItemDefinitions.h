@@ -9,6 +9,32 @@
 #include "EchoesItemDefinitions.generated.h"
 
 /**
+ * Forward declaration of ESlotType from ShipFittingInterface
+ * This enum defines fitting slot types: High, Mid, Low, Rig, Subsystem
+ */
+UENUM(BlueprintType)
+enum class EEchoesSlotType : uint8
+{
+	/** High slots - Weapons, offensive modules */
+	High UMETA(DisplayName = "High Slot"),
+	
+	/** Medium slots - Shields, propulsion, electronic warfare */
+	Mid UMETA(DisplayName = "Mid Slot"),
+	
+	/** Low slots - Armor, damage mods, engine upgrades */
+	Low UMETA(DisplayName = "Low Slot"),
+	
+	/** Rig slots - Permanent ship modifications */
+	Rig UMETA(DisplayName = "Rig Slot"),
+	
+	/** Subsystem slots - T3 ship subsystems */
+	Subsystem UMETA(DisplayName = "Subsystem Slot"),
+	
+	/** Not fittable / Invalid */
+	None UMETA(DisplayName = "None")
+};
+
+/**
  * Item category enumeration
  * Categorizes items for filtering and organization
  */
@@ -143,6 +169,28 @@ struct ECHOES_API FEchoesItemDefinitionRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Definition")
 	int32 MaxStackSize = 0;
 
+	/**
+	 * Fitting slot type for modules/equipment
+	 * Determines which slot on a ship this module can be fitted to
+	 * None = Not a fittable module (ore, minerals, etc.)
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Definition|Fitting")
+	EEchoesSlotType FitSlot = EEchoesSlotType::None;
+
+	/**
+	 * Powergrid requirement for fitting this module
+	 * Only applicable to modules (Category == Module)
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Definition|Fitting")
+	float PowergridRequired = 0.0f;
+
+	/**
+	 * CPU requirement for fitting this module
+	 * Only applicable to modules (Category == Module)
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Definition|Fitting")
+	float CPURequired = 0.0f;
+
 	// Constructor
 	FEchoesItemDefinitionRow()
 		: DisplayName(FText::FromString(TEXT("Unknown Item")))
@@ -155,6 +203,137 @@ struct ECHOES_API FEchoesItemDefinitionRow : public FTableRowBase
 		, MetaLevel(0)
 		, bIsStackable(true)
 		, MaxStackSize(0)
+		, FitSlot(EEchoesSlotType::None)
+		, PowergridRequired(0.0f)
+		, CPURequired(0.0f)
+	{
+	}
+};
+
+/**
+ * FWeaponAttributesRow
+ * 
+ * Weapon-specific attributes data table row
+ * Separated from main item table to avoid bloating with module-specific data
+ * 
+ * Usage:
+ * - Create separate Data Table for weapon/module attributes
+ * - Row names should match TypeId (same as FEchoesItemDefinitionRow)
+ * - Only populate rows for modules/weapons
+ * - Use Common_GetWeaponAttributes() helper to fetch this data
+ * 
+ * Example Data Table Setup:
+ * Row Name: "2048" (Light Neutron Blaster TypeId)
+ * Damage: 55.0
+ * OptimalRange: 2000.0 (2km)
+ * Falloff: 8000.0 (8km)
+ * TrackingSpeed: 0.4
+ * ActivationCost: 5.0 (GJ)
+ * AmmoTypeId: 256 (Antimatter Charge S)
+ */
+USTRUCT(BlueprintType)
+struct ECHOES_API FWeaponAttributesRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/**
+	 * Base damage per hit/cycle
+	 * Actual damage depends on ammo type and target resistances
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes")
+	float Damage = 0.0f;
+
+	/**
+	 * Optimal range in centimeters (UE units)
+	 * Full damage applied up to this distance
+	 * Example: 200000.0 = 2km optimal
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Range")
+	float OptimalRange = 0.0f;
+
+	/**
+	 * Falloff range in centimeters (UE units)
+	 * Damage decreases from Optimal to Optimal+Falloff
+	 * Example: 800000.0 = 8km falloff
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Range")
+	float Falloff = 0.0f;
+
+	/**
+	 * Tracking speed (radians per second)
+	 * Affects ability to hit small/fast targets
+	 * Higher = better tracking
+	 * Example: 0.4 = good tracking for medium weapons
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Accuracy")
+	float TrackingSpeed = 0.0f;
+
+	/**
+	 * Capacitor energy cost per activation (in GJ)
+	 * Deducted from ship's capacitor when fired
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Activation")
+	float ActivationCost = 0.0f;
+
+	/**
+	 * Activation time / Cycle time (in seconds)
+	 * Time between shots or duration of active cycle
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Activation")
+	float ActivationTime = 1.0f;
+
+	/**
+	 * Ammo type ID required for this weapon
+	 * 0 = No ammo required (energy weapons)
+	 * >0 = Specific ammo TypeId required
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Ammo")
+	int32 AmmoTypeId = 0;
+
+	/**
+	 * Ammo consumption per shot/cycle
+	 * Default: 1 ammo per activation
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Ammo")
+	int32 AmmoConsumptionPerCycle = 1;
+
+	/**
+	 * Maximum ammo capacity in weapon
+	 * For weapons that load ammo (missiles, projectiles)
+	 * 0 = Uses ship cargo (energy weapons)
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Ammo")
+	int32 MaxAmmoCapacity = 0;
+
+	/**
+	 * Damage multiplier for this weapon
+	 * Applied on top of base damage (for special variants)
+	 * Default: 1.0 (no modification)
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Damage")
+	float DamageMultiplier = 1.0f;
+
+	/**
+	 * Rate of fire modifier
+	 * Values < 1.0 = faster firing, > 1.0 = slower
+	 * Default: 1.0 (standard rate)
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Attributes|Activation")
+	float RateOfFireMultiplier = 1.0f;
+
+	// Constructor
+	FWeaponAttributesRow()
+		: Damage(0.0f)
+		, OptimalRange(0.0f)
+		, Falloff(0.0f)
+		, TrackingSpeed(0.0f)
+		, ActivationCost(0.0f)
+		, ActivationTime(1.0f)
+		, AmmoTypeId(0)
+		, AmmoConsumptionPerCycle(1)
+		, MaxAmmoCapacity(0)
+		, DamageMultiplier(1.0f)
+		, RateOfFireMultiplier(1.0f)
 	{
 	}
 };
