@@ -166,6 +166,9 @@ namespace Echoes.API.Controllers
             if (!ValidateServerSecret())
                 return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
 
+            if (price <= 0 || quantity <= 0)
+                return BadRequest(new { error = "Price and quantity must be greater than zero" });
+
             var taxInfo = _marketService.CalculateTaxes(price, quantity);
             return Ok(taxInfo);
         }
