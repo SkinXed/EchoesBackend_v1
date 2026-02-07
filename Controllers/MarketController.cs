@@ -1,7 +1,10 @@
+using Echoes.API.Data;
 using Echoes.API.Models.DTOs.Market;
 using Echoes.API.Services.Market;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Echoes.API.Controllers
 {
@@ -17,15 +20,18 @@ namespace Echoes.API.Controllers
         private readonly IMarketService _marketService;
         private readonly ILogger<MarketController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly DatabaseContext _context;
 
         public MarketController(
             IMarketService marketService,
             ILogger<MarketController> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            DatabaseContext context)
         {
             _marketService = marketService;
             _logger = logger;
             _configuration = configuration;
+            _context = context;
         }
 
         /// <summary>
@@ -38,6 +44,19 @@ namespace Echoes.API.Controllers
 
             var configuredSecret = _configuration["ServerSecret"] ?? "default-server-secret-change-me";
             return string.Equals(headerSecret, configuredSecret, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Validates that the given characterId belongs to the authenticated user's account
+        /// </summary>
+        private async Task<bool> ValidateCharacterOwnershipAsync(Guid characterId)
+        {
+            var accountIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(accountIdClaim) || !Guid.TryParse(accountIdClaim, out var accountId))
+                return false;
+
+            return await _context.Characters
+                .AnyAsync(c => c.Id == characterId && c.AccountId == accountId);
         }
 
         /// <summary>
@@ -79,6 +98,9 @@ namespace Echoes.API.Controllers
             if (!ValidateServerSecret())
                 return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
 
+            if (!await ValidateCharacterOwnershipAsync(request.CharacterId))
+                return Unauthorized(new { error = "Character does not belong to the authenticated user" });
+
             try
             {
                 var result = await _marketService.CreateOrderAsync(request);
@@ -112,6 +134,9 @@ namespace Echoes.API.Controllers
             if (!ValidateServerSecret())
                 return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
 
+            if (!await ValidateCharacterOwnershipAsync(request.CharacterId))
+                return Unauthorized(new { error = "Character does not belong to the authenticated user" });
+
             try
             {
                 var result = await _marketService.ExecuteTradeAsync(request);
@@ -142,6 +167,9 @@ namespace Echoes.API.Controllers
         {
             if (!ValidateServerSecret())
                 return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
+
+            if (!await ValidateCharacterOwnershipAsync(characterId))
+                return Unauthorized(new { error = "Character does not belong to the authenticated user" });
 
             try
             {
