@@ -82,3 +82,46 @@ struct FMarketFilter
 	UPROPERTY(BlueprintReadWrite, Category = "Market")
 	bool bShowOnlySellOrders = false;
 };
+
+/**
+ * Result of a successful trade execution
+ * Used for UI notifications (toast) and inventory sync
+ */
+USTRUCT(BlueprintType)
+struct FMarketTradeResult
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	FGuid OrderId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	FGuid TransactionId;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	int32 QuantityTraded = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	double TotalPrice = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	double TransactionTax = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	int32 ItemId = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	FString ItemName;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Market")
+	FString Message;
+};
+
+/** Trade transaction state for timeout/reliability tracking */
+UENUM(BlueprintType)
+enum class EMarketTransactionState : uint8
+{
+	Idle,
+	InFlight,
+	UnknownState
+};

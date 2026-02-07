@@ -104,5 +104,9 @@ namespace Echoes.API.Models.DTOs.Market
         public Guid CharacterId { get; set; }
         public Guid OrderId { get; set; }
         public int Quantity { get; set; }
+        /// <summary>
+        /// ID станции, на которой находится игрок (для валидации местоположения)
+        /// </summary>
+        public Guid? CurrentStationId { get; set; }
     }
 }

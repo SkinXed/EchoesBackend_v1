@@ -6,14 +6,19 @@
 #include "Json.h"
 #include "JsonUtilities.h"
 #include "Misc/ConfigCacheIni.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
+
+DEFINE_LOG_CATEGORY(LogEchoesMarket);
 
 void UEchoesMarketSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
 	Http = &FHttpModule::Get();
+	TransactionState = EMarketTransactionState::Idle;
 
-	UE_LOG(LogTemp, Log, TEXT("EchoesMarketSubsystem initialized"));
+	UE_LOG(LogEchoesMarket, Log, TEXT("EchoesMarketSubsystem initialized"));
 }
 
 void UEchoesMarketSubsystem::Deinitialize()
@@ -21,8 +26,9 @@ void UEchoesMarketSubsystem::Deinitialize()
 	Super::Deinitialize();
 
 	CachedOrders.Empty();
+	TransactionState = EMarketTransactionState::Idle;
 
-	UE_LOG(LogTemp, Log, TEXT("EchoesMarketSubsystem deinitialized"));
+	UE_LOG(LogEchoesMarket, Log, TEXT("EchoesMarketSubsystem deinitialized"));
 }
 
 // ==================== Server-Only Market Functions ====================
@@ -31,14 +37,14 @@ void UEchoesMarketSubsystem::ServerOnly_FetchMarketOrders(const FMarketFilter& F
 {
 	if (!Http)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: HTTP module not available"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("HTTP module not available"));
 		OnMarketRequestFailed.Broadcast(TEXT("HTTP module not available"));
 		return;
 	}
 
 	if (!Filter.RegionId.IsValid() || Filter.ItemId <= 0)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Invalid filter - RegionId or ItemId is empty"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("Invalid filter - RegionId or ItemId is empty"));
 		OnMarketRequestFailed.Broadcast(TEXT("Invalid filter parameters"));
 		return;
 	}
@@ -62,35 +68,59 @@ void UEchoesMarketSubsystem::ServerOnly_FetchMarketOrders(const FMarketFilter& F
 
 	if (!HttpRequest->ProcessRequest())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Failed to send fetch orders request"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("Failed to send fetch orders request"));
 		OnMarketRequestFailed.Broadcast(TEXT("Failed to send request"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("Market: Fetch orders request sent to: %s"), *Url);
+		UE_LOG(LogEchoesMarket, Log, TEXT("Fetch orders request sent to: %s"), *Url);
 	}
 }
 
-void UEchoesMarketSubsystem::ServerOnly_ExecuteTrade(const FGuid& OrderId, int32 Quantity)
+void UEchoesMarketSubsystem::ServerOnly_ExecuteTrade(const FGuid& CharacterId, const FGuid& OrderId, int32 Quantity, const FGuid& CurrentStationId)
 {
 	if (!Http)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: HTTP module not available"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("HTTP module not available"));
 		OnMarketRequestFailed.Broadcast(TEXT("HTTP module not available"));
 		return;
 	}
 
-	if (!OrderId.IsValid() || Quantity <= 0)
+	if (!OrderId.IsValid() || Quantity <= 0 || !CharacterId.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Invalid trade parameters"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("Invalid trade parameters: OrderId=%s, CharacterId=%s, Quantity=%d"),
+			*OrderId.ToString(), *CharacterId.ToString(), Quantity);
 		OnMarketRequestFailed.Broadcast(TEXT("Invalid trade parameters"));
 		return;
 	}
 
+	// Prevent duplicate trade requests
+	if (TransactionState == EMarketTransactionState::InFlight)
+	{
+		UE_LOG(LogEchoesMarket, Warning, TEXT("Trade request rejected - another trade is in flight"));
+		OnMarketRequestFailed.Broadcast(TEXT("A trade is already in progress. Please wait."));
+		return;
+	}
+
+	if (TransactionState == EMarketTransactionState::UnknownState)
+	{
+		UE_LOG(LogEchoesMarket, Warning, TEXT("Trade request rejected - previous trade in unknown state. Sync wallet first."));
+		OnMarketRequestFailed.Broadcast(TEXT("Previous trade status unknown. Please sync your wallet before retrying."));
+		return;
+	}
+
+	// Mark transaction as in-flight
+	TransactionState = EMarketTransactionState::InFlight;
+
+	UE_LOG(LogEchoesMarket, Log, TEXT("[TRADE BEGIN] CharacterId=%s, OrderId=%s, Quantity=%d, StationId=%s"),
+		*CharacterId.ToString(), *OrderId.ToString(), Quantity, *CurrentStationId.ToString());
+
 	// Build JSON payload (mirrors C# ExecuteTradeRequest, PascalCase)
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+	JsonObject->SetStringField(TEXT("CharacterId"), CharacterId.ToString());
 	JsonObject->SetStringField(TEXT("OrderId"), OrderId.ToString());
 	JsonObject->SetNumberField(TEXT("Quantity"), Quantity);
+	JsonObject->SetStringField(TEXT("CurrentStationId"), CurrentStationId.ToString());
 
 	FString JsonString;
 	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JsonString);
@@ -106,17 +136,30 @@ void UEchoesMarketSubsystem::ServerOnly_ExecuteTrade(const FGuid& OrderId, int32
 
 	HttpRequest->OnProcessRequestComplete().BindUObject(
 		this,
-		&UEchoesMarketSubsystem::OnExecuteTradeResponseReceived);
+		&UEchoesMarketSubsystem::OnExecuteTradeResponseReceived,
+		CharacterId);
 
 	if (!HttpRequest->ProcessRequest())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Failed to send execute trade request"));
+		TransactionState = EMarketTransactionState::Idle;
+		UE_LOG(LogEchoesMarket, Error, TEXT("[TRADE FAIL] Failed to send execute trade HTTP request"));
 		OnMarketRequestFailed.Broadcast(TEXT("Failed to send request"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("Market: Execute trade request sent for OrderId=%s, Quantity=%d"),
-			*OrderId.ToString(), Quantity);
+		UE_LOG(LogEchoesMarket, Log, TEXT("[TRADE SENT] Awaiting API response for OrderId=%s"),
+			*OrderId.ToString());
+
+		// Start timeout timer
+		if (UWorld* World = GetGameInstance()->GetWorld())
+		{
+			World->GetTimerManager().SetTimer(
+				TradeTimeoutTimerHandle,
+				this,
+				&UEchoesMarketSubsystem::OnTradeTimeout,
+				TradeTimeoutSeconds,
+				false);
+		}
 	}
 }
 
@@ -124,10 +167,15 @@ void UEchoesMarketSubsystem::ServerOnly_CreateOrder(const FMarketOrderDto& NewOr
 {
 	if (!Http)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: HTTP module not available"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("HTTP module not available"));
 		OnMarketRequestFailed.Broadcast(TEXT("HTTP module not available"));
 		return;
 	}
+
+	UE_LOG(LogEchoesMarket, Log, TEXT("[ORDER CREATE] %s %dx item #%d @ %.2f ISK by CharacterId=%s"),
+		NewOrder.IsBuyOrder ? TEXT("BUY") : TEXT("SELL"),
+		NewOrder.Quantity, NewOrder.ItemId, NewOrder.Price,
+		*NewOrder.CharacterId.ToString());
 
 	// Build JSON payload (mirrors C# CreateOrderRequest, PascalCase)
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
@@ -157,14 +205,8 @@ void UEchoesMarketSubsystem::ServerOnly_CreateOrder(const FMarketOrderDto& NewOr
 
 	if (!HttpRequest->ProcessRequest())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Failed to send create order request"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[ORDER FAIL] Failed to send create order request"));
 		OnMarketRequestFailed.Broadcast(TEXT("Failed to send request"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Market: Create order request sent - %s %dx item #%d @ %.2f ISK"),
-			NewOrder.IsBuyOrder ? TEXT("BUY") : TEXT("SELL"),
-			NewOrder.Quantity, NewOrder.ItemId, NewOrder.Price);
 	}
 }
 
@@ -172,17 +214,20 @@ void UEchoesMarketSubsystem::ServerOnly_CancelOrder(const FGuid& OrderId, const 
 {
 	if (!Http)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: HTTP module not available"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("HTTP module not available"));
 		OnMarketRequestFailed.Broadcast(TEXT("HTTP module not available"));
 		return;
 	}
 
 	if (!OrderId.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Invalid OrderId for cancellation"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("Invalid OrderId for cancellation"));
 		OnMarketRequestFailed.Broadcast(TEXT("Invalid order ID"));
 		return;
 	}
+
+	UE_LOG(LogEchoesMarket, Log, TEXT("[ORDER CANCEL] OrderId=%s by CharacterId=%s"),
+		*OrderId.ToString(), *CharacterId.ToString());
 
 	// DELETE /api/market/orders/{orderId}?characterId={characterId}
 	FString Url = GetApiBaseUrl() + FString::Printf(
@@ -202,12 +247,29 @@ void UEchoesMarketSubsystem::ServerOnly_CancelOrder(const FGuid& OrderId, const 
 
 	if (!HttpRequest->ProcessRequest())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Failed to send cancel order request"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[CANCEL FAIL] Failed to send cancel order request"));
 		OnMarketRequestFailed.Broadcast(TEXT("Failed to send request"));
 	}
-	else
+}
+
+// ==================== Transaction State ====================
+
+void UEchoesMarketSubsystem::ResetTransactionState()
+{
+	UE_LOG(LogEchoesMarket, Log, TEXT("Transaction state reset from %d to Idle"),
+		static_cast<int32>(TransactionState));
+	TransactionState = EMarketTransactionState::Idle;
+}
+
+void UEchoesMarketSubsystem::OnTradeTimeout()
+{
+	if (TransactionState == EMarketTransactionState::InFlight)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Market: Cancel order request sent for OrderId=%s"), *OrderId.ToString());
+		UE_LOG(LogEchoesMarket, Warning, TEXT("[TRADE TIMEOUT] Trade request timed out after %.0fs. Marking as UnknownState."),
+			TradeTimeoutSeconds);
+		TransactionState = EMarketTransactionState::UnknownState;
+		OnTradeError.Broadcast(0, TEXT("Trade request timed out. Please sync your wallet before retrying."));
+		OnMarketRequestFailed.Broadcast(TEXT("Trade request timed out"));
 	}
 }
 
@@ -234,7 +296,7 @@ void UEchoesMarketSubsystem::OnFetchOrdersResponseReceived(
 {
 	if (!bWasSuccessful || !Response.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Fetch orders request failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("Fetch orders request failed (network error)"));
 		OnMarketRequestFailed.Broadcast(TEXT("Request failed"));
 		return;
 	}
@@ -242,7 +304,7 @@ void UEchoesMarketSubsystem::OnFetchOrdersResponseReceived(
 	const int32 ResponseCode = Response->GetResponseCode();
 	const FString ResponseBody = Response->GetContentAsString();
 
-	UE_LOG(LogTemp, Log, TEXT("Market: Fetch orders response: Code=%d"), ResponseCode);
+	UE_LOG(LogEchoesMarket, Log, TEXT("Fetch orders response: Code=%d"), ResponseCode);
 
 	if (ResponseCode == 200)
 	{
@@ -252,7 +314,7 @@ void UEchoesMarketSubsystem::OnFetchOrdersResponseReceived(
 
 		if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
 		{
-			UE_LOG(LogTemp, Error, TEXT("Market: Failed to parse order book JSON"));
+			UE_LOG(LogEchoesMarket, Error, TEXT("Failed to parse order book JSON"));
 			OnMarketRequestFailed.Broadcast(TEXT("Failed to parse response"));
 			return;
 		}
@@ -305,72 +367,101 @@ void UEchoesMarketSubsystem::OnFetchOrdersResponseReceived(
 		CachedOrders = AllOrders;
 		CacheTimestamp = FDateTime::UtcNow();
 
-		UE_LOG(LogTemp, Log, TEXT("Market: Received %d orders (Buy+Sell)"), AllOrders.Num());
+		UE_LOG(LogEchoesMarket, Log, TEXT("Received %d orders (Buy+Sell) for region=%s item=%d"),
+			AllOrders.Num(), *Filter.RegionId.ToString(), Filter.ItemId);
 		OnMarketDataReceived.Broadcast(AllOrders);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Fetch orders failed with code: %d - %s"), ResponseCode, *ResponseBody);
-		OnMarketRequestFailed.Broadcast(FString::Printf(TEXT("Server error: %d"), ResponseCode));
+		FString ErrorMsg = ExtractErrorMessage(ResponseBody, ResponseCode, TEXT("Fetch orders failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("Fetch orders failed: Code=%d - %s"), ResponseCode, *ErrorMsg);
+		OnMarketRequestFailed.Broadcast(ErrorMsg);
 	}
 }
 
 void UEchoesMarketSubsystem::OnExecuteTradeResponseReceived(
 	FHttpRequestPtr Request,
 	FHttpResponsePtr Response,
-	bool bWasSuccessful)
+	bool bWasSuccessful,
+	FGuid CharacterId)
 {
+	// Clear timeout timer
+	if (UGameInstance* GI = GetGameInstance())
+	{
+		if (UWorld* World = GI->GetWorld())
+		{
+			World->GetTimerManager().ClearTimer(TradeTimeoutTimerHandle);
+		}
+	}
+
 	if (!bWasSuccessful || !Response.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Execute trade request failed"));
-		OnMarketRequestFailed.Broadcast(TEXT("Request failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[TRADE FAIL] Execute trade request failed (network error). CharacterId=%s"),
+			*CharacterId.ToString());
+		TransactionState = EMarketTransactionState::UnknownState;
+		OnTradeError.Broadcast(0, TEXT("Network error during trade. Status unknown."));
+		OnMarketRequestFailed.Broadcast(TEXT("Trade request failed - network error"));
 		return;
 	}
 
 	const int32 ResponseCode = Response->GetResponseCode();
 	const FString ResponseBody = Response->GetContentAsString();
 
+	UE_LOG(LogEchoesMarket, Log, TEXT("[TRADE RESPONSE] Code=%d, CharacterId=%s"), ResponseCode, *CharacterId.ToString());
+
 	if (ResponseCode == 200)
 	{
-		// Parse ExecuteTradeResultDto (PascalCase)
+		// SUCCESS: Parse ExecuteTradeResultDto (PascalCase)
+		TransactionState = EMarketTransactionState::Idle;
+
 		TSharedPtr<FJsonObject> JsonObject;
 		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
 
 		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
 		{
-			FGuid OrderId;
-			FGuid::Parse(JsonObject->GetStringField(TEXT("OrderId")), OrderId);
-			int32 QuantityTraded = JsonObject->GetIntegerField(TEXT("QuantityTraded"));
-			double TotalPrice = JsonObject->GetNumberField(TEXT("TotalPrice"));
-			double TransactionTax = JsonObject->GetNumberField(TEXT("TransactionTax"));
+			FMarketTradeResult TradeResult;
+			FGuid::Parse(JsonObject->GetStringField(TEXT("OrderId")), TradeResult.OrderId);
+			TradeResult.QuantityTraded = JsonObject->GetIntegerField(TEXT("QuantityTraded"));
+			TradeResult.TotalPrice = JsonObject->GetNumberField(TEXT("TotalPrice"));
+			TradeResult.TransactionTax = JsonObject->GetNumberField(TEXT("TransactionTax"));
 
-			UE_LOG(LogTemp, Log, TEXT("Market: Trade executed! OrderId=%s, Qty=%d, Total=%.2f ISK, Tax=%.2f ISK"),
-				*OrderId.ToString(), QuantityTraded, TotalPrice, TransactionTax);
+			if (JsonObject->HasField(TEXT("Message")))
+			{
+				TradeResult.Message = JsonObject->GetStringField(TEXT("Message"));
+			}
 
-			OnMarketTradeExecuted.Broadcast(OrderId, QuantityTraded);
+			UE_LOG(LogEchoesMarket, Log,
+				TEXT("[TRADE SUCCESS] OrderId=%s, Qty=%d, Total=%.2f ISK, Tax=%.2f ISK, CharacterId=%s"),
+				*TradeResult.OrderId.ToString(), TradeResult.QuantityTraded,
+				TradeResult.TotalPrice, TradeResult.TransactionTax,
+				*CharacterId.ToString());
+
+			// Broadcast all trade events
+			OnMarketTradeExecuted.Broadcast(TradeResult.OrderId, TradeResult.QuantityTraded);
+			OnTradeConfirmed.Broadcast(TradeResult);
+
+			// Signal that inventory and wallet need to be resynced
+			UE_LOG(LogEchoesMarket, Log, TEXT("[SYNC] Requesting inventory/wallet sync for CharacterId=%s"),
+				*CharacterId.ToString());
+			OnInventorySyncRequired.Broadcast(CharacterId);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("Market: Failed to parse trade result JSON"));
+			UE_LOG(LogEchoesMarket, Error, TEXT("[TRADE FAIL] Failed to parse trade result JSON"));
 			OnMarketRequestFailed.Broadcast(TEXT("Failed to parse trade response"));
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Execute trade failed with code: %d - %s"), ResponseCode, *ResponseBody);
+		// ERROR: Trade was rejected by backend
+		TransactionState = EMarketTransactionState::Idle;
 
-		// Try to extract error message
-		FString ErrorMsg = FString::Printf(TEXT("Trade failed: %d"), ResponseCode);
-		TSharedPtr<FJsonObject> JsonObject;
-		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
-		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
-		{
-			if (JsonObject->HasField(TEXT("error")))
-			{
-				ErrorMsg = JsonObject->GetStringField(TEXT("error"));
-			}
-		}
+		FString ErrorMsg = ExtractErrorMessage(ResponseBody, ResponseCode, TEXT("Trade failed"));
 
+		UE_LOG(LogEchoesMarket, Warning, TEXT("[TRADE REJECTED] Code=%d, Error=%s, CharacterId=%s"),
+			ResponseCode, *ErrorMsg, *CharacterId.ToString());
+
+		OnTradeError.Broadcast(ResponseCode, ErrorMsg);
 		OnMarketRequestFailed.Broadcast(ErrorMsg);
 	}
 }
@@ -382,7 +473,7 @@ void UEchoesMarketSubsystem::OnCreateOrderResponseReceived(
 {
 	if (!bWasSuccessful || !Response.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Create order request failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[ORDER FAIL] Create order request failed (network error)"));
 		OnMarketRequestFailed.Broadcast(TEXT("Request failed"));
 		return;
 	}
@@ -403,33 +494,22 @@ void UEchoesMarketSubsystem::OnCreateOrderResponseReceived(
 			double BrokerFee = JsonObject->GetNumberField(TEXT("BrokerFee"));
 			double EscrowAmount = JsonObject->GetNumberField(TEXT("EscrowAmount"));
 
-			UE_LOG(LogTemp, Log, TEXT("Market: Order created! OrderId=%s, BrokerFee=%.2f ISK, Escrow=%.2f ISK"),
+			UE_LOG(LogEchoesMarket, Log,
+				TEXT("[ORDER CREATED] OrderId=%s, BrokerFee=%.2f ISK, Escrow=%.2f ISK"),
 				*OrderId.ToString(), BrokerFee, EscrowAmount);
 
 			OnMarketOrderCreated.Broadcast(OrderId);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("Market: Failed to parse create order result JSON"));
+			UE_LOG(LogEchoesMarket, Error, TEXT("[ORDER FAIL] Failed to parse create order result JSON"));
 			OnMarketRequestFailed.Broadcast(TEXT("Failed to parse order response"));
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Create order failed with code: %d - %s"), ResponseCode, *ResponseBody);
-
-		// Try to extract error message
-		FString ErrorMsg = FString::Printf(TEXT("Order creation failed: %d"), ResponseCode);
-		TSharedPtr<FJsonObject> JsonObject;
-		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
-		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
-		{
-			if (JsonObject->HasField(TEXT("error")))
-			{
-				ErrorMsg = JsonObject->GetStringField(TEXT("error"));
-			}
-		}
-
+		FString ErrorMsg = ExtractErrorMessage(ResponseBody, ResponseCode, TEXT("Order creation failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[ORDER REJECTED] Code=%d - %s"), ResponseCode, *ErrorMsg);
 		OnMarketRequestFailed.Broadcast(ErrorMsg);
 	}
 }
@@ -441,7 +521,7 @@ void UEchoesMarketSubsystem::OnCancelOrderResponseReceived(
 {
 	if (!bWasSuccessful || !Response.IsValid())
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Cancel order request failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[CANCEL FAIL] Cancel order request failed (network error)"));
 		OnMarketRequestFailed.Broadcast(TEXT("Request failed"));
 		return;
 	}
@@ -461,32 +541,22 @@ void UEchoesMarketSubsystem::OnCancelOrderResponseReceived(
 			FGuid::Parse(JsonObject->GetStringField(TEXT("OrderId")), OrderId);
 			double EscrowRefunded = JsonObject->GetNumberField(TEXT("EscrowRefunded"));
 
-			UE_LOG(LogTemp, Log, TEXT("Market: Order cancelled! OrderId=%s, EscrowRefunded=%.2f ISK"),
+			UE_LOG(LogEchoesMarket, Log,
+				TEXT("[ORDER CANCELLED] OrderId=%s, EscrowRefunded=%.2f ISK"),
 				*OrderId.ToString(), EscrowRefunded);
 
 			OnMarketOrderCancelled.Broadcast(OrderId, EscrowRefunded);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("Market: Failed to parse cancel order result JSON"));
+			UE_LOG(LogEchoesMarket, Error, TEXT("[CANCEL FAIL] Failed to parse cancel order result JSON"));
 			OnMarketRequestFailed.Broadcast(TEXT("Failed to parse cancel response"));
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Market: Cancel order failed with code: %d - %s"), ResponseCode, *ResponseBody);
-
-		FString ErrorMsg = FString::Printf(TEXT("Order cancellation failed: %d"), ResponseCode);
-		TSharedPtr<FJsonObject> JsonObject;
-		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
-		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
-		{
-			if (JsonObject->HasField(TEXT("error")))
-			{
-				ErrorMsg = JsonObject->GetStringField(TEXT("error"));
-			}
-		}
-
+		FString ErrorMsg = ExtractErrorMessage(ResponseBody, ResponseCode, TEXT("Order cancellation failed"));
+		UE_LOG(LogEchoesMarket, Error, TEXT("[CANCEL REJECTED] Code=%d - %s"), ResponseCode, *ErrorMsg);
 		OnMarketRequestFailed.Broadcast(ErrorMsg);
 	}
 }
@@ -531,6 +601,23 @@ bool UEchoesMarketSubsystem::ParseMarketOrder(const TSharedPtr<FJsonObject>& Jso
 	}
 
 	return true;
+}
+
+FString UEchoesMarketSubsystem::ExtractErrorMessage(const FString& ResponseBody, int32 ResponseCode, const FString& DefaultPrefix)
+{
+	FString ErrorMsg = FString::Printf(TEXT("%s: %d"), *DefaultPrefix, ResponseCode);
+
+	TSharedPtr<FJsonObject> JsonObject;
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
+	if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+	{
+		if (JsonObject->HasField(TEXT("error")))
+		{
+			ErrorMsg = JsonObject->GetStringField(TEXT("error"));
+		}
+	}
+
+	return ErrorMsg;
 }
 
 FString UEchoesMarketSubsystem::GetApiBaseUrl() const
