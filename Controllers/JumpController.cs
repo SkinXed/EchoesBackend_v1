@@ -102,6 +102,38 @@ namespace Echoes.API.Controllers
                     }
                 }
 
+                // Check if character is in combat
+                var activeSession = await _context.PlayerSessions
+                    .Where(s => s.CharacterId == request.CharacterId && s.IsActive)
+                    .FirstOrDefaultAsync();
+
+                if (activeSession != null)
+                {
+                    if (activeSession.IsInCombat())
+                    {
+                        _logger.LogWarning("Character {CharacterId} cannot jump - in combat until {CombatUntil}",
+                            request.CharacterId, activeSession.CombatUntil);
+                        return BadRequest(new JumpResponseDto
+                        {
+                            Success = false,
+                            Message = "Cannot jump while in combat",
+                            DenialReason = $"Combat timer active until {activeSession.CombatUntil:yyyy-MM-dd HH:mm:ss} UTC"
+                        });
+                    }
+
+                    if (activeSession.HasAggression())
+                    {
+                        _logger.LogWarning("Character {CharacterId} cannot jump - has aggression until {AggressionUntil}",
+                            request.CharacterId, activeSession.AggressionUntil);
+                        return BadRequest(new JumpResponseDto
+                        {
+                            Success = false,
+                            Message = "Cannot jump with aggression timer",
+                            DenialReason = $"Aggression timer active until {activeSession.AggressionUntil:yyyy-MM-dd HH:mm:ss} UTC"
+                        });
+                    }
+                }
+
                 // Validate stargate exists and is operational
                 var stargate = await _context.Stargates
                     .Include(sg => sg.DestinationSolarSystem)

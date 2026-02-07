@@ -27,6 +27,9 @@ namespace Echoes.API.Data
         public DbSet<CharacterContract> CharacterContracts { get; set; }
         public DbSet<CharacterWallet> CharacterWallets { get; set; }
         public DbSet<WalletTransaction> WalletTransactions { get; set; }
+        
+        // Session entities
+        public DbSet<EchoesBackend_v1.Models.Entities.Session.PlayerSession> PlayerSessions { get; set; }
 
         // Universe entities
         public DbSet<Region> Regions { get; set; }
