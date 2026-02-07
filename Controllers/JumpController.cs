@@ -72,7 +72,7 @@ namespace Echoes.API.Controllers
 
                 // Validate character exists
                 var character = await _context.Characters
-                    .Include(c => c.Pilot)
+                    .Include(c => c.CurrentLocation)
                     .FirstOrDefaultAsync(c => c.Id == request.CharacterId);
 
                 if (character == null)

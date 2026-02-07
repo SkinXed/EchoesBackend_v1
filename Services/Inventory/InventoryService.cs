@@ -267,7 +267,7 @@ namespace Echoes.API.Services.Inventory
             return requiredVolume <= availableVolume;
         }
 
-        private async Task LogAssetActionAsync(
+        private Task LogAssetActionAsync(
             Guid assetId,
             Guid actorId,
             string actionType,
@@ -290,6 +290,7 @@ namespace Echoes.API.Services.Inventory
             };
 
             _context.AssetLogs.Add(log);
+            return Task.CompletedTask;
         }
 
         public async Task<ContainerDto> GetOrCreatePersonalHangarAsync(Guid ownerId, int stationId)

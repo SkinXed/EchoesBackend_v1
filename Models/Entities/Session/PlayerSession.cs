@@ -1,3 +1,5 @@
+using Echoes.API.Models.Entities.Character;
+using Echoes.API.Models.Entities.Universe;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -84,10 +86,10 @@ public class PlayerSession
 
     // Navigation properties
     [ForeignKey(nameof(CharacterId))]
-    public virtual Character.Character? Character { get; set; }
+    public virtual Character? Character { get; set; }
 
     [ForeignKey(nameof(CurrentSystemId))]
-    public virtual Universe.SolarSystem? CurrentSystem { get; set; }
+    public virtual SolarSystem? CurrentSystem { get; set; }
 
     /// <summary>
     /// Check if the session is in combat

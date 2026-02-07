@@ -9,6 +9,7 @@ using Echoes.API.Models.Entities.Shop;
 using Echoes.API.Models.Enums;
 using Echoes.Server.Models.Entities.Universe;
 using Microsoft.EntityFrameworkCore;
+using EchoesBackend_v1.Models.Entities.Session;
 
 namespace Echoes.API.Data
 {
@@ -46,6 +47,8 @@ namespace Echoes.API.Data
         public DbSet<AsteroidBelt> AsteroidBelts { get; set; }
         public DbSet<PlanetResource> PlanetResources { get; set; }
         public DbSet<WorldObject> WorldObjects { get; set; }
+        // Player sessions (game server sessions)
+        public DbSet<PlayerSession> PlayerSessions { get; set; }
         // Game server entities
         public DbSet<GameServerNode> GameServers { get; set; }
         // Universe generation configuration

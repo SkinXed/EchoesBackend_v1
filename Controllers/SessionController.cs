@@ -48,7 +48,7 @@ public class SessionController : ControllerBase
         try
         {
             // Check if character exists
-            var characterExists = await _context.Characters.AnyAsync(c => c.CharacterId == request.CharacterId);
+            var characterExists = await _context.Characters.AnyAsync(c => c.Id == request.CharacterId);
             if (!characterExists)
             {
                 return NotFound(new StartSessionResponse
@@ -61,7 +61,7 @@ public class SessionController : ControllerBase
             // Check if system exists (if provided)
             if (request.CurrentSystemId != Guid.Empty)
             {
-                var systemExists = await _context.SolarSystems.AnyAsync(s => s.SystemId == request.CurrentSystemId);
+                var systemExists = await _context.SolarSystems.AnyAsync(s => s.Id == request.CurrentSystemId);
                 if (!systemExists)
                 {
                     return NotFound(new StartSessionResponse
