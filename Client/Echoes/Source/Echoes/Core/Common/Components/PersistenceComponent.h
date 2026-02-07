@@ -61,22 +61,25 @@ struct FCommon_StateData
 /**
  * UPersistenceComponent
  * 
- * Handles character state persistence for crash recovery
- * Server-only component that saves player position, rotation, and ship stats to backend
+ * Lightweight component for collecting character state data
+ * Refactored to use UEchoesPersistenceSubsystem for HTTP communication
+ * 
+ * Architecture:
+ * - Component: Collects state data (position, rotation, stats)
+ * - Subsystem: Handles HTTP requests, queuing, authentication
+ * - PlayerController: Triggers final save on logout
  * 
  * Features:
- * - Logout Save: Guaranteed save when player disconnects gracefully
- * - Heartbeat Save: Auto-save every 60 seconds (configurable)
- * - Dirty Flag: Only save when position changed >1m or stats changed (traffic optimization)
- * - HTTP Integration: Sends PUT requests to backend API with X-Server-Secret authentication
+ * - Heartbeat Save: Auto-save every 60 seconds (calls subsystem)
+ * - Dirty Flag: Only save when position changed >1m or stats changed
+ * - Data Collection: Gathers position, rotation, and stats from ship
  * 
- * Attach this component to ship pawns (AEPawn/AEchoesShipPawn)
- * Server spawns and manages this component automatically
+ * Note: This component NO LONGER handles HTTP requests directly.
+ * All network communication goes through UEchoesPersistenceSubsystem.
  * 
  * Naming Convention:
  * - ServerOnly_ prefix: Methods that only run on server
  * - Common_ prefix: Data structures/methods that run on any context
- * - ClientRPC_ prefix: Client RPC calls (optional for notifications)
  */
 UCLASS(ClassGroup=(Echoes), meta=(BlueprintSpawnableComponent))
 class ECHOES_API UPersistenceComponent : public UActorComponent
@@ -93,14 +96,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// ==================== Configuration ====================
-
-	/** Backend API base URL */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Persistence|Config")
-	FString ApiBaseUrl = TEXT("http://localhost:5116/api");
-
-	/** Server secret for X-Server-Secret header authentication */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Persistence|Config")
-	FString ServerSecret = TEXT("UE5-Server-Secret-Change-Me-In-Production");
 
 	/** Character ID for this persistence instance */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Persistence|Config")
@@ -146,24 +141,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Persistence")
 	void Common_SetCharacterId(const FGuid& InCharacterId);
 
-protected:
-	// ==================== Core Persistence Logic ====================
-
 	/**
 	 * Collect current state from owner actor
+	 * Public so PlayerController can call it on logout
 	 * Gathers: Position (GetActorLocation), Rotation (GetActorRotation), Stats (ShipStateComponent)
 	 * @return Current state data
 	 */
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Persistence")
 	FCommon_StateData ServerOnly_CollectCurrentState();
 
-	/**
-	 * Save state to backend via HTTP PUT request
-	 * Sends async HTTP request to PUT /api/persistence/state/{characterId}
-	 * @param StateData - State data to save
-	 */
-	UFUNCTION()
-	void ServerOnly_SaveToBackend(const FCommon_StateData& StateData);
+protected:
+	// ==================== Core Persistence Logic ====================
 
 	/**
 	 * Check if state has changed enough to trigger a save (dirty flag logic)
@@ -182,20 +170,6 @@ protected:
 	UFUNCTION()
 	void ServerOnly_OnHeartbeatTimer();
 
-	// ==================== HTTP Callbacks ====================
-
-	/**
-	 * Callback for successful state save
-	 * @param Response - HTTP response body
-	 */
-	void OnSaveSuccess(const FString& Response);
-
-	/**
-	 * Callback for failed state save
-	 * @param Error - Error message
-	 */
-	void OnSaveError(const FString& Error);
-
 	// ==================== Internal State ====================
 
 	/** Last saved state for dirty flag comparison */
@@ -208,12 +182,7 @@ protected:
 	UPROPERTY()
 	UEchoesStatsComponent* CachedStatsComponent;
 
-	/** Whether a save is currently in progress */
-	bool bSaveInProgress;
-
-	/** Number of successful saves */
-	int32 SaveCount;
-
-	/** Number of failed saves */
-	int32 FailCount;
+	/** Cached reference to persistence subsystem */
+	UPROPERTY()
+	class UEchoesPersistenceSubsystem* PersistenceSubsystem;
 };
