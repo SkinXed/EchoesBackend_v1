@@ -40,6 +40,7 @@ namespace Echoes.API.Data
         public DbSet<Stargate> Stargates { get; set; }
         public DbSet<AsteroidBelt> AsteroidBelts { get; set; }
         public DbSet<PlanetResource> PlanetResources { get; set; }
+        public DbSet<WorldObject> WorldObjects { get; set; }
         // Game server entities
         public DbSet<GameServerNode> GameServers { get; set; }
         // Universe generation configuration
