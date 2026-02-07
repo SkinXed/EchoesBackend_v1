@@ -168,6 +168,49 @@ void UEchoesMarketSubsystem::ServerOnly_CreateOrder(const FMarketOrderDto& NewOr
 	}
 }
 
+void UEchoesMarketSubsystem::ServerOnly_CancelOrder(const FGuid& OrderId, const FGuid& CharacterId)
+{
+	if (!Http)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Market: HTTP module not available"));
+		OnMarketRequestFailed.Broadcast(TEXT("HTTP module not available"));
+		return;
+	}
+
+	if (!OrderId.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Market: Invalid OrderId for cancellation"));
+		OnMarketRequestFailed.Broadcast(TEXT("Invalid order ID"));
+		return;
+	}
+
+	// DELETE /api/market/orders/{orderId}?characterId={characterId}
+	FString Url = GetApiBaseUrl() + FString::Printf(
+		TEXT("/market/orders/%s?characterId=%s"),
+		*OrderId.ToString(),
+		*CharacterId.ToString());
+
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = Http->CreateRequest();
+	HttpRequest->SetVerb(TEXT("DELETE"));
+	HttpRequest->SetURL(Url);
+	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
+	HttpRequest->SetHeader(TEXT("X-Server-Secret"), GetServerSecret());
+
+	HttpRequest->OnProcessRequestComplete().BindUObject(
+		this,
+		&UEchoesMarketSubsystem::OnCancelOrderResponseReceived);
+
+	if (!HttpRequest->ProcessRequest())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Market: Failed to send cancel order request"));
+		OnMarketRequestFailed.Broadcast(TEXT("Failed to send request"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Market: Cancel order request sent for OrderId=%s"), *OrderId.ToString());
+	}
+}
+
 // ==================== Cache ====================
 
 bool UEchoesMarketSubsystem::IsCacheValid() const
@@ -377,6 +420,63 @@ void UEchoesMarketSubsystem::OnCreateOrderResponseReceived(
 
 		// Try to extract error message
 		FString ErrorMsg = FString::Printf(TEXT("Order creation failed: %d"), ResponseCode);
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			if (JsonObject->HasField(TEXT("error")))
+			{
+				ErrorMsg = JsonObject->GetStringField(TEXT("error"));
+			}
+		}
+
+		OnMarketRequestFailed.Broadcast(ErrorMsg);
+	}
+}
+
+void UEchoesMarketSubsystem::OnCancelOrderResponseReceived(
+	FHttpRequestPtr Request,
+	FHttpResponsePtr Response,
+	bool bWasSuccessful)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Market: Cancel order request failed"));
+		OnMarketRequestFailed.Broadcast(TEXT("Request failed"));
+		return;
+	}
+
+	const int32 ResponseCode = Response->GetResponseCode();
+	const FString ResponseBody = Response->GetContentAsString();
+
+	if (ResponseCode == 200)
+	{
+		// Parse CancelOrderResultDto (PascalCase)
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
+
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			FGuid OrderId;
+			FGuid::Parse(JsonObject->GetStringField(TEXT("OrderId")), OrderId);
+			double EscrowRefunded = JsonObject->GetNumberField(TEXT("EscrowRefunded"));
+
+			UE_LOG(LogTemp, Log, TEXT("Market: Order cancelled! OrderId=%s, EscrowRefunded=%.2f ISK"),
+				*OrderId.ToString(), EscrowRefunded);
+
+			OnMarketOrderCancelled.Broadcast(OrderId, EscrowRefunded);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Market: Failed to parse cancel order result JSON"));
+			OnMarketRequestFailed.Broadcast(TEXT("Failed to parse cancel response"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Market: Cancel order failed with code: %d - %s"), ResponseCode, *ResponseBody);
+
+		FString ErrorMsg = FString::Printf(TEXT("Order cancellation failed: %d"), ResponseCode);
 		TSharedPtr<FJsonObject> JsonObject;
 		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(ResponseBody);
 		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())

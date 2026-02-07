@@ -22,6 +22,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMarketOrderCreated, const FGuid&,
 /** Fired when a trade is successfully executed */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMarketTradeExecuted, const FGuid&, OrderId, int32, QuantityTraded);
 
+/** Fired when an order is successfully cancelled */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMarketOrderCancelled, const FGuid&, OrderId, double, EscrowRefunded);
+
 /**
  * UEchoesMarketSubsystem
  * 
@@ -75,6 +78,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Market")
 	void ServerOnly_CreateOrder(const FMarketOrderDto& NewOrder);
 
+	/**
+	 * Cancel an active market order
+	 * Sends HTTP DELETE to /api/market/orders/{orderId}?characterId={characterId}
+	 * Refunds remaining escrow for buy orders
+	 * 
+	 * @param OrderId - ID of the order to cancel
+	 * @param CharacterId - ID of the character who owns the order
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Echoes|Market")
+	void ServerOnly_CancelOrder(const FGuid& OrderId, const FGuid& CharacterId);
+
 	// ==================== Cached Data Access ====================
 
 	/**
@@ -109,6 +123,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Echoes|Market")
 	FOnMarketTradeExecuted OnMarketTradeExecuted;
 
+	/** Fired when an order is cancelled successfully */
+	UPROPERTY(BlueprintAssignable, Category = "Echoes|Market")
+	FOnMarketOrderCancelled OnMarketOrderCancelled;
+
 protected:
 	// ==================== HTTP Response Handlers ====================
 
@@ -124,6 +142,11 @@ protected:
 		bool bWasSuccessful);
 
 	void OnCreateOrderResponseReceived(
+		FHttpRequestPtr Request,
+		FHttpResponsePtr Response,
+		bool bWasSuccessful);
+
+	void OnCancelOrderResponseReceived(
 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful);

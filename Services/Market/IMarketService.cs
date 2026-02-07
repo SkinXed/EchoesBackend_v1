@@ -25,6 +25,11 @@ namespace Echoes.API.Services.Market
         Task<List<MarketOrderDto>> GetCharacterOrdersAsync(Guid characterId);
 
         /// <summary>
+        /// Отменить активный ордер (возврат эскроу для Buy-ордеров)
+        /// </summary>
+        Task<CancelOrderResultDto> CancelOrderAsync(Guid orderId, Guid characterId);
+
+        /// <summary>
         /// Рассчитать налоги для предполагаемой сделки
         /// </summary>
         TaxInfoDto CalculateTaxes(decimal price, int quantity);

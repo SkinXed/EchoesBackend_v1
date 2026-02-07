@@ -70,6 +70,16 @@ namespace Echoes.API.Models.DTOs.Market
         public decimal EstimatedTransactionTax { get; set; }
     }
 
+    /// <summary>
+    /// Результат отмены ордера
+    /// </summary>
+    public class CancelOrderResultDto
+    {
+        public Guid OrderId { get; set; }
+        public decimal EscrowRefunded { get; set; }
+        public string Message { get; set; } = string.Empty;
+    }
+
     // ========== Request DTOs ==========
 
     /// <summary>

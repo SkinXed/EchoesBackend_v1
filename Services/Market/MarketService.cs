@@ -393,6 +393,70 @@ namespace Echoes.API.Services.Market
             return orders.Select(MapToDto).ToList();
         }
 
+        public async Task<CancelOrderResultDto> CancelOrderAsync(Guid orderId, Guid characterId)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+            try
+            {
+                var order = await _context.MarketOrders
+                    .FirstOrDefaultAsync(o => o.Id == orderId
+                                           && o.CharacterId == characterId
+                                           && o.Status == MarketOrderStatus.Active);
+
+                if (order == null)
+                    throw new InvalidOperationException("Order not found, does not belong to this character, or is not active");
+
+                decimal escrowRefunded = 0;
+
+                // Возвращаем оставшийся эскроу для Buy-ордеров
+                if (order.IsBuyOrder && order.Escrow > 0)
+                {
+                    var wallet = await GetPrimaryIskWalletAsync(characterId);
+                    if (wallet == null)
+                        throw new InvalidOperationException("Character wallet not found");
+
+                    escrowRefunded = order.Escrow;
+                    wallet.Balance += escrowRefunded;
+                    wallet.BalanceUpdatedAt = DateTime.UtcNow;
+                    order.Escrow = 0;
+
+                    _context.WalletTransactions.Add(new Models.Entities.Character.WalletTransaction
+                    {
+                        WalletId = wallet.WalletId,
+                        TransactionType = WalletTransactionType.MarketEscrow,
+                        Amount = escrowRefunded,
+                        NewBalance = wallet.Balance,
+                        Description = $"Escrow refund for cancelled buy order: {order.RemainingQuantity}x item #{order.ItemId}",
+                        ReferenceId = order.Id,
+                        ReferenceType = "MarketOrder",
+                        CreatedAt = DateTime.UtcNow
+                    });
+                }
+
+                order.Status = MarketOrderStatus.Cancelled;
+                order.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                _logger.LogInformation(
+                    "Order cancelled: {OrderId} by {CharacterId}, escrow refunded: {Escrow} ISK",
+                    orderId, characterId, escrowRefunded);
+
+                return new CancelOrderResultDto
+                {
+                    OrderId = orderId,
+                    EscrowRefunded = escrowRefunded,
+                    Message = $"Order cancelled successfully" + (escrowRefunded > 0 ? $", {escrowRefunded:F2} ISK refunded" : "")
+                };
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
         public TaxInfoDto CalculateTaxes(decimal price, int quantity)
         {
             if (price <= 0)

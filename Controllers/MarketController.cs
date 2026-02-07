@@ -184,6 +184,37 @@ namespace Echoes.API.Controllers
         }
 
         /// <summary>
+        /// Отменить активный ордер (возвращает эскроу для Buy-ордеров)
+        /// </summary>
+        [HttpDelete("orders/{orderId}")]
+        [ProducesResponseType(typeof(CancelOrderResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<CancelOrderResultDto>> CancelOrder(Guid orderId, [FromQuery] Guid characterId)
+        {
+            if (!ValidateServerSecret())
+                return Unauthorized(new { error = "Invalid or missing X-Server-Secret header" });
+
+            if (!await ValidateCharacterOwnershipAsync(characterId))
+                return Unauthorized(new { error = "Character does not belong to the authenticated user" });
+
+            try
+            {
+                var result = await _marketService.CancelOrderAsync(orderId, characterId);
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error cancelling order {OrderId}", orderId);
+                return StatusCode(500, new { error = "Internal server error" });
+            }
+        }
+
+        /// <summary>
         /// Рассчитать налоги для предполагаемой сделки
         /// </summary>
         [HttpGet("taxes")]
