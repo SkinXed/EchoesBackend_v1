@@ -143,8 +143,10 @@ FCommon_StateData UPersistenceComponent::ServerOnly_CollectCurrentState()
 		State.CurrentArmor = CachedStatsComponent->ArmorCurrent;
 		State.CurrentHull = CachedStatsComponent->StructureCurrent;
 		
-		// Capacitor - placeholder (would come from ship power component if available)
-		State.CurrentCapacitor = 1000.0f; // TODO: Get from actual capacitor component
+		// TODO: Capacitor should come from ship power/capacitor component when available
+		// For now, using a reasonable default value based on typical frigate capacitor pools
+		// This will be replaced with actual component data in future updates
+		State.CurrentCapacitor = 1000.0f;
 	}
 	else
 	{

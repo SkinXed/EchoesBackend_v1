@@ -50,10 +50,10 @@ namespace Echoes.API.Controllers
                 // Get expected secret from configuration
                 var expectedSecret = _configuration["ServerSecret"];
 
-                // Fail securely if secret is not configured or is set to the insecure default
-                if (string.IsNullOrEmpty(expectedSecret) || expectedSecret == "MySuperSecretKey")
+                // Fail securely if secret is not configured
+                if (string.IsNullOrEmpty(expectedSecret))
                 {
-                    _logger.LogError("ServerSecret is not configured or is set to insecure default value");
+                    _logger.LogError("ServerSecret is not configured");
                     return StatusCode(500, new { message = "Server configuration error" });
                 }
 
@@ -146,10 +146,10 @@ namespace Echoes.API.Controllers
                 // Get expected secret from configuration
                 var expectedSecret = _configuration["ServerSecret"];
 
-                // Fail securely if secret is not configured or is set to the insecure default
-                if (string.IsNullOrEmpty(expectedSecret) || expectedSecret == "MySuperSecretKey")
+                // Fail securely if secret is not configured
+                if (string.IsNullOrEmpty(expectedSecret))
                 {
-                    _logger.LogError("ServerSecret is not configured or is set to insecure default value");
+                    _logger.LogError("ServerSecret is not configured");
                     return StatusCode(500, new { message = "Server configuration error" });
                 }
 
