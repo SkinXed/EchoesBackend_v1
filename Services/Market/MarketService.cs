@@ -153,6 +153,7 @@ namespace Echoes.API.Services.Market
                     Duration = request.Duration,
                     Status = MarketOrderStatus.Active,
                     BrokerFee = brokerFee,
+                    Escrow = request.IsBuyOrder ? totalOrderValue : 0,
                     IssuedAt = DateTime.UtcNow
                 };
 
@@ -220,7 +221,16 @@ namespace Echoes.API.Services.Market
                 {
                     // Покупатель = владелец ордера (деньги уже в escrow)
                     // Продавец = request.CharacterId — получает деньги минус налог
+
+                    // Проверяем достаточность средств на эскроу-счёте
+                    if (order.Escrow < totalPrice)
+                        throw new InvalidOperationException(
+                            $"Insufficient escrow. Required: {totalPrice:F2} ISK, available: {order.Escrow:F2} ISK");
+
                     decimal sellerReceives = totalPrice - transactionTax;
+
+                    // Списываем использованный эскроу
+                    order.Escrow -= totalPrice;
 
                     sellerWallet.Balance += sellerReceives;
                     sellerWallet.BalanceUpdatedAt = DateTime.UtcNow;
@@ -263,11 +273,29 @@ namespace Echoes.API.Services.Market
                         CreatedAt = DateTime.UtcNow
                     });
 
-                    // Если частичное исполнение — возвращаем неиспользованный escrow
-                    if (quantityToTrade < order.RemainingQuantity)
+                    // Возвращаем неиспользованный эскроу при полном исполнении ордера
+                    if (order.RemainingQuantity - quantityToTrade == 0 && order.Escrow > 0)
                     {
-                        // Escrow уже списан за полное количество; при полном исполнении всё нормально
-                        // Возврат escrow произойдет при отмене/истечении оставшейся части
+                        decimal escrowRefund = order.Escrow;
+                        buyerWallet.Balance += escrowRefund;
+                        buyerWallet.BalanceUpdatedAt = DateTime.UtcNow;
+                        order.Escrow = 0;
+
+                        _context.WalletTransactions.Add(new Models.Entities.Character.WalletTransaction
+                        {
+                            WalletId = buyerWallet.WalletId,
+                            TransactionType = WalletTransactionType.MarketEscrow,
+                            Amount = escrowRefund,
+                            NewBalance = buyerWallet.Balance,
+                            Description = $"Escrow refund for completed buy order: item #{order.ItemId}",
+                            ReferenceId = order.Id,
+                            ReferenceType = "MarketOrder",
+                            CreatedAt = DateTime.UtcNow
+                        });
+
+                        _logger.LogInformation(
+                            "Escrow refund: {Amount} ISK returned to character {CharacterId} for order {OrderId}",
+                            escrowRefund, order.CharacterId, order.Id);
                     }
                 }
                 else
@@ -367,6 +395,11 @@ namespace Echoes.API.Services.Market
 
         public TaxInfoDto CalculateTaxes(decimal price, int quantity)
         {
+            if (price <= 0)
+                throw new ArgumentException("Price must be greater than zero");
+            if (quantity <= 0)
+                throw new ArgumentException("Quantity must be greater than zero");
+
             decimal totalValue = price * quantity;
             return new TaxInfoDto
             {

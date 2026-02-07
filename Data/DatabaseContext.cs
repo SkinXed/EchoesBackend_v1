@@ -737,6 +737,7 @@ namespace Echoes.API.Data
 
                 entity.Property(e => e.Price).HasPrecision(18, 2);
                 entity.Property(e => e.BrokerFee).HasPrecision(18, 2);
+                entity.Property(e => e.Escrow).HasPrecision(18, 2);
                 entity.Property(e => e.IssuedAt).HasDefaultValueSql("NOW()");
                 entity.Property(e => e.Status).HasConversion<string>();
 

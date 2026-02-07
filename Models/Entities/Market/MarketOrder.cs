@@ -75,6 +75,12 @@ namespace Echoes.API.Models.Entities.Market
         [Column("broker_fee")]
         public decimal BrokerFee { get; set; }
 
+        /// <summary>
+        /// Оставшийся эскроу для Buy-ордеров (уменьшается при частичном исполнении)
+        /// </summary>
+        [Column("escrow")]
+        public decimal Escrow { get; set; }
+
         [Required]
         [Column("issued_at")]
         public DateTime IssuedAt { get; set; } = DateTime.UtcNow;
