@@ -122,6 +122,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Persistence|Config")
 	bool bEnableDirtyFlag = true;
 
+	/**
+	 * Default capacitor value to use when actual capacitor component is not available
+	 * This is a temporary fallback until ship power/capacitor component is implemented
+	 * Typical values: Frigate ~1000-1500, Cruiser ~2000-3000, Battleship ~5000-7000
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Persistence|Config")
+	float DefaultCapacitorValue = 1000.0f;
+
 	// ==================== Public Interface ====================
 
 	/**
