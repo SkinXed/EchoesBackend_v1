@@ -176,6 +176,9 @@ services.AddScoped<Echoes.API.Services.Ship.IShipFittingService, Echoes.API.Serv
 // 3.4.3. Repositories
 services.AddScoped<Echoes.API.Data.Repositories.FittingRepository>();
 
+// 3.4.4. Market services
+services.AddScoped<Echoes.API.Services.Market.IMarketService, Echoes.API.Services.Market.MarketService>();
+
 // 3.5. Controllers
 services.AddControllers()
     .AddJsonOptions(options =>

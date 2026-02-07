@@ -4,6 +4,7 @@ using Echoes.API.Models.Entities.Character;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Models.Entities.Universe;
 using Echoes.API.Models.Entities.Inventory;
+using Echoes.API.Models.Entities.Market;
 using Echoes.API.Models.Entities.Shop;
 using Echoes.API.Models.Enums;
 using Echoes.Server.Models.Entities.Universe;
@@ -63,6 +64,9 @@ namespace Echoes.API.Data
         
         // Shop entities
         public DbSet<ShopItem> ShopItems { get; set; }
+        
+        // Market entities
+        public DbSet<MarketOrder> MarketOrders { get; set; }
         
         // Configuration entities
         public DbSet<Models.Config.RaceConfig> RaceConfigs { get; set; }
@@ -718,6 +722,38 @@ namespace Echoes.API.Data
                     .WithMany(a => a.AssetLogs)
                     .HasForeignKey(e => e.AssetId)
                     .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // =========================================================================
+            // MarketOrder configuration
+            // =========================================================================
+            modelBuilder.Entity<MarketOrder>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => new { e.RegionId, e.ItemId, e.Status });
+                entity.HasIndex(e => e.CharacterId);
+                entity.HasIndex(e => e.StationId);
+                entity.HasIndex(e => e.IssuedAt).IsDescending();
+
+                entity.Property(e => e.Price).HasPrecision(18, 2);
+                entity.Property(e => e.BrokerFee).HasPrecision(18, 2);
+                entity.Property(e => e.IssuedAt).HasDefaultValueSql("NOW()");
+                entity.Property(e => e.Status).HasConversion<string>();
+
+                entity.HasOne(e => e.Character)
+                    .WithMany()
+                    .HasForeignKey(e => e.CharacterId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Station)
+                    .WithMany()
+                    .HasForeignKey(e => e.StationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Region)
+                    .WithMany()
+                    .HasForeignKey(e => e.RegionId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
