@@ -29,10 +29,20 @@ struct FPersistenceSaveRequest
 	/** Whether this is a high priority request (e.g., logout) */
 	bool bHighPriority;
 
+	/** 
+	 * Sequence number for optimistic concurrency control
+	 * Higher values indicate more recent updates
+	 * Used to prevent race conditions when updates arrive out of order
+	 */
+	int64 SequenceNumber;
+
 	FPersistenceSaveRequest()
 		: bHighPriority(false)
+		, SequenceNumber(0)
 	{
 		QueuedTime = FDateTime::UtcNow();
+		// Set sequence number using UTC ticks (100-nanosecond intervals since 0001-01-01)
+		SequenceNumber = QueuedTime.GetTicks();
 	}
 };
 
@@ -87,6 +97,22 @@ public:
 	/** Time between processing queued requests (seconds) */
 	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
 	float QueueProcessInterval = 1.0f;
+
+	/** 
+	 * Maximum number of requests to batch in a single bulk save operation
+	 * Higher values reduce API calls but increase payload size
+	 * Recommended: 20-50 for optimal balance
+	 */
+	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
+	int32 MaxBulkBatchSize = 50;
+
+	/**
+	 * Enable bulk save optimization
+	 * When true, queued requests are batched into bulk API calls
+	 * When false, uses individual save requests (legacy behavior)
+	 */
+	UPROPERTY(Config, EditAnywhere, Category = "Persistence|Config")
+	bool bEnableBulkSave = true;
 
 	// ==================== Public Interface ====================
 
@@ -144,17 +170,38 @@ protected:
 	void ProcessSaveQueue();
 
 	/**
+	 * Process queue using bulk save optimization
+	 * Batches multiple requests into a single API call
+	 * @param MaxBatchCount - Maximum number of requests to process in this batch
+	 */
+	void ServerOnly_ProcessQueueBulk(int32 MaxBatchCount);
+
+	/**
 	 * Send a single save request to backend
 	 * @param Request - Save request to send
 	 */
 	void SendSaveRequest(const FPersistenceSaveRequest& Request);
 
 	/**
+	 * Send bulk save request to backend
+	 * @param Requests - Array of save requests to send
+	 */
+	void SendBulkSaveRequest(const TArray<FPersistenceSaveRequest>& Requests);
+
+	/**
 	 * Build JSON payload for save request
 	 * @param StateData - State data to serialize
+	 * @param SequenceNumber - Sequence number for this save
 	 * @return JSON string
 	 */
-	FString BuildJsonPayload(const FCommon_StateData& StateData);
+	FString BuildJsonPayload(const FCommon_StateData& StateData, int64 SequenceNumber);
+
+	/**
+	 * Build JSON payload for bulk save request
+	 * @param Requests - Array of save requests to serialize
+	 * @return JSON string
+	 */
+	FString BuildBulkJsonPayload(const TArray<FPersistenceSaveRequest>& Requests);
 
 	// ==================== HTTP Callbacks ====================
 
@@ -166,11 +213,23 @@ protected:
 	void OnSaveSuccess(const FGuid& CharacterId, const FString& Response);
 
 	/**
+	 * Callback for successful bulk save
+	 * @param Response - HTTP response body
+	 */
+	void OnBulkSaveSuccess(const FString& Response);
+
+	/**
 	 * Callback for failed save
 	 * @param CharacterId - Character that failed to save
 	 * @param Error - Error message
 	 */
 	void OnSaveError(const FGuid& CharacterId, const FString& Error);
+
+	/**
+	 * Callback for failed bulk save
+	 * @param Error - Error message
+	 */
+	void OnBulkSaveError(const FString& Error);
 
 	// ==================== Internal State ====================
 
