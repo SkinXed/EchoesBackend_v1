@@ -46,6 +46,13 @@ namespace Echoes.API.Models.Entities.Character
         public float CurrentCapacitor { get; set; }
 
         /// <summary>
+        /// Sequence number for optimistic concurrency control
+        /// Used to prevent race conditions when multiple updates arrive out of order
+        /// Higher values indicate more recent updates
+        /// </summary>
+        public long SequenceNumber { get; set; }
+
+        /// <summary>
         /// Last time this state was updated
         /// </summary>
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
