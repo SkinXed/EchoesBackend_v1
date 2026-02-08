@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "Core/Common/EchoesCoreTypes.h"
 #include "ShipFittingInterface.generated.h"
 
 /**
@@ -302,6 +303,18 @@ float ScanResolution;
 /** Signature radius */
 UPROPERTY(BlueprintReadOnly, Category = "Fitting Stats")
 float SignatureRadius;
+
+/** Shield layer stats and resistances */
+UPROPERTY(BlueprintReadOnly, Category = "Fitting Stats")
+FCosmosDefenseLayer ShieldLayer;
+
+/** Armor layer stats and resistances */
+UPROPERTY(BlueprintReadOnly, Category = "Fitting Stats")
+FCosmosDefenseLayer ArmorLayer;
+
+/** Structure layer stats and resistances */
+UPROPERTY(BlueprintReadOnly, Category = "Fitting Stats")
+FCosmosDefenseLayer StructureLayer;
 
 /** Constructor */
 FCommon_ShipFittingData()

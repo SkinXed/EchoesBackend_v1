@@ -107,5 +107,5 @@ protected:
 
 private:
 	/** Stored killmail data */
-	FKillmailData KillmailData;
+	FKillmailData StoredKillmailData;
 };

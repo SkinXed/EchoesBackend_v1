@@ -447,7 +447,7 @@ bool UTargetingComponent::ValidateTarget(AActor* Target) const
 	}
 
 	// Check target is not destroyed
-	if (Target->IsPendingKill())
+	if (Target->IsActorBeingDestroyed())
 	{
 		return false;
 	}

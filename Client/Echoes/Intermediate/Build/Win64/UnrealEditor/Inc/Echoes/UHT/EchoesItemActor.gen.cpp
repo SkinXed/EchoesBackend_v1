@@ -149,7 +149,7 @@ struct Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesItemActor_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 590939204
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesItemActor_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 132594848
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData_Statics::NewProp_ReturnValue,
 };
@@ -846,7 +846,7 @@ struct Z_Construct_UClass_AEchoesItemActor_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AEchoesItemActor_GetInstanceId, "GetInstanceId" }, // 1615804162
 		{ &Z_Construct_UFunction_AEchoesItemActor_GetInventoryComponent, "GetInventoryComponent" }, // 2265469994
-		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData, "GetItemDefinitionData" }, // 2042292768
+		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemDefinitionData, "GetItemDefinitionData" }, // 2595914617
 		{ &Z_Construct_UFunction_AEchoesItemActor_GetItemId, "GetItemId" }, // 1301040648
 		{ &Z_Construct_UFunction_AEchoesItemActor_GetRemainingLifetime, "GetRemainingLifetime" }, // 902725964
 		{ &Z_Construct_UFunction_AEchoesItemActor_IsContainer, "IsContainer" }, // 917759758
@@ -956,10 +956,10 @@ AEchoesItemActor::~AEchoesItemActor() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesItemActor, AEchoesItemActor::StaticClass, TEXT("AEchoesItemActor"), &Z_Registration_Info_UClass_AEchoesItemActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesItemActor), 85587305U) },
+		{ Z_Construct_UClass_AEchoesItemActor, AEchoesItemActor::StaticClass, TEXT("AEchoesItemActor"), &Z_Registration_Info_UClass_AEchoesItemActor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesItemActor), 1518707296U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_2806046699(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_4234338224(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Actor_EchoesItemActor_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

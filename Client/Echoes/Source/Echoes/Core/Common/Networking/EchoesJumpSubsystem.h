@@ -110,7 +110,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnJumpInitiated, const FString&, T
  * 4. Client travels to new server with ticket
  * 5. New server validates ticket before spawning character
  */
-UCLASS()
+UCLASS(Config=Game)
 class ECHOES_API UEchoesJumpSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -145,14 +145,19 @@ public:
 	 * @param TicketId - Ticket ID from connection URL
 	 * @param CharacterId - Character ID to validate
 	 * @param SystemId - Current system ID
-	 * @param OnComplete - Callback with validation result
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Jump", meta = (DisplayName = "ServerOnly - Validate Jump Ticket"))
 	void ServerOnly_ValidateJumpTicket(
 		const FString& TicketId,
 		FGuid CharacterId,
+		FGuid SystemId);
+
+	// C++ overload that accepts a delegate callback (not exposed to Blueprints)
+	void ServerOnly_ValidateJumpTicket(
+		const FString& TicketId,
+		FGuid CharacterId,
 		FGuid SystemId,
-		const FOnJumpRequestComplete& OnComplete);
+		FOnJumpRequestComplete& OnComplete);
 
 	/**
 	 * Client RPC to initiate travel to destination server
@@ -175,15 +180,15 @@ public:
 
 protected:
 	/** API base URL for jump endpoints */
-	UPROPERTY(Config, Category = "Echoes|Jump")
+	UPROPERTY(Config)
 	FString ApiBaseUrl;
 
 	/** Server secret for authentication */
-	UPROPERTY(Config, Category = "Echoes|Jump")
+	UPROPERTY(Config)
 	FString ServerSecret;
 
 	/** Whether to enable verbose logging */
-	UPROPERTY(Config, Category = "Echoes|Jump")
+	UPROPERTY(Config)
 	bool bEnableDebugLogging;
 
 private:
@@ -200,7 +205,7 @@ private:
 	/**
 	 * Send HTTP request to validate jump ticket
 	 */
-	void SendTicketValidationRequest(const FString& TicketId, FGuid CharacterId, FGuid SystemId, const FOnJumpRequestComplete& Callback);
+	void SendTicketValidationRequest(const FString& TicketId, FGuid CharacterId, FGuid SystemId, FOnJumpRequestComplete Callback);
 
 	/**
 	 * Handle ticket validation response

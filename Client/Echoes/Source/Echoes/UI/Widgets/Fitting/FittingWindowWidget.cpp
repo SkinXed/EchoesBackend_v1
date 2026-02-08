@@ -100,7 +100,12 @@ Container->AddChild(SlotWidget);
 TypeSlots.Add(SlotWidget);
 }
 
-SlotWidgets.Add(SlotType, TypeSlots);
+// Store into typed array
+TArray<UFittingSlotWidget*>* Dest = GetSlotWidgetArray(SlotType);
+if (Dest)
+{
+*Dest = MoveTemp(TypeSlots);
+}
 }
 
 void UFittingWindowWidget::HandleSlotModuleDropped(ESlotType SlotType, int32 SlotIndex, int32 ItemID)
@@ -146,20 +151,17 @@ return;
 FCommon_ShipFittingData FittingData = FittingInterface->GetFittingData();
 
 // Update all slots
-auto UpdateSlotsForType = [&](ESlotType Type, const TArray<FCommon_ItemSlot>& Slots)
+auto UpdateArray = [&](const TArray<UFittingSlotWidget*>& Widgets, const TArray<FCommon_ItemSlot>& Slots)
 {
-if (SlotWidgets.Contains(Type))
+for (int32 i = 0; i < Slots.Num() && i < Widgets.Num(); ++i)
 {
-for (int32 i = 0; i < Slots.Num() && i < SlotWidgets[Type].Num(); ++i)
-{
-SlotWidgets[Type][i]->UpdateDisplay(Slots[i]);
-}
+Widgets[i]->UpdateDisplay(Slots[i]);
 }
 };
 
-UpdateSlotsForType(ESlotType::High, FittingData.HighSlots);
-UpdateSlotsForType(ESlotType::Mid, FittingData.MidSlots);
-UpdateSlotsForType(ESlotType::Low, FittingData.LowSlots);
+UpdateArray(HighSlotWidgets, FittingData.HighSlots);
+UpdateArray(MidSlotWidgets, FittingData.MidSlots);
+UpdateArray(LowSlotWidgets, FittingData.LowSlots);
 
 UpdateResourceBars();
 }
@@ -194,9 +196,10 @@ CPUText->SetText(DisplayText);
 
 void UFittingWindowWidget::ClientOnly_UpdateSlot(ESlotType SlotType, int32 SlotIndex, const FCommon_ItemSlot& SlotData)
 {
-if (SlotWidgets.Contains(SlotType) && SlotIndex >= 0 && SlotIndex < SlotWidgets[SlotType].Num())
+TArray<UFittingSlotWidget*>* Arr = GetSlotWidgetArray(SlotType);
+if (Arr && SlotIndex >= 0 && SlotIndex < Arr->Num())
 {
-SlotWidgets[SlotType][SlotIndex]->UpdateDisplay(SlotData);
+(*Arr)[SlotIndex]->UpdateDisplay(SlotData);
 }
 }
 

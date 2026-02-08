@@ -4,8 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Http.h"
 #include "EchoesPersistenceSubsystem.generated.h"
+// Forward declare the state struct from PersistenceComponent to avoid include order issues
+struct FCommon_StateData;
+
+// Forward-declare HTTP types to avoid including Http.h in the header (keeps generated.h last)
+class IHttpRequest;
+class IHttpResponse;
+class FHttpModule;
+using FHttpRequestPtr = TSharedPtr<IHttpRequest, ESPMode::ThreadSafe>;
+using FHttpResponsePtr = TSharedPtr<IHttpResponse, ESPMode::ThreadSafe>;
+
+
 
 /** Custom log category for persistence operations */
 DECLARE_LOG_CATEGORY_EXTERN(LogEchoesPersistence, Log, All);
@@ -118,6 +128,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Echoes|Persistence")
 	void ServerOnly_SyncWallet();
+
+	/** Public queue API - used by UPersistenceComponent to enqueue saves */
+	bool ServerOnly_QueueStateSave(const FGuid& CharacterId, const FCommon_StateData& StateData);
+
+	/** Immediate save API - used for logout/high-priority saves */
+	void ServerOnly_SaveStateImmediate(const FGuid& CharacterId, const FCommon_StateData& StateData);
 
 	// ==================== State Accessors ====================
 

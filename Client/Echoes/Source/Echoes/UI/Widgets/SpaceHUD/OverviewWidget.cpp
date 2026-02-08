@@ -61,8 +61,8 @@ Super::NativeConstruct();
 // Bind list view events
 if (OverviewListView)
 {
-OverviewListView->OnItemSelectionChanged().AddDynamic(this, &UOverviewWidget::HandleSelectionChanged);
-OverviewListView->OnItemDoubleClicked().AddDynamic(this, &UOverviewWidget::HandleItemDoubleClicked);
+    OverviewListView->OnItemSelectionChanged().AddUObject(this, &UOverviewWidget::HandleSelectionChanged);
+    OverviewListView->OnItemDoubleClicked().AddUObject(this, &UOverviewWidget::HandleItemDoubleClicked);
 }
 
 // Bind sort button events

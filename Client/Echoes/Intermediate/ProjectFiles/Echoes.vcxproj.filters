@@ -81,6 +81,9 @@
     <Filter Include="Source\Echoes\Core\Common">
       <UniqueIdentifier>{C4BC4A80-2220-3FA8-8FCD-E49BA3BD531F}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesCoreTypes.h">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClInclude>
     <Filter Include="Source\Echoes\Core\Common\Actor">
       <UniqueIdentifier>{F64CF7CF-FA08-3943-B500-B757F05CCF96}</UniqueIdentifier>
     </Filter>
@@ -96,10 +99,34 @@
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\AsteroidBeltActor.h">
       <Filter>Source\Echoes\Core\Common\Actor</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\CosmosProjectile.cpp">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\CosmosProjectile.h">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\EchoesItemActor.cpp">
       <Filter>Source\Echoes\Core\Common\Actor</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\EchoesItemActor.h">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\EchoesStargate.cpp">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\EchoesStargate.h">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\EchoesWreck.cpp">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\EchoesWreck.h">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\EWorldContainer.cpp">
+      <Filter>Source\Echoes\Core\Common\Actor</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Actor\EWorldContainer.h">
       <Filter>Source\Echoes\Core\Common\Actor</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\MoonActor.cpp">
@@ -141,6 +168,18 @@
     <Filter Include="Source\Echoes\Core\Common\Components">
       <UniqueIdentifier>{32821707-4037-3963-969E-BB884041E84A}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\CosmosAttributesComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\CosmosAttributesComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\CosmosWeaponComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\CosmosWeaponComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\EchoesInventoryComponent.cpp">
       <Filter>Source\Echoes\Core\Common\Components</Filter>
     </ClCompile>
@@ -153,6 +192,39 @@
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\EchoesShipMovementComponent.h">
       <Filter>Source\Echoes\Core\Common\Components</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\EchoesStatsComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\EchoesStatsComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\EquipmentManagerComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\EquipmentManagerComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\PersistenceComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <None Include="..\..\Source\Echoes\Core\Common\Components\PersistenceComponent.cpp.backup">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </None>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\PersistenceComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\PersistenceMarketComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\PersistenceMarketComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Components\TargetingComponent.cpp">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Components\TargetingComponent.h">
+      <Filter>Source\Echoes\Core\Common\Components</Filter>
+    </ClInclude>
     <Filter Include="Source\Echoes\Core\Common\Interfaces">
       <UniqueIdentifier>{D2F25E6A-AE6B-3A1F-87A5-90D1305ABE14}</UniqueIdentifier>
     </Filter>
@@ -161,6 +233,21 @@
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Interfaces\EchoesInteractableInterface.h">
       <Filter>Source\Echoes\Core\Common\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Interfaces\ShipFittingInterface.h">
+      <Filter>Source\Echoes\Core\Common\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Interfaces\ShipStateInterface.h">
+      <Filter>Source\Echoes\Core\Common\Interfaces</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\Core\Common\Libraries">
+      <UniqueIdentifier>{C44026EE-2249-39AC-9A57-FD32C19F6290}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Libraries\EchoesItemDataLibrary.cpp">
+      <Filter>Source\Echoes\Core\Common\Libraries</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Libraries\EchoesItemDataLibrary.h">
+      <Filter>Source\Echoes\Core\Common\Libraries</Filter>
     </ClInclude>
     <Filter Include="Source\Echoes\Core\Common\Networking">
       <UniqueIdentifier>{8AFFDFA3-BEF9-3FF4-8BFB-9828377610FA}</UniqueIdentifier>
@@ -186,6 +273,24 @@
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesInventorySubsystem.h">
       <Filter>Source\Echoes\Core\Common\Networking</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesJumpSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesJumpSubsystem.h">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesMarketSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesMarketSubsystem.h">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesPersistenceSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Networking\EchoesPersistenceSubsystem.h">
+      <Filter>Source\Echoes\Core\Common\Networking</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Networking\EchoesShipStatsSubsystem.cpp">
       <Filter>Source\Echoes\Core\Common\Networking</Filter>
     </ClCompile>
@@ -201,9 +306,21 @@
     <ClInclude Include="..\..\Source\Echoes\Core\Common\Save\EchoesLocalPlayerSettings.h">
       <Filter>Source\Echoes\Core\Common\Save</Filter>
     </ClInclude>
+    <Filter Include="Source\Echoes\Core\Common\Structures">
+      <UniqueIdentifier>{2FF4D41D-CD6A-360D-8EAA-FFD34884D034}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Structures\EchoesKillmailStructures.h">
+      <Filter>Source\Echoes\Core\Common\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Structures\EchoesMarketStructures.h">
+      <Filter>Source\Echoes\Core\Common\Structures</Filter>
+    </ClInclude>
     <Filter Include="Source\Echoes\Core\Common\Types">
       <UniqueIdentifier>{D01B1778-3E34-3748-B2B5-5289A21311C1}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\Types\EchoesGameState.h">
+      <Filter>Source\Echoes\Core\Common\Types</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Types\EchoesGameStateSubsystem.cpp">
       <Filter>Source\Echoes\Core\Common\Types</Filter>
     </ClCompile>
@@ -237,6 +354,12 @@
     <Filter Include="Source\Echoes\Core\Server">
       <UniqueIdentifier>{DE3C9C47-AAB0-3ABF-8615-B61F2B472514}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\Echoes\Core\Server\CombatServerSubsystem.cpp">
+      <Filter>Source\Echoes\Core\Server</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Server\CombatServerSubsystem.h">
+      <Filter>Source\Echoes\Core\Server</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\Core\Server\EchoesHangarManager.cpp">
       <Filter>Source\Echoes\Core\Server</Filter>
     </ClCompile>
@@ -259,6 +382,18 @@
       <Filter>Source\Echoes\Core\Server\Managers</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Core\Server\Managers\EchoesServerManagementSubsystem.h">
+      <Filter>Source\Echoes\Core\Server\Managers</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Server\Managers\ServerDataManager.cpp">
+      <Filter>Source\Echoes\Core\Server\Managers</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Server\Managers\ServerDataManager.h">
+      <Filter>Source\Echoes\Core\Server\Managers</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Server\Managers\WorldObjectManager.cpp">
+      <Filter>Source\Echoes\Core\Server\Managers</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Server\Managers\WorldObjectManager.h">
       <Filter>Source\Echoes\Core\Server\Managers</Filter>
     </ClInclude>
     <Filter Include="Source\Echoes\UI">
@@ -286,6 +421,12 @@
       <Filter>Source\Echoes\UI\Logic</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\UI\Logic\EchoesInventoryItemObject.h">
+      <Filter>Source\Echoes\UI\Logic</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Logic\EchoesMarketOrderObject.cpp">
+      <Filter>Source\Echoes\UI\Logic</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Logic\EchoesMarketOrderObject.h">
       <Filter>Source\Echoes\UI\Logic</Filter>
     </ClInclude>
     <Filter Include="Source\Echoes\UI\Widgets">
@@ -321,10 +462,34 @@
     <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesInventoryWidget.h">
       <Filter>Source\Echoes\UI\Widgets</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesKillmailWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesKillmailWidget.h">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesLoginWidget.cpp">
       <Filter>Source\Echoes\UI\Widgets</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesLoginWidget.h">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesMainHUD.cpp">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesMainHUD.h">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesMarketOrderEntryWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesMarketOrderEntryWidget.h">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesMarketToastWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesMarketToastWidget.h">
       <Filter>Source\Echoes\UI\Widgets</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\Echoes\UI\Widgets\EchoesPreloadWidget.cpp">
@@ -344,6 +509,54 @@
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\UI\Widgets\EchoesStationMenuWidget.h">
       <Filter>Source\Echoes\UI\Widgets</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\UI\Widgets\Fitting">
+      <UniqueIdentifier>{0758CE33-E27D-331C-A178-9B0C3FF58ABF}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\Fitting\FittingWindowWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\Fitting</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\Fitting\FittingWindowWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\Fitting</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\Fitting\ModulePanelWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\Fitting</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\Fitting\ModulePanelWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\Fitting</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\Fitting\ShipStatsWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\Fitting</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\Fitting\ShipStatsWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\Fitting</Filter>
+    </ClInclude>
+    <Filter Include="Source\Echoes\UI\Widgets\SpaceHUD">
+      <UniqueIdentifier>{09A430CC-0F22-38DC-B85F-F4DC2F3027DA}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\NavigationWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\NavigationWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\OverviewWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\OverviewWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\ShipStatusWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\ShipStatusWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\TargetPanelWidget.cpp">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\UI\Widgets\SpaceHUD\TargetPanelWidget.h">
+      <Filter>Source\Echoes\UI\Widgets\SpaceHUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

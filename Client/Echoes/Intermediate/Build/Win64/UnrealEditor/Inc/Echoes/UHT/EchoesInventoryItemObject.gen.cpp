@@ -383,7 +383,7 @@ struct Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 590939204
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesInventoryItemObject_eventGetItemDefinitionData_Parms, ReturnValue), Z_Construct_UScriptStruct_FEchoesItemDefinitionRow, METADATA_PARAMS(0, nullptr) }; // 132594848
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData_Statics::NewProp_ReturnValue,
 };
@@ -904,7 +904,7 @@ struct Z_Construct_UClass_UEchoesInventoryItemObject_Statics
 		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedTotalVolume, "GetFormattedTotalVolume" }, // 2291883251
 		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetFormattedVolume, "GetFormattedVolume" }, // 3198391673
 		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemData, "GetItemData" }, // 3985250411
-		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData, "GetItemDefinitionData" }, // 197874740
+		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemDefinitionData, "GetItemDefinitionData" }, // 1036970611
 		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetItemName, "GetItemName" }, // 3892951402
 		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetQuantity, "GetQuantity" }, // 4270848445
 		{ &Z_Construct_UFunction_UEchoesInventoryItemObject_GetTotalMass, "GetTotalMass" }, // 1961578352
@@ -964,10 +964,10 @@ UEchoesInventoryItemObject::~UEchoesInventoryItemObject() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesInventoryItemObject, UEchoesInventoryItemObject::StaticClass, TEXT("UEchoesInventoryItemObject"), &Z_Registration_Info_UClass_UEchoesInventoryItemObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryItemObject), 4281696882U) },
+		{ Z_Construct_UClass_UEchoesInventoryItemObject, UEchoesInventoryItemObject::StaticClass, TEXT("UEchoesInventoryItemObject"), &Z_Registration_Info_UClass_UEchoesInventoryItemObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesInventoryItemObject), 1655873857U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_3230525612(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_2459303584(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Logic_EchoesInventoryItemObject_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

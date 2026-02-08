@@ -1,5 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-// Echoes - EVE-like MMO
+// Echoes - MMO
 // Module Panel Widget - Active equipment display and activation in space
 
 #pragma once
@@ -7,10 +7,14 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Core/Common/Interfaces/ShipFittingInterface.h"
+#include "Delegates/Delegate.h"
 #include "ModulePanelWidget.generated.h"
 
 class UModuleSlotWidget;
 class UUniformGridPanel;
+
+// Declare module toggled delegate so it can be used as a UPROPERTY/BlueprintAssignable
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnModuleToggled);
 
 /**
  * Module Panel Widget - Displays active modules in space HUD
@@ -136,7 +140,7 @@ public:
 
 	/** Called when module is activated/deactivated */
 	UPROPERTY(BlueprintAssignable, Category = "Module Panel|Events")
-	FSimpleMulticastDelegate OnModuleToggled;
+	FOnModuleToggled OnModuleToggled;
 
 	/**
 	 * Blueprint event: Module state changed
@@ -161,9 +165,31 @@ protected:
 	/** Bind to ship fitting events */
 	void BindToShipEvents();
 
+	/** Unbind from ship fitting events (declared to match .cpp usage) */
+	void UnbindFromShipEvents();
+
 	/** Created slot widgets */
+	// Store slot widgets in separate arrays per slot type because UHT doesn't support
+	// using TArray as the value in a TMap within a UCLASS.
 	UPROPERTY()
-	TMap<ESlotType, TArray<UModuleSlotWidget*>> SlotWidgets;
+	TArray<UModuleSlotWidget*> HighSlotWidgets;
+
+	UPROPERTY()
+	TArray<UModuleSlotWidget*> MidSlotWidgets;
+
+	UPROPERTY()
+	TArray<UModuleSlotWidget*> LowSlotWidgets;
+
+	FORCEINLINE TArray<UModuleSlotWidget*>* GetSlotWidgetArray(ESlotType SlotType)
+	{
+		switch (SlotType)
+		{
+		case ESlotType::High: return &HighSlotWidgets;
+		case ESlotType::Mid: return &MidSlotWidgets;
+		case ESlotType::Low: return &LowSlotWidgets;
+		default: return nullptr;
+		}
+	}
 
 	/** Cached references */
 	UPROPERTY()

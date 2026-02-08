@@ -17,7 +17,7 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 // ********** Begin ScriptStruct FEchoesItemDefinitionRow ******************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h_63_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h_89_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FEchoesItemDefinitionRow_Statics; \
 	static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;
@@ -26,8 +26,32 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 struct FEchoesItemDefinitionRow;
 // ********** End ScriptStruct FEchoesItemDefinitionRow ********************************************
 
+// ********** Begin ScriptStruct FWeaponAttributesRow **********************************************
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h_237_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FWeaponAttributesRow_Statics; \
+	static class UScriptStruct* StaticStruct(); \
+	typedef FTableRowBase Super;
+
+
+struct FWeaponAttributesRow;
+// ********** End ScriptStruct FWeaponAttributesRow ************************************************
+
 #undef CURRENT_FILE_ID
 #define CURRENT_FILE_ID FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Types_EchoesItemDefinitions_h
+
+// ********** Begin Enum EEchoesSlotType ***********************************************************
+#define FOREACH_ENUM_EECHOESSLOTTYPE(op) \
+	op(EEchoesSlotType::High) \
+	op(EEchoesSlotType::Mid) \
+	op(EEchoesSlotType::Low) \
+	op(EEchoesSlotType::Rig) \
+	op(EEchoesSlotType::Subsystem) \
+	op(EEchoesSlotType::None) 
+
+enum class EEchoesSlotType : uint8;
+template<> struct TIsUEnumClass<EEchoesSlotType> { enum { Value = true }; };
+template<> ECHOES_API UEnum* StaticEnum<EEchoesSlotType>();
+// ********** End Enum EEchoesSlotType *************************************************************
 
 // ********** Begin Enum EEchoesItemCategory *******************************************************
 #define FOREACH_ENUM_EECHOESITEMCATEGORY(op) \

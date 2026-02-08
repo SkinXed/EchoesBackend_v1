@@ -13,8 +13,8 @@ ACosmosProjectile::ACosmosProjectile()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// Enable replication
-	bReplicates = true;
-	bReplicateMovement = true;
+	SetReplicates(true);
+	SetReplicateMovement(true);
 
 	// Create collision component
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));

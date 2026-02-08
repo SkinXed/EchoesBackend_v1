@@ -218,13 +218,13 @@ TargetWidgets.Empty();
 UpdateHeaderText();
 }
 
-UTargetItemWidget* UTargetPanelWidget::GetTargetItemWidget(AActor* Target) const
+UTargetItemWidget* UTargetPanelWidget::GetTargetItemWidget(AActor* Target)
 {
-if (const UTargetItemWidget* const* FoundWidget = TargetWidgets.Find(Target))
-{
-return *FoundWidget;
-}
-return nullptr;
+    if (UTargetItemWidget** FoundWidget = TargetWidgets.Find(Target))
+    {
+        return *FoundWidget;
+    }
+    return nullptr;
 }
 
 void UTargetPanelWidget::HandleLockStarted(AActor* Target)

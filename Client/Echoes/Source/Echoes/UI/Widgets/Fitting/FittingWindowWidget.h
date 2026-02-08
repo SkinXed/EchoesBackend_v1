@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 // Echoes - EVE-like MMO
 // Fitting Window Widget - Equipment management in hangar
 
@@ -109,8 +109,13 @@ TScriptInterface<IShipFittingInterface> Common_GetShipFittingInterface() const;
 // EVENTS
 // ============================================================================
 
+// Исправление: замените FSimpleMulticastDelegate на DECLARE_MULTICAST_DELEGATE и используйте правильный тип делегата
+
+// Use a dynamic multicast delegate so it can be exposed to Blueprints via UPROPERTY(BlueprintAssignable)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFittingChanged);
+
 UPROPERTY(BlueprintAssignable, Category = "Fitting Window|Events")
-FSimpleMulticastDelegate OnFittingChanged;
+FOnFittingChanged OnFittingChanged;
 
 UFUNCTION(BlueprintImplementableEvent, Category = "Fitting Window|Events")
 void OnModuleInstalled(ESlotType SlotType, int32 SlotIndex);
@@ -126,8 +131,27 @@ void HandleSlotModuleRemoved(ESlotType SlotType, int32 SlotIndex);
 void UpdateResourceBars();
 void BindToShipEvents();
 
+// Store slot widgets in separate arrays per slot type because UHT doesn't support
+// using TArray as the value in a TMap for reflected properties.
 UPROPERTY()
-TMap<ESlotType, TArray<UFittingSlotWidget*>> SlotWidgets;
+TArray<UFittingSlotWidget*> HighSlotWidgets;
+
+UPROPERTY()
+TArray<UFittingSlotWidget*> MidSlotWidgets;
+
+UPROPERTY()
+TArray<UFittingSlotWidget*> LowSlotWidgets;
+
+FORCEINLINE TArray<UFittingSlotWidget*>* GetSlotWidgetArray(ESlotType SlotType)
+{
+    switch (SlotType)
+    {
+    case ESlotType::High: return &HighSlotWidgets;
+    case ESlotType::Mid: return &MidSlotWidgets;
+    case ESlotType::Low: return &LowSlotWidgets;
+    default: return nullptr;
+    }
+}
 
 UPROPERTY()
 APlayerController* CachedPlayerController;

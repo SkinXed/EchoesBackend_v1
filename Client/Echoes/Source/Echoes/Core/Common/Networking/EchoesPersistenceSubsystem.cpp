@@ -324,3 +324,31 @@ void UEchoesPersistenceSubsystem::HandleMarketInventorySync(const FGuid& Charact
 		*CharacterId.ToString());
 	ServerOnly_ForceSaveStateForCharacter(CharacterId);
 }
+
+bool UEchoesPersistenceSubsystem::ServerOnly_QueueStateSave(const FGuid& CharacterId, const FCommon_StateData& StateData)
+{
+	// Basic validation
+	if (!CharacterId.IsValid())
+	{
+		UE_LOG(LogEchoesPersistence, Warning, TEXT("QueueStateSave: Invalid CharacterId"));
+		return false;
+	}
+
+	// In this simplified stub we just log and return true to indicate queued
+	UE_LOG(LogEchoesPersistence, Verbose, TEXT("QueueStateSave: Queued save for Character %s"), *CharacterId.ToString());
+	// TODO: Push into real queue implementation
+	return true;
+}
+
+void UEchoesPersistenceSubsystem::ServerOnly_SaveStateImmediate(const FGuid& CharacterId, const FCommon_StateData& StateData)
+{
+	if (!CharacterId.IsValid())
+	{
+		UE_LOG(LogEchoesPersistence, Warning, TEXT("SaveStateImmediate: Invalid CharacterId"));
+		return;
+	}
+
+	UE_LOG(LogEchoesPersistence, Log, TEXT("SaveStateImmediate: Immediate save requested for Character %s"), *CharacterId.ToString());
+	// TODO: Implement immediate HTTP save logic - for now, perform a queued save as fallback
+	ServerOnly_QueueStateSave(CharacterId, StateData);
+}

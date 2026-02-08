@@ -267,7 +267,7 @@ void ClearAllTargets();
  * @return The widget displaying this target, or nullptr if not found
  */
 UFUNCTION(BlueprintPure, Category = "Target Panel")
-UTargetItemWidget* GetTargetItemWidget(AActor* Target) const;
+UTargetItemWidget* GetTargetItemWidget(AActor* Target); 
 
 // ==================== Events ====================
 

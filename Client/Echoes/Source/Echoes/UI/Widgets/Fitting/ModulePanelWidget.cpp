@@ -142,7 +142,12 @@ UUniformGridSlot* GridSlot = GridPanel->AddChildToUniformGrid(SlotWidget, Row, C
 TypeSlots.Add(SlotWidget);
 }
 
-SlotWidgets.Add(SlotType, TypeSlots);
+// Store into the appropriate typed array
+TArray<UModuleSlotWidget*>* DestArray = GetSlotWidgetArray(SlotType);
+if (DestArray)
+{
+*DestArray = MoveTemp(TypeSlots);
+}
 }
 
 void UModulePanelWidget::HandleSlotClicked(ESlotType SlotType, int32 SlotIndex)
@@ -182,38 +187,29 @@ return;
 FCommon_ShipFittingData FittingData = FittingInterface->GetFittingData();
 
 // Update High slots
-if (SlotWidgets.Contains(ESlotType::High))
-{
 for (int32 i = 0; i < FittingData.HighSlots.Num(); ++i)
 {
-if (i < SlotWidgets[ESlotType::High].Num())
+if (i < HighSlotWidgets.Num())
 {
-SlotWidgets[ESlotType::High][i]->UpdateDisplay(FittingData.HighSlots[i]);
-}
+HighSlotWidgets[i]->UpdateDisplay(FittingData.HighSlots[i]);
 }
 }
 
 // Update Mid slots
-if (SlotWidgets.Contains(ESlotType::Mid))
-{
 for (int32 i = 0; i < FittingData.MidSlots.Num(); ++i)
 {
-if (i < SlotWidgets[ESlotType::Mid].Num())
+if (i < MidSlotWidgets.Num())
 {
-SlotWidgets[ESlotType::Mid][i]->UpdateDisplay(FittingData.MidSlots[i]);
-}
+MidSlotWidgets[i]->UpdateDisplay(FittingData.MidSlots[i]);
 }
 }
 
 // Update Low slots
-if (SlotWidgets.Contains(ESlotType::Low))
-{
 for (int32 i = 0; i < FittingData.LowSlots.Num(); ++i)
 {
-if (i < SlotWidgets[ESlotType::Low].Num())
+if (i < LowSlotWidgets.Num())
 {
-SlotWidgets[ESlotType::Low][i]->UpdateDisplay(FittingData.LowSlots[i]);
-}
+LowSlotWidgets[i]->UpdateDisplay(FittingData.LowSlots[i]);
 }
 }
 }
@@ -281,29 +277,39 @@ void UModulePanelWidget::UnbindFromShipEvents()
 
 UModuleSlotWidget* UModulePanelWidget::Common_GetSlotWidget(ESlotType SlotType, int32 SlotIndex) const
 {
-if (SlotWidgets.Contains(SlotType))
+const TArray<UModuleSlotWidget*>* TypeSlots = nullptr;
+switch (SlotType)
 {
-const TArray<UModuleSlotWidget*>& TypeSlots = SlotWidgets[SlotType];
-if (SlotIndex >= 0 && SlotIndex < TypeSlots.Num())
-{
-return TypeSlots[SlotIndex];
+case ESlotType::High: TypeSlots = &HighSlotWidgets; break;
+case ESlotType::Mid: TypeSlots = &MidSlotWidgets; break;
+case ESlotType::Low: TypeSlots = &LowSlotWidgets; break;
+default: TypeSlots = nullptr; break;
 }
+
+if (TypeSlots && SlotIndex >= 0 && SlotIndex < TypeSlots->Num())
+{
+return (*TypeSlots)[SlotIndex];
 }
 return nullptr;
 }
 
 bool UModulePanelWidget::Common_HasActiveModules() const
 {
-for (const auto& Pair : SlotWidgets)
+auto CheckArray = [](const TArray<UModuleSlotWidget*>& Array)->bool
 {
-for (UModuleSlotWidget* SlotWidget : Pair.Value)
+for (UModuleSlotWidget* SlotWidget : Array)
 {
 if (SlotWidget && SlotWidget->CurrentState == EModuleState::Active)
 {
 return true;
 }
 }
-}
+return false;
+};
+
+if (CheckArray(HighSlotWidgets)) return true;
+if (CheckArray(MidSlotWidgets)) return true;
+if (CheckArray(LowSlotWidgets)) return true;
 return false;
 }
 

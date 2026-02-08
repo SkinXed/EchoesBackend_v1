@@ -11,43 +11,43 @@ void UEchoesKillmailWidget::NativeConstruct()
 
 void UEchoesKillmailWidget::SetKillmailData(const FKillmailData& InKillmailData)
 {
-	KillmailData = InKillmailData;
+	StoredKillmailData = InKillmailData;
 
 	// Populate header
 	if (VictimNameText)
 	{
-		VictimNameText->SetText(FText::FromString(KillmailData.VictimName));
+		VictimNameText->SetText(FText::FromString(StoredKillmailData.VictimName));
 	}
 
 	if (ShipTypeText)
 	{
-		ShipTypeText->SetText(FText::FromString(KillmailData.ShipTypeName));
+		ShipTypeText->SetText(FText::FromString(StoredKillmailData.ShipTypeName));
 	}
 
 	if (SystemNameText)
 	{
-		SystemNameText->SetText(FText::FromString(KillmailData.SolarSystemName));
+		SystemNameText->SetText(FText::FromString(StoredKillmailData.SolarSystemName));
 	}
 
 	// Format total loss with ISK suffix
 	if (TotalLossText)
 	{
 		FString LossStr;
-		if (KillmailData.TotalLossValue >= 1000000000.0)
+		if (StoredKillmailData.TotalLossValue >= 1000000000.0)
 		{
-			LossStr = FString::Printf(TEXT("%.2fB ISK"), KillmailData.TotalLossValue / 1000000000.0);
+			LossStr = FString::Printf(TEXT("%.2fB ISK"), StoredKillmailData.TotalLossValue / 1000000000.0);
 		}
-		else if (KillmailData.TotalLossValue >= 1000000.0)
+		else if (StoredKillmailData.TotalLossValue >= 1000000.0)
 		{
-			LossStr = FString::Printf(TEXT("%.2fM ISK"), KillmailData.TotalLossValue / 1000000.0);
+			LossStr = FString::Printf(TEXT("%.2fM ISK"), StoredKillmailData.TotalLossValue / 1000000.0);
 		}
-		else if (KillmailData.TotalLossValue >= 1000.0)
+		else if (StoredKillmailData.TotalLossValue >= 1000.0)
 		{
-			LossStr = FString::Printf(TEXT("%.2fK ISK"), KillmailData.TotalLossValue / 1000.0);
+			LossStr = FString::Printf(TEXT("%.2fK ISK"), StoredKillmailData.TotalLossValue / 1000.0);
 		}
 		else
 		{
-			LossStr = FString::Printf(TEXT("%.2f ISK"), KillmailData.TotalLossValue);
+			LossStr = FString::Printf(TEXT("%.2f ISK"), StoredKillmailData.TotalLossValue);
 		}
 		TotalLossText->SetText(FText::FromString(LossStr));
 	}
@@ -55,14 +55,14 @@ void UEchoesKillmailWidget::SetKillmailData(const FKillmailData& InKillmailData)
 	// Format timestamp
 	if (TimestampText)
 	{
-		TimestampText->SetText(FText::FromString(KillmailData.KilledAt.ToString(TEXT("%Y-%m-%d %H:%M"))));
+		TimestampText->SetText(FText::FromString(StoredKillmailData.KilledAt.ToString(TEXT("%Y-%m-%d %H:%M"))));
 	}
 
 	// Find and display final blow attacker
 	if (FinalBlowText)
 	{
 		FString FinalBlowName = TEXT("Unknown");
-		for (const FKillmailAttacker& Att : KillmailData.Attackers)
+		for (const FKillmailAttacker& Att : StoredKillmailData.Attackers)
 		{
 			if (Att.IsFinalBlow)
 			{
@@ -76,27 +76,27 @@ void UEchoesKillmailWidget::SetKillmailData(const FKillmailData& InKillmailData)
 	if (AttackerCountText)
 	{
 		AttackerCountText->SetText(FText::FromString(
-			FString::Printf(TEXT("%d"), KillmailData.Attackers.Num())));
+			FString::Printf(TEXT("%d"), StoredKillmailData.Attackers.Num())));
 	}
 
 	// Populate attacker entries via Blueprint events
-	for (const FKillmailAttacker& Attacker : KillmailData.Attackers)
+	for (const FKillmailAttacker& Attacker : StoredKillmailData.Attackers)
 	{
 		OnAddAttackerEntry(Attacker);
 	}
 
 	// Populate dropped items (green — survived)
-	for (const FKillmailItem& Item : KillmailData.DroppedItems)
+	for (const FKillmailItem& Item : StoredKillmailData.DroppedItems)
 	{
 		OnAddDroppedItemEntry(Item);
 	}
 
 	// Populate destroyed items (red — lost)
-	for (const FKillmailItem& Item : KillmailData.DestroyedItems)
+	for (const FKillmailItem& Item : StoredKillmailData.DestroyedItems)
 	{
 		OnAddDestroyedItemEntry(Item);
 	}
 
 	// Notify Blueprint for any custom formatting
-	OnKillmailDataSet(KillmailData);
+	OnKillmailDataSet(StoredKillmailData);
 }

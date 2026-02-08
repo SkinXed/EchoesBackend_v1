@@ -7,7 +7,6 @@
 #include "JsonObjectConverter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
-#include "GameFramework/PlayerController.h"
 
 void UEchoesJumpSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -35,7 +34,8 @@ void UEchoesJumpSubsystem::ServerOnly_RequestJump(
 	APawn* PlayerPawn)
 {
 	// This should only be called on the server
-	if (!GetWorld() || !GetWorld()->IsServer())
+	UWorld* World = GetWorld();
+	if (!World || World->GetNetMode() == NM_Client)
 	{
 		UE_LOG(LogTemp, Error, TEXT("ServerOnly_RequestJump called on client! This is a server-only function."));
 		return;
@@ -62,6 +62,7 @@ void UEchoesJumpSubsystem::ServerOnly_RequestJump(
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No pawn provided for state save before jump"));
+
 	}
 
 	// Step 2: Request jump ticket from backend
@@ -76,32 +77,31 @@ void UEchoesJumpSubsystem::ServerOnly_RequestJump(
 
 void UEchoesJumpSubsystem::SendJumpRequest(const FJumpRequestData& RequestData, APawn* PlayerPawn)
 {
-	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 
-	// Build URL
 	FString Url = FString::Printf(TEXT("%s/jump/request"), *ApiBaseUrl);
 	HttpRequest->SetURL(Url);
 	HttpRequest->SetVerb(TEXT("POST"));
 	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
 	HttpRequest->SetHeader(TEXT("X-Server-Secret"), ServerSecret);
 
-	// Build JSON payload
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
 	JsonObject->SetStringField(TEXT("characterId"), RequestData.CharacterId.ToString());
 	JsonObject->SetStringField(TEXT("stargateId"), RequestData.StargateId.ToString());
 	JsonObject->SetStringField(TEXT("sourceSystemId"), RequestData.SourceSystemId.ToString());
 	JsonObject->SetStringField(TEXT("destinationSystemId"), RequestData.DestinationSystemId.ToString());
 
-	// Serialize JSON
 	FString OutputString;
 	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&OutputString);
 	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
 
 	HttpRequest->SetContentAsString(OutputString);
 
-	// Bind callback
-	HttpRequest->OnProcessRequestComplete().BindUObject(this, &UEchoesJumpSubsystem::OnJumpRequestComplete_Internal, PlayerPawn);
+	// Bind callback - use a lambda to capture 'this' and PlayerPawn
+	HttpRequest->OnProcessRequestComplete().BindLambda([this, PlayerPawn](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+	{
+		this->OnJumpRequestComplete_Internal(Request, Response, bWasSuccessful, PlayerPawn);
+	});
 
 	// Send request
 	if (!HttpRequest->ProcessRequest())
@@ -114,12 +114,9 @@ void UEchoesJumpSubsystem::SendJumpRequest(const FJumpRequestData& RequestData, 
 		FailureResponse.Message = TEXT("Failed to send request to backend");
 		OnJumpRequestComplete.Broadcast(false, FailureResponse);
 	}
-	else
+	else if (bEnableDebugLogging)
 	{
-		if (bEnableDebugLogging)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Jump request sent to %s"), *Url);
-		}
+		UE_LOG(LogTemp, Log, TEXT("Jump request sent to %s"), *Url);
 	}
 }
 
@@ -246,11 +243,20 @@ void UEchoesJumpSubsystem::ClientRPC_TravelToSystem_Implementation(
 void UEchoesJumpSubsystem::ServerOnly_ValidateJumpTicket(
 	const FString& TicketId,
 	FGuid CharacterId,
-	FGuid SystemId,
-	const FOnJumpRequestComplete& OnComplete)
+	FGuid SystemId)
 {
-	// This should only be called on the server
-	if (!GetWorld() || !GetWorld()->IsServer())
+	// Forward to the overload that accepts a delegate, using the subsystem's OnJumpRequestComplete multicast
+	ServerOnly_ValidateJumpTicket(TicketId, CharacterId, SystemId, OnJumpRequestComplete);
+}
+
+void UEchoesJumpSubsystem::ServerOnly_ValidateJumpTicket(
+	const FString& TicketId,
+	FGuid CharacterId,
+	FGuid SystemId,
+	FOnJumpRequestComplete& OnComplete)
+{
+	UWorld* World = GetWorld();
+	if (!World || World->GetNetMode() == NM_Client)
 	{
 		UE_LOG(LogTemp, Error, TEXT("ServerOnly_ValidateJumpTicket called on client!"));
 		return;
@@ -262,7 +268,7 @@ void UEchoesJumpSubsystem::ServerOnly_ValidateJumpTicket(
 		FJumpResponseData FailureResponse;
 		FailureResponse.bSuccess = false;
 		FailureResponse.Message = TEXT("Invalid validation parameters");
-		OnComplete.ExecuteIfBound(false, FailureResponse);
+		OnComplete.Broadcast(false, FailureResponse);
 		return;
 	}
 
@@ -276,33 +282,32 @@ void UEchoesJumpSubsystem::SendTicketValidationRequest(
 	const FString& TicketId,
 	FGuid CharacterId,
 	FGuid SystemId,
-	const FOnJumpRequestComplete& Callback)
+	FOnJumpRequestComplete Callback)
 {
-	// Create HTTP request
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 
-	// Build URL
 	FString Url = FString::Printf(TEXT("%s/jump/redeem"), *ApiBaseUrl);
 	HttpRequest->SetURL(Url);
 	HttpRequest->SetVerb(TEXT("POST"));
 	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
 	HttpRequest->SetHeader(TEXT("X-Server-Secret"), ServerSecret);
 
-	// Build JSON payload
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
 	JsonObject->SetStringField(TEXT("ticketId"), TicketId);
 	JsonObject->SetStringField(TEXT("characterId"), CharacterId.ToString());
 	JsonObject->SetStringField(TEXT("systemId"), SystemId.ToString());
 
-	// Serialize JSON
 	FString OutputString;
 	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&OutputString);
 	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
 
 	HttpRequest->SetContentAsString(OutputString);
 
-	// Bind callback
-	HttpRequest->OnProcessRequestComplete().BindUObject(this, &UEchoesJumpSubsystem::OnTicketValidationComplete_Internal, Callback);
+	// Bind callback - capture the callback by value
+	HttpRequest->OnProcessRequestComplete().BindLambda([this, Callback](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+	{
+		this->OnTicketValidationComplete_Internal(Request, Response, bWasSuccessful, Callback);
+	});
 
 	// Send request
 	if (!HttpRequest->ProcessRequest())
@@ -312,14 +317,11 @@ void UEchoesJumpSubsystem::SendTicketValidationRequest(
 		FJumpResponseData FailureResponse;
 		FailureResponse.bSuccess = false;
 		FailureResponse.Message = TEXT("Failed to send validation request");
-		Callback.ExecuteIfBound(false, FailureResponse);
+		Callback.Broadcast(false, FailureResponse);
 	}
-	else
+	else if (bEnableDebugLogging)
 	{
-		if (bEnableDebugLogging)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Ticket validation request sent to %s"), *Url);
-		}
+		UE_LOG(LogTemp, Log, TEXT("Ticket validation request sent to %s"), *Url);
 	}
 }
 
@@ -336,7 +338,7 @@ void UEchoesJumpSubsystem::OnTicketValidationComplete_Internal(
 		UE_LOG(LogTemp, Error, TEXT("Ticket validation failed - no response from server"));
 		ResponseData.bSuccess = false;
 		ResponseData.Message = TEXT("No response from backend server");
-		Callback.ExecuteIfBound(false, ResponseData);
+		Callback.Broadcast(false, ResponseData);
 		return;
 	}
 
@@ -357,7 +359,7 @@ void UEchoesJumpSubsystem::OnTicketValidationComplete_Internal(
 		UE_LOG(LogTemp, Error, TEXT("Failed to parse validation response JSON"));
 		ResponseData.bSuccess = false;
 		ResponseData.Message = TEXT("Invalid response format");
-		Callback.ExecuteIfBound(false, ResponseData);
+		Callback.Broadcast(false, ResponseData);
 		return;
 	}
 
@@ -379,7 +381,7 @@ void UEchoesJumpSubsystem::OnTicketValidationComplete_Internal(
 			*ResponseData.Message, *ResponseData.DenialReason);
 	}
 
-	Callback.ExecuteIfBound(ResponseData.bSuccess, ResponseData);
+	Callback.Broadcast(ResponseData.bSuccess, ResponseData);
 }
 
 FString UEchoesJumpSubsystem::BuildTravelURL(const FString& ServerAddress, const FString& TicketId) const
