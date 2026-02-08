@@ -1,9 +1,11 @@
-﻿using Echoes.API.Data;
+﻿using System.Diagnostics;
+using Echoes.API.Data;
 using Echoes.API.Models.DTOs.Server;
 using Echoes.API.Models.Entities.GameServer;
 using Echoes.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Echoes.API.Controllers.Management
 {
@@ -19,15 +21,18 @@ namespace Echoes.API.Controllers.Management
         private readonly DatabaseContext _context;
         private readonly IGameServerService _gameServerService;
         private readonly ILogger<ServerManagementController> _logger;
+        private readonly IMemoryCache _cache;
 
         public ServerManagementController(
             DatabaseContext context,
             IGameServerService gameServerService,
-            ILogger<ServerManagementController> logger)
+            ILogger<ServerManagementController> logger,
+            IMemoryCache cache)
         {
             _context = context;
             _gameServerService = gameServerService;
             _logger = logger;
+            _cache = cache;
         }
 
         /// <summary>
@@ -395,7 +400,19 @@ namespace Echoes.API.Controllers.Management
                 return BadRequest(new { error = "Valid SolarSystemId is required" });
             }
 
+            // Try cache first
+            string cacheKey = $"DedicatedConfig:{systemGuid:N}";
+            if (_cache.TryGetValue(cacheKey, out ServerConfigResponseDto cachedResp))
+            {
+                _logger.LogDebug("Serving DedicatedSystem config from cache for {SystemId}", systemGuid);
+                return Ok(cachedResp);
+            }
+
+            var sw = Stopwatch.StartNew();
+
             var system = await _context.SolarSystems
+                .AsNoTracking()
+                .AsSplitQuery()
                 .Include(s => s.Constellation).ThenInclude(c => c.Region)
                 .Include(s => s.Planets).ThenInclude(p => p.Moons)
                 .Include(s => s.Planets).ThenInclude(p => p.Resources)
@@ -406,6 +423,9 @@ namespace Echoes.API.Controllers.Management
                 .Include(s => s.SourceWormholes)
                 .Include(s => s.TargetWormholes)
                 .FirstOrDefaultAsync(s => s.Id == systemGuid);
+
+            sw.Stop();
+            _logger.LogInformation("GetDedicatedSystemConfig DB query time: {ElapsedMs} ms for SystemId {SystemId}", sw.ElapsedMilliseconds, systemGuid);
 
             if (system == null)
             {
@@ -470,7 +490,7 @@ namespace Echoes.API.Controllers.Management
                     PositionY = sg.PositionY,
                     PositionZ = sg.PositionZ,
                     IsOperational = sg.IsOperational,
-                   
+
                     JumpCost = sg.JumpCost,
                     Model = sg.Model ?? "DefaultGate"
                 }).ToList(),
@@ -528,6 +548,13 @@ namespace Echoes.API.Controllers.Management
                 "Sending DedicatedSystem config for {SystemName}: {PlanetCount} planets, {StargateCount} stargates, {StationCount} stations",
                 system.Name, system.Planets.Count, system.Stargates.Count, system.Stations.Count);
 
+            // Cache the response for a short duration to reduce repeated DB load
+            var responseObj = new ServerConfigResponseDto { Config = configDto };
+            var cacheOptions = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30) };
+            // If cache size limit is enabled, entries must specify a Size. Use size=1 per entry.
+            cacheOptions.SetSize(1);
+            _cache.Set(cacheKey, responseObj, cacheOptions);
+
             return Ok(new ServerConfigResponseDto { Config = configDto });
         }
 
@@ -545,7 +572,19 @@ namespace Echoes.API.Controllers.Management
                 return BadRequest(new { error = "RegionId is required for RegionalCluster mode" });
             }
 
+            // Try cache first
+            string cacheKey = $"RegionalConfig:{request.RegionId.Value:N}";
+            if (_cache.TryGetValue(cacheKey, out ServerRegionalClusterConfigResponseDto cachedRegional))
+            {
+                _logger.LogDebug("Serving RegionalCluster config from cache for {RegionId}", request.RegionId);
+                return Ok(cachedRegional);
+            }
+
+            var sw = Stopwatch.StartNew();
+
             var region = await _context.Regions
+                .AsNoTracking()
+                .AsSplitQuery()
                 .Include(r => r.Constellations)
                     .ThenInclude(c => c.SolarSystems)
                         .ThenInclude(s => s.Constellation)
@@ -569,6 +608,9 @@ namespace Echoes.API.Controllers.Management
                         .ThenInclude(s => s.AsteroidBelts)
                             .ThenInclude(ab => ab.Resources)
                 .FirstOrDefaultAsync(r => r.Id == request.RegionId);
+
+            sw.Stop();
+            _logger.LogInformation("GetRegionalClusterConfig DB query time: {ElapsedMs} ms for RegionId {RegionId}", sw.ElapsedMilliseconds, request.RegionId);
 
             if (region == null)
             {
@@ -690,7 +732,185 @@ namespace Echoes.API.Controllers.Management
                 region.Name, region.Constellations.Count, allSystems.Count,
                 regionalConfig.TotalPlanets, regionalConfig.TotalStargates, regionalConfig.TotalStations);
 
+            // Cache regional response
+            var regionalResp = new ServerRegionalClusterConfigResponseDto { Config = regionalConfig };
+            var regionalCacheOptions = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30) };
+            // Ensure size provided when memory cache has a size limit
+            regionalCacheOptions.SetSize(1);
+            _cache.Set(cacheKey, regionalResp, regionalCacheOptions);
+
             return Ok(new ServerRegionalClusterConfigResponseDto { Config = regionalConfig });
+        }
+
+        /// <summary>
+        /// DEBUG/DEV ONLY: Get config for a specific system by ID.
+        /// This allows the UE Editor to force-load a specific system without registration.
+        /// </summary>
+        [HttpGet("system/{systemId}/config")]
+        public async Task<ActionResult<ServerSystemConfigDto>> GetSystemConfigById(Guid systemId)
+        {
+            try
+            {
+                // Try cache
+                string cacheKey = $"SystemConfig:{systemId:N}";
+                if (_cache.TryGetValue(cacheKey, out ServerSystemConfigDto cachedSys))
+                {
+                    _logger.LogDebug("Serving GetSystemConfigById from cache for {SystemId}", systemId);
+                    return Ok(cachedSys);
+                }
+
+                // 1. Ищем систему и подгружаем ВСЕ вложенные данные (Копия логики из GetDedicatedSystemConfig)
+                var sw = Stopwatch.StartNew();
+
+                var system = await _context.SolarSystems
+                    .AsNoTracking()
+                    .AsSplitQuery()
+                    .Include(s => s.Constellation).ThenInclude(c => c.Region)
+                    .Include(s => s.Planets).ThenInclude(p => p.Moons)
+                    .Include(s => s.Planets).ThenInclude(p => p.Resources)
+                    .Include(s => s.Stargates).ThenInclude(sg => sg.DestinationSolarSystem)
+                    .Include(s => s.Stations)
+                    .Include(s => s.AsteroidBelts).ThenInclude(ab => ab.Resources)
+                    .Include(s => s.Anomalies)
+                    .Include(s => s.SourceWormholes)
+                    .Include(s => s.TargetWormholes)
+                    .FirstOrDefaultAsync(s => s.Id == systemId);
+
+                sw.Stop();
+                _logger.LogInformation("GetSystemConfigById DB query time: {ElapsedMs} ms for SystemId {SystemId}", sw.ElapsedMilliseconds, systemId);
+
+                if (system == null)
+                {
+                    return NotFound(new { error = $"Solar System {systemId} not found" });
+                }
+
+                // 2. Маппинг данных в DTO
+                var configDto = new ServerSystemConfigDto
+                {
+                    SystemId = system.Id,
+                    SystemName = system.Name,
+                    SolarRadius = system.SolarRadius,
+                    SolarMass = system.SolarMass,
+                    Temperature = system.Temperature,
+                    Luminosity = system.Luminosity,
+                    SecurityStatus = system.SecurityStatus,
+                    StarClass = system.StarClass.ToString(), // Важно для визуала звезды
+
+                    ConstellationId = system.ConstellationId,
+                    ConstellationName = system.Constellation?.Name ?? "Unknown",
+                    RegionId = system.Constellation?.RegionId,
+                    RegionName = system.Constellation?.Region?.Name ?? "Unknown",
+                    PositionX = system.PositionX,
+                    PositionY = system.PositionY,
+                    PositionZ = system.PositionZ,
+
+                    Planets = system.Planets.Select(p => new PlanetConfigDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Type = p.Type.ToString(),
+                        OrbitDistance = p.OrbitDistance,
+                        Radius = p.Radius,
+                        PositionX = p.PositionX,
+                        PositionY = p.PositionY,
+                        PositionZ = p.PositionZ,
+                        Moons = p.Moons.Select(m => new MoonConfigDto
+                        {
+                            Id = m.Id,
+                            Name = m.Name,
+                            Radius = m.Radius,
+                            PositionX = m.PositionX,
+                            PositionY = m.PositionY,
+                            PositionZ = m.PositionZ
+                        }).ToList(),
+                        Resources = p.Resources.Select(r => new ResourceConfigDto
+                        {
+                            Id = r.Id,
+                            ResourceType = r.ResourceType.ToString(),
+                            Quantity = r.Quantity,
+                            Richness = r.Quality
+                        }).ToList()
+                    }).ToList(),
+
+                    Stargates = system.Stargates.Select(sg => new StargateConfigDto
+                    {
+                        Id = sg.Id,
+                        Name = sg.Name,
+                        TargetSystemId = sg.DestinationSolarSystemId,
+                        TargetSystemName = sg.DestinationSolarSystem?.Name ?? "Unknown",
+                        PositionX = sg.PositionX,
+                        PositionY = sg.PositionY,
+                        PositionZ = sg.PositionZ,
+                        IsOperational = sg.IsOperational,
+                        JumpCost = sg.JumpCost,
+                        Model = sg.Model ?? "DefaultGate"
+                    }).ToList(),
+
+                    Stations = system.Stations.Select(st => new StationConfigDto
+                    {
+                        Id = st.Id,
+                        Name = st.Name,
+                        PositionX = st.PositionX,
+                        PositionY = st.PositionY,
+                        PositionZ = st.PositionZ,
+                        StationType = st.Type.ToString()
+                    }).ToList(),
+
+                    AsteroidBelts = system.AsteroidBelts.Select(ab => new AsteroidBeltConfigDto
+                    {
+                        Id = ab.Id,
+                        Name = ab.Name,
+                        PositionX = ab.PositionX,
+                        PositionY = ab.PositionY,
+                        PositionZ = ab.PositionZ,
+                        Resources = ab.Resources.Select(r => new ResourceConfigDto
+                        {
+                            Id = r.Id,
+                            ResourceType = r.ResourceType.ToString(),
+                            Quantity = r.Quantity,
+                            Richness = r.Quality
+                        }).ToList()
+                    }).ToList(),
+
+                    Anomalies = system.Anomalies.Select(a => new AnomalyConfigDto
+                    {
+                        Id = a.Id,
+                        Name = a.Name,
+                        Type = a.Type.ToString(),
+                        Difficulty = a.Difficulty.ToString(),
+                        PositionX = a.PositionX,
+                        PositionY = a.PositionY,
+                        PositionZ = a.PositionZ
+                    }).ToList(),
+
+                    Wormholes = system.TargetWormholes.Select(w => new WormholeConfigDto
+                    {
+                        Id = w.Id,
+                        Name = w.Name,
+                        TargetSystemId = w.TargetSystemId,
+                        PositionX = w.PositionX,
+                        PositionY = w.PositionY,
+                        PositionZ = w.PositionZ
+                    }).ToList()
+                };
+
+                _logger.LogInformation($"[DEBUG] Serving system config for {system.Name} directly via ID.");
+
+                // Cache the system DTO for a short duration
+                var sysCacheOptions = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30) };
+                sysCacheOptions.SetSize(1);
+                _cache.Set(cacheKey, configDto, sysCacheOptions);
+
+                // ВАЖНО: Возвращаем DTO напрямую (без обертки ServerConfigResponseDto), 
+                // если ваш C++ код ожидает структуру сразу. Если C++ ждет поле "config", 
+                // используйте: return Ok(new ServerConfigResponseDto { Config = configDto });
+                return Ok(configDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting system config by ID");
+                return StatusCode(500, new { error = "Internal server error" });
+            }
         }
     }
 }

@@ -17,14 +17,27 @@ using System.Text;
 using System.Threading.RateLimiting;
 
 var contentRoot = Directory.GetCurrentDirectory();
-var apiWebRootPath = Path.Combine(contentRoot, "api-webroot");
-Directory.CreateDirectory(apiWebRootPath);
+
+// Prefer serving the Blazor client wwwroot during local development if available
+var potentialClientWww = Path.GetFullPath(Path.Combine(contentRoot, "..", "EchoesOfImperial.Client", "wwwroot"));
+string webRootPath;
+if (Directory.Exists(potentialClientWww))
+{
+    webRootPath = potentialClientWww;
+    Console.WriteLine($"📡 Serving Blazor client from: {webRootPath}");
+}
+else
+{
+    webRootPath = Path.Combine(contentRoot, "api-webroot");
+    Directory.CreateDirectory(webRootPath);
+    Console.WriteLine($"📁 Using fallback webroot: {webRootPath}");
+}
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     Args = args,
     ContentRootPath = contentRoot,
-    WebRootPath = apiWebRootPath
+    WebRootPath = webRootPath
 });
 
 // ==============================================
@@ -102,6 +115,7 @@ else
         });
 
         // Note: prefer using `.AsSplitQuery()` on individual queries. Global UseQuerySplittingBehavior caused build issues in this environment, so it's omitted.
+
         // Включаем sensitive logging только когда это явно разрешено в конфигурации (и только в dev)
         var enableSensitive = builder.Environment.IsDevelopment()
                             && builder.Configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging", false);
@@ -353,7 +367,7 @@ else
 
 // 4.2. Middleware pipeline
 //app.UseHttpsRedirection();
-var webRootPath = app.Environment.WebRootPath;
+webRootPath = app.Environment.WebRootPath;
 if (Directory.Exists(webRootPath))
 {
     app.UseBlazorFrameworkFiles();
@@ -446,7 +460,6 @@ app.MapGet("/api/handshake", async (DatabaseContext db) =>
     });
 });
 
-
 app.MapGet("/health", async (DatabaseContext dbContext) =>
 {
     try
@@ -492,6 +505,16 @@ app.MapControllers();
 // 4.6. Fallback to Blazor app for client-side routing
 if (Directory.Exists(webRootPath))
 {
+    // Serve Blazor static files and ensure SPA fallback for any non-file path (e.g., /wiki)
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
+
+    // Map a catch-all fallback so client-side routes like /wiki return index.html
+    app.MapFallbackToFile("{*path:nonfile}", "index.html");
+}
+else
+{
+    // If no webroot, keep previous behavior
     app.MapFallbackToFile("index.html");
 }
 

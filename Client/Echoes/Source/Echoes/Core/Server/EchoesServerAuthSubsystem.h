@@ -1,10 +1,11 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Http.h"
+#include "EchoesAuthSubsystem.h"
 #include "EchoesServerAuthSubsystem.generated.h"
 
 /**
@@ -19,6 +20,11 @@
  * - Checks AccountSession.IsActive and expiration
  * - Prevents unauthorized access to game servers
  */
+
+// Delegate for returning character list and auth failures
+DECLARE_DELEGATE_OneParam(FOnCharacterListReceived, const TArray<FCharacterInfo>&);
+DECLARE_DELEGATE_OneParam(FOnAuthFailure, const FString&);
+
 UCLASS()
 class ECHOES_API UEchoesServerAuthSubsystem : public UGameInstanceSubsystem
 {
@@ -42,6 +48,9 @@ public:
 		TFunction<void(const FGuid& CharacterId, const FGuid& AccountId)> OnSuccess,
 		TFunction<void(const FString& Error)> OnFailure
 	);
+
+	// Exposed so GameMode can request character list
+	void FetchCharacterList(const FString& Token, FOnCharacterListReceived OnSuccess, FOnAuthFailure OnFailure);
 
 protected:
 	/**

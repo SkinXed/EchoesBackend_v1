@@ -274,15 +274,19 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\EchoesMenuPlayerController.h"/>
-    <ClCompile Include="..\..\Source\Echoes\EchoesServerGameMode.cpp">
+    <ClCompile Include="..\..\Source\Echoes\EchoesPlayerController.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Echoes\EchoesServerGameMode.h"/>
+    <ClInclude Include="..\..\Source\Echoes\EchoesPlayerController.h"/>
     <ClCompile Include="..\..\Source\Echoes\Core\Client\Pawns\EchoesShipPawn.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\Echoes\Core\Client\Pawns\EchoesShipPawn.h"/>
     <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesCoreTypes.h"/>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\EchoesServerGameMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesServerGameMode.h"/>
     <ClCompile Include="..\..\Source\Echoes\Core\Common\Actor\AnomalyActor.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>

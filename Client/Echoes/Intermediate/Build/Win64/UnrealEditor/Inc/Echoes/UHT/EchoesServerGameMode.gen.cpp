@@ -23,6 +23,7 @@ ECHOES_API UClass* Z_Construct_UClass_UEchoesJumpManager_NoRegister();
 ECHOES_API UClass* Z_Construct_UClass_UEchoesServerManagementSubsystem_NoRegister();
 ECHOES_API UFunction* Z_Construct_UDelegateFunction_Echoes_OnEntryFlowComplete__DelegateSignature();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FCharacterLocationData();
+ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FEchoesCharacterInfo();
 ECHOES_API UScriptStruct* Z_Construct_UScriptStruct_FServerSystemConfig();
 ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
 ENGINE_API UClass* Z_Construct_UClass_UWorld_NoRegister();
@@ -37,7 +38,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnEntryFlowComplete__DelegateSignatu
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Delegate for entry flow completion\n" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Delegate for entry flow completion" },
 #endif
@@ -79,58 +80,58 @@ struct Z_Construct_UScriptStruct_FCharacterLocationData_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * Character location data structure (mirrors backend CharacterLocationDto)\n */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Character location data structure (mirrors backend CharacterLocationDto)" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterId_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IsDocked_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_InWarp_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StationId_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_StationName_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SolarSystemId_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SolarSystemName_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PositionX_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PositionY_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PositionZ_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HangarInstanceId_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActiveShipTypeId_MetaData[] = {
 		{ "Category", "Character" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CharacterId;
@@ -212,6 +213,89 @@ UScriptStruct* Z_Construct_UScriptStruct_FCharacterLocationData()
 }
 // ********** End ScriptStruct FCharacterLocationData **********************************************
 
+// ********** Begin ScriptStruct FEchoesCharacterInfo **********************************************
+static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo;
+class UScriptStruct* FEchoesCharacterInfo::StaticStruct()
+{
+	if (!Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo.OuterSingleton)
+	{
+		Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo.OuterSingleton = GetStaticStruct(Z_Construct_UScriptStruct_FEchoesCharacterInfo, (UObject*)Z_Construct_UPackage__Script_Echoes(), TEXT("EchoesCharacterInfo"));
+	}
+	return Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo.OuterSingleton;
+}
+struct Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/**\n * \xd0\x98\xd0\xbd\xd1\x84\xd0\xbe\xd1\x80\xd0\xbc\xd0\xb0\xd1\x86\xd0\xb8\xd1\x8f \xd0\xbe \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb5 \xd0\xb4\xd0\xbb\xd1\x8f \xd0\xbf\xd0\xb5\xd1\x80\xd0\xb5\xd0\xb4\xd0\xb0\xd1\x87\xd0\xb8 \xd0\xb2 UI \xd0\xb2\xd1\x8b\xd0\xb1\xd0\xbe\xd1\x80\xd0\xb0 \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb0\n */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xd0\x98\xd0\xbd\xd1\x84\xd0\xbe\xd1\x80\xd0\xbc\xd0\xb0\xd1\x86\xd0\xb8\xd1\x8f \xd0\xbe \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb5 \xd0\xb4\xd0\xbb\xd1\x8f \xd0\xbf\xd0\xb5\xd1\x80\xd0\xb5\xd0\xb4\xd0\xb0\xd1\x87\xd0\xb8 \xd0\xb2 UI \xd0\xb2\xd1\x8b\xd0\xb1\xd0\xbe\xd1\x80\xd0\xb0 \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb0" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterId_MetaData[] = {
+		{ "Category", "Character" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** \xd0\xa3\xd0\xbd\xd0\xb8\xd0\xba\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1\x8b\xd0\xb9 \xd0\xb8\xd0\xb4\xd0\xb5\xd0\xbd\xd1\x82\xd0\xb8\xd1\x84\xd0\xb8\xd0\xba\xd0\xb0\xd1\x82\xd0\xbe\xd1\x80 \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb0 */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xd0\xa3\xd0\xbd\xd0\xb8\xd0\xba\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd1\x8b\xd0\xb9 \xd0\xb8\xd0\xb4\xd0\xb5\xd0\xbd\xd1\x82\xd0\xb8\xd1\x84\xd0\xb8\xd0\xba\xd0\xb0\xd1\x82\xd0\xbe\xd1\x80 \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb0" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CharacterName_MetaData[] = {
+		{ "Category", "Character" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** \xd0\x98\xd0\xbc\xd1\x8f \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb0 (\xd0\xbe\xd0\xbf\xd1\x86\xd0\xb8\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd0\xbe, \xd0\xb5\xd1\x81\xd0\xbb\xd0\xb8 \xd0\xb1\xd1\x83\xd0\xb4\xd0\xb5\xd1\x82 \xd0\xb2\xd0\xbe\xd0\xb7\xd0\xb2\xd1\x80\xd0\xb0\xd1\x89\xd0\xb0\xd1\x82\xd1\x8c\xd1\x81\xd1\x8f API) */" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xd0\x98\xd0\xbc\xd1\x8f \xd0\xbf\xd0\xb5\xd1\x80\xd1\x81\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xb6\xd0\xb0 (\xd0\xbe\xd0\xbf\xd1\x86\xd0\xb8\xd0\xbe\xd0\xbd\xd0\xb0\xd0\xbb\xd1\x8c\xd0\xbd\xd0\xbe, \xd0\xb5\xd1\x81\xd0\xbb\xd0\xb8 \xd0\xb1\xd1\x83\xd0\xb4\xd0\xb5\xd1\x82 \xd0\xb2\xd0\xbe\xd0\xb7\xd0\xb2\xd1\x80\xd0\xb0\xd1\x89\xd0\xb0\xd1\x82\xd1\x8c\xd1\x81\xd1\x8f API)" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_CharacterId;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_CharacterName;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static void* NewStructOps()
+	{
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FEchoesCharacterInfo>();
+	}
+	static const UECodeGen_Private::FStructParams StructParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::NewProp_CharacterId = { "CharacterId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacterInfo, CharacterId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterId_MetaData), NewProp_CharacterId_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::NewProp_CharacterName = { "CharacterName", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FEchoesCharacterInfo, CharacterName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterName_MetaData), NewProp_CharacterName_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::NewProp_CharacterId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::NewProp_CharacterName,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::StructParams = {
+	(UObject* (*)())Z_Construct_UPackage__Script_Echoes,
+	nullptr,
+	&NewStructOps,
+	"EchoesCharacterInfo",
+	Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::PropPointers,
+	UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::PropPointers),
+	sizeof(FEchoesCharacterInfo),
+	alignof(FEchoesCharacterInfo),
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	EStructFlags(0x00000001),
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::Struct_MetaDataParams)
+};
+UScriptStruct* Z_Construct_UScriptStruct_FEchoesCharacterInfo()
+{
+	if (!Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUScriptStruct(Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo.InnerSingleton, Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::StructParams);
+	}
+	return Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo.InnerSingleton;
+}
+// ********** End ScriptStruct FEchoesCharacterInfo ************************************************
+
 // ********** Begin Class AEchoesServerGameMode Function GetJumpManager ****************************
 struct Z_Construct_UFunction_AEchoesServerGameMode_GetJumpManager_Statics
 {
@@ -225,7 +309,7 @@ struct Z_Construct_UFunction_AEchoesServerGameMode_GetJumpManager_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n     * Get the jump manager (for stargate jumps)\n     */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Get the jump manager (for stargate jumps)" },
 #endif
@@ -276,7 +360,7 @@ struct Z_Construct_UFunction_AEchoesServerGameMode_IsWorldGenerated_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n     * Check if world has been generated\n     */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Check if world has been generated" },
 #endif
@@ -328,7 +412,7 @@ struct Z_Construct_UFunction_AEchoesServerGameMode_OnServerConfigReceived_Static
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n     * Called when server configuration is received from backend\n     * Triggers world generation process\n     */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Called when server configuration is received from backend\nTriggers world generation process" },
 #endif
@@ -377,7 +461,7 @@ struct Z_Construct_UFunction_AEchoesServerGameMode_TriggerWorldGeneration_Static
 		{ "Comment", "/**\n     * Manually trigger world generation (for testing)\n     */" },
 #endif
 		{ "DevelopmentOnly", "" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Manually trigger world generation (for testing)" },
 #endif
@@ -453,8 +537,8 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 		{ "Comment", "/**\n * AEchoesServerGameMode\n * \n * Server GameMode - The Conductor/Orchestrator\n * Manages world generation and player lifecycle on dedicated servers\n * \n * Architecture:\n * - Server-only execution (HasAuthority())\n * - Coordinates with UEchoesServerManagementSubsystem for configuration\n * - Triggers AEchoesWorldGenerator when config is ready\n * - Handles player login and spawn logic\n * \n * Workflow:\n * 1. BeginPlay: Check if server config is already received\n * 2. PostLogin: Verify world is generated before spawning players\n * 3. If config ready: Trigger world generation\n * 4. Track world generation state\n */" },
 #endif
 		{ "HideCategories", "Info Rendering MovementReplication Replication Actor Input Movement Collision Rendering HLOD WorldPartition DataLayers Transformation" },
-		{ "IncludePath", "EchoesServerGameMode.h" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "IncludePath", "Core/Common/EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 		{ "ShowCategories", "Input|MouseInput Input|TouchInput" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "AEchoesServerGameMode\n\nServer GameMode - The Conductor/Orchestrator\nManages world generation and player lifecycle on dedicated servers\n\nArchitecture:\n- Server-only execution (HasAuthority())\n- Coordinates with UEchoesServerManagementSubsystem for configuration\n- Triggers AEchoesWorldGenerator when config is ready\n- Handles player login and spawn logic\n\nWorkflow:\n1. BeginPlay: Check if server config is already received\n2. PostLogin: Verify world is generated before spawning players\n3. If config ready: Trigger world generation\n4. Track world generation state" },
@@ -465,7 +549,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Fired when player is fully spawned and ready to play */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Fired when player is fully spawned and ready to play" },
 #endif
@@ -474,7 +558,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to server management subsystem */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to server management subsystem" },
 #endif
@@ -483,7 +567,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Reference to world generator */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Reference to world generator" },
 #endif
@@ -493,7 +577,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 		{ "Comment", "/** Jump manager for intra-server jumps */" },
 #endif
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Jump manager for intra-server jumps" },
 #endif
@@ -502,7 +586,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Inventory subsystem reference */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Inventory subsystem reference" },
 #endif
@@ -511,7 +595,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Hangar manager for player isolation */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Hangar manager for player isolation" },
 #endif
@@ -520,7 +604,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether world has been generated */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether world has been generated" },
 #endif
@@ -529,7 +613,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether we're waiting for config */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether we're waiting for config" },
 #endif
@@ -538,7 +622,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Whether we've subscribed to config delegate */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether we've subscribed to config delegate" },
 #endif
@@ -548,7 +632,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/** Menu map as soft reference (configurable in defaults or via config file) */" },
 #endif
-		{ "ModuleRelativePath", "EchoesServerGameMode.h" },
+		{ "ModuleRelativePath", "Core/Common/EchoesServerGameMode.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Menu map as soft reference (configurable in defaults or via config file)" },
 #endif
@@ -570,10 +654,10 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AEchoesServerGameMode_GetJumpManager, "GetJumpManager" }, // 3346813816
-		{ &Z_Construct_UFunction_AEchoesServerGameMode_IsWorldGenerated, "IsWorldGenerated" }, // 1998655230
-		{ &Z_Construct_UFunction_AEchoesServerGameMode_OnServerConfigReceived, "OnServerConfigReceived" }, // 999593072
-		{ &Z_Construct_UFunction_AEchoesServerGameMode_TriggerWorldGeneration, "TriggerWorldGeneration" }, // 1043222981
+		{ &Z_Construct_UFunction_AEchoesServerGameMode_GetJumpManager, "GetJumpManager" }, // 1054528047
+		{ &Z_Construct_UFunction_AEchoesServerGameMode_IsWorldGenerated, "IsWorldGenerated" }, // 3806525085
+		{ &Z_Construct_UFunction_AEchoesServerGameMode_OnServerConfigReceived, "OnServerConfigReceived" }, // 2182032645
+		{ &Z_Construct_UFunction_AEchoesServerGameMode_TriggerWorldGeneration, "TriggerWorldGeneration" }, // 405548591
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -581,7 +665,7 @@ struct Z_Construct_UClass_AEchoesServerGameMode_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_OnEntryFlowComplete = { "OnEntryFlowComplete", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, OnEntryFlowComplete), Z_Construct_UDelegateFunction_Echoes_OnEntryFlowComplete__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnEntryFlowComplete_MetaData), NewProp_OnEntryFlowComplete_MetaData) }; // 3171562333
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_OnEntryFlowComplete = { "OnEntryFlowComplete", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, OnEntryFlowComplete), Z_Construct_UDelegateFunction_Echoes_OnEntryFlowComplete__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnEntryFlowComplete_MetaData), NewProp_OnEntryFlowComplete_MetaData) }; // 387506723
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_ServerManagementSubsystem = { "ServerManagementSubsystem", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, ServerManagementSubsystem), Z_Construct_UClass_UEchoesServerManagementSubsystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ServerManagementSubsystem_MetaData), NewProp_ServerManagementSubsystem_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_WorldGenerator = { "WorldGenerator", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, WorldGenerator), Z_Construct_UClass_AEchoesWorldGenerator_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WorldGenerator_MetaData), NewProp_WorldGenerator_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEchoesServerGameMode_Statics::NewProp_JumpManager = { "JumpManager", nullptr, (EPropertyFlags)0x0040000000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEchoesServerGameMode, JumpManager), Z_Construct_UClass_UEchoesJumpManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JumpManager_MetaData), NewProp_JumpManager_MetaData) };
@@ -649,18 +733,19 @@ AEchoesServerGameMode::~AEchoesServerGameMode() {}
 // ********** End Class AEchoesServerGameMode ******************************************************
 
 // ********** Begin Registration *******************************************************************
-struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics
+struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesServerGameMode_h__Script_Echoes_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FCharacterLocationData::StaticStruct, Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewStructOps, TEXT("CharacterLocationData"), &Z_Registration_Info_UScriptStruct_FCharacterLocationData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCharacterLocationData), 1656272466U) },
+		{ FCharacterLocationData::StaticStruct, Z_Construct_UScriptStruct_FCharacterLocationData_Statics::NewStructOps, TEXT("CharacterLocationData"), &Z_Registration_Info_UScriptStruct_FCharacterLocationData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCharacterLocationData), 117381598U) },
+		{ FEchoesCharacterInfo::StaticStruct, Z_Construct_UScriptStruct_FEchoesCharacterInfo_Statics::NewStructOps, TEXT("EchoesCharacterInfo"), &Z_Registration_Info_UScriptStruct_FEchoesCharacterInfo, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FEchoesCharacterInfo), 2880489602U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesServerGameMode, AEchoesServerGameMode::StaticClass, TEXT("AEchoesServerGameMode"), &Z_Registration_Info_UClass_AEchoesServerGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesServerGameMode), 1198136455U) },
+		{ Z_Construct_UClass_AEchoesServerGameMode, AEchoesServerGameMode::StaticClass, TEXT("AEchoesServerGameMode"), &Z_Registration_Info_UClass_AEchoesServerGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesServerGameMode), 170310377U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_2162357948(TEXT("/Script/Echoes"),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ClassInfo),
-	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h__Script_Echoes_Statics::ScriptStructInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesServerGameMode_h__Script_Echoes_3252062332(TEXT("/Script/Echoes"),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesServerGameMode_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesServerGameMode_h__Script_Echoes_Statics::ClassInfo),
+	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesServerGameMode_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_EchoesServerGameMode_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);
 // ********** End Registration *********************************************************************
 

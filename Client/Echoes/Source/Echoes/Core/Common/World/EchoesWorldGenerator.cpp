@@ -307,6 +307,7 @@ void AEchoesWorldGenerator::GenerateSingleSystem(const FServerSystemConfig& Conf
 	// ==================== GENERATION STATUS LOG ====================
 	UE_LOG(LogTemp, Log, TEXT("[SERVER] Status: Generation Successful for %s"), *Config.SystemName);
 	UE_LOG(LogTemp, Log, TEXT(""));
+
 }
 
 void AEchoesWorldGenerator::ServerOnly_ClearWorld()
@@ -417,16 +418,32 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 		}
 
 		TSubclassOf<APlanetActor> SpawnClass = PlanetActorClass;
+		UClass* VisualLoadedClass = nullptr;
 		if (!VisualData->ActorClass.IsNull())
 		{
+			FString SoftPath = VisualData->ActorClass.ToSoftObjectPath().ToString();
 			UClass* LoadedClass = VisualData->ActorClass.LoadSynchronous();
-			if (LoadedClass && LoadedClass->IsChildOf(APlanetActor::StaticClass()))
+			if (LoadedClass)
 			{
-				SpawnClass = LoadedClass;
+				if (LoadedClass->IsChildOf(APlanetActor::StaticClass()))
+				{
+					SpawnClass = LoadedClass;
+					UE_LOG(LogTemp, Verbose, TEXT("Planet visual class '%s' loaded for planet type '%s'"), *LoadedClass->GetName(), *PlanetConfig.Type);
+				}
+				else if (LoadedClass->IsChildOf(AActor::StaticClass()))
+				{
+					// Visual blueprint is an AActor but not APlanetActor - we'll spawn a logical APlanetActor and a separate visual actor to attach
+					VisualLoadedClass = LoadedClass;
+					UE_LOG(LogTemp, Warning, TEXT("Planet visual actor class loaded from '%s' is '%s' which is not a subclass of APlanetActor. Will spawn visual actor and attach to default PlanetActor."), *SoftPath, *LoadedClass->GetName());
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Planet visual actor class loaded from '%s' is '%s' which is not an AActor. Using default PlanetActorClass."), *SoftPath, *LoadedClass->GetName());
+				}
 			}
 			else
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Planet visual actor class is not a PlanetActor. Using default class."));
+				UE_LOG(LogTemp, Warning, TEXT("Failed to load Planet visual class from soft path: %s. Using default PlanetActorClass."), *SoftPath);
 			}
 		}
 
@@ -449,7 +466,7 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 		SpawnParams.Owner = this;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-		// Spawn planet actor
+		// Spawn planet actor (logic)
 		APlanetActor* Planet = GetWorld()->SpawnActor<APlanetActor>(
 			SpawnClass,
 			PlanetLocation,
@@ -458,6 +475,46 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 
 		if (Planet && IsValid(Planet))
 		{
+			// If we have a separate visual class, spawn it and attach to the planet
+			AActor* VisualActor = nullptr;
+			if (VisualLoadedClass)
+			{
+				FActorSpawnParameters VisualSpawnParams;
+				VisualSpawnParams.Owner = Planet;
+				VisualSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+				VisualActor = GetWorld()->SpawnActor<AActor>(
+					VisualLoadedClass,
+					PlanetLocation,
+					PlanetRotation,
+					VisualSpawnParams);
+
+				if (VisualActor && IsValid(VisualActor))
+				{
+					// Attach visual actor to planet to follow transforms
+					VisualActor->AttachToActor(Planet, FAttachmentTransformRules::KeepWorldTransform);
+
+					// Optionally disable collision on visual mesh to avoid interference
+					TArray<UPrimitiveComponent*> Components;
+					VisualActor->GetComponents<UPrimitiveComponent>(Components);
+					for (UPrimitiveComponent* Comp : Components)
+					{
+						if (Comp)
+						{
+							Comp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+						}
+					}
+
+					SpawnedActors.Add(VisualActor);
+					UE_LOG(LogTemp, Log, TEXT("Attached visual actor '%s' to Planet '%s' at %s"),
+						*VisualActor->GetName(), *Planet->GetName(), *VisualActor->GetActorLocation().ToString());
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Failed to spawn visual actor for planet %s from class %s"), *PlanetConfig.Name, *VisualLoadedClass->GetName());
+				}
+			}
+
 			// Generate seed from planet ID for variation
 			int32 Seed = GenerateSeedFromGuid(PlanetConfig.Id);
 
@@ -471,9 +528,6 @@ void AEchoesWorldGenerator::SpawnPlanets(const TArray<FPlanetConfig>& Planets, c
 				*VisualData);
 
 			// ==================== SET ORBIT PARAMETERS ====================
-			// Pass orbit distance and system offset for orbit visualization
-			// OrbitDistance is in the same units as PositionX/Y/Z (km)
-			// The planet actor will use this to draw the orbital path on clients
 			Planet->SetOrbitParameters(PlanetConfig.OrbitDistance, SystemOffset);
 
 			SpawnedActors.Add(Planet);
@@ -989,14 +1043,61 @@ FPlanetVisualRow* AEchoesWorldGenerator::GetPlanetVisualData(const FString& Plan
 		return nullptr;
 	}
 
-	// Look up row by planet type name
+	// Look up row by planet type name (exact)
 	FName RowName = FName(*PlanetType);
 	FPlanetVisualRow* Row = PlanetDataTable->FindRow<FPlanetVisualRow>(RowName, TEXT("GetPlanetVisualData"));
-	
+
 	if (!Row)
 	{
-		// Try with "Default" row as fallback
-		Row = PlanetDataTable->FindRow<FPlanetVisualRow>(FName(TEXT("Default")), TEXT("GetPlanetVisualData"));
+		UE_LOG(LogTemp, Warning, TEXT("GetPlanetVisualData: Row '%s' not found in %s. Attempting case-insensitive lookup and 'Default' fallback."), *PlanetType, *GetNameSafe(PlanetDataTable));
+
+		// Try case-insensitive match against available row names
+		const TArray<FName> RowNames = PlanetDataTable->GetRowNames();
+		for (const FName& Candidate : RowNames)
+		{
+			if (Candidate.ToString().Equals(PlanetType, ESearchCase::IgnoreCase))
+			{
+				Row = PlanetDataTable->FindRow<FPlanetVisualRow>(Candidate, TEXT("GetPlanetVisualData_CaseInsensitive"));
+				if (Row)
+				{
+					UE_LOG(LogTemp, Log, TEXT("GetPlanetVisualData: Found case-insensitive match '%s' for requested '%s' in %s"), *Candidate.ToString(), *PlanetType, *GetNameSafe(PlanetDataTable));
+					break;
+				}
+			}
+		}
+	}
+
+	// If still not found, try common 'Default' variants
+	if (!Row)
+	{
+		static const TArray<FString> DefaultKeys = { TEXT("Default"), TEXT("default"), TEXT("DEFAULT") };
+		for (const FString& Key : DefaultKeys)
+		{
+			Row = PlanetDataTable->FindRow<FPlanetVisualRow>(FName(*Key), TEXT("GetPlanetVisualData_DefaultFallback"));
+			if (Row)
+			{
+				UE_LOG(LogTemp, Log, TEXT("GetPlanetVisualData: Using '%s' fallback row from %s"), *Key, *GetNameSafe(PlanetDataTable));
+				break;
+			}
+		}
+	}
+
+	if (!Row)
+	{
+		// Log available rows to help debugging in editor
+		const TArray<FName> RowNames = PlanetDataTable->GetRowNames();
+		FString NamesList;
+		for (int32 i = 0; i < RowNames.Num(); ++i)
+		{
+			NamesList += RowNames[i].ToString();
+			if (i < RowNames.Num() - 1) NamesList += TEXT(", ");
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("GetPlanetVisualData: '%s' and fallback keys not found in %s. Available rows: %s"), *PlanetType, *GetNameSafe(PlanetDataTable), *NamesList);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("GetPlanetVisualData: Resolved visual row for '%s'"), *PlanetType);
 	}
 
 	return Row;

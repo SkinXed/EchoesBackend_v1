@@ -100,7 +100,7 @@ struct Z_Construct_UClass_UCharacterListItem_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCharacterListItem_Statics::NewProp_CharacterInfo = { "CharacterInfo", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCharacterListItem, CharacterInfo), Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterInfo_MetaData), NewProp_CharacterInfo_MetaData) }; // 2252549621
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCharacterListItem_Statics::NewProp_CharacterInfo = { "CharacterInfo", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCharacterListItem, CharacterInfo), Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterInfo_MetaData), NewProp_CharacterInfo_MetaData) }; // 2081289632
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UCharacterListItem_Statics::NewProp_RaceName = { "RaceName", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCharacterListItem, RaceName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RaceName_MetaData), NewProp_RaceName_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCharacterListItem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCharacterListItem_Statics::NewProp_CharacterInfo,
@@ -340,8 +340,8 @@ struct Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpd
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2252549621
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterListUpdated_Parms, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2252549621
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2081289632
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesCharacterSelectWidget_eventHandleCharacterListUpdated_Parms, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2081289632
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated_Statics::NewProp_Characters,
@@ -912,7 +912,7 @@ struct Z_Construct_UClass_UEchoesCharacterSelectWidget_Statics
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterCreationFailed, "HandleCharacterCreationFailed" }, // 200844842
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeleted, "HandleCharacterDeleted" }, // 2545990866
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterDeletionFailed, "HandleCharacterDeletionFailed" }, // 2486526509
-		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated, "HandleCharacterListUpdated" }, // 653994529
+		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_HandleCharacterListUpdated, "HandleCharacterListUpdated" }, // 3015246951
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_LaunchCharacter, "LaunchCharacter" }, // 60974106
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCancelCreateButtonClicked, "OnCancelCreateButtonClicked" }, // 1138692661
 		{ &Z_Construct_UFunction_UEchoesCharacterSelectWidget_OnCharacterListSelectionChanged, "OnCharacterListSelectionChanged" }, // 2534137099
@@ -999,11 +999,11 @@ UEchoesCharacterSelectWidget::~UEchoesCharacterSelectWidget() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 2993493031U) },
-		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 695636064U) },
+		{ Z_Construct_UClass_UCharacterListItem, UCharacterListItem::StaticClass, TEXT("UCharacterListItem"), &Z_Registration_Info_UClass_UCharacterListItem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCharacterListItem), 2651015218U) },
+		{ Z_Construct_UClass_UEchoesCharacterSelectWidget, UEchoesCharacterSelectWidget::StaticClass, TEXT("UEchoesCharacterSelectWidget"), &Z_Registration_Info_UClass_UEchoesCharacterSelectWidget, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesCharacterSelectWidget), 2107406707U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_3848610163(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_948474791(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_UI_Widgets_EchoesCharacterSelectWidget_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

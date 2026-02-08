@@ -41,7 +41,7 @@ struct FCharacterInfo;
 // ********** End ScriptStruct FCharacterInfo ******************************************************
 
 // ********** Begin ScriptStruct FAuthResponse *****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_71_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_75_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FAuthResponse_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct();
 
@@ -50,84 +50,84 @@ struct FAuthResponse;
 // ********** End ScriptStruct FAuthResponse *******************************************************
 
 // ********** Begin Delegate FOnLoginSuccess *******************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_98_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_102_DELEGATE \
 ECHOES_API void FOnLoginSuccess_DelegateWrapper(const FScriptDelegate& OnLoginSuccess, FAuthResponse const& AuthResponse);
 
 
 // ********** End Delegate FOnLoginSuccess *********************************************************
 
 // ********** Begin Delegate FOnLoginFailure *******************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_99_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_103_DELEGATE \
 ECHOES_API void FOnLoginFailure_DelegateWrapper(const FScriptDelegate& OnLoginFailure, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnLoginFailure *********************************************************
 
 // ********** Begin Delegate FOnRegisterSuccess ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_100_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_104_DELEGATE \
 ECHOES_API void FOnRegisterSuccess_DelegateWrapper(const FScriptDelegate& OnRegisterSuccess, FAuthResponse const& AuthResponse);
 
 
 // ********** End Delegate FOnRegisterSuccess ******************************************************
 
 // ********** Begin Delegate FOnRegisterFailure ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_101_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_105_DELEGATE \
 ECHOES_API void FOnRegisterFailure_DelegateWrapper(const FScriptDelegate& OnRegisterFailure, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnRegisterFailure ******************************************************
 
 // ********** Begin Delegate FOnCharacterCreated ***************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_104_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_108_DELEGATE \
 ECHOES_API void FOnCharacterCreated_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterCreated, FCharacterData const& CharacterData);
 
 
 // ********** End Delegate FOnCharacterCreated *****************************************************
 
 // ********** Begin Delegate FOnCharacterCreationFailed ********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_105_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_109_DELEGATE \
 ECHOES_API void FOnCharacterCreationFailed_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterCreationFailed, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnCharacterCreationFailed **********************************************
 
 // ********** Begin Delegate FOnConnectInfoReceived ************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_106_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_110_DELEGATE \
 ECHOES_API void FOnConnectInfoReceived_DelegateWrapper(const FMulticastScriptDelegate& OnConnectInfoReceived, const FString& ServerIP, int32 ServerPort);
 
 
 // ********** End Delegate FOnConnectInfoReceived **************************************************
 
 // ********** Begin Delegate FOnConnectInfoFailed **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_107_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_111_DELEGATE \
 ECHOES_API void FOnConnectInfoFailed_DelegateWrapper(const FMulticastScriptDelegate& OnConnectInfoFailed, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnConnectInfoFailed ****************************************************
 
 // ********** Begin Delegate FOnCharacterDeleted ***************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_108_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_112_DELEGATE \
 ECHOES_API void FOnCharacterDeleted_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterDeleted, FGuid const& CharacterId);
 
 
 // ********** End Delegate FOnCharacterDeleted *****************************************************
 
 // ********** Begin Delegate FOnCharacterDeletionFailed ********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_109_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_113_DELEGATE \
 ECHOES_API void FOnCharacterDeletionFailed_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterDeletionFailed, const FString& ErrorMessage);
 
 
 // ********** End Delegate FOnCharacterDeletionFailed **********************************************
 
 // ********** Begin Delegate FOnCharacterListUpdated ***********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_110_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_114_DELEGATE \
 ECHOES_API void FOnCharacterListUpdated_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterListUpdated, TArray<FCharacterInfo> const& Characters);
 
 
 // ********** End Delegate FOnCharacterListUpdated *************************************************
 
 // ********** Begin Class UEchoesAuthSubsystem *****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execConnectToWorld); \
 	DECLARE_FUNCTION(execFetchCharacterList); \
 	DECLARE_FUNCTION(execDeleteCharacter); \
@@ -145,7 +145,7 @@ ECHOES_API void FOnCharacterListUpdated_DelegateWrapper(const FMulticastScriptDe
 
 ECHOES_API UClass* Z_Construct_UClass_UEchoesAuthSubsystem_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEchoesAuthSubsystem(); \
 	friend struct Z_Construct_UClass_UEchoesAuthSubsystem_Statics; \
@@ -156,7 +156,7 @@ public: \
 	DECLARE_SERIALIZER(UEchoesAuthSubsystem)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEchoesAuthSubsystem(); \
 	/** Deleted move- and copy-constructors, should never be used */ \
@@ -168,13 +168,13 @@ public: \
 	NO_API virtual ~UEchoesAuthSubsystem();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_124_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_128_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_127_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h_131_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

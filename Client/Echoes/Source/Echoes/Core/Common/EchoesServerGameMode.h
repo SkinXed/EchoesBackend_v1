@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -61,6 +61,23 @@ struct FCharacterLocationData
 };
 
 /**
+ * Информация о персонаже для передачи в UI выбора персонажа
+ */
+USTRUCT(BlueprintType)
+struct FEchoesCharacterInfo
+{
+    GENERATED_BODY()
+
+    /** Уникальный идентификатор персонажа */
+    UPROPERTY(BlueprintReadWrite, Category = "Character")
+    FGuid CharacterId;
+
+    /** Имя персонажа (опционально, если будет возвращаться API) */
+    UPROPERTY(BlueprintReadWrite, Category = "Character")
+    FString CharacterName;
+};
+
+/**
  * AEchoesServerGameMode
  * 
  * Server GameMode - The Conductor/Orchestrator
@@ -112,9 +129,23 @@ protected:
      * Override to prevent automatic player spawning until token validation completes
      * This ensures players stay in loading screen until authenticated
      */
-    virtual void HandleStartingNewPlayer(APlayerController* NewPlayer);
+    virtual void HandleStartingNewPlayer(APlayerController* NewPlayer); 
 
 public:
+    /**
+     * Override to capture raw connection options (PIE strips token before PostLogin)
+     */
+    virtual FString InitNewPlayer(APlayerController* NewPlayerController, const FUniqueNetIdRepl& UniqueId, const FString& Options, const FString& Portal = TEXT("")) override;
+
+    /**
+     * Spawn player after character selection request (called from PlayerController)
+     * Validates authorization and triggers location query/spawn flow
+     */
+    void SpawnPlayerShip(APlayerController* PC, const FGuid& CharacterId);
+
+#if WITH_EDITOR
+    void HandleDevBypass(APlayerController* NewPlayer);
+#endif
     // ==================== World Generation Control ====================
 
     /**
@@ -167,6 +198,11 @@ public:
      * @return True if extraction successful
      */
     bool ExtractLoginOptions(const FString& Options, FString& OutToken, FGuid& OutCharacterId);
+
+    /**
+     * Helper to safely retrieve player connection options string
+     */
+    FString GetPlayerOptionsSafe(APlayerController* Player) const;
 
     /**
      * Spawn player at station (docked state)
@@ -277,4 +313,7 @@ private:
     /** Menu map as soft reference (configurable in defaults or via config file) */
     UPROPERTY(EditDefaultsOnly, Config, Category = "Echoes|Maps")
     TSoftObjectPtr<UWorld> MenuMap;
+
+    // Stores captured tokens from InitNewPlayer to survive PIE URL rewriting
+    TMap<TWeakObjectPtr<APlayerController>, FString> PendingTokens;
 };

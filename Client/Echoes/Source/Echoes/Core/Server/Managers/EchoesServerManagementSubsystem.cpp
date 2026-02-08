@@ -95,6 +95,22 @@ void UEchoesServerManagementSubsystem::Initialize(FSubsystemCollectionBase& Coll
 		UE_LOG(LogEchoesServer, Log, TEXT("Using SolarSystemId from command line: %s"), *SystemIdStr);
 	}
 
+	// If no SystemId provided and we're running in the editor, use a debug system id
+#if WITH_EDITOR
+	if (!SystemId.IsValid())
+	{
+		// Replace with a real system GUID from your database if needed
+		const FString DebugSystemIdStr = TEXT("00000000-0000-0000-0000-000000000001");
+		FGuid ParsedDebugId;
+		if (FGuid::Parse(DebugSystemIdStr, ParsedDebugId))
+		{
+			SystemId = ParsedDebugId;
+			CurrentSolarSystemId = SystemId;
+			UE_LOG(LogEchoesServer, Warning, TEXT("Editor debug: forcing SolarSystemId to %s"), *DebugSystemIdStr);
+		}
+	}
+#endif
+
 	// Get game port from command line or use default
 	int32 Port = 7777;
 	FParse::Value(FCommandLine::Get(), TEXT("Port="), Port);
@@ -260,6 +276,7 @@ void UEchoesServerManagementSubsystem::ServerOnly_Register(
 	TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&JsonString);
 	if (!FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer))
 	{
+		UE_LOG(LogEchoesServer, Error, TEXT("Failed to serialize registration request"));
 		UE_LOG(LogEchoesServer, Error, TEXT("Failed to serialize registration request"));
 		return;
 	}
@@ -598,7 +615,18 @@ void UEchoesServerManagementSubsystem::OnConfigResponseReceived(
 {
 	if (!bWasSuccessful || !Response.IsValid())
 	{
-		UE_LOG(LogEchoesServer, Error, TEXT("Config request failed: Request unsuccessful"));
+		// Enhanced diagnostic logging to help debug network/HTTP issues
+		FString ReqUrl = Request.IsValid() ? Request->GetURL() : TEXT("<invalid request>");
+		FString ReqVerb = Request.IsValid() ? Request->GetVerb() : TEXT("<unknown>");
+		FString SecretPresence = TEXT("missing");
+		if (Request.IsValid())
+		{
+			FString SecretHeader = Request->GetHeader(TEXT("X-Server-Secret"));
+			if (!SecretHeader.IsEmpty()) SecretPresence = TEXT("present");
+		}
+
+		UE_LOG(LogEchoesServer, Error, TEXT("Config request failed: Request unsuccessful. URL=%s Verb=%s X-Server-Secret=%s"),
+			*ReqUrl, *ReqVerb, *SecretPresence);
 		return;
 	}
 

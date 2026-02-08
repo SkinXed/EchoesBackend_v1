@@ -181,7 +181,7 @@ protected:
 	 * Handle heartbeat response from backend
 	 */
 	void OnHeartbeatResponseReceived(
-		FHttpRequestPtr Request,
+ 		FHttpRequestPtr Request,
 		FHttpResponsePtr Response,
 		bool bWasSuccessful);
 

@@ -60,6 +60,10 @@ struct FCharacterInfo
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	bool IsOnline = false;
+
+	// Added: whether character is currently docked (present in FEchoesCharacter and C# dtos)
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	bool IsDocked = true;
 };
 
 /**

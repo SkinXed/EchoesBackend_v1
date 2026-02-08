@@ -370,26 +370,48 @@ void UEchoesCharacterSelectWidget::HandleCharacterListUpdated(const TArray<FChar
 
 void UEchoesCharacterSelectWidget::PopulateCharacterList(const TArray<FCharacterInfo>& Characters)
 {
-	UE_LOG(LogTemp, Log, TEXT("CharacterSelect: PopulateCharacterList %d"), Characters.Num());
-	if (!CharacterList)
-	{
-		return;
-	}
+    if (!CharacterList)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("PopulateCharacterList: CharacterList ListView is null"));
+        return;
+    }
 
-	CharacterList->ClearListItems();
-	SelectedCharacter = nullptr;
+    CharacterList->ClearListItems();
 
-	for (const FCharacterInfo& CharInfo : Characters)
-	{
-		UCharacterListItem* ListItem = NewObject<UCharacterListItem>(this);
-		ListItem->CharacterInfo = CharInfo;
-		ListItem->RaceName = CharInfo.RaceName.IsEmpty() ? GetRaceNameFromId(CharInfo.RaceId) : CharInfo.RaceName;
+    for (const FCharacterInfo& Info : Characters)
+    {
+        UCharacterListItem* Item = NewObject<UCharacterListItem>(this);
+        Item->CharacterInfo = Info;
 
-		CharacterList->AddItem(ListItem);
-	}
+        // Provide a fallback name
+        if (Item->CharacterInfo.Name.IsEmpty())
+        {
+            Item->CharacterInfo.Name = FString::Printf(TEXT("Pilot %s"), *Item->CharacterInfo.CharacterId.ToString().Left(8));
+        }
 
-	SetStatusText(FString::Printf(TEXT("%d character(s) found"), Characters.Num()), FLinearColor::White);
-	UpdateCreateButtonState(Characters.Num());
+        // Map race id to readable name if not provided
+        if (Item->RaceName.IsEmpty())
+        {
+            switch (Info.RaceId)
+            {
+            case 1: Item->RaceName = TEXT("Caldari"); break;
+            case 2: Item->RaceName = TEXT("Gallente"); break;
+            case 3: Item->RaceName = TEXT("Amarr"); break;
+            case 4: Item->RaceName = TEXT("Minmatar"); break;
+            default: Item->RaceName = Info.RaceName.IsEmpty() ? TEXT("Unknown") : Info.RaceName; break;
+            }
+        }
+
+        CharacterList->AddItem(Item);
+    }
+
+    // Select first item by default
+    if (CharacterList->GetNumItems() > 0)
+    {
+        UObject* First = CharacterList->GetItemAt(0);
+        CharacterList->SetSelectedItem(First);
+        SelectedCharacter = Cast<UCharacterListItem>(First);
+    }
 }
 
 void UEchoesCharacterSelectWidget::SetCreationPanelVisible(bool bVisible)

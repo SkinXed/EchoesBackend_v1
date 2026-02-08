@@ -51,7 +51,7 @@ struct Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess_Statics::NewProp_AuthResponse = { "AuthResponse", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesMenuPlayerController_eventOnLoginSuccess_Parms, AuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthResponse_MetaData), NewProp_AuthResponse_MetaData) }; // 2780569161
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess_Statics::NewProp_AuthResponse = { "AuthResponse", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesMenuPlayerController_eventOnLoginSuccess_Parms, AuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthResponse_MetaData), NewProp_AuthResponse_MetaData) }; // 332194605
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess_Statics::NewProp_AuthResponse,
 };
@@ -303,7 +303,7 @@ struct Z_Construct_UClass_AEchoesMenuPlayerController_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess, "OnLoginSuccess" }, // 3475076115
+		{ &Z_Construct_UFunction_AEchoesMenuPlayerController_OnLoginSuccess, "OnLoginSuccess" }, // 4268910502
 		{ &Z_Construct_UFunction_AEchoesMenuPlayerController_OnPreloadComplete, "OnPreloadComplete" }, // 2576847637
 		{ &Z_Construct_UFunction_AEchoesMenuPlayerController_ShowCharacterSelect, "ShowCharacterSelect" }, // 276579878
 		{ &Z_Construct_UFunction_AEchoesMenuPlayerController_ShowLoginScreen, "ShowLoginScreen" }, // 1192766696
@@ -362,10 +362,10 @@ AEchoesMenuPlayerController::~AEchoesMenuPlayerController() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesMenuPlayerController_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEchoesMenuPlayerController, AEchoesMenuPlayerController::StaticClass, TEXT("AEchoesMenuPlayerController"), &Z_Registration_Info_UClass_AEchoesMenuPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesMenuPlayerController), 1866731552U) },
+		{ Z_Construct_UClass_AEchoesMenuPlayerController, AEchoesMenuPlayerController::StaticClass, TEXT("AEchoesMenuPlayerController"), &Z_Registration_Info_UClass_AEchoesMenuPlayerController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEchoesMenuPlayerController), 482426434U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesMenuPlayerController_h__Script_Echoes_2247123271(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesMenuPlayerController_h__Script_Echoes_664990555(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesMenuPlayerController_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesMenuPlayerController_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

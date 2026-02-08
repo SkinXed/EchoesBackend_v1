@@ -50,6 +50,9 @@ public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
+	// Expose PopulateCharacterList so external callers (e.g. PlayerController) can pass character arrays
+	void PopulateCharacterList(const TArray<FCharacterInfo>& Characters);
+
 	// ==================== UI Bindings ====================
 
 	/** List view for characters */
@@ -146,11 +149,6 @@ protected:
 	void CreateCharacter(const FString& Name, int32 RaceId);
 
 	// ==================== Helper Functions ====================
-
-	/**
-	 * Populate character list UI
-	 */
-	void PopulateCharacterList(const TArray<FCharacterInfo>& Characters);
 
 	/**
 	 * Show/hide character creation panel

@@ -171,6 +171,16 @@ struct Z_Construct_UScriptStruct_FCharacterInfo_Statics
 		{ "Category", "Character" },
 		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IsDocked_MetaData[] = {
+		{ "Category", "Character" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Added: whether character is currently docked (present in FEchoesCharacter and C# dtos)\n" },
+#endif
+		{ "ModuleRelativePath", "Core/Common/Networking/EchoesAuthSubsystem.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Added: whether character is currently docked (present in FEchoesCharacter and C# dtos)" },
+#endif
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CharacterId;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_Name;
@@ -184,6 +194,8 @@ struct Z_Construct_UScriptStruct_FCharacterInfo_Statics
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_IsMain;
 	static void NewProp_IsOnline_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_IsOnline;
+	static void NewProp_IsDocked_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_IsDocked;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static void* NewStructOps()
 	{
@@ -209,6 +221,11 @@ void Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsOnline_SetBit(v
 	((FCharacterInfo*)Obj)->IsOnline = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsOnline = { "IsOnline", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(FCharacterInfo), &Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsOnline_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IsOnline_MetaData), NewProp_IsOnline_MetaData) };
+void Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsDocked_SetBit(void* Obj)
+{
+	((FCharacterInfo*)Obj)->IsDocked = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsDocked = { "IsDocked", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(FCharacterInfo), &Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsDocked_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IsDocked_MetaData), NewProp_IsDocked_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FCharacterInfo_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_CharacterId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_Name,
@@ -220,6 +237,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FC
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_CurrentShipId,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsMain,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsOnline,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewProp_IsDocked,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FCharacterInfo_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FCharacterInfo_Statics::StructParams = {
@@ -329,8 +347,8 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAuthRe
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_CharacterName = { "CharacterName", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAuthResponse, CharacterName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CharacterName_MetaData), NewProp_CharacterName_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_SessionId = { "SessionId", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAuthResponse, SessionId), Z_Construct_UScriptStruct_FGuid, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SessionId_MetaData), NewProp_SessionId_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_ExpiresAt = { "ExpiresAt", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAuthResponse, ExpiresAt), Z_Construct_UScriptStruct_FDateTime, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ExpiresAt_MetaData), NewProp_ExpiresAt_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2252549621
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAuthResponse, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2252549621
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2081289632
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FAuthResponse, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2081289632
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FAuthResponse_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_Success,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FAuthResponse_Statics::NewProp_Token,
@@ -385,7 +403,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature_St
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature_Statics::NewProp_AuthResponse = { "AuthResponse", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnLoginSuccess_Parms, AuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthResponse_MetaData), NewProp_AuthResponse_MetaData) }; // 2780569161
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature_Statics::NewProp_AuthResponse = { "AuthResponse", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnLoginSuccess_Parms, AuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthResponse_MetaData), NewProp_AuthResponse_MetaData) }; // 332194605
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature_Statics::NewProp_AuthResponse,
 };
@@ -479,7 +497,7 @@ struct Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature_Statics::NewProp_AuthResponse = { "AuthResponse", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnRegisterSuccess_Parms, AuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthResponse_MetaData), NewProp_AuthResponse_MetaData) }; // 2780569161
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature_Statics::NewProp_AuthResponse = { "AuthResponse", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnRegisterSuccess_Parms, AuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AuthResponse_MetaData), NewProp_AuthResponse_MetaData) }; // 332194605
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature_Statics::NewProp_AuthResponse,
 };
@@ -868,8 +886,8 @@ struct Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSign
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FDelegateFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2252549621
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnCharacterListUpdated_Parms, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2252549621
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::NewProp_Characters_Inner = { "Characters", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2081289632
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::NewProp_Characters = { "Characters", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(_Script_Echoes_eventOnCharacterListUpdated_Parms, Characters), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Characters_MetaData), NewProp_Characters_MetaData) }; // 2081289632
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::NewProp_Characters_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature_Statics::NewProp_Characters,
@@ -1018,8 +1036,8 @@ struct Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2252549621
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_GetCharacters_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 2252549621
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FCharacterInfo, METADATA_PARAMS(0, nullptr) }; // 2081289632
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_GetCharacters_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 2081289632
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::NewProp_ReturnValue_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters_Statics::NewProp_ReturnValue,
@@ -1177,7 +1195,7 @@ struct Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics::NewProp_Request = { "Request", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Login_Parms, Request), Z_Construct_UScriptStruct_FAuthRequest, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Request_MetaData), NewProp_Request_MetaData) }; // 1202977449
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Login_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 167529748
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Login_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnLoginSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 920722958
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Login_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnLoginFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3207200495
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login_Statics::NewProp_Request,
@@ -1287,7 +1305,7 @@ struct Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_Username = { "Username", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Register_Parms, Username), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Username_MetaData), NewProp_Username_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_Email = { "Email", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Register_Parms, Email), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Email_MetaData), NewProp_Email_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_Password = { "Password", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Register_Parms, Password), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Password_MetaData), NewProp_Password_MetaData) };
-const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Register_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 2761244133
+const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_OnSuccess = { "OnSuccess", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Register_Parms, OnSuccess), Z_Construct_UDelegateFunction_Echoes_OnRegisterSuccess__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3106645589
 const UECodeGen_Private::FDelegatePropertyParams Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_OnFailure = { "OnFailure", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Delegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(EchoesAuthSubsystem_eventAuth_Register_Parms, OnFailure), Z_Construct_UDelegateFunction_Echoes_OnRegisterFailure__DelegateSignature, METADATA_PARAMS(0, nullptr) }; // 3695153450
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register_Statics::NewProp_Username,
@@ -1733,12 +1751,12 @@ struct Z_Construct_UClass_UEchoesAuthSubsystem_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetAccountId, "Auth_GetAccountId" }, // 1247892163
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacterId, "Auth_GetCharacterId" }, // 1847183580
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters, "Auth_GetCharacters" }, // 3870143386
+		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetCharacters, "Auth_GetCharacters" }, // 3389029822
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_GetToken, "Auth_GetToken" }, // 633235763
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_IsLoggedIn, "Auth_IsLoggedIn" }, // 2846008563
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login, "Auth_Login" }, // 700388799
+		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Login, "Auth_Login" }, // 818015923
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Logout, "Auth_Logout" }, // 2554647189
-		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register, "Auth_Register" }, // 467027317
+		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_Auth_Register, "Auth_Register" }, // 1711616478
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_ConnectToWorld, "ConnectToWorld" }, // 4116319439
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_CreateCharacter, "CreateCharacter" }, // 3288174077
 		{ &Z_Construct_UFunction_UEchoesAuthSubsystem_DeleteCharacter, "DeleteCharacter" }, // 2915549773
@@ -1757,9 +1775,9 @@ const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEc
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnConnectInfoFailed = { "OnConnectInfoFailed", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, OnConnectInfoFailed), Z_Construct_UDelegateFunction_Echoes_OnConnectInfoFailed__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnConnectInfoFailed_MetaData), NewProp_OnConnectInfoFailed_MetaData) }; // 2135600930
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnCharacterDeleted = { "OnCharacterDeleted", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, OnCharacterDeleted), Z_Construct_UDelegateFunction_Echoes_OnCharacterDeleted__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnCharacterDeleted_MetaData), NewProp_OnCharacterDeleted_MetaData) }; // 3242709004
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnCharacterDeletionFailed = { "OnCharacterDeletionFailed", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, OnCharacterDeletionFailed), Z_Construct_UDelegateFunction_Echoes_OnCharacterDeletionFailed__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnCharacterDeletionFailed_MetaData), NewProp_OnCharacterDeletionFailed_MetaData) }; // 3050336762
-const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnCharacterListUpdated = { "OnCharacterListUpdated", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, OnCharacterListUpdated), Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnCharacterListUpdated_MetaData), NewProp_OnCharacterListUpdated_MetaData) }; // 3401910082
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnCharacterListUpdated = { "OnCharacterListUpdated", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, OnCharacterListUpdated), Z_Construct_UDelegateFunction_Echoes_OnCharacterListUpdated__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnCharacterListUpdated_MetaData), NewProp_OnCharacterListUpdated_MetaData) }; // 1307468115
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_JWTToken = { "JWTToken", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, JWTToken), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JWTToken_MetaData), NewProp_JWTToken_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_CurrentAuthResponse = { "CurrentAuthResponse", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, CurrentAuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentAuthResponse_MetaData), NewProp_CurrentAuthResponse_MetaData) }; // 2780569161
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_CurrentAuthResponse = { "CurrentAuthResponse", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEchoesAuthSubsystem, CurrentAuthResponse), Z_Construct_UScriptStruct_FAuthResponse, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentAuthResponse_MetaData), NewProp_CurrentAuthResponse_MetaData) }; // 332194605
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEchoesAuthSubsystem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnCharacterCreated,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEchoesAuthSubsystem_Statics::NewProp_OnCharacterCreationFailed,
@@ -1810,14 +1828,14 @@ struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Sourc
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
 		{ FAuthRequest::StaticStruct, Z_Construct_UScriptStruct_FAuthRequest_Statics::NewStructOps, TEXT("AuthRequest"), &Z_Registration_Info_UScriptStruct_FAuthRequest, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAuthRequest), 1202977449U) },
-		{ FCharacterInfo::StaticStruct, Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewStructOps, TEXT("CharacterInfo"), &Z_Registration_Info_UScriptStruct_FCharacterInfo, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCharacterInfo), 2252549621U) },
-		{ FAuthResponse::StaticStruct, Z_Construct_UScriptStruct_FAuthResponse_Statics::NewStructOps, TEXT("AuthResponse"), &Z_Registration_Info_UScriptStruct_FAuthResponse, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAuthResponse), 2780569161U) },
+		{ FCharacterInfo::StaticStruct, Z_Construct_UScriptStruct_FCharacterInfo_Statics::NewStructOps, TEXT("CharacterInfo"), &Z_Registration_Info_UScriptStruct_FCharacterInfo, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FCharacterInfo), 2081289632U) },
+		{ FAuthResponse::StaticStruct, Z_Construct_UScriptStruct_FAuthResponse_Statics::NewStructOps, TEXT("AuthResponse"), &Z_Registration_Info_UScriptStruct_FAuthResponse, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAuthResponse), 332194605U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesAuthSubsystem, UEchoesAuthSubsystem::StaticClass, TEXT("UEchoesAuthSubsystem"), &Z_Registration_Info_UClass_UEchoesAuthSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesAuthSubsystem), 3044982792U) },
+		{ Z_Construct_UClass_UEchoesAuthSubsystem, UEchoesAuthSubsystem::StaticClass, TEXT("UEchoesAuthSubsystem"), &Z_Registration_Info_UClass_UEchoesAuthSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesAuthSubsystem), 304454530U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_3016036851(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_2787982125(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Common_Networking_EchoesAuthSubsystem_h__Script_Echoes_Statics::ScriptStructInfo),
 	nullptr, 0);

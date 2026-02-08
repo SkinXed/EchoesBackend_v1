@@ -123,32 +123,53 @@ void UEchoesLoginWidget::OnPasswordCommitted(const FText& Text, ETextCommit::Typ
 
 void UEchoesLoginWidget::OnLoginSuccess(const FAuthResponse& AuthResponse)
 {
-	bLoginInProgress = false;
-	SetUIEnabled(true);
+    bLoginInProgress = false;
+    SetUIEnabled(true);
 
-	SetStatusText("Login successful!", FLinearColor::Green);
+    SetStatusText("Login successful!", FLinearColor::Green);
 
-	// Save token if Remember Me is checked
-	if (RememberMeCheckbox && RememberMeCheckbox->IsChecked() && AuthSubsystem)
-	{
-		AuthSubsystem->SaveAuthToken(true);
-		UE_LOG(LogTemp, Log, TEXT("Saved token with Remember Me"));
-	}
+    // Save token if Remember Me is checked
+    if (RememberMeCheckbox && RememberMeCheckbox->IsChecked() && AuthSubsystem)
+    {
+        AuthSubsystem->SaveAuthToken(true);
+        UE_LOG(LogTemp, Log, TEXT("Saved token with Remember Me"));
+    }
 
-	// Broadcast to blueprint
-	OnLoginSuccessDelegate.Broadcast(AuthResponse);
+    // Broadcast to blueprint
+    OnLoginSuccessDelegate.Broadcast(AuthResponse);
 
-	// Wait a moment then remove this widget
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(
-		TimerHandle,
-		[this]()
-		{
-			RemoveFromParent();
-		},
-		0.5f,
-		false
-	);
+    // After login, attempt to connect to a server if we have a character selected or available
+    if (AuthSubsystem)
+    {
+        // Prefer explicit CharacterId from AuthResponse
+        FGuid TargetCharacterId = AuthResponse.CharacterId;
+
+        // If no explicit CharacterId, fall back to the first character in the response
+        if (!TargetCharacterId.IsValid() && AuthResponse.Characters.Num() > 0)
+        {
+            TargetCharacterId = AuthResponse.Characters[0].CharacterId;
+        }
+
+        if (TargetCharacterId.IsValid())
+        {
+            // Let the auth subsystem handle fetching server connection info and ClientTravel
+            AuthSubsystem->ConnectToWorld(TargetCharacterId);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Log, TEXT("OnLoginSuccess: No character available - show character select UI or wait for user action"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("OnLoginSuccess: AuthSubsystem is null, cannot connect to server"));
+    }
+
+    // Wait a moment then remove this widget
+    FTimerHandle TimerHandle;
+    GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]() {
+        RemoveFromParent();
+    }, 0.25f, false);
 }
 
 void UEchoesLoginWidget::OnLoginFailure(const FString& ErrorMessage)

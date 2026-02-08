@@ -57,10 +57,10 @@
     <ClInclude Include="..\..\Source\Echoes\EchoesMenuPlayerController.h">
       <Filter>Source\Echoes</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\Source\Echoes\EchoesServerGameMode.cpp">
+    <ClCompile Include="..\..\Source\Echoes\EchoesPlayerController.cpp">
       <Filter>Source\Echoes</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Echoes\EchoesServerGameMode.h">
+    <ClInclude Include="..\..\Source\Echoes\EchoesPlayerController.h">
       <Filter>Source\Echoes</Filter>
     </ClInclude>
     <Filter Include="Source\Echoes\Core">
@@ -82,6 +82,12 @@
       <UniqueIdentifier>{C4BC4A80-2220-3FA8-8FCD-E49BA3BD531F}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesCoreTypes.h">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Echoes\Core\Common\EchoesServerGameMode.cpp">
+      <Filter>Source\Echoes\Core\Common</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Echoes\Core\Common\EchoesServerGameMode.h">
       <Filter>Source\Echoes\Core\Common</Filter>
     </ClInclude>
     <Filter Include="Source\Echoes\Core\Common\Actor">

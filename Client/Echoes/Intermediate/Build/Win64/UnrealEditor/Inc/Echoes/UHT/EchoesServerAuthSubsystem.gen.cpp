@@ -56,14 +56,8 @@ struct Z_Construct_UClass_UEchoesServerAuthSubsystem_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n * UEchoesServerAuthSubsystem\n * \n * Server-side subsystem for validating client JWT tokens through Backend API\n * Used by UE Dedicated Server to authenticate connecting players\n * \n * Architecture:\n * - GameInstanceSubsystem: Available on server instance\n * - Validates tokens via HTTP POST to /api/auth/validate-token\n * - Checks AccountSession.IsActive and expiration\n * - Prevents unauthorized access to game servers\n */" },
-#endif
 		{ "IncludePath", "Core/Server/EchoesServerAuthSubsystem.h" },
 		{ "ModuleRelativePath", "Core/Server/EchoesServerAuthSubsystem.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "UEchoesServerAuthSubsystem\n\nServer-side subsystem for validating client JWT tokens through Backend API\nUsed by UE Dedicated Server to authenticate connecting players\n\nArchitecture:\n- GameInstanceSubsystem: Available on server instance\n- Validates tokens via HTTP POST to /api/auth/validate-token\n- Checks AccountSession.IsActive and expiration\n- Prevents unauthorized access to game servers" },
-#endif
 	};
 #endif // WITH_METADATA
 	static UObject* (*const DependentSingletons[])();
@@ -109,10 +103,10 @@ UEchoesServerAuthSubsystem::~UEchoesServerAuthSubsystem() {}
 struct Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerAuthSubsystem_h__Script_Echoes_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEchoesServerAuthSubsystem, UEchoesServerAuthSubsystem::StaticClass, TEXT("UEchoesServerAuthSubsystem"), &Z_Registration_Info_UClass_UEchoesServerAuthSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerAuthSubsystem), 2141040U) },
+		{ Z_Construct_UClass_UEchoesServerAuthSubsystem, UEchoesServerAuthSubsystem::StaticClass, TEXT("UEchoesServerAuthSubsystem"), &Z_Registration_Info_UClass_UEchoesServerAuthSubsystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEchoesServerAuthSubsystem), 1424730423U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerAuthSubsystem_h__Script_Echoes_3856143764(TEXT("/Script/Echoes"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerAuthSubsystem_h__Script_Echoes_1795388238(TEXT("/Script/Echoes"),
 	Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerAuthSubsystem_h__Script_Echoes_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_Core_Server_EchoesServerAuthSubsystem_h__Script_Echoes_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
