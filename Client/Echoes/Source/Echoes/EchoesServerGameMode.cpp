@@ -22,6 +22,8 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "UObject/SoftObjectPtr.h"
+#include "UObject/Package.h"
 
 AEchoesServerGameMode::AEchoesServerGameMode()
 {
@@ -1016,211 +1018,191 @@ FString AEchoesServerGameMode::GetApiBaseUrl() const
 	return TEXT("http://localhost:5116/api");
 }
 
-void AEchoesServerGameMode::KickPlayerToMenu(APlayerController* Player, const FString& Reason)
+FString AEchoesServerGameMode::GetMapPath(const TSoftObjectPtr<UWorld>& Map) const
 {
-	if (!Player)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("✗ KickPlayerToMenu: Player is null (Reason: %s)"), *Reason);
-		return;
-	}
+    if (Map.IsNull())
+    {
+        return FString();
+    }
 
-	UE_LOG(LogTemp, Warning, TEXT("✗ Kicking player to menu: %s"), *Reason);
-	Player->ClientTravel(MenuMapPath, TRAVEL_Absolute);
+    // If the asset is already loaded, get long package name from the object
+    UObject* Resolved = Map.Get();
+    if (Resolved)
+    {
+        UPackage* Package = Resolved->GetOutermost();
+        if (Package)
+        {
+            return Package->GetName();
+        }
+    }
+
+    // Fallback: use the asset reference string and convert to long package name
+    // The ToString returns something like "World'/Game/Maps/MenuMap.MenuMap'" or "/Game/Maps/MenuMap"
+    FString AssetPath = Map.ToSoftObjectPath().ToString();
+    if (AssetPath.StartsWith(TEXT("/")))
+    {
+        // Convert '/Game/Maps/MenuMap.MenuMap' or '/Game/Maps/MenuMap' to long package name
+        // Ensure we strip any class prefix like 'World\'' and trailing asset name
+        // Use FPackageName utilities if available
+        FString LongPackageName = AssetPath;
+
+        // If contains a dot, strip suffix after dot
+        int32 DotIndex;
+        if (LongPackageName.FindChar(TEXT('.'), DotIndex))
+        {
+            LongPackageName = LongPackageName.Left(DotIndex);
+        }
+
+        return LongPackageName;
+    }
+
+    return FString();
 }
 
+void AEchoesServerGameMode::KickPlayerToMenu(APlayerController* Player, const FString& Reason)
+{
+    if (!Player)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("✗ KickPlayerToMenu: Player is null (Reason: %s)"), *Reason);
+        return;
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("✗ Kicking player to menu: %s"), *Reason);
+
+    // Validate MenuMap soft pointer
+    if (MenuMap.IsNull())
+    {
+        UE_LOG(LogTemp, Error, TEXT("KickPlayerToMenu: MenuMap is not set. Cannot travel to menu."));
+        return;
+    }
+
+    // Resolve path
+    FString MapPath = GetMapPath(MenuMap);
+    if (MapPath.IsEmpty())
+    {
+        UE_LOG(LogTemp, Error, TEXT("KickPlayerToMenu: Failed to resolve MenuMap path from TSoftObjectPtr."));
+        return;
+    }
+
+    // Perform client travel safely
+    UE_LOG(LogTemp, Log, TEXT("KickPlayerToMenu: Traveling player %s to map: %s"), *Player->GetName(), *MapPath);
+    Player->ClientTravel(MapPath, TRAVEL_Absolute);
+}
+
+// Implement RequestUndock - server authoritative undocking logic
 void AEchoesServerGameMode::RequestUndock(APlayerController* PC)
 {
-	if (!PC)
-	{
-		UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: PlayerController is null"));
-		return;
-	}
+    if (!HasAuthority())
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock called on client - aborting"));
+        return;
+    }
 
-	if (!HasAuthority())
-	{
-		UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: Called on client - must be server-only"));
-		return;
-	}
+    if (!PC)
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: PlayerController is null"));
+        return;
+    }
 
-	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
-	UE_LOG(LogTemp, Log, TEXT("║    PROCESSING UNDOCK REQUEST                            ║"));
-	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
-	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PC->GetName());
+    APawn* PlayerPawn = PC->GetPawn();
+    if (!PlayerPawn)
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: Player has no pawn"));
+        return;
+    }
 
-	// Get player's pawn
-	APawn* PlayerPawn = PC->GetPawn();
-	if (!PlayerPawn)
-	{
-		UE_LOG(LogTemp, Error, TEXT("✗ Player has no pawn"));
-		return;
-	}
+    if (!HangarManager)
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: HangarManager not available"));
+        return;
+    }
 
-	UE_LOG(LogTemp, Log, TEXT("Player pawn: %s"), *PlayerPawn->GetName());
+    // Find character id associated with this pawn (hangar instance lookup)
+    FGuid CharacterId;
+    if (!HangarManager->FindCharacterIdByPawn(PlayerPawn, CharacterId))
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: Could not find character id for pawn %s"), *PlayerPawn->GetName());
+        return;
+    }
 
-	// ==================== FIND PLAYER'S DOCKED STATION ====================
-	//
-	// Find the station where the player is docked by checking HangarManager
-	// for the player's hangar instance which contains the StationId
-	//
-	// ======================================================================
+    // Get hangar instance data
+    FHangarInstance Instance = HangarManager->GetHangarInstance(CharacterId);
 
-	if (!HangarManager)
-	{
-		UE_LOG(LogTemp, Error, TEXT("✗ HangarManager not available"));
-		return;
-	}
+    // Validate station id
+    if (!Instance.StationId.IsValid())
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: Hangar instance has invalid StationId for character %s"), *CharacterId.ToString());
+        return;
+    }
 
-	// 1. Находим персонажа по его пешке в ангаре
-	FGuid CharacterId;
-	if (!HangarManager->FindCharacterIdByPawn(PlayerPawn, CharacterId))
-	{
-		UE_LOG(LogTemp, Error, TEXT("RequestUndock: Hangar instance not found for pawn"));
-		return;
-	}
+    // Find station actor in world
+    AStationActor* FoundStation = nullptr;
+    for (TActorIterator<AStationActor> It(GetWorld()); It; ++It)
+    {
+        AStationActor* Station = *It;
+        if (Station && Station->GetStationId() == Instance.StationId)
+        {
+            FoundStation = Station;
+            break;
+        }
+    }
 
-	FHangarInstance PlayerHangarInstance = HangarManager->GetHangarInstance(CharacterId);
-	if (!PlayerHangarInstance.InstanceId.IsValid())
-	{
-		UE_LOG(LogTemp, Error, TEXT("✗ Failed to retrieve hangar instance"));
-		return;
-	}
+    if (!FoundStation)
+    {
+        UE_LOG(LogTemp, Error, TEXT("✗ RequestUndock: Station with ID %s not found"), *Instance.StationId.ToString());
+        return;
+    }
 
-	FGuid StationId = PlayerHangarInstance.StationId;
-	UE_LOG(LogTemp, Log, TEXT("✓ Found player's hangar at station: %s"), *StationId.ToString());
+    // Calculate safe exit point
+    const float SafeDistance = 50000.0f; // 500m
+    const float ImpulseStrength = 1000.0f;
 
-	// ==================== FIND STATION ACTOR ====================
-	//
-	// Use TActorIterator to find the station actor in the world
-	//
-	// ===========================================================
+    FVector StationLocation = FoundStation->GetActorLocation();
+    FVector StationForward = FoundStation->GetActorForwardVector();
 
-	AStationActor* FoundStation = nullptr;
-	
-	for (TActorIterator<AStationActor> It(GetWorld()); It; ++It)
-	{
-		AStationActor* Station = *It;
-		if (Station && Station->GetStationId() == StationId)
-		{
-			FoundStation = Station;
-			UE_LOG(LogTemp, Log, TEXT("✓ Station found: %s"), *Station->GetStationName());
-			break;
-		}
-	}
+    FVector UndockLocation = StationLocation + (StationForward * SafeDistance);
+    FRotator UndockRotation = FoundStation->GetActorRotation();
 
-	if (!FoundStation)
-	{
-		UE_LOG(LogTemp, Error, TEXT("✗ Station with ID %s not found in world"), *StationId.ToString());
-		return;
-	}
+    UE_LOG(LogTemp, Log, TEXT("RequestUndock: Moving pawn to undock location %s"), *UndockLocation.ToString());
 
-	// ==================== CALCULATE SAFE EXIT POINT ====================
-	//
-	// Calculate spawn position in front of station using forward vector
-	// SafeDistance should be larger than station collision radius
-	//
-	// ===================================================================
+    // Position and restore pawn
+    PlayerPawn->SetActorLocation(UndockLocation);
+    PlayerPawn->SetActorRotation(UndockRotation);
+    PlayerPawn->SetActorHiddenInGame(false);
+    PlayerPawn->SetActorEnableCollision(true);
 
-	FVector StationLocation = FoundStation->GetActorLocation();
-	FVector StationForward = FoundStation->GetActorForwardVector();
-	
-	// Safe distance: 500m (50,000 units) from station center
-	// This is far enough to avoid collision with most station types
-	const float SafeDistance = 50000.0f;
-	
-	FVector UndockLocation = StationLocation + (StationForward * SafeDistance);
-	FRotator UndockRotation = FoundStation->GetActorRotation();
+    // Enable physics on root primitive if present
+    if (UPrimitiveComponent* RootPrimitive = Cast<UPrimitiveComponent>(PlayerPawn->GetRootComponent()))
+    {
+        RootPrimitive->SetSimulatePhysics(true);
+        RootPrimitive->SetEnableGravity(false);
 
-	UE_LOG(LogTemp, Log, TEXT("✓ Calculated undock position:"));
-	UE_LOG(LogTemp, Log, TEXT("  Station Location: %s"), *StationLocation.ToString());
-	UE_LOG(LogTemp, Log, TEXT("  Station Forward: %s"), *StationForward.ToString());
-	UE_LOG(LogTemp, Log, TEXT("  Undock Location: %s"), *UndockLocation.ToString());
-	UE_LOG(LogTemp, Log, TEXT("  Distance from station: %.1fm"), SafeDistance / 100.0f);
+        // Apply initial impulse away from station
+        FVector Impulse = StationForward * ImpulseStrength;
+        RootPrimitive->AddImpulse(Impulse, NAME_None, true);
+        UE_LOG(LogTemp, Log, TEXT("RequestUndock: Applied impulse %s to pawn"), *Impulse.ToString());
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("RequestUndock: Pawn root is not a primitive - cannot apply physics impulse"));
+    }
 
-	// ==================== PHYSICAL ACTIVATION ====================
-	//
-	// Restore ship to physical world:
-	// 1. Move to undock location
-	// 2. Restore visibility
-	// 3. Enable collision
-	// 4. Enable physics simulation
-	//
-	// ============================================================
+    // If pawn is character, enable movement
+    if (ACharacter* Character = Cast<ACharacter>(PlayerPawn))
+    {
+        if (UCharacterMovementComponent* MovementComp = Character->GetCharacterMovement())
+        {
+            MovementComp->SetMovementMode(MOVE_Flying);
+            UE_LOG(LogTemp, Log, TEXT("RequestUndock: Character movement set to flying"));
+        }
+    }
 
-	// 1. Move pawn to undock location
-	PlayerPawn->SetActorLocation(UndockLocation);
-	PlayerPawn->SetActorRotation(UndockRotation);
-	UE_LOG(LogTemp, Log, TEXT("✓ Pawn moved to undock location"));
+    // Cleanup hangar instance
+    HangarManager->RemoveHangarInstance(CharacterId);
+    UE_LOG(LogTemp, Log, TEXT("RequestUndock: Removed hangar instance for character %s"), *CharacterId.ToString());
 
-	// 2. Restore visibility
-	PlayerPawn->SetActorHiddenInGame(false);
-	UE_LOG(LogTemp, Log, TEXT("✓ Pawn visibility restored"));
+    // Close station menu on client
+    FoundStation->ClientRPC_CloseStationMenu();
 
-	// 3. Enable collision
-	PlayerPawn->SetActorEnableCollision(true);
-	UE_LOG(LogTemp, Log, TEXT("✓ Pawn collision enabled"));
-
-	// 4. Enable physics simulation
-	if (UPrimitiveComponent* RootPrimitive = Cast<UPrimitiveComponent>(PlayerPawn->GetRootComponent()))
-	{
-		RootPrimitive->SetSimulatePhysics(true);
-		RootPrimitive->SetEnableGravity(false); // No gravity in space
-		UE_LOG(LogTemp, Log, TEXT("✓ Physics simulation enabled"));
-	}
-
-	// 5. Restore movement if it was disabled
-	if (ACharacter* Character = Cast<ACharacter>(PlayerPawn))
-	{
-		if (UCharacterMovementComponent* MovementComp = Character->GetCharacterMovement())
-		{
-			MovementComp->SetMovementMode(MOVE_Flying); // Space movement
-			UE_LOG(LogTemp, Log, TEXT("✓ Character movement restored"));
-		}
-	}
-
-	// ==================== CLEAR HANGAR INSTANCE ====================
-	//
-	// Remove player from hangar instance and clean up resources
-	//
-	// ===============================================================
-
-	HangarManager->RemoveHangarInstance(CharacterId);
-	UE_LOG(LogTemp, Log, TEXT("✓ Hangar instance cleared"));
-
-	// ==================== INITIAL IMPULSE ====================
-	//
-	// Give ship a small forward velocity to move away from station
-	// This ensures the ship doesn't immediately re-dock
-	//
-	// =========================================================
-
-	if (UPrimitiveComponent* RootPrimitive = Cast<UPrimitiveComponent>(PlayerPawn->GetRootComponent()))
-	{
-		// Apply forward impulse (equivalent to ~10 m/s)
-		const float ImpulseStrength = 1000.0f; // Adjust based on ship mass
-		FVector ForwardImpulse = StationForward * ImpulseStrength;
-		
-		RootPrimitive->AddImpulse(ForwardImpulse, NAME_None, true);
-		UE_LOG(LogTemp, Log, TEXT("✓ Initial forward impulse applied: %s"), *ForwardImpulse.ToString());
-	}
-
-	// ==================== CLOSE STATION UI ====================
-	//
-	// Notify station to close the menu on client
-	//
-	// ==========================================================
-
-	FoundStation->ClientRPC_CloseStationMenu();
-	UE_LOG(LogTemp, Log, TEXT("✓ Station menu close requested"));
-
-	// ==================== FINALIZE ====================
-
-	UE_LOG(LogTemp, Log, TEXT("╔══════════════════════════════════════════════════════════╗"));
-	UE_LOG(LogTemp, Log, TEXT("║    PLAYER SUCCESSFULLY UNDOCKED                         ║"));
-	UE_LOG(LogTemp, Log, TEXT("╚══════════════════════════════════════════════════════════╝"));
-	UE_LOG(LogTemp, Log, TEXT("Player: %s"), *PC->GetName());
-	UE_LOG(LogTemp, Log, TEXT("Station: %s"), *FoundStation->GetStationName());
-	UE_LOG(LogTemp, Log, TEXT("Undock Location: %s"), *UndockLocation.ToString());
-
-	// TODO: Notify backend about undocking (update character location in database)
-	// This would be similar to how we notify about docking
+    UE_LOG(LogTemp, Log, TEXT("RequestUndock: Undock sequence complete for player %s"), *PC->GetName());
 }

@@ -49,9 +49,9 @@ namespace Echoes.API.Models.Entities.Character
         [Column("account_type")]
         public AccountType AccountType { get; set; } = AccountType.Free;
         
-        [Required]
         [Column("account_status")]
-        public AccountStatus AccountStatus { get; set; } = AccountStatus.Pending;
+        // Make nullable so EF can distinguish CLR default vs DB default sentinel
+        public AccountStatus? AccountStatus { get; set; } = null;
         
         [Required]
         [Column("roles")]
@@ -227,7 +227,7 @@ namespace Echoes.API.Models.Entities.Character
         
         public bool IsAccountActive()
         {
-            return AccountStatus == AccountStatus.Active && 
+            return AccountStatus == Echoes.API.Models.Enums.AccountStatus.Active && 
                    !IsLocked() && 
                    IsEmailVerified;
         }

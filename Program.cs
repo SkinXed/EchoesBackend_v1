@@ -95,18 +95,18 @@ else
 {
     services.AddDbContext<DatabaseContext>(options =>
     {
-        options.UseNpgsql(connectionString,
-            npgsqlOptions =>
-            {
-                npgsqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorCodesToAdd: null);
-                npgsqlOptions.MigrationsAssembly(typeof(Program).Assembly.GetName().Name);
-               
-            });
+        options.UseNpgsql(connectionString, npgsqlOptions =>
+        {
+            npgsqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null);
+            npgsqlOptions.MigrationsAssembly(typeof(Program).Assembly.GetName().Name);
+        });
 
-        if (builder.Environment.IsDevelopment())
+        // Note: prefer using `.AsSplitQuery()` on individual queries. Global UseQuerySplittingBehavior caused build issues in this environment, so it's omitted.
+        // Включаем sensitive logging только когда это явно разрешено в конфигурации (и только в dev)
+        var enableSensitive = builder.Environment.IsDevelopment()
+                            && builder.Configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging", false);
+
+        if (enableSensitive)
         {
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();

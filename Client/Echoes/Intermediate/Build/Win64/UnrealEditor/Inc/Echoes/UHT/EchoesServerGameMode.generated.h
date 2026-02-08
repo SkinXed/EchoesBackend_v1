@@ -20,14 +20,14 @@ class UEchoesJumpManager;
 struct FServerSystemConfig;
 
 // ********** Begin Delegate FOnEntryFlowComplete **************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_15_DELEGATE \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_16_DELEGATE \
 ECHOES_API void FOnEntryFlowComplete_DelegateWrapper(const FMulticastScriptDelegate& OnEntryFlowComplete);
 
 
 // ********** End Delegate FOnEntryFlowComplete ****************************************************
 
 // ********** Begin ScriptStruct FCharacterLocationData ********************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_23_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_24_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FCharacterLocationData_Statics; \
 	ECHOES_API static class UScriptStruct* StaticStruct();
 
@@ -36,7 +36,7 @@ struct FCharacterLocationData;
 // ********** End ScriptStruct FCharacterLocationData **********************************************
 
 // ********** Begin Class AEchoesServerGameMode ****************************************************
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnServerConfigReceived); \
 	DECLARE_FUNCTION(execTriggerWorldGeneration); \
 	DECLARE_FUNCTION(execGetJumpManager); \
@@ -45,7 +45,7 @@ struct FCharacterLocationData;
 
 ECHOES_API UClass* Z_Construct_UClass_AEchoesServerGameMode_NoRegister();
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_INCLASS_NO_PURE_DECLS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEchoesServerGameMode(); \
 	friend struct Z_Construct_UClass_AEchoesServerGameMode_Statics; \
@@ -56,7 +56,7 @@ public: \
 	DECLARE_SERIALIZER(AEchoesServerGameMode)
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_ENHANCED_CONSTRUCTORS \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_ENHANCED_CONSTRUCTORS \
 	/** Deleted move- and copy-constructors, should never be used */ \
 	AEchoesServerGameMode(AEchoesServerGameMode&&) = delete; \
 	AEchoesServerGameMode(const AEchoesServerGameMode&) = delete; \
@@ -66,13 +66,13 @@ public: \
 	NO_API virtual ~AEchoesServerGameMode();
 
 
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_80_PROLOG
-#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_GENERATED_BODY \
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_81_PROLOG
+#define FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_INCLASS_NO_PURE_DECLS \
-	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_83_ENHANCED_CONSTRUCTORS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_INCLASS_NO_PURE_DECLS \
+	FID_Reposetory_EchoesBackend_v1_Client_Echoes_Source_Echoes_EchoesServerGameMode_h_84_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
